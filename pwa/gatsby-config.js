@@ -24,6 +24,12 @@ module.exports = {
           separator: ".",
         },
         autoGenHomeLabel: "Dashboard",
+        crumbLabelUpdates: [
+          {
+            pathname: "/actions/[actionId]",
+            crumbLabel: "Action",
+          },
+        ],
       },
     },
   ],
