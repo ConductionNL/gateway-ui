@@ -36,29 +36,3 @@
 .authenticatedDivider {
   height: var(--nlportal-header-facet-height);
 }
-
-/* UnauthenticatedHeaderTemplate */
-.unauthenticatedContainer {
-  align-items: center;
-  justify-content: center;
-}
-
-.unauthenticatedContent {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--nlportal-header-height-large);
-}
-
-.unauthenticatedLogo {
-  height: 100%;
-  width: var(--conduction-unauthenticated-header-logo-width);
-}
-
-.unauthenticatedLogo:hover {
-  cursor: pointer;
-}
-
-.unauthenticatedDivider {
-  height: var(--nlportal-space-block-4xl);
-}

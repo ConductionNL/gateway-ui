@@ -3,7 +3,6 @@ import * as styles from "./FooterTemplate.module.css";
 import { List, ListItem, ListSubheader } from "@gemeente-denhaag/list";
 import { navigate } from "gatsby";
 import AuthenticatedDividerImage from "./../../../assets/images/AuthenticatedDivider.png";
-import UnauthenticatedDividerImage from "./../../../assets/images/UnauthenticatedFooterDivider.png";
 import { useTranslation } from "react-i18next";
 import { Container, ImageDivider } from "@conduction/components";
 
@@ -26,14 +25,6 @@ export const AuthenticatedFooterTemplate: React.FC = () => {
           </List>
         </div>
       </Container>
-    </footer>
-  );
-};
-
-export const UnauthenticatedFooterTemplate: React.FC = () => {
-  return (
-    <footer className={styles.unauthenticated}>
-      <ImageDivider image={UnauthenticatedDividerImage} layoutClassName={styles.unauthenticatedImageDivider} />
     </footer>
   );
 };

@@ -2,7 +2,7 @@ import * as React from "react";
 import { isLoggedIn } from "../services/auth";
 import { DashboardTemplate } from "../templates/dashboard/DashboardTemplate";
 import { HomeTemplate } from "../templates/templateParts/home/HomeTemplate";
-import { LandingTemplate } from "../templates/landing/LandingTemplate";
+import { LoginTemplate } from "../templates/login/LoginTemplate";
 
 const IndexPage: React.FC = () => {
   if (isLoggedIn()) return <AuthenticatedIndex />;
@@ -18,4 +18,4 @@ const AuthenticatedIndex: React.FC = () => (
   </DashboardTemplate>
 );
 
-const UnauthenticatedIndex: React.FC = () => <LandingTemplate />;
+const UnauthenticatedIndex: React.FC = () => <LoginTemplate />;

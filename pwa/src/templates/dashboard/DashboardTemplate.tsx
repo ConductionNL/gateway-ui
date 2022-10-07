@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as styles from "./DashboardTemplate.module.css";
-import { GridIcon } from "@gemeente-denhaag/icons";
 import { Sidenav, SidenavItem, SidenavLink, SidenavList } from "@gemeente-denhaag/sidenav";
 import { GatsbyContext } from "../../context/gatsby";
 import { navigate } from "gatsby";

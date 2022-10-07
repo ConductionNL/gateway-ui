@@ -6,9 +6,8 @@ import { Button } from "@gemeente-denhaag/components-react";
 import { changeLanguage } from "i18next";
 import clsx from "clsx";
 import AuthenticatedDividerImage from "./../../../assets/images/AuthenticatedDivider.png";
-import UnauthenticatedDividerImage from "./../../../assets/images/UnauthenticatedHeaderDivider.png";
 import { useMe } from "../../../hooks/me";
-import { Container, AuthenticatedLogo, UnauthenticatedLogo, ImageDivider } from "@conduction/components";
+import { Container, AuthenticatedLogo, ImageDivider } from "@conduction/components";
 
 interface AuthenticatedHeaderTemplateProps {
   layoutClassName?: string;
@@ -45,14 +44,3 @@ export const AuthenticatedHeaderTemplate: React.FC<AuthenticatedHeaderTemplatePr
     </header>
   );
 };
-
-export const UnauthenticatedHeaderTemplate: React.FC = () => (
-  <header className={styles.unauthenticatedContainer}>
-    <Container>
-      <div onClick={() => navigate("/")} className={styles.unauthenticatedContent}>
-        <UnauthenticatedLogo href="/" layoutClassName={styles.unauthenticatedLogo} />
-      </div>
-    </Container>
-    <ImageDivider image={UnauthenticatedDividerImage} layoutClassName={styles.unauthenticatedDivider} />
-  </header>
-);
