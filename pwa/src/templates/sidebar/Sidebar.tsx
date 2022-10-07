@@ -39,19 +39,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       label: "Actions",
       icon: <FontAwesomeIcon icon={faPlay} />,
       onClick: () => navigate("/actions"),
-      current: pathname === "/actions",
+      current: pathname.includes("/actions"),
     },
     {
       label: "Sources",
       icon: <FontAwesomeIcon icon={faGrip} />,
       onClick: () => navigate("/sources"),
-      current: pathname === "/sources",
+      current: pathname.includes("/sources"),
     },
     {
       label: "Cronjobs",
       icon: <FontAwesomeIcon icon={faHourglass} />,
       onClick: () => navigate("/cronjobs"),
-      current: pathname === "/cronjobs",
+      current: pathname.includes("/cronjobs"),
     },
   ];
 
