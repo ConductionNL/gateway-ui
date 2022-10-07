@@ -2,7 +2,7 @@ export const en = {
   Login: "Login",
   Logout: "Log out",
   Translation: "Nederlands",
-  Home: "Home",
+  Dashboard: "Dashboard",
   "Footer content": "Footer content",
   Link: "Link",
   Welcome: "Welcome",

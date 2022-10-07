@@ -2,7 +2,7 @@ export const nl = {
   Login: "Inloggen",
   Logout: "Uitloggen",
   Translation: "English",
-  Home: "Home",
+  Dashboard: "Dashboard",
   "Footer content": "Footer content",
   Link: "Link",
   Welcome: "Welkom",

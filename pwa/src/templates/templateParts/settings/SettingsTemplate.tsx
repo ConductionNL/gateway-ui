@@ -2,8 +2,8 @@ import * as React from "react";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 
-export const HomeTemplate: React.FC = () => {
+export const SettingsTemplate: React.FC = () => {
   const { t } = useTranslation();
 
-  return <Heading1>{t("Dashboard")}</Heading1>;
+  return <Heading1>{t("Settings")}</Heading1>;
 };
