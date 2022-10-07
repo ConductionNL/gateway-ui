@@ -16,3 +16,7 @@
   display: flex;
   margin-block-end: var(--nlportal-space-block-lg);
 }
+
+.topMenu > img:hover {
+  cursor: pointer;
+}

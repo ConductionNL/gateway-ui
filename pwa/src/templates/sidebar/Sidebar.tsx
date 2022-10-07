@@ -73,7 +73,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
   return (
     <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>
       <section className={styles.topMenu}>
-        <img src={Logo} />
+        <img src={Logo} alt="Conduction" title="Conduction" onClick={() => navigate("/")} />
 
         <VerticalMenu layoutClassName={styles.menu} items={mainMenuItems} />
       </section>

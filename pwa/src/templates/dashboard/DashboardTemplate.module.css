@@ -15,4 +15,7 @@
   height: calc(100vh - var(--nlportal-space-block-2xl) * 2);
   padding-block: var(--nlportal-space-block-2xl);
   padding-inline: var(--nlportal-space-inline-2xl);
+
+  --denhaag-breadcrumb-background-color: white;
+  --denhaag-breadcrumb-link-color: #4376fc;
 }
