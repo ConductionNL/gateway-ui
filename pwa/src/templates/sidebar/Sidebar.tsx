@@ -14,7 +14,7 @@ import {
   faGrip,
   faHome,
   faHourglass,
-  faMicrochip,
+  faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "./../../assets/svgs/conduction-logo.svg";
 
@@ -37,7 +37,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
     },
     {
       label: "Actions",
-      icon: <FontAwesomeIcon icon={faMicrochip} />,
+      icon: <FontAwesomeIcon icon={faPlay} />,
       onClick: () => navigate("/actions"),
       current: pathname === "/actions",
     },
