@@ -1,0 +1,6 @@
+.footer {
+  margin-block-start: var(--nlportal-space-block-4xl);
+  background-color: var(--denhaag-color-grey-1);
+  padding-block-start: var(--nlportal-space-block-2xl);
+  padding-block-end: var(--nlportal-space-block-2xl);
+}

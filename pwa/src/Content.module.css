@@ -1,0 +1,96 @@
+:root {
+  --init-size-sm: 12px;
+  --init-size-md: 24px;
+  --init-size-lg: 48px;
+  --init-size-xxl: 132px;
+
+  --init-border-radius: 3px;
+
+  --init-text-container-width: 1024px;
+  --init-font-md: 20px;
+  --init-font-md-line-height: 1.5;
+
+  --init-color-white: #ffffff;
+  --init-color-lightgrey: #f5f5f5;
+}
+
+.content {
+  margin-block-start: var(--init-size-xxl);
+  margin-block-end: var(--init-size-xxl);
+}
+
+.content span {
+  display: block;
+  font-size: var(--init-font-md);
+  line-height: var(--init-font-md-line-height);
+  margin-block-start: var(--init-size-sm);
+}
+
+.content > *:not(:last-child) {
+  margin-block-end: var(--init-size-lg);
+}
+
+.textContainer {
+  max-width: var(--init-text-container-width);
+}
+
+.templatesGrid {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+}
+
+.templatesGrid > *:not(:last-child) {
+  margin-inline-end: var(--init-size-lg);
+}
+
+.templateCard {
+  background-color: var(--init-color-lightgrey);
+  padding: var(--init-size-md);
+  border-radius: var(--init-border-radius);
+  transition: background-color 200ms;
+  user-select: none;
+}
+
+.templateCard:hover {
+  cursor: pointer;
+}
+
+.templateCard.active {
+  background-color: var(--nlportal-footer-background-color);
+}
+
+.templateCard.active > * {
+  color: var(--init-color-white);
+}
+
+.templateCardDashboard:hover {
+  cursor: not-allowed;
+}
+
+.tabPanel > *:not(:last-child) {
+  margin-bottom: var(--init-size-md);
+}
+
+.tabHeading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list > li::marker {
+  font-weight: bold;
+}
+
+.list > *:not(:last-child) {
+  margin-bottom: var(--init-size-md);
+}
+
+.code {
+  margin-block: var(--init-size-sm);
+  background-color: var(--init-color-lightgrey);
+  border-radius: var(--init-border-radius);
+  padding: var(--init-size-md);
+}
+
+.installationTabs {
+  margin-block: var(--init-size-md);
+}

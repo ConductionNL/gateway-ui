@@ -1,0 +1,29 @@
+.header {
+  margin-block-end: var(--nlportal-space-block-4xl);
+  background-color: var(--conduction-top-nav-background-color-primary);
+}
+
+.top {
+  background-color: var(--conduction-top-nav-background-color-secondary);
+}
+
+.headingContainer {
+  padding-block-start: var(--nlportal-space-inline-4xl);
+  padding-block-end: var(--nlportal-space-inline-4xl);
+}
+
+.title {
+  padding-block-end: var(--nlportal-space-block-md);
+  color: var(--denhaag-color-white) !important;
+}
+
+.subTitle {
+  font-weight: 100;
+  color: var(--denhaag-color-white);
+}
+
+.secondaryNavContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
