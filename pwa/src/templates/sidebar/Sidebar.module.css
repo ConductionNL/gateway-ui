@@ -8,4 +8,11 @@
   padding-block: var(--nlportal-space-block-2xl);
   height: calc(100vh - var(--nlportal-space-inline-2xl) * 2);
   overflow-y: scroll;
+
+  box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+.topMenu > img {
+  display: flex;
+  margin-block-end: var(--nlportal-space-block-lg);
 }

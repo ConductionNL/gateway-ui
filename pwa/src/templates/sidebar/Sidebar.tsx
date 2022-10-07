@@ -16,6 +16,7 @@ import {
   faHourglass,
   faMicrochip,
 } from "@fortawesome/free-solid-svg-icons";
+import Logo from "./../../assets/svgs/conduction-logo.svg";
 
 interface SidebarProps {
   layoutClassName?: string;
@@ -71,7 +72,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
 
   return (
     <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>
-      <VerticalMenu layoutClassName={styles.menu} items={mainMenuItems} />
+      <section className={styles.topMenu}>
+        <img src={Logo} />
+
+        <VerticalMenu layoutClassName={styles.menu} items={mainMenuItems} />
+      </section>
 
       <VerticalMenu layoutClassName={styles.menu} items={bottomMenuItems} />
     </div>

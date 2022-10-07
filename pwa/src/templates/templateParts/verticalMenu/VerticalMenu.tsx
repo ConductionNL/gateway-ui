@@ -1,8 +1,6 @@
 import React from "react";
 import * as styles from "./VerticalMenu.module.css";
 import clsx from "clsx";
-import { navigate } from "gatsby";
-import { GatsbyContext } from "../../../context/gatsby";
 import { Sidenav, SidenavList, SidenavItem, SidenavLink } from "@gemeente-denhaag/sidenav";
 
 export interface IMenuItem {
