@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background: white;
+  padding-inline: var(--nlportal-space-inline-2xl);
+  padding-block: var(--nlportal-space-block-2xl);
+  height: calc(100vh - var(--nlportal-space-inline-2xl) * 2);
+  overflow-y: scroll;
+}

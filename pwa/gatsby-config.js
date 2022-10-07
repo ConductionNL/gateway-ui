@@ -23,7 +23,7 @@ module.exports = {
         excludeOptions: {
           separator: ".",
         },
-        autoGenHomeLabel: "Home",
+        autoGenHomeLabel: "Dashboard",
       },
     },
   ],
