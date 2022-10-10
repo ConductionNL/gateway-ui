@@ -5,7 +5,6 @@ import Login from "./services/login";
 import Me from "./services/me";
 
 // Resources
-import Example from "./resources/action";
 import Action from "./resources/action";
 
 export default class APIService {

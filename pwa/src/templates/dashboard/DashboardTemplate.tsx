@@ -4,12 +4,9 @@ import { Breadcrumbs, Container, PrivateRoute } from "@conduction/components";
 import { isLoggedIn } from "../../services/auth";
 import { Sidebar } from "../sidebar/Sidebar";
 import { GatsbyContext } from "../../context/gatsby";
-import { useTranslation } from "react-i18next";
 import _ from "lodash";
 
 export const DashboardTemplate: React.FC = ({ children }) => {
-  const { t } = useTranslation();
-
   const {
     pageContext: {
       breadcrumb: { crumbs },
