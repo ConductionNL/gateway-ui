@@ -11,10 +11,6 @@ export const ActionsTemplate: React.FC = () => {
   const _useActions = useAction();
   const getActions = _useActions.getAll();
 
-  React.useEffect(() => {
-    console.log(getActions.data);
-  }, [getActions.isSuccess]);
-
   return (
     <div>
       <Heading1>{t("Actions")}</Heading1>
