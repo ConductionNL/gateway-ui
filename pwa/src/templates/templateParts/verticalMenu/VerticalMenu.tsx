@@ -1,6 +1,5 @@
 import React from "react";
 import * as styles from "./VerticalMenu.module.css";
-import clsx from "clsx";
 import { Sidenav, SidenavList, SidenavItem, SidenavLink } from "@gemeente-denhaag/sidenav";
 
 export interface IMenuItem {
@@ -23,7 +22,7 @@ export const VerticalMenu: React.FC<VerticalMenuProps> = ({ items, layoutClassNa
   };
 
   return (
-    <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>
+    <div className={layoutClassName && layoutClassName}>
       <Sidenav>
         <SidenavList>
           {items.map(({ onClick, label, icon, current }, idx) => (

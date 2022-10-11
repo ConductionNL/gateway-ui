@@ -7,9 +7,6 @@
 
 .content {
   position: relative;
-  margin-block-start: calc(
-    var(--conduction-unauthenticated-header-logo-height) * -1
-  );
 }
 
 .header {

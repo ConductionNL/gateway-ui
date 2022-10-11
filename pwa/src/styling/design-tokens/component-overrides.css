@@ -1,0 +1,17 @@
+:root {
+  --denhaag-breadcrumb-background-color: var(--gateway-ui-color-white);
+  --denhaag-breacrumb-link-color: var(--gateway-ui-color-primary) !important;
+  --denhaag-breadcrumb-list-max-width: 100%;
+
+  --denhaag-sidenav-link-hover-color: var(--gateway-ui-color-primary);
+  --denhaag-sidenav-link-active-color: var(--gateway-ui-color-primary);
+
+  --denhaag-button-primary-action-background-color: var(
+    --gateway-ui-color-primary
+  );
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-primary-hover
+  );
+
+  --conduction-container-max-width: var(--gateway-ui-container-max-width);
+}

@@ -7,6 +7,7 @@ import { GatsbyProvider, IGatsbyContext } from "../context/gatsby";
 import { StylesProvider } from "@gemeente-denhaag/components-react";
 import { Head } from "./Head";
 import { Content } from "../Content";
+import { ThemeProvider } from "../templates/themeProvider/ThemeProvider";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -37,9 +38,11 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
       <GatsbyProvider value={gatsbyContext}>
         <APIProvider value={API}>
           <StylesProvider>
-            <div className={styles.container}>
-              <Content {...{ children }} />
-            </div>
+            <ThemeProvider>
+              <div className={styles.container}>
+                <Content {...{ children }} />
+              </div>
+            </ThemeProvider>
           </StylesProvider>
         </APIProvider>
       </GatsbyProvider>

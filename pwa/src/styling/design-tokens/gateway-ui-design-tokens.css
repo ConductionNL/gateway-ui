@@ -49,9 +49,12 @@
   --gateway-ui-focus-border: unset;
 
   /* Colors */
+  --gateway-ui-color-white: #ffffff;
+  --gateway-ui-color-primary: #4376fc;
+  --gateway-ui-color-primary-hover: #2e5ed9;
+  --gateway-ui-background-color: #fafafa;
+  --gateway-ui-side-bar-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
 
   /* Components */
   --gateway-ui-container-max-width: 2440px;
-
-
 }
