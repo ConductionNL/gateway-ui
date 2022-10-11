@@ -7,11 +7,8 @@
 
 .content {
   position: relative;
-  margin-block-start: calc(
-    var(--conduction-unauthenticated-header-logo-height) * -1
-  );
 }
 
 .header {
-  margin-block-end: var(--nlportal-space-block-xl);
+  margin-block-end: var(--gateway-ui-size-lg);
 }
