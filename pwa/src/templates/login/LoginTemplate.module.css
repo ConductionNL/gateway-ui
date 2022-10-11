@@ -13,5 +13,5 @@
 }
 
 .header {
-  margin-block-end: var(--nlportal-space-block-xl);
+  margin-block-end: var(--gateway-ui-size-lg);
 }

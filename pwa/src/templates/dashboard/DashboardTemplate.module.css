@@ -1,5 +1,5 @@
 .container {
-  --condution-container-max-width: 2440px;
+  --conduction-container-max-width: var(--gateway-ui-container-max-width);
   --denhaag-breadcrumb-list-max-width: 100%;
 
   display: flex;
@@ -12,14 +12,14 @@
 .content {
   width: 100%;
   overflow: scroll;
-  height: calc(100vh - var(--nlportal-space-block-2xl) * 2);
-  padding-block: var(--nlportal-space-block-2xl);
-  padding-inline: var(--nlportal-space-inline-2xl);
+  height: calc(100vh - var(--gateway-ui-size-xl) * 2);
+  padding-block: var(--gateway-ui-size-xl);
+  padding-inline: var(--gateway-ui-size-xl);
 
   --denhaag-breadcrumb-background-color: white;
   --denhaag-breadcrumb-link-color: #4376fc;
 }
 
 .content > *:not(:last-child) {
-  margin-block-end: var(--nlportal-space-block-2xl);
+  margin-block-end: var(--gateway-ui-size-xl);
 }
