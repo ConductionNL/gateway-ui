@@ -1,6 +1,6 @@
 :root {
   --denhaag-breadcrumb-background-color: var(--gateway-ui-color-white);
-  --denhaag-breacrumb-link-color: var(--gateway-ui-color-primary) !important;
+  --denhaag-breacrumb-link-color: var(--gateway-ui-color-primary);
   --denhaag-breadcrumb-list-max-width: 100%;
 
   --denhaag-sidenav-link-hover-color: var(--gateway-ui-color-primary);
