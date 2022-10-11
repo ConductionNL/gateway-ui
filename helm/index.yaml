@@ -3,7 +3,7 @@ entries:
   commonground-gateway:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-10-11T11:14:21.7384193+02:00"
+    created: "2022-10-11T12:05:29.9114131+02:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
@@ -26,7 +26,7 @@ entries:
   skeleton-app:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2022-10-11T11:14:21.7097279+02:00"
+    created: "2022-10-11T12:05:29.8834589+02:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -34,7 +34,7 @@ entries:
       repository: https://raw.githubusercontent.com/ConductionNL/commonground-gateway/feature-cleanup/api/helm/
       version: 0.1.7
     description: A Helm chart for the Skeleton Gatsby Application
-    digest: a5068b9436d7b91a6a89104632a07b1146a495f94ee38a128a9f6105b1dbdda6
+    digest: f2dd476592f133f4955c81bff13192343b0833c91fc816a6456f762209599338
     name: skeleton-app
     type: application
     urls:
@@ -43,7 +43,7 @@ entries:
   skeleton-pip:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2022-10-11T11:14:21.7236357+02:00"
+    created: "2022-10-11T12:05:29.8978785+02:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -57,4 +57,4 @@ entries:
     urls:
     - skeleton-pip-0.1.0.tgz
     version: 0.1.0
-generated: "2022-10-11T11:14:21.6941212+02:00"
+generated: "2022-10-11T12:05:29.8685908+02:00"
