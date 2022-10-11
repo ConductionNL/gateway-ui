@@ -1,25 +1,25 @@
 .container {
-  padding-block-start: var(--nlportal-space-block-5xl, 4rem);
-  padding-block-end: var(--nlportal-space-block-5xl, 4rem);
+  --condution-container-max-width: 2440px;
+  --denhaag-breadcrumb-list-max-width: 100%;
+
+  display: flex;
 }
 
-.menu {
-  position: fixed;
-  margin-inline-end: var(--denhaag-space-inline-2xl);
+.sidebar {
+  width: 300px;
 }
 
 .content {
-  z-index: 0;
-  position: relative;
-  width: calc(100% / 12 * 9);
-  margin-inline-start: calc(100% / 12 * 3);
+  width: 100%;
+  overflow: scroll;
+  height: calc(100vh - var(--nlportal-space-block-2xl) * 2);
+  padding-block: var(--nlportal-space-block-2xl);
+  padding-inline: var(--nlportal-space-inline-2xl);
+
+  --denhaag-breadcrumb-background-color: white;
+  --denhaag-breadcrumb-link-color: #4376fc;
 }
 
-.content > :first-child {
+.content > *:not(:last-child) {
   margin-block-end: var(--nlportal-space-block-2xl);
-}
-
-.icons {
-  height: 24px;
-  width: 24px;
 }

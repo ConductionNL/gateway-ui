@@ -2,8 +2,12 @@ import * as React from "react";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 
-export const HomeTemplate: React.FC = () => {
+export const ActionsDetailTemplate: React.FC = () => {
   const { t } = useTranslation();
 
-  return <Heading1>{t("Dashboard")}</Heading1>;
+  return (
+    <div>
+      <Heading1>{t("Action detail page")}</Heading1>
+    </div>
+  );
 };

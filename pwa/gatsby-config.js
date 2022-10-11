@@ -23,7 +23,13 @@ module.exports = {
         excludeOptions: {
           separator: ".",
         },
-        autoGenHomeLabel: "Home",
+        autoGenHomeLabel: "Dashboard",
+        crumbLabelUpdates: [
+          {
+            pathname: "/actions/[actionId]",
+            crumbLabel: "Action",
+          },
+        ],
       },
     },
   ],

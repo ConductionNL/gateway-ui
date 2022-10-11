@@ -5,7 +5,7 @@ import Login from "./services/login";
 import Me from "./services/me";
 
 // Resources
-// import Example from "./resources/example";
+import Action from "./resources/action";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -68,9 +68,9 @@ export default class APIService {
   }
 
   // Resources
-  // public get Example(): Example {
-  //   return new Example(this.halApiClient);
-  // }
+  public get Action(): Action {
+    return new Action(this.BaseClient);
+  }
 
   // Services
   public get Login(): Login {
