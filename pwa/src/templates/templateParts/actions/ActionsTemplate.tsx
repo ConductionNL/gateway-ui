@@ -4,11 +4,13 @@ import { useTranslation } from "react-i18next";
 import { useAction } from "../../../hooks/action";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
+import { QueryClient } from "react-query";
 
 export const ActionsTemplate: React.FC = () => {
   const { t } = useTranslation();
 
-  const _useActions = useAction();
+  const queryClient = new QueryClient();
+  const _useActions = useAction(queryClient);
   const getActions = _useActions.getAll();
 
   return (
@@ -25,7 +27,9 @@ export const ActionsTemplate: React.FC = () => {
               <TableHeader>Name</TableHeader>
               <TableHeader>Description</TableHeader>
               <TableHeader>Priority</TableHeader>
+              <TableHeader>Status</TableHeader>
               <TableHeader>Last run</TableHeader>
+              <TableHeader>Last run time</TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -34,7 +38,9 @@ export const ActionsTemplate: React.FC = () => {
                 <TableCell>{action.name}</TableCell>
                 <TableCell>{action.description}</TableCell>
                 <TableCell>{action.priority}</TableCell>
+                <TableCell>{action.status ? "On" : "Off"}</TableCell>
                 <TableCell>{action.lastRun ?? "-"}</TableCell>
+                <TableCell>{action.lastRunTime ?? "-"}</TableCell>
               </TableRow>
             ))}
           </TableBody>
