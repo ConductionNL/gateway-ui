@@ -1,5 +1,6 @@
 import { navigate } from "gatsby-link";
 import APIService from "../apiService/apiService";
+import jwtDecode, { JwtPayload } from "jwt-decode";
 
 export interface IUnvalidatedUser {
   username: string;
@@ -28,4 +29,21 @@ export const handleLogout = (API: APIService): void => {
 
   API.removeAuthentication();
   navigate("/");
+};
+
+export const handleAutomaticLogout = () => {
+  window.sessionStorage.removeItem("JWT");
+  navigate("/");
+};
+
+export const validateSession = () => {
+  const token = sessionStorage.getItem("JWT");
+
+  if (!token) return false;
+
+  const decoded = token && jwtDecode<JwtPayload>(token);
+  // @ts-ignore
+  const expired = Date.now() >= decoded.exp * 1000;
+
+  return !expired;
 };
