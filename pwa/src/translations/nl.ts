@@ -18,4 +18,5 @@ export const nl = {
   "Next run": "Volgende run",
   "Date created": "Datum gecreeërd",
   "Date modified": "Datum gewijzigd",
+  Description: "Beschrijving",
 };

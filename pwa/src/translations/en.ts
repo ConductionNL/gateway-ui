@@ -18,4 +18,5 @@ export const en = {
   "Next run": "Next run",
   "Date created": "Date created",
   "Date modified": "Date modified",
+  Description: "Description",
 };
