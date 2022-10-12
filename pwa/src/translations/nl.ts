@@ -12,4 +12,10 @@ export const nl = {
   Username: "Gebruikersnaam",
   Password: "Wachtwoord",
   Send: "Verzenden",
+  Name: "Naam",
+  Active: "Actief",
+  "Last run": "Laatst run",
+  "Next run": "Volgende run",
+  "Date created": "Datum gecreeërd",
+  "Date modified": "Datum gewijzigd",
 };
