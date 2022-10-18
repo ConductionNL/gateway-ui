@@ -53,6 +53,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       onClick: () => navigate("/cronjobs"),
       current: pathname.includes("/cronjobs"),
     },
+    {
+      label: "Endpoints",
+      icon: <FontAwesomeIcon icon={faHourglass} />,
+      onClick: () => navigate("/endpoints"),
+      current: pathname.includes("/endpoints"),
+    },
   ];
 
   const bottomMenuItems: IMenuItem[] = [
