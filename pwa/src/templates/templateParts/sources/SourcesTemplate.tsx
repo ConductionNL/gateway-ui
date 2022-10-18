@@ -1,11 +1,15 @@
 import * as React from "react";
 import * as styles from "./SourcesTemplate.module.css";
-import { Heading1 } from "@gemeente-denhaag/components-react";
+import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { useSources } from "../../../hooks/sources";
 import { QueryClient } from "react-query";
+import { Tag } from "@conduction/components";
+import _ from "lodash";
+import clsx from "clsx";
+import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 
 export const SourcesTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -25,23 +29,33 @@ export const SourcesTemplate: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableHeader>Name</TableHeader>
-              <TableHeader>Status</TableHeader>
-              <TableHeader>Last sync</TableHeader>
-              <TableHeader>Related Sync objects</TableHeader>
-              <TableHeader>DateCreated</TableHeader>
-              <TableHeader>DateModified</TableHeader>
+              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader>{t("Status")}</TableHeader>
+              <TableHeader>{t("Last sync")}</TableHeader>
+              <TableHeader>{t("Related Sync objects")}</TableHeader>
+              <TableHeader>{t("Created")}</TableHeader>
+              <TableHeader>{t("Modified")}</TableHeader>
+              <TableHeader />
             </TableRow>
           </TableHead>
           <TableBody>
             {getSources.data.map((source) => (
-              <TableRow onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
+              <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
                 <TableCell>{source.name}</TableCell>
-                <TableCell>{source.status ?? "-"}</TableCell>
+                <TableCell>
+                  <div className={clsx(styles[source.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                    <Tag label={source.status ?? "-"} />
+                  </div>
+                </TableCell>
                 <TableCell>{source.sync ?? "-"}</TableCell>
                 <TableCell>{source.lastRun ?? "-"}</TableCell>
                 <TableCell>{source.dateCreated}</TableCell>
                 <TableCell>{source.dateModified}</TableCell>
+                <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
+                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

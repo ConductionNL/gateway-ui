@@ -6,9 +6,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { QueryClient } from "react-query";
 import _ from "lodash";
 import { useSources } from "../../hooks/sources";
-import { Container } from "@conduction/components";
+import { Container, Tag } from "@conduction/components";
 import { navigate } from "gatsby";
 import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
+import clsx from "clsx";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -38,6 +39,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           <TableHead>
             <TableRow>
               <TableHeader>Name</TableHeader>
+              <TableHeader>Status</TableHeader>
               <TableHeader>Description</TableHeader>
               <TableHeader>Location</TableHeader>
               <TableHeader>contentType</TableHeader>
@@ -50,6 +52,12 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           <TableBody>
             <TableRow>
               <TableCell>{_getSources.data.name ?? "-"}</TableCell>
+              <TableCell>
+                <div className={clsx(styles[_getSources.data.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                  <Tag label={_getSources.data.status ?? "-"} />
+                </div>
+              </TableCell>
+
               <TableCell>{_getSources.data.description ?? "-"}</TableCell>
               <TableCell>{_getSources.data.location ?? "-"}</TableCell>
               <TableCell>{_getSources.data.contentType ?? "-"}</TableCell>
