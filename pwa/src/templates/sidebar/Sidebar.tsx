@@ -75,10 +75,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       <section className={styles.topMenu}>
         <img src={Logo} alt="Conduction" title="Conduction" onClick={() => navigate("/")} />
 
-        <VerticalMenu layoutClassName={styles.menu} items={mainMenuItems} />
+        <VerticalMenu items={mainMenuItems} />
       </section>
 
-      <VerticalMenu layoutClassName={styles.menu} items={bottomMenuItems} />
+      <VerticalMenu items={bottomMenuItems} />
     </div>
   );
 };
