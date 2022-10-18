@@ -43,7 +43,6 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
           <StylesProvider>
             <ThemeProvider>
               <div className={styles.container}>
-                <Favicon url={designTokenToUrl(getTokenValue(styles.favicon))} />
                 <Content {...{ children }} />
               </div>
             </ThemeProvider>
