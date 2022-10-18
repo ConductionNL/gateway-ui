@@ -16,7 +16,6 @@ module.exports = {
         useAutoGen: true,
         exclude: [
           `**/dev-404-page/**`,
-          `**/404/**`,
           `**/404.html`,
           `**/offline-plugin-app-shell-fallback/**`,
         ],
