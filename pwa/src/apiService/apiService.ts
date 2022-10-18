@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { handleAutomaticLogout, validateSession } from "../services/auth";
 
 // Services
 import Login from "./services/login";
@@ -89,6 +90,19 @@ export const Send = (
   payload?: JSON,
 ): Promise<AxiosResponse> => {
   const _payload = JSON.stringify(payload);
+
+  if (!validateSession()) {
+    handleAutomaticLogout();
+
+    return Promise.resolve({
+      // return fake AxiosInstance for calls to not break
+      data: [],
+      status: -1,
+      statusText: "Session invalid",
+      config: {},
+      headers: {},
+    });
+  }
 
   switch (method) {
     case "GET":
