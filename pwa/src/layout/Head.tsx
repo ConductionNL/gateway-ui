@@ -10,7 +10,7 @@ interface HeadProps {
 export const Head: React.FC<HeadProps> = ({ crumbs }) => {
   return (
     <Helmet>
-      <title>{`Common Gateway | ${_.capitalize(_.last(crumbs).crumbLabel)}`}</title>
+      <title>{`Common Gateway | ${crumbs && _.capitalize(_.last(crumbs).crumbLabel)}`}</title>
       <script src="/env.js"></script>
     </Helmet>
   );
