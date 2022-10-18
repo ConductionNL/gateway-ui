@@ -34,6 +34,8 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
     !API.authenticated && JWT && API.setAuthentication(JWT);
   }, [pageContext, location]);
 
+  const favicon = styles.favicon
+
   return (
     <>
       <Head crumbs={pageContext.breadcrumb?.crumbs} />
@@ -42,6 +44,8 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
         <APIProvider value={API}>
           <StylesProvider>
             <ThemeProvider>
+              {favicon && <Favicon url={designTokenToUrl(getTokenValue(favicon))} />}
+
               <div className={styles.container}>
                 <Content {...{ children }} />
               </div>
