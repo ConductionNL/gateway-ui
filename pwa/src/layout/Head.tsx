@@ -1,11 +1,16 @@
 import * as React from "react";
+import _ from "lodash";
 import "../styling/index.css";
 import { Helmet } from "react-helmet";
 
-export const Head: React.FC = () => {
+interface HeadProps {
+  crumbs: any[];
+}
+
+export const Head: React.FC<HeadProps> = ({ crumbs }) => {
   return (
     <Helmet>
-      <title>Skeleton Application</title>
+      <title>{`Common Gateway | ${_.capitalize(_.last(crumbs).crumbLabel)}`}</title>
       <script src="/env.js"></script>
     </Helmet>
   );
