@@ -10,7 +10,7 @@ import { InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsRotate, faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useSources } from "../../../hooks/sources";
-import { QueryClient, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { translateDate } from "../../../services/dateFormat";
 
@@ -136,16 +136,12 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               <FormFieldInput className={styles.flex}>
                 <FormFieldLabel>{t("Created")}</FormFieldLabel>
                 <Tag label={translateDate("nl", source.dateCreated) ?? "-"} />
-
-                {/* <InputText {...{ register, errors }} name="dateCreated" validation={{ required: true }} disabled={loading} /> */}
               </FormFieldInput>
             </FormField>
             <FormField>
               <FormFieldInput className={styles.flex}>
                 <FormFieldLabel>{t("Modified")}</FormFieldLabel>
                 <Tag label={translateDate("nl", source.dateModified) ?? "-"} />
-
-                {/* <InputText {...{ register, errors }} name="dateModified" validation={{ required: true }} disabled={loading} /> */}
               </FormFieldInput>
             </FormField>
           </div>
