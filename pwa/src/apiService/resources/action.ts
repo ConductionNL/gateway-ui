@@ -13,4 +13,10 @@ export default class Action {
 
     return data;
   };
+
+  public getOne = async (id: string): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", `/admin/actions/${id}`);
+
+    return data;
+  };
 }
