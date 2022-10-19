@@ -1,6 +1,6 @@
 export const en = {
   Login: "Login",
-  Logout: "Log out",
+  Logout: "Logout",
   Translation: "Nederlands",
   Dashboard: "Dashboard",
   "Footer content": "Footer content",
@@ -20,4 +20,10 @@ export const en = {
   "Date modified": "Date modified",
   Description: "Description",
   "Back to sources": "Back to sources",
+  Objects: "Objects",
+  Add: "Add",
+  Attributes: "Attributes",
+  ObjectEntities: "ObjectEntities",
+  "Back to objects": "Back to objects",
+  "Object detail page": "Object detail page",
 };

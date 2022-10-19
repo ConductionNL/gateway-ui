@@ -20,4 +20,10 @@ export const nl = {
   "Date modified": "Datum gewijzigd",
   Description: "Beschrijving",
   "Back to sources": "Terug naar sources",
+  Objects: "Objecten",
+  Add: "Toevoegen",
+  Attributes: "Attributen",
+  ObjectEntities: "Object Entiteiten",
+  "Back to objects": "Terug naar objecten",
+  "Object detail page": "Object detail pagina",
 };

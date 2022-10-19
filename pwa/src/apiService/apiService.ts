@@ -10,6 +10,7 @@ import Action from "./resources/action";
 import Sources from "./resources/sources";
 import Cronjob from "./resources/cronjob";
 import Endpoints from "./resources/endpoints"
+import Object from "./resources/object";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -86,6 +87,10 @@ export default class APIService {
   
   public get Endpoints(): Endpoints {
     return new Endpoints(this.BaseClient);
+  }
+
+  public get Object(): Object {
+    return new Object(this.BaseClient);
   }
 
   // Services
