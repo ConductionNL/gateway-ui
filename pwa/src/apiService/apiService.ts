@@ -7,6 +7,8 @@ import Me from "./services/me";
 
 // Resources
 import Action from "./resources/action";
+import Sources from "./resources/sources";
+import Cronjob from "./resources/cronjob";
 import Endpoints from "./resources/endpoints"
 
 export default class APIService {
@@ -74,7 +76,14 @@ export default class APIService {
     return new Action(this.BaseClient);
   }
 
-  // Endpoints
+  public get Sources(): Sources {
+    return new Sources(this.BaseClient);
+  }
+  
+  public get Cronjob(): Cronjob {
+    return new Cronjob(this.BaseClient);
+  }
+  
   public get Endpoints(): Endpoints {
     return new Endpoints(this.BaseClient);
   }

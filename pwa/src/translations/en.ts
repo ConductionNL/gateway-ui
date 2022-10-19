@@ -12,4 +12,12 @@ export const en = {
   Username: "Username",
   Password: "Password",
   Send: "Send",
+  Name: "Name",
+  Active: "Active",
+  "Last run": "Last run",
+  "Next run": "Next run",
+  "Date created": "Date created",
+  "Date modified": "Date modified",
+  Description: "Description",
+  "Back to sources": "Back to sources",
 };

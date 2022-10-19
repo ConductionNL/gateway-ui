@@ -1,0 +1,38 @@
+.container > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.container > .backButton {
+  margin-block-start: var(--gateway-ui-size-2xl);
+  margin-block-end: var(--gateway-ui-size-sm);
+}
+
+.resultsDisplaySwitchButtons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.resultsDisplaySwitchButtons > * {
+  display: flex;
+  align-items: center;
+}
+
+.resultsDisplaySwitchButtons *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+/* Status colors */
+.statusOk {
+  --conduction-tag-background-color: var(--gateway-ui-color-green);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.statusFailed {
+  --conduction-tag-background-color: var(--gateway-ui-color-red);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
