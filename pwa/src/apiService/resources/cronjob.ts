@@ -1,7 +1,7 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
-export default class Action {
+export default class Cronjob {
   private _instance: AxiosInstance;
 
   constructor(_instance: AxiosInstance) {
@@ -9,13 +9,13 @@ export default class Action {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/actions");
+    const { data } = await Send(this._instance, "GET", "/admin/cronjobs");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/actions/${id}`);
+    const { data } = await Send(this._instance, "GET", `/admin/cronjobs/${id}`);
 
     return data;
   };
