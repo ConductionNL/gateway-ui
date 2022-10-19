@@ -7,6 +7,7 @@ import { navigate } from "gatsby";
 import { useObject } from "../../hooks/object";
 import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
+import Skeleton from "react-loading-skeleton";
 
 export const ObjectsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export const ObjectsTemplate: React.FC = () => {
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Objects")}</Heading1>
-      {getObject.isLoading && "Loading..."}
+      {getObject.isLoading && <Skeleton height="200px" />}
       {getObject.isError && "Error..."}
       {getObject.isSuccess && (
         <Table>
