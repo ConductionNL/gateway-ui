@@ -14,7 +14,7 @@ export const nl = {
   Send: "Verzenden",
   Name: "Naam",
   Active: "Actief",
-  "Last run": "Laatst run",
+  "Last run": "Laatste run",
   "Next run": "Volgende run",
   "Date created": "Datum gecreeërd",
   "Date modified": "Datum gewijzigd",

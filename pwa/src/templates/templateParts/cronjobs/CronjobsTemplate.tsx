@@ -1,10 +1,12 @@
 import * as React from "react";
+import * as styles from "./CronjobTemplate.module.css";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { QueryClient } from "react-query";
 import { useCronjob } from "../../../hooks/cronjob";
 import { navigate } from "gatsby";
+import { Container } from "@conduction/components";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -14,7 +16,7 @@ export const CronjobsTemplate: React.FC = () => {
   const getCronjobs = _useCronjob.getAll();
 
   return (
-    <>
+    <Container layoutClassName={styles.container}>
       <Heading1>{t("Cronjobs")}</Heading1>
 
       {getCronjobs.isLoading && "Loading..."}
@@ -50,6 +52,6 @@ export const CronjobsTemplate: React.FC = () => {
           </TableBody>
         </Table>
       )}
-    </>
+    </Container>
   );
 };
