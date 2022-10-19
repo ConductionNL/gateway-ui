@@ -1,9 +1,11 @@
 import * as React from "react";
-import { Heading1 } from "@gemeente-denhaag/components-react";
+import * as styles from "./ActionDetailsTemplate.module.css";
+import { Heading1, Heading2 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useAction } from "../../../hooks/action";
 import { QueryClient } from "react-query";
+import { Container } from "@conduction/components";
 
 interface ActionDetailsTemplateProps {
   actionId: string;
@@ -17,7 +19,7 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
   const getActions = _useActions.getOne(actionId);
 
   return (
-    <div>
+    <Container layoutClassName={styles.container}>
       <Heading1>{t("Action detail page")}</Heading1>
 
       {getActions.isLoading && "Loading..."}
@@ -45,7 +47,14 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
                 <TableCell>{getActions.data.description ?? "-"}</TableCell>
                 <TableCell>{getActions.data.handler ?? "-"}</TableCell>
                 <TableCell>{getActions.data.locked ?? "-"}</TableCell>
-                <TableCell>{getActions.data.listens ?? "-"}</TableCell>
+                <TableCell>
+                  {getActions.data.listens.map((listen: any) => (
+                    <>
+                      {listen}
+                      <br />
+                    </>
+                  )) ?? "-"}
+                </TableCell>
                 <TableCell>{getActions.data.throws ?? "-"}</TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>{getActions.data.priority ?? "-"}</TableCell>
@@ -53,8 +62,27 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
               </TableRow>
             </TableBody>
           </Table>
+
+          <Heading2>Conditions</Heading2>
+
+          <Table>
+            <TableHead>
+              <TableRow>
+                {getActions.data.conditions["=="].map((conditions: any, index: number) => {
+                  return index % 2 === 0 && <TableHeader>{conditions?.var ?? conditions}</TableHeader>;
+                })}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                {getActions.data.conditions["=="].map((conditions: any, index: number) => {
+                  return index % 2 !== 0 && <TableCell>{conditions}</TableCell>;
+                })}
+              </TableRow>
+            </TableBody>
+          </Table>
         </>
       )}
-    </div>
+    </Container>
   );
 };
