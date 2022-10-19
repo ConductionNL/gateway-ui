@@ -7,6 +7,7 @@ import Me from "./services/me";
 
 // Resources
 import Action from "./resources/action";
+import Object from "./resources/object";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -71,6 +72,10 @@ export default class APIService {
   // Resources
   public get Action(): Action {
     return new Action(this.BaseClient);
+  }
+
+  public get Object(): Object {
+    return new Object(this.BaseClient);
   }
 
   // Services

@@ -14,6 +14,7 @@ import {
   faGrip,
   faHome,
   faHourglass,
+  faObjectGroup,
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "./../../assets/svgs/conduction-logo.svg";
@@ -52,6 +53,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       icon: <FontAwesomeIcon icon={faHourglass} />,
       onClick: () => navigate("/cronjobs"),
       current: pathname.includes("/cronjobs"),
+    },
+    {
+      label: "Objects",
+      icon: <FontAwesomeIcon icon={faObjectGroup} />,
+      onClick: () => navigate("/objects"),
+      current: pathname.includes("/objects"),
     },
   ];
 
