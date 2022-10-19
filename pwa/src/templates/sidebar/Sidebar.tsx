@@ -10,7 +10,7 @@ import APIService from "../../apiService/apiService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
-  faGear,
+  faGear, 
   faGrip,
   faHome,
   faHourglass,
@@ -84,10 +84,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
           <img src={Logo} alt="Conduction" title="Conduction" onClick={() => navigate("/")} />
         </div>
 
-        <VerticalMenu layoutClassName={styles.menu} items={mainMenuItems} />
+        <VerticalMenu items={mainMenuItems} />
       </section>
 
-      <VerticalMenu layoutClassName={styles.menu} items={bottomMenuItems} />
+      <VerticalMenu items={bottomMenuItems} />
     </div>
   );
 };
