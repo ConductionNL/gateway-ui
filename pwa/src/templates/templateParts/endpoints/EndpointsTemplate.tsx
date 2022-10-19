@@ -1,10 +1,12 @@
 import * as React from "react";
+import * as styles from "./EndpointsTemplate.module.css";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { useEndpoint } from "../../../hooks/endpoints";
 import { QueryClient } from "react-query";
+import { Container } from "@conduction/components";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -14,7 +16,7 @@ export const EndpointsTemplate: React.FC = () => {
   const getEndpoints = _useEndpoints.getAll();
 
   return (
-    <>
+    <Container layoutClassName={styles.container}>
       <Heading1>{t("Endpoints")}</Heading1>
 
       {getEndpoints.isLoading && "Loading..."}
@@ -44,6 +46,6 @@ export const EndpointsTemplate: React.FC = () => {
           </TableBody>
         </Table>
       )}
-    </>
+    </Container>
   );
 };
