@@ -6,7 +6,7 @@ import { useAction } from "../../../hooks/action";
 import { QueryClient } from "react-query";
 
 interface ActionDetailsTemplateProps {
-	actionId: string;
+  actionId: string;
 }
 
 export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ actionId }) => {
@@ -20,7 +20,7 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
     <div>
       <Heading1>{t("Action detail page")}</Heading1>
 
-	  {getActions.isLoading && "Loading..."}
+      {getActions.isLoading && "Loading..."}
       {getActions.isError && "Error..."}
 
       {getActions.isSuccess && (
@@ -36,14 +36,14 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
             </TableRow>
           </TableHead>
           <TableBody>
-              <TableRow key={getActions.data.id}>
-                <TableCell>{getActions.data.name}</TableCell>
-                <TableCell>{getActions.data.description}</TableCell>
-                <TableCell>{getActions.data.priority}</TableCell>
-                <TableCell>{getActions.data.status ? "On" : "Off"}</TableCell>
-                <TableCell>{getActions.data.lastRun ?? "-"}</TableCell>
-                <TableCell>{getActions.data.lastRunTime ?? "-"}</TableCell>
-              </TableRow>
+            <TableRow key={getActions.data.id}>
+              <TableCell>{getActions.data.name}</TableCell>
+              <TableCell>{getActions.data.description}</TableCell>
+              <TableCell>{getActions.data.priority}</TableCell>
+              <TableCell>{getActions.data.status ? "On" : "Off"}</TableCell>
+              <TableCell>{getActions.data.lastRun ?? "-"}</TableCell>
+              <TableCell>{getActions.data.lastRunTime ?? "-"}</TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       )}

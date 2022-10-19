@@ -15,8 +15,7 @@ export const useAction = (queryClient: QueryClient) => {
 
   const getOne = (actionId: string) =>
     useQuery<any, Error>(["actions", actionId], () => API?.Action.getOne(actionId), {
-      initialData: () =>
-	  queryClient.getQueryData<any[]>("actions")?.find((_action) => _action.id === actionId),
+      initialData: () => queryClient.getQueryData<any[]>("actions")?.find((_action) => _action.id === actionId),
       onError: (error) => {
         throw new Error(error.message);
       },
