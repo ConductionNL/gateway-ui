@@ -12,6 +12,10 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
+.detailsLink {
+  display: inline-flex;
+}
+
 .tableRow {
   cursor: pointer;
 }
