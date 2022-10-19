@@ -62,7 +62,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Create Source")}</Heading1>
-      <div className={styles.backButton} onClick={() => navigate("/sources")}>
+      <div onClick={() => navigate("/sources")}>
         <Link icon={<ArrowLeftIcon />} iconAlign="start">
           {t("Back to sources")}
         </Link>

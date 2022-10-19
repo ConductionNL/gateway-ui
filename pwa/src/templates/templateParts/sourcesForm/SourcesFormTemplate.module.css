@@ -55,11 +55,13 @@
 }
 
 .deleteButton {
-  background-color: red;
+  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
 }
 
 .deleteButton:hover {
-  background-color: rgb(146, 2, 2);
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-red
+  );
 }
 
 /* Status colors */
