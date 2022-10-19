@@ -1,15 +1,28 @@
 import * as React from "react";
 import * as styles from "./SourcesDetailTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
+import {
+  Alert,
+  Button,
+  FormField,
+  FormFieldInput,
+  FormFieldLabel,
+  Heading1,
+  Link,
+} from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { QueryClient } from "react-query";
 import _ from "lodash";
 import { useSources } from "../../hooks/sources";
-import { Container, Tag } from "@conduction/components";
+import { Container, InputPassword, InputText, Tag } from "@conduction/components";
 import { navigate } from "gatsby";
 import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 import clsx from "clsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowsRotate, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { translateDate } from "../../services/dateFormat";
+import { useForm } from "react-hook-form";
+import { SourcesFormTemplate } from "../templateParts/sourcesForm/SourcesFormTemplate";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -24,7 +37,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>{t("Sources")}</Heading1>
+      <Heading1>{t("Edit Source")}</Heading1>
       <div className={styles.backButton} onClick={() => navigate("/sources")}>
         <Link icon={<ArrowLeftIcon />} iconAlign="start">
           {t("Back to sources")}
@@ -35,39 +48,9 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
       {_getSources.isError && "Error..."}
 
       {_getSources.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>Name</TableHeader>
-              <TableHeader>Status</TableHeader>
-              <TableHeader>Description</TableHeader>
-              <TableHeader>Location</TableHeader>
-              <TableHeader>contentType</TableHeader>
-              <TableHeader>accept</TableHeader>
-              <TableHeader>auth type</TableHeader>
-              <TableHeader>DateCreated</TableHeader>
-              <TableHeader>DateModified</TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>{_getSources.data.name ?? "-"}</TableCell>
-              <TableCell>
-                <div className={clsx(styles[_getSources.data.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                  <Tag label={_getSources.data.status ?? "-"} />
-                </div>
-              </TableCell>
-
-              <TableCell>{_getSources.data.description ?? "-"}</TableCell>
-              <TableCell>{_getSources.data.location ?? "-"}</TableCell>
-              <TableCell>{_getSources.data.contentType ?? "-"}</TableCell>
-              <TableCell>{_getSources.data.accept ?? "-"}</TableCell>
-              <TableCell>{_getSources.data.auth ?? "-"}</TableCell>
-              <TableCell>{_getSources.data.dateCreated ?? "-"}</TableCell>
-              <TableCell>{_getSources.data.dateModified ?? "-"}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <>
+          <SourcesFormTemplate source={_getSources.data} sourceId={sourceId} />
+        </>
       )}
     </Container>
   );

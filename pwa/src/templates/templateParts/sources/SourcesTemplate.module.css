@@ -2,10 +2,21 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
+.addButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
 .tableRow {
   cursor: pointer;
 }
 
+/* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-green);
   --conduction-tag-color: var(--gateway-ui-color-white);

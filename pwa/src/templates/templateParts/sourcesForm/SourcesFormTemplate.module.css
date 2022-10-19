@@ -1,10 +1,5 @@
-.container > :not(:last-child) {
-  margin-block-end: var(--gateway-ui-size-2xl);
-}
-
-.container > .backButton {
-  margin-block-start: var(--gateway-ui-size-2xl);
-  margin-block-end: var(--gateway-ui-size-sm);
+.container > *:not(:first-child) {
+  margin-block-start: var(--gateway-ui-size-sm);
 }
 
 .resultsDisplaySwitchButtons {
@@ -24,6 +19,47 @@
 
 .buttonIcon > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.section {
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.grid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}
+
+.test {
+  display: flex;
+}
+
+.test > *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-md);
+}
+
+.name {
+  flex: 1;
+}
+.status {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex {
+  flex: 1;
+}
+.flex > *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-md);
+}
+
+.deleteButton {
+  background-color: red;
+}
+
+.deleteButton:hover {
+  background-color: rgb(146, 2, 2);
 }
 
 /* Status colors */
