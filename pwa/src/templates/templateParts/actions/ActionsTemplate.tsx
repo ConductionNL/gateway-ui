@@ -1,10 +1,12 @@
 import * as React from "react";
+import * as styles from "./ActionTemplate.module.css";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { useAction } from "../../../hooks/action";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { QueryClient } from "react-query";
+import { Container } from "@conduction/components";
 
 export const ActionsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -14,7 +16,7 @@ export const ActionsTemplate: React.FC = () => {
   const getActions = _useActions.getAll();
 
   return (
-    <div>
+    <Container layoutClassName={styles.container}>
       <Heading1>{t("Actions")}</Heading1>
 
       {getActions.isLoading && "Loading..."}
@@ -48,6 +50,6 @@ export const ActionsTemplate: React.FC = () => {
           </TableBody>
         </Table>
       )}
-    </div>
+    </Container>
   );
 };

@@ -1,11 +1,13 @@
 import * as React from "react";
 import * as styles from "./ActionDetailsTemplate.module.css";
-import { Heading1, Heading2 } from "@gemeente-denhaag/components-react";
+import { Heading1, Heading2, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useAction } from "../../../hooks/action";
 import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
+import { navigate } from "gatsby";
+import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 
 interface ActionDetailsTemplateProps {
   actionId: string;
@@ -21,6 +23,12 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Action detail page")}</Heading1>
+
+      <div onClick={() => navigate("/actions")}>
+        <Link icon={<ArrowLeftIcon />} iconAlign="start">
+          {t("Back to actions")}
+        </Link>
+      </div>
 
       {getActions.isLoading && "Loading..."}
       {getActions.isError && "Error..."}
