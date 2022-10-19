@@ -15,7 +15,7 @@ export const useCronjob = (queryClient: QueryClient) => {
 
   const getOne = (cronjobId: string) =>
     useQuery<any, Error>(["cronjobs", cronjobId], () => API?.Cronjob.getOne(cronjobId), {
-      initialData: () => queryClient.getQueryData<any[]>("cronjobs")?.find((_action) => _action.id === cronjobId),
+      initialData: () => queryClient.getQueryData<any[]>("cronjobs")?.find((_cronjob) => _cronjob.id === cronjobId),
       onError: (error) => {
         throw new Error(error.message);
       },

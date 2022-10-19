@@ -1,26 +1,29 @@
 import * as React from "react";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { QueryClient } from "react-query";
 import { useCronjob } from "../../../hooks/cronjob";
-import { navigate } from "gatsby";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 
-export const CronjobsTemplate: React.FC = () => {
+interface CronjobDetailPageProps {
+  cronjobId: string;
+}
+
+export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronjobId }) => {
   const { t } = useTranslation();
 
   const queryClient = new QueryClient();
   const _useCronjob = useCronjob(queryClient);
-  const getCronjobs = _useCronjob.getAll();
+  const getCronjob = _useCronjob.getOne(cronjobId);
 
   return (
     <>
-      <Heading1>{t("Cronjobs")}</Heading1>
+      <Heading1>{t("Cronjob detail page")}</Heading1>
 
-      {getCronjobs.isLoading && "Loading..."}
-      {getCronjobs.isError && "Error..."}
+      {getCronjob.isLoading && "Loading..."}
+      {getCronjob.isError && "Error..."}
 
-      {getCronjobs.isSuccess && (
+      {getCronjob.isSuccess && (
         <Table>
           <TableHead>
             <TableRow>
@@ -36,19 +39,17 @@ export const CronjobsTemplate: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {getCronjobs.data.map((cronjob) => (
-              <TableRow onClick={() => navigate(`/cronjobs/${cronjob.id}`)} key={cronjob.id}>
-                <TableCell>{cronjob.name}</TableCell>
-                <TableCell>{cronjob.description}</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>{cronjob.crontab}</TableCell>
-                <TableCell>{cronjob.lastRun}</TableCell>
-                <TableCell>{cronjob.nextRun}</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>-</TableCell>
-              </TableRow>
-            ))}
+            <TableRow>
+              <TableCell>{getCronjob.data.name}</TableCell>
+              <TableCell>{getCronjob.data.description}</TableCell>
+              <TableCell>-</TableCell>
+              <TableCell>{getCronjob.data.crontab}</TableCell>
+              <TableCell>{getCronjob.data.lastRun}</TableCell>
+              <TableCell>{getCronjob.data.nextRun}</TableCell>
+              <TableCell>-</TableCell>
+              <TableCell>-</TableCell>
+              <TableCell>-</TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       )}
