@@ -25,22 +25,24 @@ export const ActionsTemplate: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableHeader>Name</TableHeader>
-              <TableHeader>Description</TableHeader>
               <TableHeader>Priority</TableHeader>
               <TableHeader>Status</TableHeader>
               <TableHeader>Last run</TableHeader>
               <TableHeader>Last run time</TableHeader>
+              <TableHeader>Date Created</TableHeader>
+              <TableHeader>Date Modified</TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
             {getActions.data.map((action) => (
               <TableRow onClick={() => navigate(`/actions/${action.id}`)} key={action.id}>
                 <TableCell>{action.name}</TableCell>
-                <TableCell>{action.description}</TableCell>
                 <TableCell>{action.priority}</TableCell>
                 <TableCell>{action.status ? "On" : "Off"}</TableCell>
                 <TableCell>{action.lastRun ?? "-"}</TableCell>
                 <TableCell>{action.lastRunTime ?? "-"}</TableCell>
+                <TableCell>{action.dateCreated ?? "-"}</TableCell>
+                <TableCell>{action.dateModified ?? "-"}</TableCell>
               </TableRow>
             ))}
           </TableBody>

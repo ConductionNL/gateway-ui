@@ -24,28 +24,36 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
       {getActions.isError && "Error..."}
 
       {getActions.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>Name</TableHeader>
-              <TableHeader>Description</TableHeader>
-              <TableHeader>Priority</TableHeader>
-              <TableHeader>Status</TableHeader>
-              <TableHeader>Last run</TableHeader>
-              <TableHeader>Last run time</TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>{getActions.data.name}</TableCell>
-              <TableCell>{getActions.data.description}</TableCell>
-              <TableCell>{getActions.data.priority}</TableCell>
-              <TableCell>{getActions.data.status ? "On" : "Off"}</TableCell>
-              <TableCell>{getActions.data.lastRun ?? "-"}</TableCell>
-              <TableCell>{getActions.data.lastRunTime ?? "-"}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>Name</TableHeader>
+                <TableHeader>Description</TableHeader>
+                <TableHeader>Handler</TableHeader>
+                <TableHeader>Locked</TableHeader>
+                <TableHeader>listens</TableHeader>
+                <TableHeader>throws</TableHeader>
+                <TableHeader>conditions</TableHeader>
+                <TableHeader>Priority</TableHeader>
+                <TableHeader>Async</TableHeader>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>{getActions.data.name}</TableCell>
+                <TableCell>{getActions.data.description ?? "-"}</TableCell>
+                <TableCell>{getActions.data.handler ?? "-"}</TableCell>
+                <TableCell>{getActions.data.locked ?? "-"}</TableCell>
+                <TableCell>{getActions.data.listens ?? "-"}</TableCell>
+                <TableCell>{getActions.data.throws ?? "-"}</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>{getActions.data.priority ?? "-"}</TableCell>
+                <TableCell>{getActions.data.async ? "On" : "Off"}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </>
       )}
     </div>
   );
