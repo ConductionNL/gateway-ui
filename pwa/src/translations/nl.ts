@@ -12,4 +12,5 @@ export const nl = {
   Username: "Gebruikersnaam",
   Password: "Wachtwoord",
   Send: "Verzenden",
+  "Back to sources": "Terug naar sources",
 };

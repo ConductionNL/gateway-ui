@@ -1,0 +1,74 @@
+.container > *:not(:first-child) {
+  margin-block-start: var(--gateway-ui-size-sm);
+}
+
+.resultsDisplaySwitchButtons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.resultsDisplaySwitchButtons > * {
+  display: flex;
+  align-items: center;
+}
+
+.resultsDisplaySwitchButtons *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.section {
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.grid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}
+
+.test {
+  display: flex;
+}
+
+.test > *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-md);
+}
+
+.name {
+  flex: 1;
+}
+.status {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex {
+  flex: 1;
+}
+.flex > *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-md);
+}
+
+.deleteButton {
+  background-color: red;
+}
+
+.deleteButton:hover {
+  background-color: rgb(146, 2, 2);
+}
+
+/* Status colors */
+.statusOk {
+  --conduction-tag-background-color: var(--gateway-ui-color-green);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.statusFailed {
+  --conduction-tag-background-color: var(--gateway-ui-color-red);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}

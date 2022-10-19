@@ -12,4 +12,5 @@ export const en = {
   Username: "Username",
   Password: "Password",
   Send: "Send",
+  "Back to sources": "Back to sources",
 };

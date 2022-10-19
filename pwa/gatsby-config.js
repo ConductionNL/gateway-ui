@@ -29,6 +29,10 @@ module.exports = {
             pathname: "/actions/[actionId]",
             crumbLabel: "Action",
           },
+          {
+            pathname: "/sources/[sourceId]",
+            crumbLabel: "Source",
+          },
         ],
       },
     },

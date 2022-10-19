@@ -53,6 +53,8 @@
 
   /* Colors */
   --gateway-ui-color-white: #ffffff;
+  --gateway-ui-color-red: red;
+  --gateway-ui-color-green: green;
   --gateway-ui-color-primary: #4376fc;
   --gateway-ui-color-primary-hover: #2e5ed9;
   --gateway-ui-background-color: #fafafa;
