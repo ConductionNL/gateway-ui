@@ -8,6 +8,7 @@ import Me from "./services/me";
 // Resources
 import Action from "./resources/action";
 import Sources from "./resources/sources";
+import Cronjob from "./resources/cronjob";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -76,6 +77,10 @@ export default class APIService {
 
   public get Sources(): Sources {
     return new Sources(this.BaseClient);
+  }
+  
+  public get Cronjob(): Cronjob {
+    return new Cronjob(this.BaseClient);
   }
 
   // Services
