@@ -8,6 +8,8 @@ import { StylesProvider } from "@gemeente-denhaag/components-react";
 import { Head } from "./Head";
 import { Content } from "../Content";
 import { ThemeProvider } from "../templates/themeProvider/ThemeProvider";
+import Favicon from "react-favicon";
+import Logo from "../assets/svgs/conduction-logo.svg";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -33,12 +35,14 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
 
   return (
     <>
-      <Head />
+      <Head crumbs={pageContext.breadcrumb?.crumbs} />
 
       <GatsbyProvider value={gatsbyContext}>
         <APIProvider value={API}>
           <StylesProvider>
             <ThemeProvider>
+              <Favicon url={Logo} />
+
               <div className={styles.container}>
                 <Content {...{ children }} />
               </div>

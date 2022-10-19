@@ -1,4 +1,7 @@
 :root {
+  /* favicon */
+  --gateway-ui-favicon: url("../../assets/svgs/conduction-logo.svg");
+
   /* Sizes */
   --gateway-ui-size-4xs: 1px;
   --gateway-ui-size-3xs: 2px;
