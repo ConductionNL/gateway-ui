@@ -29,24 +29,14 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
             <TableRow>
               <TableHeader>{t("Name")}</TableHeader>
               <TableHeader>{t("Description")}</TableHeader>
-              <TableHeader>{t("Active")}</TableHeader>
-              <TableHeader>Cron tab</TableHeader>
-              <TableHeader>{t("Last run")}</TableHeader>
-              <TableHeader>{t("Next run")}</TableHeader>
-              <TableHeader>Status</TableHeader>
-              <TableHeader>{t("Date created")}</TableHeader>
-              <TableHeader>{t("Date modified")}</TableHeader>
+              <TableHeader>{t("Cronab")}</TableHeader>
+              <TableHeader>{t("Action 0/1")}</TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
             <TableRow>
               <TableCell>{getCronjob.data.name}</TableCell>
               <TableCell>{getCronjob.data.description}</TableCell>
-              <TableCell>-</TableCell>
-              <TableCell>{getCronjob.data.crontab}</TableCell>
-              <TableCell>{getCronjob.data.lastRun}</TableCell>
-              <TableCell>{getCronjob.data.nextRun}</TableCell>
-              <TableCell>-</TableCell>
               <TableCell>-</TableCell>
               <TableCell>-</TableCell>
             </TableRow>

@@ -25,7 +25,6 @@ export const CronjobsTemplate: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Description")}</TableHeader>
               <TableHeader>{t("Active")}</TableHeader>
               <TableHeader>Cron tab</TableHeader>
               <TableHeader>{t("Last run")}</TableHeader>
@@ -39,7 +38,6 @@ export const CronjobsTemplate: React.FC = () => {
             {getCronjobs.data.map((cronjob) => (
               <TableRow onClick={() => navigate(`/cronjobs/${cronjob.id}`)} key={cronjob.id}>
                 <TableCell>{cronjob.name}</TableCell>
-                <TableCell>{cronjob.description}</TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>{cronjob.crontab}</TableCell>
                 <TableCell>{cronjob.lastRun}</TableCell>
