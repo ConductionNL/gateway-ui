@@ -36,7 +36,7 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow key={getActions.data.id}>
+            <TableRow>
               <TableCell>{getActions.data.name}</TableCell>
               <TableCell>{getActions.data.description}</TableCell>
               <TableCell>{getActions.data.priority}</TableCell>
