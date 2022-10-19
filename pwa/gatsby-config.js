@@ -37,6 +37,10 @@ module.exports = {
             pathname: "/cronjobs/[cronjobId]",
             crumbLabel: "Cronjob",
           },
+          {
+            pathname: "/endpoints/[endpointId]",
+            crumbLabel: "Endpoint",
+          },
         ],
       },
     },
