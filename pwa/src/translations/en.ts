@@ -19,4 +19,5 @@ export const en = {
   "Date created": "Date created",
   "Date modified": "Date modified",
   Description: "Description",
+  "Back to sources": "Back to sources",
 };

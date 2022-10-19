@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { handleAutomaticLogout, validateSession } from "../services/auth";
 
 // Services
 import Login from "./services/login";
@@ -6,6 +7,7 @@ import Me from "./services/me";
 
 // Resources
 import Action from "./resources/action";
+import Sources from "./resources/sources";
 import Cronjob from "./resources/cronjob";
 
 export default class APIService {
@@ -73,6 +75,10 @@ export default class APIService {
     return new Action(this.BaseClient);
   }
 
+  public get Sources(): Sources {
+    return new Sources(this.BaseClient);
+  }
+  
   public get Cronjob(): Cronjob {
     return new Cronjob(this.BaseClient);
   }
@@ -94,6 +100,19 @@ export const Send = (
   payload?: JSON,
 ): Promise<AxiosResponse> => {
   const _payload = JSON.stringify(payload);
+
+  if (!validateSession()) {
+    handleAutomaticLogout();
+
+    return Promise.resolve({
+      // return fake AxiosInstance for calls to not break
+      data: [],
+      status: -1,
+      statusText: "Session invalid",
+      config: {},
+      headers: {},
+    });
+  }
 
   switch (method) {
     case "GET":

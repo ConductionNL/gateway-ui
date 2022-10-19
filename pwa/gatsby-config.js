@@ -30,6 +30,10 @@ module.exports = {
             crumbLabel: "Action",
           },
           {
+            pathname: "/sources/[sourceId]",
+            crumbLabel: "Source",
+          },
+          {
             pathname: "/cronjobs/[cronjobId]",
             crumbLabel: "Cronjob",
           },

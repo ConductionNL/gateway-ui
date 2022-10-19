@@ -19,4 +19,5 @@ export const nl = {
   "Date created": "Datum gecreeërd",
   "Date modified": "Datum gewijzigd",
   Description: "Beschrijving",
+  "Back to sources": "Terug naar sources",
 };
