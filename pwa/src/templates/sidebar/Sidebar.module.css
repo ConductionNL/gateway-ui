@@ -12,11 +12,12 @@
   box-shadow: var(--gateway-ui-side-bar-box-shadow);
 }
 
-.topMenu > img {
-  display: flex;
-  margin-block-end: var(--gateway-ui-size-md);
-}
-
 .topMenu > img:hover {
   cursor: pointer;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  margin-block-end: var(--gateway-ui-size-xl);
 }
