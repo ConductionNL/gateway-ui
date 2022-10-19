@@ -12,4 +12,12 @@ export const nl = {
   Username: "Gebruikersnaam",
   Password: "Wachtwoord",
   Send: "Verzenden",
+  Objects: "Objecten",
+  Add: "Toevoegen",
+  Attributes: "Attributen",
+  ObjectEntities: "Object Entiteiten",
+  "Back to objects": "Terug naar objecten",
+  Name: "Naam",
+  Description: "Omschrijving",
+  "Object detail page": "Object detail pagina",
 };
