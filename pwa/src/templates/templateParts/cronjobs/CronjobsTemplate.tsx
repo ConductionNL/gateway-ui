@@ -1,12 +1,15 @@
 import * as React from "react";
 import * as styles from "./CronjobTemplate.module.css";
-import { Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { QueryClient } from "react-query";
 import { useCronjob } from "../../../hooks/cronjob";
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Skeleton from "react-loading-skeleton";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -17,40 +20,49 @@ export const CronjobsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>{t("Cronjobs")}</Heading1>
-
-      {getCronjobs.isLoading && "Loading..."}
+      {getCronjobs.isLoading && <Skeleton height="200px" />}
       {getCronjobs.isError && "Error..."}
 
       {getCronjobs.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Active")}</TableHeader>
-              <TableHeader>Cron tab</TableHeader>
-              <TableHeader>{t("Last run")}</TableHeader>
-              <TableHeader>{t("Next run")}</TableHeader>
-              <TableHeader>Status</TableHeader>
-              <TableHeader>{t("Date created")}</TableHeader>
-              <TableHeader>{t("Date modified")}</TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getCronjobs.data.map((cronjob) => (
-              <TableRow onClick={() => navigate(`/cronjobs/${cronjob.id}`)} key={cronjob.id}>
-                <TableCell>{cronjob.name}</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>{cronjob.crontab}</TableCell>
-                <TableCell>{cronjob.lastRun}</TableCell>
-                <TableCell>{cronjob.nextRun}</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>-</TableCell>
+        <>
+          <section className={styles.section}>
+            <Heading1>{t("Cronjobs")}</Heading1>
+            <div className={styles.buttons}>
+              <Button className={styles.buttonIcon} onClick={() => navigate(`/cronjobs/new`)}>
+                <FontAwesomeIcon icon={faPlus} />
+                {t("Add")}
+              </Button>
+            </div>
+          </section>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Active")}</TableHeader>
+                <TableHeader>Cron tab</TableHeader>
+                <TableHeader>{t("Last run")}</TableHeader>
+                <TableHeader>{t("Next run")}</TableHeader>
+                <TableHeader>Status</TableHeader>
+                <TableHeader>{t("Date created")}</TableHeader>
+                <TableHeader>{t("Date modified")}</TableHeader>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getCronjobs.data.map((cronjob) => (
+                <TableRow onClick={() => navigate(`/cronjobs/${cronjob.id}`)} key={cronjob.id}>
+                  <TableCell>{cronjob.name}</TableCell>
+                  <TableCell>-</TableCell>
+                  <TableCell>{cronjob.crontab}</TableCell>
+                  <TableCell>{cronjob.lastRun}</TableCell>
+                  <TableCell>{cronjob.nextRun}</TableCell>
+                  <TableCell>-</TableCell>
+                  <TableCell>-</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </>
       )}
     </Container>
   );

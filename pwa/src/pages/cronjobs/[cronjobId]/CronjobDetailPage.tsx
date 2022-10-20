@@ -2,10 +2,12 @@ import * as React from "react";
 import { PageProps } from "gatsby";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
 import { CronjobsDetailTemplate } from "../../../templates/templateParts/cronjobs/CronjobDetailsTemplate";
+import { CreateCronjobFormTemplate } from "../../../templates/templateParts/cronjobsForm/CreateCronjobsFormTemplate";
 
 const CronjobDetailPage: React.FC<PageProps> = (props: PageProps) => (
   <DashboardTemplate>
-    <CronjobsDetailTemplate cronjobId={props.params.cronjobId} />
+    {props.params.cronjobId === "new" && <CreateCronjobFormTemplate />}
+    {props.params.cronjobId !== "new" && <CronjobsDetailTemplate cronjobId={props.params.cronjobId} />}
   </DashboardTemplate>
 );
 
