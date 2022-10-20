@@ -21,20 +21,18 @@ export const CronjobsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      {getCronjobs.isLoading && <Skeleton height="200px" />}
       {getCronjobs.isError && "Error..."}
-
+      <section className={styles.section}>
+        <Heading1>{t("Cronjobs")}</Heading1>
+        <div className={styles.buttons}>
+          <Button className={styles.buttonIcon} onClick={() => navigate(`/cronjobs/new`)}>
+            <FontAwesomeIcon icon={faPlus} />
+            {t("Add")}
+          </Button>
+        </div>
+      </section>
       {getCronjobs.isSuccess && (
         <>
-          <section className={styles.section}>
-            <Heading1>{t("Cronjobs")}</Heading1>
-            <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} onClick={() => navigate(`/cronjobs/new`)}>
-                <FontAwesomeIcon icon={faPlus} />
-                {t("Add")}
-              </Button>
-            </div>
-          </section>
           <Table>
             <TableHead>
               <TableRow>
@@ -75,6 +73,7 @@ export const CronjobsTemplate: React.FC = () => {
           </Table>
         </>
       )}
+      {getCronjobs.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };
