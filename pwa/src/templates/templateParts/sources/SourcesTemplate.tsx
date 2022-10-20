@@ -16,7 +16,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 
 export const SourcesTemplate: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const queryClient = new QueryClient();
   const _useSources = useSources(queryClient);
@@ -61,8 +61,8 @@ export const SourcesTemplate: React.FC = () => {
                   </TableCell>
                   <TableCell>{source.lastRun ?? "-"}</TableCell>
                   <TableCell>{source.sync ?? "-"}</TableCell>
-                  <TableCell>{translateDate("nl", source.dateCreated)}</TableCell>
-                  <TableCell>{translateDate("nl", source.dateModified)}</TableCell>
+                  <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
+                  <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
                   <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
                     <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
                       {t("Details")}

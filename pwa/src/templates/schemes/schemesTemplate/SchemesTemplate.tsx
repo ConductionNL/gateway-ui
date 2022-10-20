@@ -21,8 +21,6 @@ export const SchemesTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      {getSchemes.isError && "Error..."}
-
       <section className={styles.section}>
         <Heading1>{t("Schemes")}</Heading1>
         <div className={styles.buttons}>
@@ -32,6 +30,9 @@ export const SchemesTemplate: React.FC = () => {
           </Button>
         </div>
       </section>
+
+      {getSchemes.isError && "Error..."}
+
       {getSchemes.isSuccess && (
         <>
           <Table>

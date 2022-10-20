@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./EndpointsTemplate.module.css";
-import { Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -9,9 +9,12 @@ import { QueryClient } from "react-query";
 import { Container, Tag } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { translateDate } from "../../../services/dateFormat";
 
 export const EndpointsTemplate: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const queryClient = new QueryClient();
   const _useEndpoints = useEndpoint(queryClient);
@@ -19,7 +22,15 @@ export const EndpointsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>{t("Endpoints")}</Heading1>
+      <section className={styles.section}>
+        <Heading1>{t("Endpoints")}</Heading1>
+        <div className={styles.buttons}>
+          <Button className={styles.buttonIcon} onClick={() => navigate(`/endpoints/new`)}>
+            <FontAwesomeIcon icon={faPlus} />
+            {t("Add")}
+          </Button>
+        </div>
+      </section>
 
       {getEndpoints.isError && "Error..."}
 
@@ -45,8 +56,8 @@ export const EndpointsTemplate: React.FC = () => {
                   </div>
                 </TableCell>
                 <TableCell>{endpoint.pathRegex ?? "-"}</TableCell>
-                <TableCell>{endpoint.dateCreated ?? "-"}</TableCell>
-                <TableCell>{endpoint.dateModified ?? "-"}</TableCell>
+                <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
+                <TableCell>{translateDate(i18n.language, endpoint.dateModified)}</TableCell>
                 <TableCell>{endpoint.throws ?? "-"}</TableCell>
               </TableRow>
             ))}
