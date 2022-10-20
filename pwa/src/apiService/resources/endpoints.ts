@@ -19,4 +19,23 @@ export default class Action {
 
     return data;
   };
+
+  public delete = async (variables: { id: string }): Promise<any> => {
+    const { id } = variables;
+
+    const { data } = await Send(this._instance, "DELETE", `/admin/endpoints/${id}`);
+    return data;
+  };
+
+  public createOrUpdate = async (variables: { payload: any; id?: string }): Promise<any> => {
+    const { payload, id } = variables;
+
+    if (id) {
+      const { data } = await Send(this._instance, "PUT", `/admin/endpoints/${id}`, payload);
+      return data;
+    }
+
+    const { data } = await Send(this._instance, "POST", "/admin/endpoints", payload);
+    return data;
+  };
 }

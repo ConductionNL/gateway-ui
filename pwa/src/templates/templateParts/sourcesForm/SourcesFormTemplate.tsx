@@ -20,7 +20,7 @@ interface SourcesFormTemplateProps {
 }
 
 export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source, sourceId }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
@@ -136,13 +136,13 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
             <FormField>
               <FormFieldInput className={styles.flex}>
                 <FormFieldLabel>{t("Created")}</FormFieldLabel>
-                <Tag label={translateDate("nl", source.dateCreated) ?? "-"} />
+                <Tag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
               </FormFieldInput>
             </FormField>
             <FormField>
               <FormFieldInput className={styles.flex}>
                 <FormFieldLabel>{t("Modified")}</FormFieldLabel>
-                <Tag label={translateDate("nl", source.dateModified) ?? "-"} />
+                <Tag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
               </FormFieldInput>
             </FormField>
           </div>

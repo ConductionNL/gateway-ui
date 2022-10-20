@@ -2,10 +2,12 @@ import { PageProps } from "gatsby";
 import * as React from "react";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
 import { EndpointDetailTemplate } from "../../../templates/templateParts/endpoints/EndpointDetailsTemplate";
+import { CreateEndpointFormTemplate } from "../../../templates/templateParts/endpointsForm/CreateEndpointsFormTemplate";
 
 const EndpointDetailPage: React.FC<PageProps> = (props: PageProps) => (
   <DashboardTemplate>
-    <EndpointDetailTemplate endpointId={props.params.endpointId} />
+    {props.params.endpointId === "new" && <CreateEndpointFormTemplate />}
+    {props.params.endpointId !== "new" && <EndpointDetailTemplate endpointId={props.params.endpointId} />}
   </DashboardTemplate>
 );
 
