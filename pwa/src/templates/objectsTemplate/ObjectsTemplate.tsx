@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./ObjectsTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -9,6 +9,8 @@ import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export const ObjectsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -19,7 +21,15 @@ export const ObjectsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>{t("Objects")}</Heading1>
+      <section className={styles.section}>
+        <Heading1>{t("Objects")}</Heading1>
+        <div className={styles.buttons}>
+          <Button className={styles.buttonIcon} onClick={() => navigate(`/objects/new`)}>
+            <FontAwesomeIcon icon={faPlus} />
+            {t("Add")}
+          </Button>
+        </div>
+      </section>
 
       {getObject.isError && "Error..."}
 
@@ -38,7 +48,7 @@ export const ObjectsTemplate: React.FC = () => {
                 <TableCell>{object.name ?? "-"}</TableCell>
                 <TableCell>{object.description ?? "-"}</TableCell>
                 <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
-                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>

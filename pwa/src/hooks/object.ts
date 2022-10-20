@@ -1,7 +1,9 @@
 import * as React from "react";
-import { QueryClient, useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
+import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
+import { navigate } from "gatsby";
 
 export const useObject = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
@@ -22,5 +24,35 @@ export const useObject = (queryClient: QueryClient) => {
       enabled: !!objectId,
     });
 
-  return { getAll, getOne };
+  const remove = () =>
+    useMutation<any, Error, any>(API.Object.delete, {
+      onSuccess: async (_, variables) => {
+        deleteItem(queryClient, "object", variables.id);
+        navigate("/objects");
+      },
+      onError: (error) => {
+        console.log(error.message);
+      },
+    });
+
+  const createOrEdit = (objectId?: string) =>
+    useMutation<any, Error, any>(API.Object.createOrUpdate, {
+      onSuccess: async (newObject) => {
+        if (objectId) {
+          updateItem(queryClient, "object", newObject);
+          navigate("/objects");
+          console.log({ id: objectId });
+        }
+
+        if (!objectId) {
+          addItem(queryClient, "object", newObject);
+          navigate(`/objects/${newObject.id}`);
+        }
+      },
+      onError: (error) => {
+        console.log(error.message);
+      },
+    });
+
+  return { getAll, getOne, remove, createOrEdit };
 };
