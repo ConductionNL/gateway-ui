@@ -6,11 +6,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { QueryClient } from "react-query";
 import { useCronjob } from "../../../hooks/cronjob";
 import { navigate } from "gatsby";
-import { Container } from "@conduction/components";
+import { Container, Tag } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import clsx from "clsx";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -38,6 +39,7 @@ export const CronjobsTemplate: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader>{t("Status")}</TableHeader>
               <TableHeader>{t("Active")}</TableHeader>
               <TableHeader>CronTab</TableHeader>
               <TableHeader>{t("Last run")}</TableHeader>
@@ -56,6 +58,11 @@ export const CronjobsTemplate: React.FC = () => {
                 key={cronjob.id}
               >
                 <TableCell>{cronjob.name}</TableCell>
+                <TableCell>
+                  <div className={clsx(styles[cronjob.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                    <Tag label={cronjob.status?.toString() ?? "-"} />
+                  </div>
+                </TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>{cronjob.crontab}</TableCell>
                 <TableCell>{cronjob.lastRun}</TableCell>
