@@ -12,6 +12,7 @@ import Cronjob from "./resources/cronjob";
 import Endpoints from "./resources/endpoints";
 import Object from "./resources/object";
 import Scheme from "./resources/scheme";
+import Log from "./resources/log";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -96,6 +97,10 @@ export default class APIService {
 
   public get Scheme(): Scheme {
     return new Scheme(this.BaseClient);
+  }
+
+  public get Log(): Log {
+    return new Log(this.BaseClient);
   }
 
   // Services
