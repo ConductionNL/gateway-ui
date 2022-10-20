@@ -12,7 +12,8 @@ import clsx from "clsx";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { translateDate } from "../../../services/dateFormat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Skeleton from "react-loading-skeleton";
 
 export const SourcesTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -23,19 +24,20 @@ export const SourcesTemplate: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <Heading1>{t("Sources")}</Heading1>
-
-      {getSources.isLoading && "Loading..."}
+      {getSources.isLoading && <Skeleton height="200px" />}
       {getSources.isError && "Error..."}
 
       {getSources.isSuccess && (
         <>
-          <div className={styles.addButton}>
-            <Button className={styles.buttonIcon} onClick={() => navigate(`/sources/new`)}>
-              <FontAwesomeIcon icon={faPlus} />
-              {t("Add")}
-            </Button>
-          </div>
+          <section className={styles.section}>
+            <Heading1>{t("Sources")}</Heading1>
+            <div className={styles.buttons}>
+              <Button className={styles.buttonIcon} onClick={() => navigate(`/sources/new`)}>
+                <FontAwesomeIcon icon={faPlus} />
+                {t("Add")}
+              </Button>
+            </div>
+          </section>
           <Table>
             <TableHead>
               <TableRow>

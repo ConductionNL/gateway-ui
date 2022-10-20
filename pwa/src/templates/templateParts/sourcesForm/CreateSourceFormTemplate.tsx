@@ -3,18 +3,14 @@ import * as styles from "./SourcesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { Container, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
+import { Container, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useSources } from "../../../hooks/sources";
-import { QueryClient, useQueryClient } from "react-query";
-import clsx from "clsx";
-import { translateDate } from "../../../services/dateFormat";
-import { navigate } from "gatsby";
-import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
+import { useQueryClient } from "react-query";
 
 interface CreateSourceFormTemplateProps {
   sourceId?: string;
@@ -61,18 +57,13 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>{t("Create Source")}</Heading1>
-      <div onClick={() => navigate("/sources")}>
-        <Link icon={<ArrowLeftIcon />} iconAlign="start">
-          {t("Back to sources")}
-        </Link>
-      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <div className={styles.resultsDisplaySwitchButtons}>
+          <Heading1>{t("Create Source")}</Heading1>
+
+          <div className={styles.buttons}>
             <Button className={styles.buttonIcon} size="large" type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
-
               {t("Save")}
             </Button>
           </div>

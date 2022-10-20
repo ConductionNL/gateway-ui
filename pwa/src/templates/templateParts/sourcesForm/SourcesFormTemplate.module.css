@@ -2,18 +2,24 @@
   margin-block-start: var(--gateway-ui-size-sm);
 }
 
-.resultsDisplaySwitchButtons {
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.buttons {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
-.resultsDisplaySwitchButtons > * {
+.buttons > * {
   display: flex;
   align-items: center;
 }
 
-.resultsDisplaySwitchButtons *:not(:last-child) {
+.buttons *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
@@ -21,22 +27,10 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.section {
-  margin-block-end: var(--gateway-ui-size-xl);
-}
-
 .grid {
   display: grid;
   grid-gap: var(--gateway-ui-size-lg);
   grid-template-columns: 1fr 1fr;
-}
-
-.test {
-  display: flex;
-}
-
-.test > *:not(:last-child) {
-  margin-inline-end: var(--gateway-ui-size-md);
 }
 
 .name {
