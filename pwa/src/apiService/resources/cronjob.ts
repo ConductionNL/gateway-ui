@@ -19,4 +19,23 @@ export default class Cronjob {
 
     return data;
   };
+
+  public delete = async (variables: { id: string }): Promise<any> => {
+    const { id } = variables;
+
+    const { data } = await Send(this._instance, "DELETE", `/admin/cronjobs/${id}`);
+    return data;
+  };
+
+  public createOrUpdate = async (variables: { payload: any; id?: string }): Promise<any> => {
+    const { payload, id } = variables;
+
+    if (id) {
+      const { data } = await Send(this._instance, "PUT", `/admin/cronjobs/${id}`, payload);
+      return data;
+    }
+
+    const { data } = await Send(this._instance, "POST", "/admin/cronjobs", payload);
+    return data;
+  };
 }
