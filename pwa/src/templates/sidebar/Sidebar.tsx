@@ -15,6 +15,7 @@ import {
   faGrip,
   faHome,
   faHourglass,
+  faList,
   faLocationDot,
   faObjectGroup,
   faPlay,
@@ -73,6 +74,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       icon: <FontAwesomeIcon icon={faClipboardList} />,
       onClick: () => navigate("/schemes"),
       current: pathname.includes("/schemes"),
+    },
+    {
+      label: "Logs",
+      icon: <FontAwesomeIcon icon={faList} />,
+      onClick: () => navigate("/logs"),
+      current: pathname.includes("/logs"),
     },
   ];
 
