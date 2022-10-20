@@ -56,8 +56,8 @@ export const ActionsTemplate: React.FC = () => {
                   <TableCell>{action.name}</TableCell>
                   <TableCell>{action.priority}</TableCell>
                   <TableCell>
-                    <div className={clsx(styles[action.status === true ? "statusOk" : "statusFailed"])}>
-                      <Tag label={action.status ?? "-"} />
+                    <div className={clsx(styles[action.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                      <Tag label={action.status.toString() ?? "-"} />
                     </div>
                   </TableCell>
                   <TableCell>{action.status ? "On" : "Off"}</TableCell>
