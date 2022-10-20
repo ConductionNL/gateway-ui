@@ -1,12 +1,14 @@
 import * as React from "react";
 import * as styles from "./ActionTemplate.module.css";
-import { Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { useAction } from "../../../hooks/action";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export const ActionsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -17,38 +19,48 @@ export const ActionsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>{t("Actions")}</Heading1>
-
       {getActions.isLoading && "Loading..."}
       {getActions.isError && "Error..."}
 
       {getActions.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>Name</TableHeader>
-              <TableHeader>Priority</TableHeader>
-              <TableHeader>Status</TableHeader>
-              <TableHeader>Last run</TableHeader>
-              <TableHeader>Last run time</TableHeader>
-              <TableHeader>Date Created</TableHeader>
-              <TableHeader>Date Modified</TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getActions.data.map((action) => (
-              <TableRow onClick={() => navigate(`/actions/${action.id}`)} key={action.id}>
-                <TableCell>{action.name}</TableCell>
-                <TableCell>{action.priority}</TableCell>
-                <TableCell>{action.status ? "On" : "Off"}</TableCell>
-                <TableCell>{action.lastRun ?? "-"}</TableCell>
-                <TableCell>{action.lastRunTime ?? "-"}</TableCell>
-                <TableCell>{action.dateCreated ?? "-"}</TableCell>
-                <TableCell>{action.dateModified ?? "-"}</TableCell>
+        <>
+          <section className={styles.section}>
+            <Heading1>{t("Actions")}</Heading1>
+            <div className={styles.buttons}>
+              <Button className={styles.buttonIcon} onClick={() => navigate(`/actions/new`)}>
+                <FontAwesomeIcon icon={faPlus} />
+                {t("Add")}
+              </Button>
+            </div>
+          </section>
+
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>Name</TableHeader>
+                <TableHeader>Priority</TableHeader>
+                <TableHeader>Status</TableHeader>
+                <TableHeader>Last run</TableHeader>
+                <TableHeader>Last run time</TableHeader>
+                <TableHeader>Date Created</TableHeader>
+                <TableHeader>Date Modified</TableHeader>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getActions.data.map((action) => (
+                <TableRow onClick={() => navigate(`/actions/${action.id}`)} key={action.id}>
+                  <TableCell>{action.name}</TableCell>
+                  <TableCell>{action.priority}</TableCell>
+                  <TableCell>{action.status ? "On" : "Off"}</TableCell>
+                  <TableCell>{action.lastRun ?? "-"}</TableCell>
+                  <TableCell>{action.lastRunTime ?? "-"}</TableCell>
+                  <TableCell>{action.dateCreated ?? "-"}</TableCell>
+                  <TableCell>{action.dateModified ?? "-"}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </>
       )}
     </Container>
   );
