@@ -12,6 +12,7 @@ import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { translateDate } from "../../../services/dateFormat";
+import Skeleton from "react-loading-skeleton";
 
 export const ActionsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -22,21 +23,19 @@ export const ActionsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      {getActions.isLoading && "Loading..."}
+      <section className={styles.section}>
+        <Heading1>{t("Actions")}</Heading1>
+        <div className={styles.buttons}>
+          <Button className={styles.buttonIcon} onClick={() => navigate(`/actions/new`)}>
+            <FontAwesomeIcon icon={faPlus} />
+            {t("Add")}
+          </Button>
+        </div>
+      </section>
+
       {getActions.isError && "Error..."}
 
       {getActions.isSuccess && (
-        <>
-          <section className={styles.section}>
-            <Heading1>{t("Actions")}</Heading1>
-            <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} onClick={() => navigate(`/actions/new`)}>
-                <FontAwesomeIcon icon={faPlus} />
-                {t("Add")}
-              </Button>
-            </div>
-          </section>
-
           <Table>
             <TableHead>
               <TableRow>
@@ -75,8 +74,9 @@ export const ActionsTemplate: React.FC = () => {
               ))}
             </TableBody>
           </Table>
-        </>
       )}
+
+      {getActions.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };

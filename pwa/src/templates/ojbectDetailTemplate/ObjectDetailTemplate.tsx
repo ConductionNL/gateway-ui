@@ -1,15 +1,14 @@
 import * as React from "react";
 import * as styles from "./ObjectDetailTemplate.module.css";
-import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
 import { useObject } from "../../hooks/object";
 import { Container } from "@conduction/components";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
-import { navigate } from "gatsby";
-import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Skeleton from "react-loading-skeleton";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -25,18 +24,10 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
 
   return (
     <Container layoutClassName={styles.container}>
-      <div>
-        <Heading1>{t("Object detail page")}</Heading1>
-      </div>
+      <Heading1>{t("Object detail page")}</Heading1>
 
-      <div className={styles.backButton} onClick={() => navigate("/objects")}>
-        <Link icon={<ArrowLeftIcon />} iconAlign="start">
-          {t("Back to objects")}
-        </Link>
-      </div>
-
-      {getObject.isLoading && "Loading..."}
       {getObject.isError && "Error..."}
+
       {getObject.isSuccess && (
         <div className={styles.container}>
           <Table>
@@ -87,6 +78,8 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
           </TabContext>
         </div>
       )}
+
+      {getObject.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };
