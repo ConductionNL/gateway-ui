@@ -5,7 +5,7 @@
 .section {
   display: flex;
   justify-content: space-between;
-  margin-block-end: var(--gateway-ui-size-xl);
+  margin-block-end: var(--gateway-ui-size-2xl);
 }
 
 .buttons {
