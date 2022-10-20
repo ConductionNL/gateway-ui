@@ -1,13 +1,11 @@
 import * as React from "react";
 import * as styles from "./ActionDetailsTemplate.module.css";
-import { Heading1, Heading2, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useAction } from "../../../hooks/action";
 import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
-import { navigate } from "gatsby";
-import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
+import Skeleton from "react-loading-skeleton";
+import { EditActionFormTemplate } from "../actionsForm/EditActionFormTemplate";
 
 interface ActionDetailsTemplateProps {
   actionId: string;
@@ -22,75 +20,10 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>{t("Action detail page")}</Heading1>
-
-      <div onClick={() => navigate("/actions")}>
-        <Link icon={<ArrowLeftIcon />} iconAlign="start">
-          {t("Back to actions")}
-        </Link>
-      </div>
-
-      {getActions.isLoading && "Loading..."}
+      {getActions.isLoading && <Skeleton height="200px" />}
       {getActions.isError && "Error..."}
 
-      {getActions.isSuccess && (
-        <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>Name</TableHeader>
-                <TableHeader>Description</TableHeader>
-                <TableHeader>Handler</TableHeader>
-                <TableHeader>Locked</TableHeader>
-                <TableHeader>listens</TableHeader>
-                <TableHeader>throws</TableHeader>
-                <TableHeader>conditions</TableHeader>
-                <TableHeader>Priority</TableHeader>
-                <TableHeader>Async</TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>{getActions.data.name}</TableCell>
-                <TableCell>{getActions.data.description ?? "-"}</TableCell>
-                <TableCell>{getActions.data.handler ?? "-"}</TableCell>
-                <TableCell>{getActions.data.locked ?? "-"}</TableCell>
-                <TableCell>
-                  {getActions.data.listens.map((listen: any) => (
-                    <>
-                      {listen}
-                      <br />
-                    </>
-                  )) ?? "-"}
-                </TableCell>
-                <TableCell>{getActions.data.throws ?? "-"}</TableCell>
-                <TableCell>-</TableCell>
-                <TableCell>{getActions.data.priority ?? "-"}</TableCell>
-                <TableCell>{getActions.data.async ? "On" : "Off"}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-
-          <Heading2>Conditions</Heading2>
-
-          <Table>
-            <TableHead>
-              <TableRow>
-                {getActions.data.conditions["=="].map((conditions: any, index: number) => {
-                  return index % 2 === 0 && <TableHeader>{conditions?.var ?? conditions}</TableHeader>;
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                {getActions.data.conditions["=="].map((conditions: any, index: number) => {
-                  return index % 2 !== 0 && <TableCell>{conditions}</TableCell>;
-                })}
-              </TableRow>
-            </TableBody>
-          </Table>
-        </>
-      )}
+      {getActions.isSuccess && <EditActionFormTemplate action={getActions.data} {...{ actionId }} />}
     </Container>
   );
 };

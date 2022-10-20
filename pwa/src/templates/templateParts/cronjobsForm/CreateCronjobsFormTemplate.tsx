@@ -42,10 +42,9 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
         <section className={styles.section}>
           <Heading1>{t("Create Cronjob")}</Heading1>
 
-          <div className={styles.buttonss}>
+          <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
-
               {t("Save")}
             </Button>
           </div>
