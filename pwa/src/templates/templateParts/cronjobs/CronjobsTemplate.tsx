@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./CronjobTemplate.module.css";
-import { Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { QueryClient } from "react-query";
@@ -10,6 +10,7 @@ import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
+import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -39,17 +40,22 @@ export const CronjobsTemplate: React.FC = () => {
               <TableRow>
                 <TableHeader>{t("Name")}</TableHeader>
                 <TableHeader>{t("Active")}</TableHeader>
-                <TableHeader>Cron tab</TableHeader>
+                <TableHeader>CronTab</TableHeader>
                 <TableHeader>{t("Last run")}</TableHeader>
                 <TableHeader>{t("Next run")}</TableHeader>
                 <TableHeader>Status</TableHeader>
                 <TableHeader>{t("Date created")}</TableHeader>
                 <TableHeader>{t("Date modified")}</TableHeader>
+                <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
             <TableBody>
               {getCronjobs.data.map((cronjob) => (
-                <TableRow onClick={() => navigate(`/cronjobs/${cronjob.id}`)} key={cronjob.id}>
+                <TableRow
+                  className={styles.tableRow}
+                  onClick={() => navigate(`/cronjobs/${cronjob.id}`)}
+                  key={cronjob.id}
+                >
                   <TableCell>{cronjob.name}</TableCell>
                   <TableCell>-</TableCell>
                   <TableCell>{cronjob.crontab}</TableCell>
@@ -58,6 +64,11 @@ export const CronjobsTemplate: React.FC = () => {
                   <TableCell>-</TableCell>
                   <TableCell>-</TableCell>
                   <TableCell>-</TableCell>
+                  <TableCell onClick={() => navigate(`/cronjobs/${cronjob.id}`)}>
+                    <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

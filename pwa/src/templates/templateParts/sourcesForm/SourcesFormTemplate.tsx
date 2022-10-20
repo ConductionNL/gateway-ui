@@ -3,7 +3,7 @@ import * as styles from "./SourcesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button } from "@gemeente-denhaag/components-react";
+import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
@@ -95,10 +95,11 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <div className={styles.resultsDisplaySwitchButtons}>
-            <Button className={styles.buttonIcon} size="large" type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
+          <Heading1>{t("Edit Source")}</Heading1>
 
+          <div className={styles.buttons}>
+            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+              <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
             <Button className={styles.buttonIcon}>
@@ -115,7 +116,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
         <div className={styles.container}>
           <div className={styles.grid}>
             <FormField>
-              <FormFieldInput className={styles.name}>
+              <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>

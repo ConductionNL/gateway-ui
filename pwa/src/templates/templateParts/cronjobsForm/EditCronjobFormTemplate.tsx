@@ -59,7 +59,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
         <Heading1>{t("Edit Cronjob")}</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} size="large" type="submit" disabled={loading}>
+          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
 
             {t("Save")}
