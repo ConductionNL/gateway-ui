@@ -10,6 +10,7 @@ import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Skeleton from "react-loading-skeleton";
 
 export const ActionsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -20,55 +21,54 @@ export const ActionsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      {getActions.isLoading && "Loading..."}
+      <section className={styles.section}>
+        <Heading1>{t("Actions")}</Heading1>
+        <div className={styles.buttons}>
+          <Button className={styles.buttonIcon} onClick={() => navigate(`/actions/new`)}>
+            <FontAwesomeIcon icon={faPlus} />
+            {t("Add")}
+          </Button>
+        </div>
+      </section>
+
       {getActions.isError && "Error..."}
 
       {getActions.isSuccess && (
-        <>
-          <section className={styles.section}>
-            <Heading1>{t("Actions")}</Heading1>
-            <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} onClick={() => navigate(`/actions/new`)}>
-                <FontAwesomeIcon icon={faPlus} />
-                {t("Add")}
-              </Button>
-            </div>
-          </section>
-
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>Name</TableHeader>
-                <TableHeader>Priority</TableHeader>
-                <TableHeader>Status</TableHeader>
-                <TableHeader>Last run</TableHeader>
-                <TableHeader>Last run time</TableHeader>
-                <TableHeader>Date Created</TableHeader>
-                <TableHeader>Date Modified</TableHeader>
-                <TableHeader/>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>Name</TableHeader>
+              <TableHeader>Priority</TableHeader>
+              <TableHeader>Status</TableHeader>
+              <TableHeader>Last run</TableHeader>
+              <TableHeader>Last run time</TableHeader>
+              <TableHeader>Date Created</TableHeader>
+              <TableHeader>Date Modified</TableHeader>
+              <TableHeader />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {getActions.data.map((action) => (
+              <TableRow onClick={() => navigate(`/actions/${action.id}`)} key={action.id} className={styles.tableRow}>
+                <TableCell>{action.name}</TableCell>
+                <TableCell>{action.priority}</TableCell>
+                <TableCell>{action.status ? "On" : "Off"}</TableCell>
+                <TableCell>{action.lastRun ?? "-"}</TableCell>
+                <TableCell>{action.lastRunTime ?? "-"}</TableCell>
+                <TableCell>{action.dateCreated ?? "-"}</TableCell>
+                <TableCell>{action.dateModified ?? "-"}</TableCell>
+                <TableCell onClick={() => navigate(`/actions/${action.id}`)}>
+                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {getActions.data.map((action) => (
-                <TableRow onClick={() => navigate(`/actions/${action.id}`)} key={action.id} className={styles.tableRow}>
-                  <TableCell>{action.name}</TableCell>
-                  <TableCell>{action.priority}</TableCell>
-                  <TableCell>{action.status ? "On" : "Off"}</TableCell>
-                  <TableCell>{action.lastRun ?? "-"}</TableCell>
-                  <TableCell>{action.lastRunTime ?? "-"}</TableCell>
-                  <TableCell>{action.dateCreated ?? "-"}</TableCell>
-                  <TableCell>{action.dateModified ?? "-"}</TableCell>
-                  <TableCell onClick={() => navigate(`/actions/${action.id}`)}>
-                    <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
-                      {t("Details")}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </>
+            ))}
+          </TableBody>
+        </Table>
       )}
+
+      {getActions.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };

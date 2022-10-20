@@ -19,7 +19,7 @@ interface CreateCronjobFormTemplateProps {
 export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps> = ({ cronjobId }) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();

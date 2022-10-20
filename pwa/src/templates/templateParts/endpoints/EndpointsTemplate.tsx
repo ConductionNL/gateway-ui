@@ -7,6 +7,7 @@ import { navigate } from "gatsby";
 import { useEndpoint } from "../../../hooks/endpoints";
 import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
+import Skeleton from "react-loading-skeleton";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -19,7 +20,6 @@ export const EndpointsTemplate: React.FC = () => {
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Endpoints")}</Heading1>
 
-      {getEndpoints.isLoading && "Loading..."}
       {getEndpoints.isError && "Error..."}
 
       {getEndpoints.isSuccess && (
@@ -46,6 +46,8 @@ export const EndpointsTemplate: React.FC = () => {
           </TableBody>
         </Table>
       )}
+
+      {getEndpoints.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };
