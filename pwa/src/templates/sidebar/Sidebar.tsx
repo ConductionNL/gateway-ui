@@ -10,7 +10,8 @@ import APIService from "../../apiService/apiService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
-  faGear, 
+  faClipboardList,
+  faGear,
   faGrip,
   faHome,
   faHourglass,
@@ -66,6 +67,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       icon: <FontAwesomeIcon icon={faObjectGroup} />,
       onClick: () => navigate("/objects"),
       current: pathname.includes("/objects"),
+    },
+    {
+      label: "Schemes",
+      icon: <FontAwesomeIcon icon={faClipboardList} />,
+      onClick: () => navigate("/schemes"),
+      current: pathname.includes("/schemes"),
     },
   ];
 

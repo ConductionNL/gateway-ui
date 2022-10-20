@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./CronjobsFormTemplate.module.css";
+import * as styles from "./SchemesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
@@ -10,21 +10,21 @@ import { InputText } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
-import { useCronjob } from "../../../hooks/cronjob";
+import { useScheme } from "../../../hooks/scheme";
 
-interface CreateCronjobFormTemplateProps {
-  cronjobId?: string;
+interface CreateSchemesFormTemplateProps {
+  schemeId?: string;
 }
 
-export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps> = ({ cronjobId }) => {
+export const CreateSchemesFormTemplate: React.FC<CreateSchemesFormTemplateProps> = ({ schemeId }) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(true);
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
-  const _useCronjobs = useCronjob(queryClient);
-  const createOrEditCronjob = _useCronjobs.createOrEdit(cronjobId);
+  const _useScheme = useScheme(queryClient);
+  const createOrEditScheme = _useScheme.createOrEdit(schemeId);
 
   const {
     register,
@@ -33,14 +33,14 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    createOrEditCronjob.mutate({ payload: data, id: cronjobId });
+    createOrEditScheme.mutate({ payload: data, id: schemeId });
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <section className={styles.section}>
-          <Heading1>{t("Create Cronjob")}</Heading1>
+          <Heading1>{t("Create Scheme")}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

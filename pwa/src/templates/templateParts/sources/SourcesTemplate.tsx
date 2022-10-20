@@ -24,20 +24,18 @@ export const SourcesTemplate: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {getSources.isLoading && <Skeleton height="200px" />}
       {getSources.isError && "Error..."}
-
+      <section className={styles.section}>
+        <Heading1>{t("Sources")}</Heading1>
+        <div className={styles.buttons}>
+          <Button className={styles.buttonIcon} onClick={() => navigate(`/sources/new`)}>
+            <FontAwesomeIcon icon={faPlus} />
+            {t("Add")}
+          </Button>
+        </div>
+      </section>
       {getSources.isSuccess && (
         <>
-          <section className={styles.section}>
-            <Heading1>{t("Sources")}</Heading1>
-            <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} onClick={() => navigate(`/sources/new`)}>
-                <FontAwesomeIcon icon={faPlus} />
-                {t("Add")}
-              </Button>
-            </div>
-          </section>
           <Table>
             <TableHead>
               <TableRow>
@@ -80,6 +78,7 @@ export const SourcesTemplate: React.FC = () => {
           </Table>
         </>
       )}
+      {getSources.isLoading && <Skeleton height="200px" />}
     </div>
   );
 };
