@@ -6,8 +6,9 @@ import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@
 import { navigate } from "gatsby";
 import { useEndpoint } from "../../../hooks/endpoints";
 import { QueryClient } from "react-query";
-import { Container } from "@conduction/components";
+import { Container, Tag } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
+import clsx from "clsx";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ export const EndpointsTemplate: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableHeader>Name</TableHeader>
+              <TableHeader>Status</TableHeader>
               <TableHeader>Path regex</TableHeader>
               <TableHeader>Date Created</TableHeader>
               <TableHeader>Date Modified</TableHeader>
@@ -37,6 +39,11 @@ export const EndpointsTemplate: React.FC = () => {
             {getEndpoints.data.map((endpoint: any) => (
               <TableRow onClick={() => navigate(`/endpoints/${endpoint.id}`)} key={endpoint.id}>
                 <TableCell>{endpoint.name}</TableCell>
+                <TableCell>
+                  <div className={clsx(styles[endpoint.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                    <Tag label={endpoint.status?.toString() ?? "-"} />
+                  </div>
+                </TableCell>
                 <TableCell>{endpoint.pathRegex ?? "-"}</TableCell>
                 <TableCell>{endpoint.dateCreated ?? "-"}</TableCell>
                 <TableCell>{endpoint.dateModified ?? "-"}</TableCell>
