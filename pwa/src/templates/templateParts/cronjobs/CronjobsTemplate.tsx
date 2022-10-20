@@ -21,7 +21,6 @@ export const CronjobsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      {getCronjobs.isError && "Error..."}
       <section className={styles.section}>
         <Heading1>{t("Cronjobs")}</Heading1>
         <div className={styles.buttons}>
@@ -31,48 +30,50 @@ export const CronjobsTemplate: React.FC = () => {
           </Button>
         </div>
       </section>
+
+      {getCronjobs.isError && "Error..."}
+
       {getCronjobs.isSuccess && (
-        <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader>{t("Active")}</TableHeader>
-                <TableHeader>CronTab</TableHeader>
-                <TableHeader>{t("Last run")}</TableHeader>
-                <TableHeader>{t("Next run")}</TableHeader>
-                <TableHeader>Status</TableHeader>
-                <TableHeader>{t("Date created")}</TableHeader>
-                <TableHeader>{t("Date modified")}</TableHeader>
-                <TableHeader></TableHeader>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader>{t("Active")}</TableHeader>
+              <TableHeader>CronTab</TableHeader>
+              <TableHeader>{t("Last run")}</TableHeader>
+              <TableHeader>{t("Next run")}</TableHeader>
+              <TableHeader>Status</TableHeader>
+              <TableHeader>{t("Date created")}</TableHeader>
+              <TableHeader>{t("Date modified")}</TableHeader>
+              <TableHeader></TableHeader>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {getCronjobs.data.map((cronjob) => (
+              <TableRow
+                className={styles.tableRow}
+                onClick={() => navigate(`/cronjobs/${cronjob.id}`)}
+                key={cronjob.id}
+              >
+                <TableCell>{cronjob.name}</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>{cronjob.crontab}</TableCell>
+                <TableCell>{cronjob.lastRun}</TableCell>
+                <TableCell>{cronjob.nextRun}</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell>-</TableCell>
+                <TableCell onClick={() => navigate(`/cronjobs/${cronjob.id}`)}>
+                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {getCronjobs.data.map((cronjob) => (
-                <TableRow
-                  className={styles.tableRow}
-                  onClick={() => navigate(`/cronjobs/${cronjob.id}`)}
-                  key={cronjob.id}
-                >
-                  <TableCell>{cronjob.name}</TableCell>
-                  <TableCell>-</TableCell>
-                  <TableCell>{cronjob.crontab}</TableCell>
-                  <TableCell>{cronjob.lastRun}</TableCell>
-                  <TableCell>{cronjob.nextRun}</TableCell>
-                  <TableCell>-</TableCell>
-                  <TableCell>-</TableCell>
-                  <TableCell>-</TableCell>
-                  <TableCell onClick={() => navigate(`/cronjobs/${cronjob.id}`)}>
-                    <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
-                      {t("Details")}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </>
+            ))}
+          </TableBody>
+        </Table>
       )}
+
       {getCronjobs.isLoading && <Skeleton height="200px" />}
     </Container>
   );

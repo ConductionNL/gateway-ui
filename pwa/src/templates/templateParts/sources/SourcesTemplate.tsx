@@ -24,7 +24,6 @@ export const SourcesTemplate: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {getSources.isError && "Error..."}
       <section className={styles.section}>
         <Heading1>{t("Sources")}</Heading1>
         <div className={styles.buttons}>
@@ -34,50 +33,48 @@ export const SourcesTemplate: React.FC = () => {
           </Button>
         </div>
       </section>
+
+      {getSources.isError && "Error..."}
+
       {getSources.isSuccess && (
-        <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader>{t("Status")}</TableHeader>
-                <TableHeader>{t("Related Sync objects")}</TableHeader>
-                <TableHeader>{t("Last call")}</TableHeader>
-                <TableHeader>{t("Created")}</TableHeader>
-                <TableHeader>{t("Modified")}</TableHeader>
-                <TableHeader />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {getSources.data.map((source) => (
-                <>
-                  <TableRow
-                    className={styles.tableRow}
-                    onClick={() => navigate(`/sources/${source.id}`)}
-                    key={source.id}
-                  >
-                    <TableCell>{source.name}</TableCell>
-                    <TableCell>
-                      <div className={clsx(styles[source.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                        <Tag label={source.status ?? "-"} />
-                      </div>
-                    </TableCell>
-                    <TableCell>{source.lastRun ?? "-"}</TableCell>
-                    <TableCell>{source.sync ?? "-"}</TableCell>
-                    <TableCell>{translateDate("nl", source.dateCreated)}</TableCell>
-                    <TableCell>{translateDate("nl", source.dateModified)}</TableCell>
-                    <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
-                      <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
-                        {t("Details")}
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                </>
-              ))}
-            </TableBody>
-          </Table>
-        </>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader>{t("Status")}</TableHeader>
+              <TableHeader>{t("Related Sync objects")}</TableHeader>
+              <TableHeader>{t("Last call")}</TableHeader>
+              <TableHeader>{t("Created")}</TableHeader>
+              <TableHeader>{t("Modified")}</TableHeader>
+              <TableHeader />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {getSources.data.map((source) => (
+              <>
+                <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
+                  <TableCell>{source.name}</TableCell>
+                  <TableCell>
+                    <div className={clsx(styles[source.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                      <Tag label={source.status ?? "-"} />
+                    </div>
+                  </TableCell>
+                  <TableCell>{source.lastRun ?? "-"}</TableCell>
+                  <TableCell>{source.sync ?? "-"}</TableCell>
+                  <TableCell>{translateDate("nl", source.dateCreated)}</TableCell>
+                  <TableCell>{translateDate("nl", source.dateModified)}</TableCell>
+                  <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
+                    <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              </>
+            ))}
+          </TableBody>
+        </Table>
       )}
+
       {getSources.isLoading && <Skeleton height="200px" />}
     </div>
   );
