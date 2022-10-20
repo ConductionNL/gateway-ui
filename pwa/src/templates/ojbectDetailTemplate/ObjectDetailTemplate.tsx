@@ -9,6 +9,7 @@ import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
+import { EditObjectFormTemplate } from "../templateParts/objectsFormTemplate/EditObjectFormTemplate";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -24,26 +25,11 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>{t("Object detail page")}</Heading1>
-
       {getObject.isError && "Error..."}
 
       {getObject.isSuccess && (
         <div className={styles.container}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader>{t("Description")}</TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>{getObject.data.name ?? "-"}</TableCell>
-                <TableCell>{getObject.data.description ?? "-"}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <EditObjectFormTemplate object={getObject.data} {...{ objectId }} />
 
           <TabContext value={currentTab.toString()}>
             <Tabs
