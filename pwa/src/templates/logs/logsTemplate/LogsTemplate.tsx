@@ -1,43 +1,41 @@
 import * as React from "react";
-import * as styles from "./ObjectsTemplate.module.css";
+import * as styles from "./LogsTemplate.module.css";
 import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { useObject } from "../../hooks/object";
 import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import { useLog } from "../../../hooks/log";
 
-export const ObjectsTemplate: React.FC = () => {
+export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();
 
   const queryClient = new QueryClient();
-  const _useObject = useObject(queryClient);
-  const getObject = _useObject.getAll();
+  const _useLog = useLog(queryClient);
+  const getLog = _useLog.getAll();
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>{t("Objects")}</Heading1>
+      <Heading1>{t("Logs")}</Heading1>
 
-      {getObject.isError && "Error..."}
+      {getLog.isError && "Error..."}
 
-      {getObject.isSuccess && (
+      {getLog.isSuccess && (
         <Table>
           <TableHead>
             <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Description")}</TableHeader>
+              <TableHeader>{t("Id")}</TableHeader>
               <TableHeader></TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
-            {getObject.data.map((object) => (
-              <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
-                <TableCell>{object.name ?? "-"}</TableCell>
-                <TableCell>{object.description ?? "-"}</TableCell>
-                <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
+            {getLog.data.map((log) => (
+              <TableRow className={styles.tableRow} onClick={() => navigate(`/logs/${log.id}`)} key={log.id}>
+                <TableCell>{log.id ?? "-"}</TableCell>
+                <TableCell onClick={() => navigate(`/logs/${log.id}`)}>
                   <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>
@@ -48,7 +46,7 @@ export const ObjectsTemplate: React.FC = () => {
         </Table>
       )}
 
-      {getObject.isLoading && <Skeleton height="200px" />}
+      {getLog.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };
