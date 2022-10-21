@@ -6,7 +6,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputText } from "@conduction/components";
+import { InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -45,8 +45,12 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   };
 
   const handleSetFormValues = (cronjob: any): void => {
-    const basicFields: string[] = ["name"];
+    const basicFields: string[] = ["name", "description", "crontab"];
     basicFields.forEach((field) => setValue(field, cronjob[field]));
+
+    cronjob.throws.map((thrown: any, idx: number) => {
+      setValue(`throws${idx}`, thrown);
+    });
   };
 
   React.useEffect(() => {
@@ -77,6 +81,40 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Description")}</FormFieldLabel>
+              <Textarea
+                {...{ register, errors }}
+                name="description"
+                validation={{ required: true }}
+                disabled={loading}
+              />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Crontab")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="crontab" validation={{ required: true }} disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+		  
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Throws")}</FormFieldLabel>
+              {cronjob.throws.map((thrown: any, idx: number) => (
+                <InputText
+                  {...{ register, errors }}
+                  name={`throws${idx}`}
+                  defaultValue={thrown.label}
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
+              ))}
             </FormFieldInput>
           </FormField>
         </div>
