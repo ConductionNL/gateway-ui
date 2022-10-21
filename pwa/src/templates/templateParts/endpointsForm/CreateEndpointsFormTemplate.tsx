@@ -6,7 +6,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputText } from "@conduction/components";
+import { InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -26,9 +26,18 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
   const _useEndpoints = useEndpoint(queryClient);
   const createOrEditEndpoint = _useEndpoints.createOrEdit(endpointId);
 
+  const methodSelectOptions = [
+    { label: "GET", value: "GET" },
+    { label: "POST", value: "POST" },
+    { label: "PUT", value: "PUT" },
+    { label: "UPDATE", value: "UPDATE" },
+    { label: "DELETE", value: "DELETE" },
+  ];
+
   const {
     register,
     handleSubmit,
+	control,
     formState: { errors },
   } = useForm();
 
@@ -56,6 +65,50 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
               <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                <Textarea
+                  {...{ register, errors }}
+                  name="description"
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Path Regex")}</FormFieldLabel>
+                <InputText
+                  {...{ register, errors }}
+                  name="pathRegex"
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Method")}</FormFieldLabel>
+                <SelectSingle
+                  name="method"
+                  options={methodSelectOptions}
+                  {...{ control, errors }}
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Tag")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="tag" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>
