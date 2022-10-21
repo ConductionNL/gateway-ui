@@ -64,7 +64,7 @@ export const SourcesTemplate: React.FC = () => {
                 <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
                 <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
                 <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
-                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link  icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>

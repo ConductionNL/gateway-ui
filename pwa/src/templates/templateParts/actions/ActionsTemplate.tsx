@@ -67,7 +67,7 @@ export const ActionsTemplate: React.FC = () => {
                 <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
                 <TableCell onClick={() => navigate(`/actions/${action.id}`)}>
-                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>

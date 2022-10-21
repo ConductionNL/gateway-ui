@@ -36,7 +36,7 @@ export const LogsTemplate: React.FC = () => {
               <TableRow className={styles.tableRow} onClick={() => navigate(`/logs/${log.id}`)} key={log.id}>
                 <TableCell>{log.id ?? "-"}</TableCell>
                 <TableCell onClick={() => navigate(`/logs/${log.id}`)}>
-                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>
