@@ -20,7 +20,6 @@ export const ActionsTemplate: React.FC = () => {
   const queryClient = new QueryClient();
   const _useActions = useAction(queryClient);
   const getActions = _useActions.getAll();
-  const test = null;
 
   return (
     <Container layoutClassName={styles.container}>
