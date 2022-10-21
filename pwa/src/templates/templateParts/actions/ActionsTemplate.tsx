@@ -20,6 +20,7 @@ export const ActionsTemplate: React.FC = () => {
   const queryClient = new QueryClient();
   const _useActions = useAction(queryClient);
   const getActions = _useActions.getAll();
+  const test = null;
 
   return (
     <Container layoutClassName={styles.container}>
@@ -57,7 +58,7 @@ export const ActionsTemplate: React.FC = () => {
                 <TableCell>{action.priority}</TableCell>
                 <TableCell>
                   <div className={clsx(styles[action.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                    <Tag label={action.status.toString() ?? "-"} />
+                    <Tag label={action.status?.toString() ?? "-"} />
                   </div>
                 </TableCell>
                 <TableCell>{action.status ? "On" : "Off"}</TableCell>
