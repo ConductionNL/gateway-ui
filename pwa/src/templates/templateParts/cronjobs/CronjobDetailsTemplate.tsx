@@ -25,26 +25,26 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
       {getCronjob.isLoading && <Skeleton height="200px" />}
       {getCronjob.isError && "Error..."}
 
-      {getCronjob.isSuccess && (
-        <>
-          <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />
-          <TabContext value={currentTab.toString()}>
-            <Tabs
-              value={currentTab}
-              onChange={(_, newValue: number) => {
-                setCurrentTab(newValue);
-              }}
-              variant="scrollable"
-            >
-              <Tab className={styles.tab} label={t("Logs")} value={0} />
-            </Tabs>
+      {getCronjob.isSuccess && <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />}
 
-            <TabPanel className={styles.tabPanel} value="0">
-              <span>Logs</span>
-            </TabPanel>
-          </TabContext>
-        </>
-      )}
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getCronjob.isLoading && <Skeleton height="200px" />}
+            {getCronjob.isSuccess && <span>Logs</span>}{" "}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };

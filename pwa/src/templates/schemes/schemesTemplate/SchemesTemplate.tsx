@@ -35,46 +35,50 @@ export const SchemesTemplate: React.FC = () => {
       {getSchemes.isError && "Error..."}
 
       {getSchemes.isSuccess && (
-        <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader></TableHeader>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader></TableHeader>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {getSchemes.data.map((scheme) => (
+              <TableRow className={styles.tableRow} onClick={() => navigate(`/schemes/${scheme.id}`)} key={scheme.id}>
+                <TableCell>{scheme.name}</TableCell>
+
+                <TableCell onClick={() => navigate(`/schemes/${scheme.id}`)}>
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {getSchemes.data.map((scheme) => (
-                <TableRow className={styles.tableRow} onClick={() => navigate(`/schemes/${scheme.id}`)} key={scheme.id}>
-                  <TableCell>{scheme.name}</TableCell>
-
-                  <TableCell onClick={() => navigate(`/schemes/${scheme.id}`)}>
-                    <Link icon={<ArrowRightIcon />} iconAlign="start">
-                      {t("Details")}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <TabContext value={currentTab.toString()}>
-            <Tabs
-              value={currentTab}
-              onChange={(_, newValue: number) => {
-                setCurrentTab(newValue);
-              }}
-              variant="scrollable"
-            >
-              <Tab className={styles.tab} label={t("Logs")} value={0} />
-            </Tabs>
-
-            <TabPanel className={styles.tabPanel} value="0">
-              <span>Logs</span>
-            </TabPanel>
-          </TabContext>
-        </>
+            ))}
+          </TableBody>
+        </Table>
       )}
+
       {getSchemes.isLoading && <Skeleton height="200px" />}
+
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getSchemes.isLoading && <Skeleton height="200px" />}
+
+            {getSchemes.isSuccess && <span>Logs</span>}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };

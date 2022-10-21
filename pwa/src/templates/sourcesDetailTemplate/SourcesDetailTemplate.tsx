@@ -26,26 +26,26 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
       {_getSources.isLoading && <Skeleton height="200px" />}
       {_getSources.isError && "Error..."}
 
-      {_getSources.isSuccess && (
-        <>
-          <SourcesFormTemplate source={_getSources.data} sourceId={sourceId} />
-          <TabContext value={currentTab.toString()}>
-            <Tabs
-              value={currentTab}
-              onChange={(_, newValue: number) => {
-                setCurrentTab(newValue);
-              }}
-              variant="scrollable"
-            >
-              <Tab className={styles.tab} label={t("Logs")} value={0} />
-            </Tabs>
+      {_getSources.isSuccess && <SourcesFormTemplate source={_getSources.data} sourceId={sourceId} />}
 
-            <TabPanel className={styles.tabPanel} value="0">
-              <span>Logs</span>
-            </TabPanel>
-          </TabContext>
-        </>
-      )}
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {_getSources.isLoading && <Skeleton height="200px" />}
+            {_getSources.isSuccess && <span>Logs</span>}{" "}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };

@@ -25,26 +25,26 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
       {getEndpoints.isLoading && <Skeleton height="200px" />}
       {getEndpoints.isError && "Error..."}
 
-      {getEndpoints.isSuccess && (
-        <>
-          <EditEndpointFormTemplate endpoint={getEndpoints.data} {...{ endpointId }} />
-          <TabContext value={currentTab.toString()}>
-            <Tabs
-              value={currentTab}
-              onChange={(_, newValue: number) => {
-                setCurrentTab(newValue);
-              }}
-              variant="scrollable"
-            >
-              <Tab className={styles.tab} label={t("Logs")} value={0} />
-            </Tabs>
+      {getEndpoints.isSuccess && <EditEndpointFormTemplate endpoint={getEndpoints.data} {...{ endpointId }} />}
 
-            <TabPanel className={styles.tabPanel} value="0">
-              <span>Logs</span>
-            </TabPanel>
-          </TabContext>
-        </>
-      )}
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getEndpoints.isLoading && <Skeleton height="200px" />}
+            {getEndpoints.isSuccess && <span>Logs</span>}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };

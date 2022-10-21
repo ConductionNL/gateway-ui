@@ -22,29 +22,30 @@ export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ scheme
 
   return (
     <Container layoutClassName={styles.container}>
-      {getScheme.isLoading && <Skeleton height="200px" />}
       {getScheme.isError && "Error..."}
 
-      {getScheme.isSuccess && (
-        <>
-          <EditSchemesFormTemplate scheme={getScheme.data} {...{ schemeId }} />
-          <TabContext value={currentTab.toString()}>
-            <Tabs
-              value={currentTab}
-              onChange={(_, newValue: number) => {
-                setCurrentTab(newValue);
-              }}
-              variant="scrollable"
-            >
-              <Tab className={styles.tab} label={t("Logs")} value={0} />
-            </Tabs>
+      {getScheme.isSuccess && <EditSchemesFormTemplate scheme={getScheme.data} {...{ schemeId }} />}
+      {getScheme.isLoading && <Skeleton height="200px" />}
 
-            <TabPanel className={styles.tabPanel} value="0">
-              <span>Logs</span>
-            </TabPanel>
-          </TabContext>
-        </>
-      )}
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getScheme.isLoading && <Skeleton height="200px" />}
+
+            {getScheme.isSuccess && <span>Logs</span>}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };

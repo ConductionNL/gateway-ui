@@ -22,29 +22,29 @@ export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ ac
 
   return (
     <Container layoutClassName={styles.container}>
-      {getActions.isLoading && <Skeleton height="200px" />}
       {getActions.isError && "Error..."}
 
-      {getActions.isSuccess && (
-        <>
-          <EditActionFormTemplate action={getActions.data} {...{ actionId }} />{" "}
-          <TabContext value={currentTab.toString()}>
-            <Tabs
-              value={currentTab}
-              onChange={(_, newValue: number) => {
-                setCurrentTab(newValue);
-              }}
-              variant="scrollable"
-            >
-              <Tab className={styles.tab} label={t("Logs")} value={0} />
-            </Tabs>
+      {getActions.isSuccess && <EditActionFormTemplate action={getActions.data} {...{ actionId }} />}
+      {getActions.isLoading && <Skeleton height="200px" />}
 
-            <TabPanel className={styles.tabPanel} value="0">
-              <span>Logs</span>
-            </TabPanel>
-          </TabContext>
-        </>
-      )}
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getActions.isLoading && <Skeleton height="200px" />}
+            {getActions.isSuccess && <span>Logs</span>}{" "}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };

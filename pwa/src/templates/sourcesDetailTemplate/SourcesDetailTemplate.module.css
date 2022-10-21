@@ -2,6 +2,10 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
+.tabContainer {
+  margin-block-start: var(--gateway-ui-size-2xl);
+}
+
 .tabPanel {
   padding-inline-start: var(--gateway-ui-size-lg) !important;
   padding-inline-end: var(--gateway-ui-size-lg) !important;

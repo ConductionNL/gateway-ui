@@ -38,66 +38,62 @@ export const SourcesTemplate: React.FC = () => {
       {getSources.isError && "Error..."}
 
       {getSources.isSuccess && (
-        <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader>{t("Status")}</TableHeader>
-                <TableHeader>{t("Related Sync objects")}</TableHeader>
-                <TableHeader>{t("Last call")}</TableHeader>
-                <TableHeader>{t("Created")}</TableHeader>
-                <TableHeader>{t("Modified")}</TableHeader>
-                <TableHeader />
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader>{t("Status")}</TableHeader>
+              <TableHeader>{t("Related Sync objects")}</TableHeader>
+              <TableHeader>{t("Last call")}</TableHeader>
+              <TableHeader>{t("Created")}</TableHeader>
+              <TableHeader>{t("Modified")}</TableHeader>
+              <TableHeader />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {getSources.data.map((source) => (
+              <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
+                <TableCell>{source.name}</TableCell>
+                <TableCell>
+                  <div className={clsx(styles[source.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                    <Tag label={source.status ?? "-"} />
+                  </div>
+                </TableCell>
+                <TableCell>{source.lastRun ?? "-"}</TableCell>
+                <TableCell>{source.sync ?? "-"}</TableCell>
+                <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
+                <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
+                <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
+                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {getSources.data.map((source) => (
-                <>
-                  <TableRow
-                    className={styles.tableRow}
-                    onClick={() => navigate(`/sources/${source.id}`)}
-                    key={source.id}
-                  >
-                    <TableCell>{source.name}</TableCell>
-                    <TableCell>
-                      <div className={clsx(styles[source.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                        <Tag label={source.status ?? "-"} />
-                      </div>
-                    </TableCell>
-                    <TableCell>{source.lastRun ?? "-"}</TableCell>
-                    <TableCell>{source.sync ?? "-"}</TableCell>
-                    <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
-                    <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
-                    <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
-                      <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
-                        {t("Details")}
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                </>
-              ))}
-            </TableBody>
-          </Table>
-          <TabContext value={currentTab.toString()}>
-            <Tabs
-              value={currentTab}
-              onChange={(_, newValue: number) => {
-                setCurrentTab(newValue);
-              }}
-              variant="scrollable"
-            >
-              <Tab className={styles.tab} label={t("Logs")} value={0} />
-            </Tabs>
-
-            <TabPanel className={styles.tabPanel} value="0">
-              <span>Logs</span>
-            </TabPanel>
-          </TabContext>
-        </>
+            ))}
+          </TableBody>
+        </Table>
       )}
 
       {getSources.isLoading && <Skeleton height="200px" />}
+
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getSources.isLoading && <Skeleton height="200px" />}
+            {getSources.isSuccess && <span>Logs</span>}{" "}
+          </TabPanel>
+        </TabContext>
+      </div>
     </div>
   );
 };

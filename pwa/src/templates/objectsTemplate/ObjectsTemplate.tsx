@@ -35,48 +35,50 @@ export const ObjectsTemplate: React.FC = () => {
       {getObject.isError && "Error..."}
 
       {getObject.isSuccess && (
-        <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader>{t("Description")}</TableHeader>
-                <TableHeader></TableHeader>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader>{t("Description")}</TableHeader>
+              <TableHeader></TableHeader>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {getObject.data.map((object) => (
+              <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
+                <TableCell>{object.name ?? "-"}</TableCell>
+                <TableCell>{object.description ?? "-"}</TableCell>
+                <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {getObject.data.map((object) => (
-                <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
-                  <TableCell>{object.name ?? "-"}</TableCell>
-                  <TableCell>{object.description ?? "-"}</TableCell>
-                  <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
-                    <Link icon={<ArrowRightIcon />} iconAlign="start">
-                      {t("Details")}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <TabContext value={currentTab.toString()}>
-            <Tabs
-              value={currentTab}
-              onChange={(_, newValue: number) => {
-                setCurrentTab(newValue);
-              }}
-              variant="scrollable"
-            >
-              <Tab className={styles.tab} label={t("Logs")} value={0} />
-            </Tabs>
-
-            <TabPanel className={styles.tabPanel} value="0">
-              <span>Logs</span>
-            </TabPanel>
-          </TabContext>
-        </>
+            ))}
+          </TableBody>
+        </Table>
       )}
 
       {getObject.isLoading && <Skeleton height="200px" />}
+
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getObject.isLoading && <Skeleton height="200px" />}
+            {getObject.isSuccess && <span>Logs</span>}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };

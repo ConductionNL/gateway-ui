@@ -36,54 +36,56 @@ export const EndpointsTemplate: React.FC = () => {
       {getEndpoints.isError && "Error..."}
 
       {getEndpoints.isSuccess && (
-        <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>Name</TableHeader>
-                <TableHeader>Status</TableHeader>
-                <TableHeader>Path regex</TableHeader>
-                <TableHeader>Date Created</TableHeader>
-                <TableHeader>Date Modified</TableHeader>
-                <TableHeader>Throws</TableHeader>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>Name</TableHeader>
+              <TableHeader>Status</TableHeader>
+              <TableHeader>Path regex</TableHeader>
+              <TableHeader>Date Created</TableHeader>
+              <TableHeader>Date Modified</TableHeader>
+              <TableHeader>Throws</TableHeader>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {getEndpoints.data.map((endpoint: any) => (
+              <TableRow onClick={() => navigate(`/endpoints/${endpoint.id}`)} key={endpoint.id}>
+                <TableCell>{endpoint.name}</TableCell>
+                <TableCell>
+                  <div className={clsx(styles[endpoint.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                    <Tag label={endpoint.status?.toString() ?? "-"} />
+                  </div>
+                </TableCell>
+                <TableCell>{endpoint.pathRegex ?? "-"}</TableCell>
+                <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
+                <TableCell>{translateDate(i18n.language, endpoint.dateModified)}</TableCell>
+                <TableCell>{endpoint.throws ?? "-"}</TableCell>
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {getEndpoints.data.map((endpoint: any) => (
-                <TableRow onClick={() => navigate(`/endpoints/${endpoint.id}`)} key={endpoint.id}>
-                  <TableCell>{endpoint.name}</TableCell>
-                  <TableCell>
-                    <div className={clsx(styles[endpoint.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                      <Tag label={endpoint.status?.toString() ?? "-"} />
-                    </div>
-                  </TableCell>
-                  <TableCell>{endpoint.pathRegex ?? "-"}</TableCell>
-                  <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
-                  <TableCell>{translateDate(i18n.language, endpoint.dateModified)}</TableCell>
-                  <TableCell>{endpoint.throws ?? "-"}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <TabContext value={currentTab.toString()}>
-            <Tabs
-              value={currentTab}
-              onChange={(_, newValue: number) => {
-                setCurrentTab(newValue);
-              }}
-              variant="scrollable"
-            >
-              <Tab className={styles.tab} label={t("Logs")} value={0} />
-            </Tabs>
-
-            <TabPanel className={styles.tabPanel} value="0">
-              <span>Logs</span>
-            </TabPanel>
-          </TabContext>
-        </>
+            ))}
+          </TableBody>
+        </Table>
       )}
 
       {getEndpoints.isLoading && <Skeleton height="200px" />}
+
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getEndpoints.isLoading && <Skeleton height="200px" />}
+            {getEndpoints.isSuccess && <span>Logs</span>}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };
