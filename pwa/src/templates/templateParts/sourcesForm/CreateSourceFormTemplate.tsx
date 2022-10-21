@@ -130,6 +130,12 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                 />
               </FormFieldInput>
             </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Documentation")}</FormFieldLabel>
+                <Textarea {...{ register, errors }} name="documentation" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
           </div>
         </div>
       </form>
