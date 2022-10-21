@@ -9,7 +9,7 @@ import APIService from "../../../apiService/apiService";
 import { Container, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
-import { useSources } from "../../../hooks/sources";
+import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
 
 interface CreateSourceFormTemplateProps {
@@ -23,7 +23,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
-  const _useSources = useSources(queryClient);
+  const _useSources = useSource(queryClient);
   const createOrEditSource = _useSources.createOrEdit(sourceId);
 
   const typeSelectOptions = [

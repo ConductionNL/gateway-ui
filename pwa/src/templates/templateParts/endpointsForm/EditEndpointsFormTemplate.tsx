@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
-import { useEndpoint } from "../../../hooks/endpoints";
+import { useEndpoint } from "../../../hooks/endpoint";
 
 interface EditEndpointFormTemplateProps {
   endpoint: any;

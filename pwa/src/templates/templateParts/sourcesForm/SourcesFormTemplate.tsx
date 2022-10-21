@@ -9,7 +9,7 @@ import APIService from "../../../apiService/apiService";
 import { InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsRotate, faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useSources } from "../../../hooks/sources";
+import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { translateDate } from "../../../services/dateFormat";
@@ -26,7 +26,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
-  const _useSources = useSources(queryClient);
+  const _useSources = useSource(queryClient);
   const createOrEditSource = _useSources.createOrEdit(sourceId);
   const deleteSource = _useSources.remove();
 

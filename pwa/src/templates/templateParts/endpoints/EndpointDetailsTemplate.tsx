@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./EndpointDetailsTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
-import { useEndpoint } from "../../../hooks/endpoints";
+import { useEndpoint } from "../../../hooks/endpoint";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { EditEndpointFormTemplate } from "../endpointsForm/EditEndpointsFormTemplate";

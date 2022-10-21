@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./SourcesDetailTemplate.module.css";
 import { QueryClient } from "react-query";
 import _ from "lodash";
-import { useSources } from "../../hooks/sources";
+import { useSource } from "../../hooks/source";
 import { Container } from "@conduction/components";
 import { SourcesFormTemplate } from "../templateParts/sourcesForm/SourcesFormTemplate";
 import Skeleton from "react-loading-skeleton";
@@ -13,7 +13,7 @@ interface SourcesDetailTemplateProps {
 
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
   const queryClient = new QueryClient();
-  const _useSources = useSources(queryClient);
+  const _useSources = useSource(queryClient);
   const _getSources = _useSources.getOne(sourceId);
 
   return (

@@ -4,7 +4,7 @@ import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { useSources } from "../../../hooks/sources";
+import { useSource } from "../../../hooks/source";
 import { QueryClient } from "react-query";
 import { Tag } from "@conduction/components";
 import _ from "lodash";
@@ -19,7 +19,7 @@ export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
   const queryClient = new QueryClient();
-  const _useSources = useSources(queryClient);
+  const _useSources = useSource(queryClient);
   const getSources = _useSources.getAll();
 
   return (

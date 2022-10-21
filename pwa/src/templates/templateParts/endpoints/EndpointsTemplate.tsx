@@ -4,7 +4,7 @@ import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { useEndpoint } from "../../../hooks/endpoints";
+import { useEndpoint } from "../../../hooks/endpoint";
 import { QueryClient } from "react-query";
 import { Container, Tag } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
