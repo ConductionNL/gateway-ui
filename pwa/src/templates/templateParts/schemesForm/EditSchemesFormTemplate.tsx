@@ -123,7 +123,3 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     </form>
   );
 };
-
-// description (textarea)
-// function (dropdown "noFunction","organization", "person", "user", "userGroup", "processingLog")
-// schema (string)
