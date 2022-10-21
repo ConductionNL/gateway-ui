@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./ObjectsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -14,6 +14,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export const ObjectsTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = new QueryClient();
   const _useObject = useObject(queryClient);
@@ -34,28 +35,45 @@ export const ObjectsTemplate: React.FC = () => {
       {getObject.isError && "Error..."}
 
       {getObject.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Description")}</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getObject.data.map((object) => (
-              <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
-                <TableCell>{object.name ?? "-"}</TableCell>
-                <TableCell>{object.description ?? "-"}</TableCell>
-                <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
+        <>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Description")}</TableHeader>
+                <TableHeader></TableHeader>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getObject.data.map((object) => (
+                <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
+                  <TableCell>{object.name ?? "-"}</TableCell>
+                  <TableCell>{object.description ?? "-"}</TableCell>
+                  <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
+                    <Link icon={<ArrowRightIcon />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <TabContext value={currentTab.toString()}>
+            <Tabs
+              value={currentTab}
+              onChange={(_, newValue: number) => {
+                setCurrentTab(newValue);
+              }}
+              variant="scrollable"
+            >
+              <Tab className={styles.tab} label={t("Logs")} value={0} />
+            </Tabs>
+
+            <TabPanel className={styles.tabPanel} value="0">
+              <span>Logs</span>
+            </TabPanel>
+          </TabContext>
+        </>
       )}
 
       {getObject.isLoading && <Skeleton height="200px" />}

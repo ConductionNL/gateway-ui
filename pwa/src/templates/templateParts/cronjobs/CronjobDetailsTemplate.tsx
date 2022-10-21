@@ -6,6 +6,7 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { Container } from "@conduction/components";
 import { EditCronjobFormTemplate } from "../cronjobsForm/EditCronjobFormTemplate";
 import Skeleton from "react-loading-skeleton";
+import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 
 interface CronjobDetailPageProps {
   cronjobId: string;
@@ -13,6 +14,7 @@ interface CronjobDetailPageProps {
 
 export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronjobId }) => {
   const { t } = useTranslation();
+  const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = new QueryClient();
   const _useCronjob = useCronjob(queryClient);
@@ -23,7 +25,26 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
       {getCronjob.isLoading && <Skeleton height="200px" />}
       {getCronjob.isError && "Error..."}
 
-      {getCronjob.isSuccess && <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />}
+      {getCronjob.isSuccess && (
+        <>
+          <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />
+          <TabContext value={currentTab.toString()}>
+            <Tabs
+              value={currentTab}
+              onChange={(_, newValue: number) => {
+                setCurrentTab(newValue);
+              }}
+              variant="scrollable"
+            >
+              <Tab className={styles.tab} label={t("Logs")} value={0} />
+            </Tabs>
+
+            <TabPanel className={styles.tabPanel} value="0">
+              <span>Logs</span>
+            </TabPanel>
+          </TabContext>
+        </>
+      )}
     </Container>
   );
 };

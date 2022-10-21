@@ -30,3 +30,14 @@
 .tableRow {
   cursor: pointer;
 }
+
+.tabPanel {
+  padding-inline-start: var(--gateway-ui-size-lg) !important;
+  padding-inline-end: var(--gateway-ui-size-lg) !important;
+  padding-block-start: var(--gateway-ui-size-lg) !important;
+  padding-block-end: var(--gateway-ui-size-lg) !important;
+}
+
+.tab {
+  max-width: unset !important;
+}

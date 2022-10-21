@@ -6,12 +6,17 @@ import { useSource } from "../../hooks/source";
 import { Container } from "@conduction/components";
 import { SourcesFormTemplate } from "../templateParts/sourcesForm/SourcesFormTemplate";
 import Skeleton from "react-loading-skeleton";
+import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { useTranslation } from "react-i18next";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
 }
 
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
+  const { t } = useTranslation();
+  const [currentTab, setCurrentTab] = React.useState<number>(0);
+
   const queryClient = new QueryClient();
   const _useSources = useSource(queryClient);
   const _getSources = _useSources.getOne(sourceId);
@@ -24,6 +29,21 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
       {_getSources.isSuccess && (
         <>
           <SourcesFormTemplate source={_getSources.data} sourceId={sourceId} />
+          <TabContext value={currentTab.toString()}>
+            <Tabs
+              value={currentTab}
+              onChange={(_, newValue: number) => {
+                setCurrentTab(newValue);
+              }}
+              variant="scrollable"
+            >
+              <Tab className={styles.tab} label={t("Logs")} value={0} />
+            </Tabs>
+
+            <TabPanel className={styles.tabPanel} value="0">
+              <span>Logs</span>
+            </TabPanel>
+          </TabContext>
         </>
       )}
     </Container>
