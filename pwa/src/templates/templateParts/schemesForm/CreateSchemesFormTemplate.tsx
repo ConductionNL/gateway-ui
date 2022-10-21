@@ -6,7 +6,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputText } from "@conduction/components";
+import { InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -26,9 +26,19 @@ export const CreateSchemesFormTemplate: React.FC<CreateSchemesFormTemplateProps>
   const _useScheme = useScheme(queryClient);
   const createOrEditScheme = _useScheme.createOrEdit(schemeId);
 
+  const functionSelectOptions = [
+    { label: "No Function", value: "noFunction" },
+    { label: "Organization", value: "organization" },
+    { label: "Person", value: "person" },
+    { label: "User", value: "user" },
+    { label: "User Group", value: "userGroup" },
+    { label: "Processing Log", value: "processingLog" },
+  ];
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
 
@@ -57,6 +67,31 @@ export const CreateSchemesFormTemplate: React.FC<CreateSchemesFormTemplateProps>
               <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                <Textarea {...{ register, errors }} name="description" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Function")}</FormFieldLabel>
+                <SelectSingle
+                  name="function"
+                  options={functionSelectOptions}
+                  {...{ control, errors }}
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Schema")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="schema" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>
