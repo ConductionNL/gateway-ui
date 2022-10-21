@@ -72,9 +72,9 @@ export const CronjobsTemplate: React.FC = () => {
                 <TableCell>-</TableCell>
                 <TableCell>-</TableCell>
                 <TableCell onClick={() => navigate(`/cronjobs/${cronjob.id}`)}>
-                  <Lin icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
-                  </Lin>
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
