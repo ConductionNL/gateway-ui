@@ -82,12 +82,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       onClick: () => navigate("/logs"),
       current: pathname.includes("/logs"),
     },
-    {
-      label: "Plugins",
-      icon: <FontAwesomeIcon icon={faPuzzlePiece} />,
-      onClick: () => navigate("/plugins"),
-      current: pathname.includes("/plugins"),
-    },
   ];
 
   const bottomMenuItems: IMenuItem[] = [

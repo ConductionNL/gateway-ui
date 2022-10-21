@@ -1,29 +1,28 @@
 import * as React from "react";
-import * as styles from "./CronjobDetailsTemplate.module.css";
+import * as styles from "./PluginDetailTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
-import { useCronjob } from "../../../hooks/cronjob";
 import { Container } from "@conduction/components";
-import { EditCronjobFormTemplate } from "../cronjobsForm/EditCronjobFormTemplate";
 import Skeleton from "react-loading-skeleton";
+import { EditPluginFormTemplate } from "../pluginsForm/EditPluginFormTemplate";
 
-interface CronjobDetailPageProps {
-  cronjobId: string;
+interface PluginDetailPageProps {
+  pluginId: string;
 }
 
-export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronjobId }) => {
+export const PluginDetailTemplate: React.FC<PluginDetailPageProps> = ({ pluginId }) => {
   const { t } = useTranslation();
 
   const queryClient = new QueryClient();
-  const _useCronjob = useCronjob(queryClient);
-  const getCronjob = _useCronjob.getOne(cronjobId);
+  const _usePlugin = usePlugin(queryClient);
+  const getPlugins = _usePlugin.getOne(pluginId);
 
   return (
     <Container layoutClassName={styles.container}>
-      {getCronjob.isLoading && <Skeleton height="200px" />}
-      {getCronjob.isError && "Error..."}
+      {getPlugins.isLoading && <Skeleton height="200px" />}
+      {getPlugins.isError && "Error..."}
 
-      {getCronjob.isSuccess && <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />}
+      {getPlugins.isSuccess && <EditPluginFormTemplate plugin={getPlugins.data} {...{ pluginId }} />}
     </Container>
   );
 };

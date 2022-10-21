@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./CronjobTemplate.module.css";
+import * as styles from "./PluginsTemplate.module.css";
 import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
