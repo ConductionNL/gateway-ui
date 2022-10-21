@@ -6,7 +6,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputText } from "@conduction/components";
+import { InputCheckbox, InputNumber, InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -45,7 +45,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   };
 
   const handleSetFormValues = (cronjob: any): void => {
-    const basicFields: string[] = ["name"];
+    const basicFields: string[] = ["name", "description", "listens", "priority", "async", "isLackable", "conditions"];
     basicFields.forEach((field) => setValue(field, cronjob[field]));
   };
 
@@ -76,6 +76,59 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Description")}</FormFieldLabel>
+              <Textarea {...{ register, errors }} name="description" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Listens")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="listens" validation={{ required: true }} disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Throws")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="throws" validation={{ required: true }} disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Class")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="class" validation={{ required: true }} disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Priority")}</FormFieldLabel>
+              <InputNumber
+                {...{ register, errors }}
+                name="priority"
+                validation={{ required: true }}
+                disabled={loading}
+              />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("async")}</FormFieldLabel>
+              <InputCheckbox {...{ register, errors }} label="on" name="async" validation={{ required: true }} />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
+              <InputCheckbox {...{ register, errors }} label="on" name="islockable" validation={{ required: true }} />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
+              <Textarea {...{ register, errors }} name="conditions" disabled={loading} />
             </FormFieldInput>
           </FormField>
         </div>
