@@ -73,6 +73,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
       "accept",
       "dateCreated",
       "dateModified",
+      "documentation",
     ];
     basicFields.forEach((field) => setValue(field, source[field]));
 
@@ -196,6 +197,12 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                   validation={{ required: true }}
                   disabled={loading}
                 />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Documentation")}</FormFieldLabel>
+                <Textarea {...{ register, errors }} name="documentation" disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>
