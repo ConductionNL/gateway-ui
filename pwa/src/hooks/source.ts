@@ -5,7 +5,7 @@ import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
 
-export const useSources = (queryClient: QueryClient) => {
+export const useSource = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
 
   const getAll = () =>

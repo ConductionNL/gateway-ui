@@ -2,37 +2,17 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.container > .backButton {
+.tabContainer {
   margin-block-start: var(--gateway-ui-size-2xl);
-  margin-block-end: var(--gateway-ui-size-sm);
 }
 
-.resultsDisplaySwitchButtons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+.tabPanel {
+  padding-inline-start: var(--gateway-ui-size-lg) !important;
+  padding-inline-end: var(--gateway-ui-size-lg) !important;
+  padding-block-start: var(--gateway-ui-size-lg) !important;
+  padding-block-end: var(--gateway-ui-size-lg) !important;
 }
 
-.resultsDisplaySwitchButtons > * {
-  display: flex;
-  align-items: center;
-}
-
-.resultsDisplaySwitchButtons *:not(:last-child) {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
-/* Status colors */
-.statusOk {
-  --conduction-tag-background-color: var(--gateway-ui-color-green);
-  --conduction-tag-color: var(--gateway-ui-color-white);
-}
-
-.statusFailed {
-  --conduction-tag-background-color: var(--gateway-ui-color-red);
-  --conduction-tag-color: var(--gateway-ui-color-white);
+.tab {
+  max-width: unset !important;
 }

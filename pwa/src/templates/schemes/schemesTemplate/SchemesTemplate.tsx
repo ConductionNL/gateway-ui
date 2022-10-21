@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./SchemesTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { QueryClient } from "react-query";
@@ -14,6 +14,7 @@ import { useScheme } from "../../../hooks/scheme";
 
 export const SchemesTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = new QueryClient();
   const _useScheme = useScheme(queryClient);
@@ -34,31 +35,50 @@ export const SchemesTemplate: React.FC = () => {
       {getSchemes.isError && "Error..."}
 
       {getSchemes.isSuccess && (
-        <>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader></TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {getSchemes.data.map((scheme) => (
-                <TableRow className={styles.tableRow} onClick={() => navigate(`/schemes/${scheme.id}`)} key={scheme.id}>
-                  <TableCell>{scheme.name}</TableCell>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader></TableHeader>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {getSchemes.data.map((scheme) => (
+              <TableRow className={styles.tableRow} onClick={() => navigate(`/schemes/${scheme.id}`)} key={scheme.id}>
+                <TableCell>{scheme.name}</TableCell>
 
-                  <TableCell onClick={() => navigate(`/schemes/${scheme.id}`)}>
-                    <Link icon={<ArrowRightIcon />} iconAlign="start">
-                      {t("Details")}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </>
+                <TableCell onClick={() => navigate(`/schemes/${scheme.id}`)}>
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       )}
+
       {getSchemes.isLoading && <Skeleton height="200px" />}
+
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getSchemes.isLoading && <Skeleton height="200px" />}
+
+            {getSchemes.isSuccess && <span>Logs</span>}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };

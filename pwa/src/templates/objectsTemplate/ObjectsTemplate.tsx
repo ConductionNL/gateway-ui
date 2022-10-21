@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./ObjectsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -14,6 +14,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export const ObjectsTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = new QueryClient();
   const _useObject = useObject(queryClient);
@@ -59,6 +60,25 @@ export const ObjectsTemplate: React.FC = () => {
       )}
 
       {getObject.isLoading && <Skeleton height="200px" />}
+
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getObject.isLoading && <Skeleton height="200px" />}
+            {getObject.isSuccess && <span>Logs</span>}
+          </TabPanel>
+        </TabContext>
+      </div>
     </Container>
   );
 };

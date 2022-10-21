@@ -7,9 +7,9 @@ import Me from "./services/me";
 
 // Resources
 import Action from "./resources/action";
-import Sources from "./resources/sources";
+import Source from "./resources/source";
 import Cronjob from "./resources/cronjob";
-import Endpoints from "./resources/endpoints";
+import Endpoint from "./resources/endpoint";
 import Object from "./resources/object";
 import Scheme from "./resources/scheme";
 import Log from "./resources/log";
@@ -79,16 +79,16 @@ export default class APIService {
     return new Action(this.BaseClient);
   }
 
-  public get Sources(): Sources {
-    return new Sources(this.BaseClient);
+  public get Sources(): Source {
+    return new Source(this.BaseClient);
   }
 
   public get Cronjob(): Cronjob {
     return new Cronjob(this.BaseClient);
   }
 
-  public get Endpoints(): Endpoints {
-    return new Endpoints(this.BaseClient);
+  public get Endpoints(): Endpoint {
+    return new Endpoint(this.BaseClient);
   }
 
   public get Object(): Object {

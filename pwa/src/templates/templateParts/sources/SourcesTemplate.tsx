@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as styles from "./SourcesTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { useSources } from "../../../hooks/sources";
+import { useSource } from "../../../hooks/source";
 import { QueryClient } from "react-query";
 import { Tag } from "@conduction/components";
 import _ from "lodash";
@@ -17,9 +17,10 @@ import Skeleton from "react-loading-skeleton";
 
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = new QueryClient();
-  const _useSources = useSources(queryClient);
+  const _useSources = useSource(queryClient);
   const getSources = _useSources.getAll();
 
   return (
@@ -51,31 +52,48 @@ export const SourcesTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getSources.data.map((source) => (
-              <>
-                <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
-                  <TableCell>{source.name}</TableCell>
-                  <TableCell>
-                    <div className={clsx(styles[source.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                      <Tag label={source.status ?? "-"} />
-                    </div>
-                  </TableCell>
-                  <TableCell>{source.lastRun ?? "-"}</TableCell>
-                  <TableCell>{source.sync ?? "-"}</TableCell>
-                  <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
-                  <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
-                  <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
-                    <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
-                      {t("Details")}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              </>
+              <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
+                <TableCell>{source.name}</TableCell>
+                <TableCell>
+                  <div className={clsx(styles[source.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                    <Tag label={source.status ?? "-"} />
+                  </div>
+                </TableCell>
+                <TableCell>{source.lastRun ?? "-"}</TableCell>
+                <TableCell>{source.sync ?? "-"}</TableCell>
+                <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
+                <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
+                <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
+                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
+              </TableRow>
             ))}
           </TableBody>
         </Table>
       )}
 
       {getSources.isLoading && <Skeleton height="200px" />}
+
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.toString()}>
+          <Tabs
+            value={currentTab}
+            onChange={(_, newValue: number) => {
+              setCurrentTab(newValue);
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Logs")} value={0} />
+          </Tabs>
+
+          <TabPanel className={styles.tabPanel} value="0">
+            {getSources.isLoading && <Skeleton height="200px" />}
+            {getSources.isSuccess && <span>Logs</span>}{" "}
+          </TabPanel>
+        </TabContext>
+      </div>
     </div>
   );
 };

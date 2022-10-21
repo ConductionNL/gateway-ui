@@ -1,7 +1,7 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
-export default class Sources {
+export default class Endpoint {
   private _instance: AxiosInstance;
 
   constructor(_instance: AxiosInstance) {
@@ -9,13 +9,13 @@ export default class Sources {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/gateways");
+    const { data } = await Send(this._instance, "GET", "/admin/endpoints");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/gateways/${id}`);
+    const { data } = await Send(this._instance, "GET", `/admin/endpoints/${id}`);
 
     return data;
   };
@@ -23,7 +23,7 @@ export default class Sources {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/gateways/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/endpoints/${id}`);
     return data;
   };
 
@@ -31,11 +31,11 @@ export default class Sources {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/gateways/${id}`, payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/endpoints/${id}`, payload);
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/gateways", payload);
+    const { data } = await Send(this._instance, "POST", "/admin/endpoints", payload);
     return data;
   };
 }
