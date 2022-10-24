@@ -13,12 +13,12 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
 
-interface EditObjectFormTemplateProps {
+interface EditDataLayerFormTemplateProps {
   object: any;
   objectId?: string;
 }
 
-export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, objectId }) => {
+export const EditDataLayerFormTemplate: React.FC<EditDataLayerFormTemplateProps> = ({ object, objectId }) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -56,7 +56,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <section className={styles.section}>
-        <Heading1>{t("Edit Object")}</Heading1>
+        <Heading1>{t("Edit Data Layer")}</Heading1>
 
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} type="submit" disabled={loading}>

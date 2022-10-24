@@ -12,11 +12,11 @@ import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useObject } from "../../../hooks/object";
 
-interface CreateObjectFormTemplateProps {
+interface CreateDataLayerFormTemplateProps {
   objectId?: string;
 }
 
-export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> = ({ objectId }) => {
+export const CreateDataLayerFormTemplate: React.FC<CreateDataLayerFormTemplateProps> = ({ objectId }) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -40,7 +40,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Create Object")}</Heading1>
+          <Heading1>{t("Create Data layer")}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

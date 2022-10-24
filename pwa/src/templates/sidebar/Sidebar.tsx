@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
   faClipboardList,
+  faDatabase,
   faGear,
   faGrip,
   faHome,
@@ -65,10 +66,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       current: pathname.includes("/endpoints"),
     },
     {
-      label: "Objects",
-      icon: <FontAwesomeIcon icon={faObjectGroup} />,
-      onClick: () => navigate("/objects"),
-      current: pathname.includes("/objects"),
+      label: "Data Layers",
+      icon: <FontAwesomeIcon icon={faDatabase} />,
+      onClick: () => navigate("/datalayers"),
+      current: pathname.includes("/datalayers"),
     },
     {
       label: "Schemes",
