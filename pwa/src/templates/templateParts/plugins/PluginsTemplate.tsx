@@ -11,13 +11,12 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import clsx from "clsx";
+import { TEMPORARY_PLUGINS } from "../../../data/plugin";
 
 export const PluginsTemplate: React.FC = () => {
   const { t } = useTranslation();
 
-  const queryClient = new QueryClient();
-  const _usePlugin = usePlugin(queryClient);
-  const getPlugins = _usePlugin.getAll();
+  const tempPlugin = TEMPORARY_PLUGINS;
 
   return (
     <Container layoutClassName={styles.container}>
@@ -31,29 +30,21 @@ export const PluginsTemplate: React.FC = () => {
         </div>
       </section>
 
-      {getPlugins.isError && "Error..."}
+      {!tempPlugin && "Error..."}
 
-      {getPlugins.isSuccess && (
+      {tempPlugin && (
         <Table>
           <TableHead>
             <TableRow>
               <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Status")}</TableHeader>
-              <TableHeader>{t("Description")}</TableHeader>
               <TableHeader></TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
-            {getPlugins.data.map((plugin: any) => (
+            {tempPlugin.map((plugin: any) => (
               <TableRow className={styles.tableRow} onClick={() => navigate(`/plugins/${plugin.id}`)} key={plugin.id}>
                 <TableCell>{plugin.name ?? "-"}</TableCell>
-                <TableCell>
-                  <div className={clsx(styles[plugin.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                    <Tag label={plugin.status?.toString() ?? "-"} />
-                  </div>
-                </TableCell>
-                <TableCell>{plugin.description ?? "-"}</TableCell>
-                <TableCell onClick={() => navigate(`/cronjobs/${plugin.id}`)}>
+                <TableCell onClick={() => navigate(`/plugins/${plugin.id}`)}>
                   <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>
@@ -63,8 +54,6 @@ export const PluginsTemplate: React.FC = () => {
           </TableBody>
         </Table>
       )}
-
-      {getPlugins.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };

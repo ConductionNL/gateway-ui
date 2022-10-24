@@ -23,25 +23,12 @@ export const EditPluginFormTemplate: React.FC<EditPluginFormTemplateProps> = ({ 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
-  const queryClient = useQueryClient();
-  const _usePlugin = usePlugin(queryClient);
-  const createOrEditPlugin = _usePlugin.createOrEdit(pluginId);
-  const deletePlugin = _usePlugin.remove();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
   } = useForm();
-
-  const onSubmit = (data: any): void => {
-    createOrEditPlugin.mutate({ payload: data, id: pluginId });
-  };
-
-  const handleDelete = (id: string): void => {
-    deletePlugin.mutateAsync({ id: id });
-  };
 
   const handleSetFormValues = (plugin: any): void => {
     const basicFields: string[] = ["name"];
@@ -53,7 +40,7 @@ export const EditPluginFormTemplate: React.FC<EditPluginFormTemplateProps> = ({ 
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form>
       <section className={styles.section}>
         <Heading1>{t("Edit Plugin")}</Heading1>
 

@@ -5,6 +5,7 @@ import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { EditPluginFormTemplate } from "../pluginsForm/EditPluginFormTemplate";
+import { TEMPORARY_PLUGINS } from "../../../data/plugin";
 
 interface PluginDetailPageProps {
   pluginId: string;
@@ -13,16 +14,15 @@ interface PluginDetailPageProps {
 export const PluginDetailTemplate: React.FC<PluginDetailPageProps> = ({ pluginId }) => {
   const { t } = useTranslation();
 
-  const queryClient = new QueryClient();
-  const _usePlugin = usePlugin(queryClient);
-  const getPlugins = _usePlugin.getOne(pluginId);
+  const tempPlugin = TEMPORARY_PLUGINS.find((plugin) => {
+    return plugin.id === pluginId;
+  });
 
   return (
     <Container layoutClassName={styles.container}>
-      {getPlugins.isLoading && <Skeleton height="200px" />}
-      {getPlugins.isError && "Error..."}
+      {!tempPlugin && "Error..."}
 
-      {getPlugins.isSuccess && <EditPluginFormTemplate plugin={getPlugins.data} {...{ pluginId }} />}
+      {tempPlugin && <EditPluginFormTemplate plugin={tempPlugin} {...{ pluginId }} />}
     </Container>
   );
 };

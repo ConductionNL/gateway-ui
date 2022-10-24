@@ -21,19 +21,11 @@ export const CreatePluginFormTemplate: React.FC<CreatePluginFormTemplateProps> =
   const [loading, setLoading] = React.useState<boolean>(true);
   const [formError, setFormError] = React.useState<string>("");
 
-  const queryClient = useQueryClient();
-  const _usePlugin = usePlugin(queryClient);
-  const createOrEditPlugin = _usePlugin.createOrEdit(pluginId);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  const onSubmit = (data: any): void => {
-    createOrEditPlugin.mutate({ payload: data, id: pluginId });
-  };
 
   return (
     <>
