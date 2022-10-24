@@ -14,7 +14,6 @@ import { useCollection } from "../../hooks/collection";
 
 export const CollectionsTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = new QueryClient();
   const _useCollection = useCollection(queryClient);
@@ -62,25 +61,6 @@ export const CollectionsTemplate: React.FC = () => {
       )}
 
       {getCollection.isLoading && <Skeleton height="200px" />}
-
-      <div className={styles.tabContainer}>
-        <TabContext value={currentTab.toString()}>
-          <Tabs
-            value={currentTab}
-            onChange={(_, newValue: number) => {
-              setCurrentTab(newValue);
-            }}
-            variant="scrollable"
-          >
-            <Tab className={styles.tab} label={t("Logs")} value={0} />
-          </Tabs>
-
-          <TabPanel className={styles.tabPanel} value="0">
-            {getCollection.isLoading && <Skeleton height="200px" />}
-            {getCollection.isSuccess && <span>Logs</span>}{" "}
-          </TabPanel>
-        </TabContext>
-      </div>
     </Container>
   );
 };

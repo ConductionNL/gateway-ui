@@ -42,7 +42,6 @@ export const useCollection = (queryClient: QueryClient) => {
         if (collectionId) {
           updateItem(queryClient, "collections", newCollection);
           navigate("/collections");
-          console.log({ id: collectionId });
         }
 
         if (!collectionId) {
