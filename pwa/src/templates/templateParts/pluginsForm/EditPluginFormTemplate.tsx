@@ -9,7 +9,6 @@ import APIService from "../../../apiService/apiService";
 import { InputText } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useQueryClient } from "react-query";
 import clsx from "clsx";
 
 interface EditPluginFormTemplateProps {

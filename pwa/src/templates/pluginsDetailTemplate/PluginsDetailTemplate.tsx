@@ -1,9 +1,7 @@
 import * as React from "react";
 import * as styles from "./PluginsDetailTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
-import Skeleton from "react-loading-skeleton";
 import { EditPluginFormTemplate } from "../templateParts/pluginsForm/EditPluginFormTemplate";
 import { TEMPORARY_PLUGINS } from "../../data/plugin";
 
