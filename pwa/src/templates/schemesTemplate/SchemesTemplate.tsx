@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { useScheme } from "../../../hooks/scheme";
+import { useScheme } from "../../hooks/scheme";
 
 export const SchemesTemplate: React.FC = () => {
   const { t } = useTranslation();

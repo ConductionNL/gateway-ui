@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { useScheme } from "../../../hooks/scheme";
-import { EditSchemesFormTemplate } from "../../templateParts/schemesForm/EditSchemesFormTemplate";
+import { useScheme } from "../../hooks/scheme";
+import { EditSchemesFormTemplate } from "../templateParts/schemesForm/EditSchemesFormTemplate";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 
 interface SchemesDetailPageProps {

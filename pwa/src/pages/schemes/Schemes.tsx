@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DashboardTemplate } from "../../templates/dashboard/DashboardTemplate";
-import { SchemesTemplate } from "../../templates/schemes/schemesTemplate/SchemesTemplate";
+import { SchemesTemplate } from "../../templates/schemesTemplate/SchemesTemplate";
 
 const SchemesPage: React.FC = () => (
   <DashboardTemplate>
