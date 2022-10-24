@@ -54,6 +54,10 @@ module.exports = {
             crumbLabel: "Log",
           },
           {
+            pathname: "/plugins/[pluginId]",
+            crumbLabel: "Plugin",
+          },
+          {
             pathname: "/collections/[collectionId]",
             crumbLabel: "collection",
           },
