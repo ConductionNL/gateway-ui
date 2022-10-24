@@ -11,7 +11,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import clsx from "clsx";
-import { TEMPORARY_PLUGINS } from "../../../data/plugin";
+import { TEMPORARY_PLUGINS } from "../../data/plugin";
 
 export const PluginsTemplate: React.FC = () => {
   const { t } = useTranslation();
