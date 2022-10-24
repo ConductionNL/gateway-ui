@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
   faClipboardList,
+  faDiagramProject,
   faGear,
   faGrip,
   faHome,
@@ -19,6 +20,7 @@ import {
   faLocationDot,
   faObjectGroup,
   faPlay,
+  faPuzzlePiece,
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "./../../assets/svgs/conduction-logo.svg";
 
@@ -80,6 +82,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       icon: <FontAwesomeIcon icon={faList} />,
       onClick: () => navigate("/logs"),
       current: pathname.includes("/logs"),
+    },
+    {
+      label: "Plugins",
+      icon: <FontAwesomeIcon icon={faPuzzlePiece} />,
+      onClick: () => navigate("/plugins"),
+      current: pathname.includes("/plugins"),
+    },
+    {
+      label: "Collections",
+      icon: <FontAwesomeIcon icon={faDiagramProject} />,
+      onClick: () => navigate("/collections"),
+      current: pathname.includes("/collections"),
     },
   ];
 
