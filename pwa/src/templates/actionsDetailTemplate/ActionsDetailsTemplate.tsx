@@ -35,12 +35,12 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
               <TableHeader>{t("Subscribed Throws")}</TableHeader>
             </TableHead>
             <TableBody>
-              <TableRow>
-                {getActions.data.throws[0] ?? <TableCell>-</TableCell>}
-                {getActions.data.throws.map((thrown: any) => (
+              {getActions.data.throws?.length === 0 && <TableCell>-</TableCell>}
+              {getActions.data.throws.map((thrown: any) => (
+                <TableRow>
                   <TableCell>{thrown}</TableCell>
-                ))}
-              </TableRow>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         )}
