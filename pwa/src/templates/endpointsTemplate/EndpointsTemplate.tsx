@@ -4,14 +4,14 @@ import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-den
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { useEndpoint } from "../../../hooks/endpoint";
+import { useEndpoint } from "../../hooks/endpoint";
 import { QueryClient } from "react-query";
 import { Container, Tag } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { translateDate } from "../../../services/dateFormat";
+import { translateDate } from "../../services/dateFormat";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
