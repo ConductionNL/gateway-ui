@@ -12,6 +12,7 @@ import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAction } from "../../../hooks/action";
+import { ValidateJson } from "../../../services/ValidateJson";
 
 interface EditActionFormTemplateProps {
   action: any;
@@ -37,6 +38,9 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   } = useForm();
 
   const onSubmit = (data: any): void => {
+    if (ValidateJson(data.conditions)) data.conditions = JSON.parse(data.conditions)
+	else return;
+
     createOrEditAction.mutate({ payload: data, id: actionId });
   };
 
@@ -45,8 +49,10 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   };
 
   const handleSetFormValues = (cronjob: any): void => {
-    const basicFields: string[] = ["name", "description", "listens", "priority", "async", "isLackable", "conditions"];
+    const basicFields: string[] = ["name", "description", "listens", "priority", "async", "isLackable"];
     basicFields.forEach((field) => setValue(field, cronjob[field]));
+
+    setValue("conditions", JSON.stringify(cronjob["conditions"], null, 4));
   };
 
   React.useEffect(() => {
@@ -79,12 +85,14 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Description")}</FormFieldLabel>
                 <Textarea {...{ register, errors }} name="description" disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Listens")}</FormFieldLabel>
@@ -96,18 +104,21 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                 />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Throws")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="throws" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Class")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="class" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Priority")}</FormFieldLabel>
@@ -119,18 +130,21 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                 />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("async")}</FormFieldLabel>
                 <InputCheckbox {...{ register, errors }} label="on" name="async" validation={{ required: true }} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
                 <InputCheckbox {...{ register, errors }} label="on" name="islockable" validation={{ required: true }} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
