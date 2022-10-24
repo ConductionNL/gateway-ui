@@ -8,7 +8,7 @@ import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { useLog } from "../../../hooks/log";
+import { useLog } from "../../hooks/log";
 
 export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();

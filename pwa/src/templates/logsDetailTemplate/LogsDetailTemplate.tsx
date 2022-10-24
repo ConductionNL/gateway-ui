@@ -6,7 +6,7 @@ import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import Skeleton from "react-loading-skeleton";
-import { useLog } from "../../../hooks/log";
+import { useLog } from "../../hooks/log";
 
 interface LogsDetailTemplateProps {
   logId: string;
