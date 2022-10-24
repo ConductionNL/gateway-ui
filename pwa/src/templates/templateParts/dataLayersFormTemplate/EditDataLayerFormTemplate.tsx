@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./ObjectsFormTemplate.module.css";
+import * as styles from "./DataLayerFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
@@ -54,33 +54,35 @@ export const EditDataLayerFormTemplate: React.FC<EditDataLayerFormTemplateProps>
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <section className={styles.section}>
-        <Heading1>{t("Edit Data Layer")}</Heading1>
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <section className={styles.section}>
+          <Heading1>{t("Edit Data Layer")}</Heading1>
 
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-            <FontAwesomeIcon icon={faFloppyDisk} />
+          <div className={styles.buttons}>
+            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+              <FontAwesomeIcon icon={faFloppyDisk} />
 
-            {t("Save")}
-          </Button>
-          <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
-            <FontAwesomeIcon icon={faTrash} />
-            {t("Delete")}
-          </Button>
+              {t("Save")}
+            </Button>
+            <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+              <FontAwesomeIcon icon={faTrash} />
+              {t("Delete")}
+            </Button>
+          </div>
+        </section>
+        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+        <div className={styles.gridContainer}>
+          <div className={styles.grid}>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+          </div>
         </div>
-      </section>
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-      <div className={styles.container}>
-        <div className={styles.grid}>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Name")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };

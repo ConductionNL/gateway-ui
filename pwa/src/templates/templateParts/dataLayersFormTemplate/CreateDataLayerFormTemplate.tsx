@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./ObjectsFormTemplate.module.css";
+import * as styles from "./DataLayerFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
