@@ -7,6 +7,7 @@ import { Container } from "@conduction/components";
 import { EditCronjobFormTemplate } from "../templateParts/cronjobsForm/EditCronjobFormTemplate";
 import Skeleton from "react-loading-skeleton";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 
 interface CronjobDetailPageProps {
   cronjobId: string;
@@ -22,10 +23,31 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
 
   return (
     <Container layoutClassName={styles.container}>
-      {getCronjob.isLoading && <Skeleton height="200px" />}
       {getCronjob.isError && "Error..."}
 
       {getCronjob.isSuccess && <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />}
+      {getCronjob.isLoading && <Skeleton height="200px" />}
+
+      <div className={styles.tabContainer}>
+        {getCronjob.isSuccess && (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>{t("Subscribed Throws")}</TableHeader>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {getCronjob.data.throws?.length === 0 && <TableCell>-</TableCell>}
+              {getCronjob.data.throws?.map((thrown: any) => (
+                <TableRow>
+                  <TableCell>{thrown}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+        {getCronjob.isLoading && <Skeleton height="100px" />}
+      </div>
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.toString()}>
