@@ -93,7 +93,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   }, []);
 
   return (
-    <>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{t("Edit Source")}</Heading1>
@@ -114,7 +114,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.container}>
+        <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
@@ -208,6 +208,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };

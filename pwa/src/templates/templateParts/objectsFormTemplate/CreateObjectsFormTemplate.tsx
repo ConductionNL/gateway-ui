@@ -37,7 +37,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{t("Create Object")}</Heading1>
@@ -50,7 +50,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.container}>
+        <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
@@ -61,6 +61,6 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };

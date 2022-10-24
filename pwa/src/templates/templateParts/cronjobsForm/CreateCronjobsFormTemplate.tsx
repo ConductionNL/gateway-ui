@@ -37,7 +37,7 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{t("Create Cronjob")}</Heading1>
@@ -50,7 +50,7 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.container}>
+        <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
@@ -97,6 +97,6 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };

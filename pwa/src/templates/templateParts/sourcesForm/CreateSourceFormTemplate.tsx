@@ -56,7 +56,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
   };
 
   return (
-    <Container layoutClassName={styles.container}>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{t("Create Source")}</Heading1>
@@ -69,7 +69,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.container}>
+        <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput className={styles.name}>
@@ -130,15 +130,9 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                 />
               </FormFieldInput>
             </FormField>
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Documentation")}</FormFieldLabel>
-                <Textarea {...{ register, errors }} name="documentation" disabled={loading} />
-              </FormFieldInput>
-            </FormField>
           </div>
         </div>
       </form>
-    </Container>
+    </div>
   );
 };
