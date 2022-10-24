@@ -1,18 +1,18 @@
 import * as React from "react";
-import * as styles from "./ActionDetailsTemplate.module.css";
+import * as styles from "./ActionsDetailsTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import { useAction } from "../../../hooks/action";
+import { useAction } from "../../hooks/action";
 import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { EditActionFormTemplate } from "../actionsForm/EditActionFormTemplate";
+import { EditActionFormTemplate } from "../templateParts/actionsForm/EditActionFormTemplate";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 
-interface ActionDetailsTemplateProps {
+interface ActionsDetailsTemplateProps {
   actionId: string;
 }
 
-export const ActionsDetailTemplate: React.FC<ActionDetailsTemplateProps> = ({ actionId }) => {
+export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ actionId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
 

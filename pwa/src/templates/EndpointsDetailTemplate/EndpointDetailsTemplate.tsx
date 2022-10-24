@@ -1,31 +1,31 @@
 import * as React from "react";
-import * as styles from "./SchemesDetailTemplate.module.css";
+import * as styles from "./EndpointDetailsTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
+import { useEndpoint } from "../../hooks/endpoint";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { useScheme } from "../../../hooks/scheme";
-import { EditSchemesFormTemplate } from "../../templateParts/schemesForm/EditSchemesFormTemplate";
+import { EditEndpointFormTemplate } from "../templateParts/endpointsForm/EditEndpointsFormTemplate";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 
-interface SchemesDetailPageProps {
-  schemeId: string;
+interface EndpointDetailsTemplateProps {
+  endpointId: string;
 }
 
-export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ schemeId }) => {
+export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({ endpointId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = new QueryClient();
-  const _useScheme = useScheme(queryClient);
-  const getScheme = _useScheme.getOne(schemeId);
+  const _useEndpoints = useEndpoint(queryClient);
+  const getEndpoints = _useEndpoints.getOne(endpointId);
 
   return (
     <Container layoutClassName={styles.container}>
-      {getScheme.isError && "Error..."}
+      {getEndpoints.isLoading && <Skeleton height="200px" />}
+      {getEndpoints.isError && "Error..."}
 
-      {getScheme.isSuccess && <EditSchemesFormTemplate scheme={getScheme.data} {...{ schemeId }} />}
-      {getScheme.isLoading && <Skeleton height="200px" />}
+      {getEndpoints.isSuccess && <EditEndpointFormTemplate endpoint={getEndpoints.data} {...{ endpointId }} />}
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.toString()}>
@@ -40,9 +40,8 @@ export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ scheme
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getScheme.isLoading && <Skeleton height="200px" />}
-
-            {getScheme.isSuccess && <span>Logs</span>}
+            {getEndpoints.isLoading && <Skeleton height="200px" />}
+            {getEndpoints.isSuccess && <span>Logs</span>}
           </TabPanel>
         </TabContext>
       </div>

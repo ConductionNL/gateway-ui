@@ -69,61 +69,59 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <section className={styles.section}>
-        <Heading1>{t("Edit Scheme")}</Heading1>
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <section className={styles.section}>
+          <Heading1>{t("Edit Scheme")}</Heading1>
 
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-            <FontAwesomeIcon icon={faFloppyDisk} />
+          <div className={styles.buttons}>
+            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+              <FontAwesomeIcon icon={faFloppyDisk} />
 
-            {t("Save")}
-          </Button>
-          <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
-            <FontAwesomeIcon icon={faTrash} />
-            {t("Delete")}
-          </Button>
+              {t("Save")}
+            </Button>
+            <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+              <FontAwesomeIcon icon={faTrash} />
+              {t("Delete")}
+            </Button>
+          </div>
+        </section>
+        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+        <div className={styles.gridContainer}>
+          <div className={styles.grid}>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                <Textarea {...{ register, errors }} name="description" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Function")}</FormFieldLabel>
+                <SelectSingle
+                  name="function"
+                  options={functionSelectOptions}
+                  {...{ control, errors }}
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
+              </FormFieldInput>
+            </FormField>
+
+            <FormFieldInput>
+              <FormFieldLabel>{t("Schema")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="schema" validation={{ required: true }} disabled={loading} />
+            </FormFieldInput>
+          </div>
         </div>
-      </section>
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-      <div className={styles.container}>
-        <div className={styles.grid}>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Name")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Description")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="description" disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Function")}</FormFieldLabel>
-              <SelectSingle
-                name="function"
-                options={functionSelectOptions}
-                {...{ control, errors }}
-                validation={{ required: true }}
-                disabled={loading}
-              />
-            </FormFieldInput>
-          </FormField>
-
-          <FormFieldInput>
-            <FormFieldLabel>{t("Schema")}</FormFieldLabel>
-            <InputText {...{ register, errors }} name="schema" validation={{ required: true }} disabled={loading} />
-          </FormFieldInput>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
-
-// description (textarea)
-// function (dropdown "noFunction","organization", "person", "user", "userGroup", "processingLog")
-// schema (string)

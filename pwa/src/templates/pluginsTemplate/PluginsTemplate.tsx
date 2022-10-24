@@ -42,7 +42,7 @@ export const PluginsTemplate: React.FC = () => {
               <TableRow className={styles.tableRow} onClick={() => navigate(`/plugins/${plugin.id}`)} key={plugin.id}>
                 <TableCell>{plugin.name ?? "-"}</TableCell>
                 <TableCell onClick={() => navigate(`/plugins/${plugin.id}`)}>
-                  <Link className={styles.detailsLink} icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>

@@ -1,31 +1,31 @@
 import * as React from "react";
-import * as styles from "./EndpointDetailsTemplate.module.css";
+import * as styles from "./SchemesDetailTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
-import { useEndpoint } from "../../../hooks/endpoint";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { EditEndpointFormTemplate } from "../endpointsForm/EditEndpointsFormTemplate";
+import { useScheme } from "../../hooks/scheme";
+import { EditSchemesFormTemplate } from "../templateParts/schemesForm/EditSchemesFormTemplate";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 
-interface EndpointDetailsTemplateProps {
-  endpointId: string;
+interface SchemesDetailPageProps {
+  schemeId: string;
 }
 
-export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({ endpointId }) => {
+export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ schemeId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = new QueryClient();
-  const _useEndpoints = useEndpoint(queryClient);
-  const getEndpoints = _useEndpoints.getOne(endpointId);
+  const _useScheme = useScheme(queryClient);
+  const getScheme = _useScheme.getOne(schemeId);
 
   return (
     <Container layoutClassName={styles.container}>
-      {getEndpoints.isLoading && <Skeleton height="200px" />}
-      {getEndpoints.isError && "Error..."}
+      {getScheme.isError && "Error..."}
 
-      {getEndpoints.isSuccess && <EditEndpointFormTemplate endpoint={getEndpoints.data} {...{ endpointId }} />}
+      {getScheme.isSuccess && <EditSchemesFormTemplate scheme={getScheme.data} {...{ schemeId }} />}
+      {getScheme.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.toString()}>
@@ -40,8 +40,9 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getEndpoints.isLoading && <Skeleton height="200px" />}
-            {getEndpoints.isSuccess && <span>Logs</span>}
+            {getScheme.isLoading && <Skeleton height="200px" />}
+
+            {getScheme.isSuccess && <span>Logs</span>}
           </TabPanel>
         </TabContext>
       </div>

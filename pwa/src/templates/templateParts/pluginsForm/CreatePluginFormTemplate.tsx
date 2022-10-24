@@ -27,7 +27,7 @@ export const CreatePluginFormTemplate: React.FC<CreatePluginFormTemplateProps> =
   } = useForm();
 
   return (
-    <>
+    <div className={styles.container}>
       <form>
         <section className={styles.section}>
           <Heading1>{t("Create Plugin")}</Heading1>
@@ -40,7 +40,7 @@ export const CreatePluginFormTemplate: React.FC<CreatePluginFormTemplateProps> =
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.container}>
+        <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
@@ -51,6 +51,6 @@ export const CreatePluginFormTemplate: React.FC<CreatePluginFormTemplateProps> =
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };
