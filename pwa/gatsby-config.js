@@ -53,6 +53,10 @@ module.exports = {
             pathname: "/logs/[logId]",
             crumbLabel: "Log",
           },
+          {
+            pathname: "/collections/[collectionId]",
+            crumbLabel: "collection",
+          },
         ],
       },
     },
