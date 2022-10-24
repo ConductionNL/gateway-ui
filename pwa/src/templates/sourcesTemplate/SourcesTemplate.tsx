@@ -4,13 +4,13 @@ import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeen
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { useSource } from "../../../hooks/source";
+import { useSource } from "../../hooks/source";
 import { QueryClient } from "react-query";
 import { Tag } from "@conduction/components";
 import _ from "lodash";
 import clsx from "clsx";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { translateDate } from "../../../services/dateFormat";
+import { translateDate } from "../../services/dateFormat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
@@ -64,7 +64,7 @@ export const SourcesTemplate: React.FC = () => {
                 <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
                 <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
                 <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
-                  <Link  icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>
