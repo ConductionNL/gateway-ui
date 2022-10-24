@@ -1,7 +1,7 @@
 import { PageProps } from "gatsby";
 import * as React from "react";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
-import { ObjectDetailTemplate } from "../../../templates/ojbectDetailTemplate/ObjectDetailTemplate";
+import { ObjectDetailTemplate } from "../../../templates/ojbectsDetailTemplate/ObjectsDetailTemplate";
 import { CreateObjectFormTemplate } from "../../../templates/templateParts/objectsFormTemplate/CreateObjectsFormTemplate";
 
 const ObjectDetailPage: React.FC<PageProps> = (props: PageProps) => (

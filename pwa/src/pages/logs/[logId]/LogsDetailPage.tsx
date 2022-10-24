@@ -1,7 +1,7 @@
 import { PageProps } from "gatsby";
 import * as React from "react";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
-import { LogsDetailTemplate } from "../../../templates/logs/logsDetailTemplate/LogsDetailTemplate";
+import { LogsDetailTemplate } from "../../../templates/logsDetailTemplate/LogsDetailTemplate";
 
 const LogsDetailPage: React.FC<PageProps> = (props: PageProps) => (
   <DashboardTemplate>

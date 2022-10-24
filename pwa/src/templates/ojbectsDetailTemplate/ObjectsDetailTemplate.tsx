@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./ObjectDetailTemplate.module.css";
+import * as styles from "./ObjectsDetailTemplate.module.css";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";

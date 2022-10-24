@@ -1,10 +1,10 @@
 import * as React from "react";
-import * as styles from "./CronjobTemplate.module.css";
+import * as styles from "./CronjobsTemplate.module.css";
 import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { QueryClient } from "react-query";
-import { useCronjob } from "../../../hooks/cronjob";
+import { useCronjob } from "../../hooks/cronjob";
 import { navigate } from "gatsby";
 import { Container, Tag } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

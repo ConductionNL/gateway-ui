@@ -1,10 +1,10 @@
 import * as React from "react";
-import * as styles from "./CronjobDetailsTemplate.module.css";
+import * as styles from "./CronjobsDetailsTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
-import { useCronjob } from "../../../hooks/cronjob";
+import { useCronjob } from "../../hooks/cronjob";
 import { Container } from "@conduction/components";
-import { EditCronjobFormTemplate } from "../cronjobsForm/EditCronjobFormTemplate";
+import { EditCronjobFormTemplate } from "../templateParts/cronjobsForm/EditCronjobFormTemplate";
 import Skeleton from "react-loading-skeleton";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 
