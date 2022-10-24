@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./SourcesTemplate.module.css";
-import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -17,7 +17,6 @@ import Skeleton from "react-loading-skeleton";
 
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = new QueryClient();
   const _useSources = useSource(queryClient);
@@ -75,25 +74,6 @@ export const SourcesTemplate: React.FC = () => {
       )}
 
       {getSources.isLoading && <Skeleton height="200px" />}
-
-      <div className={styles.tabContainer}>
-        <TabContext value={currentTab.toString()}>
-          <Tabs
-            value={currentTab}
-            onChange={(_, newValue: number) => {
-              setCurrentTab(newValue);
-            }}
-            variant="scrollable"
-          >
-            <Tab className={styles.tab} label={t("Logs")} value={0} />
-          </Tabs>
-
-          <TabPanel className={styles.tabPanel} value="0">
-            {getSources.isLoading && <Skeleton height="200px" />}
-            {getSources.isSuccess && <span>Logs</span>}{" "}
-          </TabPanel>
-        </TabContext>
-      </div>
     </div>
   );
 };
