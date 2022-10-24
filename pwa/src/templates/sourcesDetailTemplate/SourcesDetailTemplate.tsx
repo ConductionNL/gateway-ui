@@ -4,7 +4,7 @@ import { QueryClient } from "react-query";
 import _ from "lodash";
 import { useSource } from "../../hooks/source";
 import { Container } from "@conduction/components";
-import { SourcesFormTemplate } from "../templateParts/sourcesForm/SourcesFormTemplate";
+import { SourcesFormTemplate } from "../templateParts/sourcesForm/EditSourcesFormTemplate";
 import Skeleton from "react-loading-skeleton";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";

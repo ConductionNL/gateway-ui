@@ -13,6 +13,7 @@ import Endpoint from "./resources/endpoint";
 import Object from "./resources/object";
 import Scheme from "./resources/scheme";
 import Log from "./resources/log";
+import Collection from "./resources/collection";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -101,6 +102,10 @@ export default class APIService {
 
   public get Log(): Log {
     return new Log(this.BaseClient);
+  }
+
+  public get Collection(): Collection {
+    return new Collection(this.BaseClient);
   }
 
   // Services

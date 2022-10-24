@@ -1,7 +1,7 @@
 import * as React from "react";
 import { PageProps } from "gatsby";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
-import { ActionsDetailTemplate } from "../../../templates/templateParts/actions/ActionDetailsTemplate";
+import { ActionsDetailTemplate } from "../../../templates/actionsDetailTemplate/ActionsDetailsTemplate";
 import { CreateActionFormTemplate } from "../../../templates/templateParts/actionsForm/CreateActionFormTemplate";
 
 const ActionsPage: React.FC<PageProps> = (props: PageProps) => (

@@ -54,85 +54,92 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <section className={styles.section}>
-        <Heading1>{t("Edit Action")}</Heading1>
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <section className={styles.section}>
+          <Heading1>{t("Edit Action")}</Heading1>
 
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-            <FontAwesomeIcon icon={faFloppyDisk} />
-            {t("Save")}
-          </Button>
-          <Button className={clsx(styles.buttonIcon, styles.deleteButton)} disabled={loading}>
-            <FontAwesomeIcon icon={faTrash} />
-            {t("Delete")}
-          </Button>
+          <div className={styles.buttons}>
+            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+              <FontAwesomeIcon icon={faFloppyDisk} />
+              {t("Save")}
+            </Button>
+            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} disabled={loading}>
+              <FontAwesomeIcon icon={faTrash} />
+              {t("Delete")}
+            </Button>
+          </div>
+        </section>
+        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+        <div className={styles.gridContainer}>
+          <div className={styles.grid}>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                <Textarea {...{ register, errors }} name="description" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Listens")}</FormFieldLabel>
+                <InputText
+                  {...{ register, errors }}
+                  name="listens"
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Throws")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="throws" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Class")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="class" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Priority")}</FormFieldLabel>
+                <InputNumber
+                  {...{ register, errors }}
+                  name="priority"
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("async")}</FormFieldLabel>
+                <InputCheckbox {...{ register, errors }} label="on" name="async" validation={{ required: true }} />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
+                <InputCheckbox {...{ register, errors }} label="on" name="islockable" validation={{ required: true }} />
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
+                <Textarea {...{ register, errors }} name="conditions" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+          </div>
         </div>
-      </section>
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-      <div className={styles.container}>
-        <div className={styles.grid}>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Name")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Description")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="description" disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Listens")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="listens" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="throws" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Class")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="class" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Priority")}</FormFieldLabel>
-              <InputNumber
-                {...{ register, errors }}
-                name="priority"
-                validation={{ required: true }}
-                disabled={loading}
-              />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("async")}</FormFieldLabel>
-              <InputCheckbox {...{ register, errors }} label="on" name="async" validation={{ required: true }} />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-              <InputCheckbox {...{ register, errors }} label="on" name="islockable" validation={{ required: true }} />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="conditions" disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };

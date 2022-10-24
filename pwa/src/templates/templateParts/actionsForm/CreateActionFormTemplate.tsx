@@ -37,7 +37,7 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <form>
         <section className={styles.section}>
           <Heading1>{t("Create Action")}</Heading1>
@@ -50,7 +50,7 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.container}>
+        <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
@@ -119,6 +119,6 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };
