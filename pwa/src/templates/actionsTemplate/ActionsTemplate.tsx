@@ -1,8 +1,8 @@
 import * as React from "react";
-import * as styles from "./ActionTemplate.module.css";
+import * as styles from "./ActionsTemplate.module.css";
 import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { useAction } from "../../../hooks/action";
+import { useAction } from "../../hooks/action";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { QueryClient } from "react-query";
@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
-import { translateDate } from "../../../services/dateFormat";
+import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
 
 export const ActionsTemplate: React.FC = () => {
