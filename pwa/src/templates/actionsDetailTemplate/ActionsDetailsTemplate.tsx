@@ -7,6 +7,7 @@ import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { EditActionFormTemplate } from "../templateParts/actionsForm/EditActionFormTemplate";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 
 interface ActionsDetailsTemplateProps {
   actionId: string;
@@ -26,6 +27,25 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
 
       {getActions.isSuccess && <EditActionFormTemplate action={getActions.data} {...{ actionId }} />}
       {getActions.isLoading && <Skeleton height="200px" />}
+
+      <div className={styles.tabContainer}>
+        {getActions.isSuccess && (
+          <Table>
+            <TableHead>
+              <TableHeader>{t("Subscribed Throws")}</TableHeader>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                {getActions.data.throws[0] ?? <TableCell>-</TableCell>}
+                {getActions.data.throws.map((thrown: any) => (
+                  <TableCell>{thrown}</TableCell>
+                ))}
+              </TableRow>
+            </TableBody>
+          </Table>
+        )}
+        {getActions.isLoading && <Skeleton height="100px" />}
+      </div>
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.toString()}>
