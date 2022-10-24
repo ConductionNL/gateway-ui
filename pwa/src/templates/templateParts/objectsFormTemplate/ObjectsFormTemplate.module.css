@@ -9,6 +9,7 @@
 .gridContainer > *:not(:first-child) {
   margin-block-start: var(--gateway-ui-size-sm);
 }
+
 .section {
   display: flex;
   justify-content: space-between;

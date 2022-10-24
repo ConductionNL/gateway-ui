@@ -39,33 +39,35 @@ export const EditPluginFormTemplate: React.FC<EditPluginFormTemplateProps> = ({ 
   }, []);
 
   return (
-    <form>
-      <section className={styles.section}>
-        <Heading1>{t("Edit Plugin")}</Heading1>
+    <div className={styles.container}>
+      <form>
+        <section className={styles.section}>
+          <Heading1>{t("Edit Plugin")}</Heading1>
 
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-            <FontAwesomeIcon icon={faFloppyDisk} />
+          <div className={styles.buttons}>
+            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+              <FontAwesomeIcon icon={faFloppyDisk} />
 
-            {t("Save")}
-          </Button>
-          <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
-            <FontAwesomeIcon icon={faTrash} />
-            {t("Delete")}
-          </Button>
+              {t("Save")}
+            </Button>
+            <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+              <FontAwesomeIcon icon={faTrash} />
+              {t("Delete")}
+            </Button>
+          </div>
+        </section>
+        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+        <div className={styles.gridContainer}>
+          <div className={styles.grid}>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+          </div>
         </div>
-      </section>
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-      <div className={styles.container}>
-        <div className={styles.grid}>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Name")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };

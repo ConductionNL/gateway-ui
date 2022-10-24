@@ -37,7 +37,7 @@ export const CreateCollectionFormTemplate: React.FC<CreateCollectionFormTemplate
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{t("Create Collection")}</Heading1>
@@ -50,7 +50,7 @@ export const CreateCollectionFormTemplate: React.FC<CreateCollectionFormTemplate
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.container}>
+        <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
@@ -61,6 +61,6 @@ export const CreateCollectionFormTemplate: React.FC<CreateCollectionFormTemplate
           </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };
