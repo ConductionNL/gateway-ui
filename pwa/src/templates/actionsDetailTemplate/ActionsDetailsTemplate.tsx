@@ -25,11 +25,9 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
     <Container layoutClassName={styles.container}>
       {getActions.isError && "Error..."}
 
-      {getActions.isSuccess && <EditActionFormTemplate action={getActions.data} {...{ actionId }} />}
-      {getActions.isLoading && <Skeleton height="200px" />}
-
-      <div className={styles.tabContainer}>
-        {getActions.isSuccess && (
+      {getActions.isSuccess && (
+        <>
+          <EditActionFormTemplate action={getActions.data} {...{ actionId }} />
           <Table>
             <TableHead>
               <TableHeader>{t("Subscribed Throws")}</TableHeader>
@@ -43,9 +41,9 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
               ))}
             </TableBody>
           </Table>
-        )}
-        {getActions.isLoading && <Skeleton height="100px" />}
-      </div>
+        </>
+      )}
+      {getActions.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.toString()}>
