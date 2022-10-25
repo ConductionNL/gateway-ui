@@ -25,11 +25,9 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
     <Container layoutClassName={styles.container}>
       {getCronjob.isError && "Error..."}
 
-      {getCronjob.isSuccess && <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />}
-      {getCronjob.isLoading && <Skeleton height="200px" />}
-
-      <div className={styles.tabContainer}>
-        {getCronjob.isSuccess && (
+      {getCronjob.isSuccess && (
+        <>
+          <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />
           <Table>
             <TableHead>
               <TableRow>
@@ -45,9 +43,9 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
               ))}
             </TableBody>
           </Table>
-        )}
-        {getCronjob.isLoading && <Skeleton height="100px" />}
-      </div>
+        </>
+      )}
+      {getCronjob.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.toString()}>
