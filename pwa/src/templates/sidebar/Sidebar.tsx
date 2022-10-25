@@ -19,7 +19,6 @@ import {
   faHourglass,
   faList,
   faLocationDot,
-  faObjectGroup,
   faPlay,
   faPuzzlePiece,
 } from "@fortawesome/free-solid-svg-icons";

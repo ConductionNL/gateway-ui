@@ -24,7 +24,7 @@ export const DataLayerTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Data layers")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/datalayers/new`)}>
+          <Button className={styles.buttonIcon} onClick={() => navigate("/datalayers/new")}>
             <FontAwesomeIcon icon={faPlus} />
             {t("Add")}
           </Button>
