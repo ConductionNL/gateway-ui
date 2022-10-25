@@ -28,7 +28,7 @@ export const useObject = (queryClient: QueryClient) => {
     useMutation<any, Error, any>(API.Object.delete, {
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "object", variables.id);
-        navigate("/objects");
+        navigate("/datalayers");
       },
       onError: (error) => {
         console.log(error.message);
@@ -40,13 +40,13 @@ export const useObject = (queryClient: QueryClient) => {
       onSuccess: async (newObject) => {
         if (objectId) {
           updateItem(queryClient, "object", newObject);
-          navigate("/objects");
+          navigate("/datalayers");
           console.log({ id: objectId });
         }
 
         if (!objectId) {
           addItem(queryClient, "object", newObject);
-          navigate(`/objects/${newObject.id}`);
+          navigate(`/datalayers/${newObject.id}`);
         }
       },
       onError: (error) => {
