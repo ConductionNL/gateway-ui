@@ -1,0 +1,25 @@
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.formContainer {
+  display: grid;
+  gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}
+
+.formContainer > * > * {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.formFieldHeader {
+  margin-block-end: var(--gateway-ui-size-xs);
+}
+
+.description {
+  display: block;
+  color: var(--gateway-ui-color-darkgrey);
+}

@@ -26,4 +26,5 @@ export const en = {
   ObjectEntities: "ObjectEntities",
   "Back to objects": "Back to objects",
   "Object detail page": "Object detail page",
+  Handler: "Handler",
 };
