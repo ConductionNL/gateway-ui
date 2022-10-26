@@ -29,13 +29,11 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    console.log({ data });
-    // createOrEditAction.mutate({ payload: data, id: actionId });
+    createOrEditAction.mutate({ payload: data, id: actionId });
   };
 
   return (
