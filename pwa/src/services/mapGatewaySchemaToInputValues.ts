@@ -8,7 +8,7 @@ export const mapGatewaySchemaToInputValues = (type: SchemaInputType, schemaValue
       let values = [];
 
       for (const [key, value] of Object.entries(schemaValues)) {
-        values.push({ label: key, value });
+        values.push({ key, value });
       }
 
       return values;

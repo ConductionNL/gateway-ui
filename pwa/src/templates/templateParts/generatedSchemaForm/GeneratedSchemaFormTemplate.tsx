@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, LeadParagraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 
 export type SchemaInputType = "string" | "boolean" | "array";
@@ -107,12 +107,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         )}
 
         {type === "array" && (
-          <SelectCreate
-            options={defaultValue}
-            defaultValue={defaultValue}
-            validation={{ required }}
-            {...{ register, errors, control, disabled, placeholder, name }}
-          />
+          <CreateKeyValue {...{ register, errors, control, disabled, placeholder, name, defaultValue }} />
         )}
 
         {type === "boolean" && (
