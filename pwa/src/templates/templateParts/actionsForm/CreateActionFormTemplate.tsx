@@ -11,8 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useAction } from "../../../hooks/action";
-import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
-import { schema } from "./handlerSchema";
 
 interface CreateActionFormTemplateProps {
   actionId?: string;
@@ -131,8 +129,6 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
               </FormFieldInput>
             </FormField>
           </div>
-
-          <SchemaFormTemplate {...{ schema, register, errors, control }} disabled={loading} />
         </div>
       </form>
     </div>
