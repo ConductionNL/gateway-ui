@@ -66,10 +66,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       current: pathname.includes("/endpoints"),
     },
     {
-      label: "Data Layers",
+      label: "Data layer",
       icon: <FontAwesomeIcon icon={faDatabase} />,
-      onClick: () => navigate("/datalayers"),
-      current: pathname.includes("/datalayers"),
+      onClick: () => navigate("/objects"),
+      current: pathname.includes("/objects"),
     },
     {
       label: "Schemes",

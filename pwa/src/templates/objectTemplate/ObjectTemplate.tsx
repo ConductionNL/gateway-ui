@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./DataLayerTemplate.module.css";
+import * as styles from "./ObjectTemplate.module.css";
 import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
@@ -12,26 +12,26 @@ import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-export const DataLayerTemplate: React.FC = () => {
+export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
 
   const queryClient = new QueryClient();
   const _useObject = useObject(queryClient);
   const getObject = _useObject.getAll();
 
+  if (getObject.isError) return <>Oops, something went wrong...</>;
+
   return (
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
-        <Heading1>{t("Data layers")}</Heading1>
+        <Heading1>{t("Objects")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate("/datalayers/new")}>
+          <Button className={styles.buttonIcon} onClick={() => navigate("/objects/new")}>
             <FontAwesomeIcon icon={faPlus} />
             {t("Add")}
           </Button>
         </div>
       </section>
-
-      {getObject.isError && "Error..."}
 
       {getObject.isSuccess && (
         <Table>
@@ -43,13 +43,14 @@ export const DataLayerTemplate: React.FC = () => {
               <TableHeader></TableHeader>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {getObject.data.map((object) => (
-              <TableRow onClick={() => navigate(`/datalayers/${object.id}`)} key={object.id}>
+              <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
                 <TableCell>{object.id ?? "-"}</TableCell>
                 <TableCell>{object.type?.name ?? "-"}</TableCell>
                 <TableCell>{object.sources ?? "-"}</TableCell>
-                <TableCell onClick={() => navigate(`/datalayers/${object.id}`)}>
+                <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
                   <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>

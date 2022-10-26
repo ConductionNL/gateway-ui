@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./DataLayerFormTemplate.module.css";
+import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
@@ -12,11 +12,11 @@ import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useObject } from "../../../hooks/object";
 
-interface CreateDataLayerFormTemplateProps {
+interface CreateObjectFormTemplateProps {
   objectId?: string;
 }
 
-export const CreateDataLayerFormTemplate: React.FC<CreateDataLayerFormTemplateProps> = ({ objectId }) => {
+export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> = ({ objectId }) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -40,7 +40,7 @@ export const CreateDataLayerFormTemplate: React.FC<CreateDataLayerFormTemplatePr
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Create Data layer")}</Heading1>
+          <Heading1>{t("Create Object")}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

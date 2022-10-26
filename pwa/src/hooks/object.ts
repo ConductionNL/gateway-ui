@@ -24,11 +24,18 @@ export const useObject = (queryClient: QueryClient) => {
       enabled: !!objectId,
     });
 
+  const getSchema = (objectId: string) =>
+    useQuery<any[], Error>(["object_schema", objectId], () => API.Object.getSchema(objectId), {
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Object.delete, {
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "object", variables.id);
-        navigate("/datalayers");
+        navigate("/objects");
       },
       onError: (error) => {
         console.log(error.message);
@@ -40,13 +47,13 @@ export const useObject = (queryClient: QueryClient) => {
       onSuccess: async (newObject) => {
         if (objectId) {
           updateItem(queryClient, "object", newObject);
-          navigate("/datalayers");
+          navigate("/objects");
           console.log({ id: objectId });
         }
 
         if (!objectId) {
           addItem(queryClient, "object", newObject);
-          navigate(`/datalayers/${newObject.id}`);
+          navigate(`/objects/${newObject.id}`);
         }
       },
       onError: (error) => {
@@ -54,5 +61,5 @@ export const useObject = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getOne, getSchema, remove, createOrEdit };
 };

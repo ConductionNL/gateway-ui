@@ -1,10 +1,10 @@
 import * as React from "react";
 import { DashboardTemplate } from "../../templates/dashboard/DashboardTemplate";
-import { DataLayerTemplate } from "../../templates/dataLayerTemplate/DataLayerTemplate";
+import { ObjectTemplate } from "../../templates/objectTemplate/ObjectTemplate";
 
 const ObjectsPage: React.FC = () => (
   <DashboardTemplate>
-    <DataLayerTemplate />
+    <ObjectTemplate />
   </DashboardTemplate>
 );
 
