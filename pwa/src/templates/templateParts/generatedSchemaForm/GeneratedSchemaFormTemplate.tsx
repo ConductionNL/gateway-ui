@@ -5,8 +5,9 @@ import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, LeadParagraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 
-type SchemaInputType = "string" | "boolean" | "array";
+export type SchemaInputType = "string" | "boolean" | "array";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -38,9 +39,9 @@ export const GeneratedSchemaFormTemplate: React.FC<GeneratedSchemaFormTemplatePr
         type: value.type as SchemaInputType,
         name: _.startCase(key),
         placeholder: value.example,
-        defaultValue: value.default,
         description: value.description,
         required: schema.required.includes(key),
+        defaultValue: mapGatewaySchemaToInputValues(value.type, value.default),
       };
 
       setProperties((p) => [...p, property]);
@@ -90,16 +91,6 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   required,
   defaultValue,
 }) => {
-  if (type === "array" && defaultValue) {
-    let _defaultValue = [];
-
-    for (const [key, value] of Object.entries(defaultValue)) {
-      _defaultValue.push({ label: key, value });
-    }
-
-    defaultValue = _defaultValue;
-  }
-
   return (
     <FormField>
       <FormFieldInput>
