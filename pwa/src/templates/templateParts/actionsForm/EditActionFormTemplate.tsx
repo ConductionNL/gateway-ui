@@ -104,7 +104,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             </FormField>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Class")}</FormFieldLabel>
+                <FormFieldLabel>{t("Handler")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="class" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>

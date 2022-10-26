@@ -19,7 +19,7 @@ interface CreateActionFormTemplateProps {
 export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> = ({ actionId }) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
@@ -38,7 +38,7 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
 
   return (
     <div className={styles.container}>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{t("Create Action")}</Heading1>
 
@@ -49,7 +49,9 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
             </Button>
           </div>
         </section>
+
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
@@ -58,12 +60,14 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Description")}</FormFieldLabel>
                 <Textarea {...{ register, errors }} name="description" disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Listens")}</FormFieldLabel>
@@ -75,18 +79,21 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
                 />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Throws")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="throws" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Class")}</FormFieldLabel>
+                <FormFieldLabel>{t("Handler")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="class" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Priority")}</FormFieldLabel>
@@ -98,18 +105,21 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
                 />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("async")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="async" validation={{ required: true }} />
+                <InputCheckbox {...{ register, errors }} label="on" name="async" />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="islockable" validation={{ required: true }} />
+                <InputCheckbox {...{ register, errors }} label="on" name="islockable" />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Conditions")}</FormFieldLabel>

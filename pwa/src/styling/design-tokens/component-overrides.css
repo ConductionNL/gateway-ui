@@ -15,4 +15,6 @@
   );
 
   --conduction-container-max-width: var(--gateway-ui-container-max-width);
+
+  --utrecht-form-input-placeholder-color: var(--denhaag-color-grey-2);
 }
