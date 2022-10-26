@@ -5,10 +5,12 @@ import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, LeadParagraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
+import { InputDate } from "@conduction/components";
+import { InputFloat } from "@conduction/components/lib/components/formFields/input";
 
-export type SchemaInputType = "string" | "boolean" | "array";
+export type SchemaInputType = "string" | "boolean" | "array" | "integer" | "date" | "number" | "object";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -44,7 +46,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
         placeholder: value.example,
         description: value.description,
         required: schema.required.includes(key),
-        defaultValue: mapGatewaySchemaToInputValues(value.type, value.default),
+        defaultValue: mapGatewaySchemaToInputValues(value.type, value.value),
       };
 
       property.type !== "array" && setSimpleProperties((p) => [...p, property]);
@@ -52,7 +54,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
     }
   }, [schema]);
 
-  if (!simpleProperties.length) return <>This schema has no fields.</>;
+  if (!simpleProperties.length && !complexProperties.length) return <>This object's schema has no fields.</>;
 
   return (
     <div className={styles.container}>
@@ -129,9 +131,23 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
+        {type === "integer" && (
+          <InputNumber validation={{ required }} {...{ register, errors, disabled, placeholder, name, defaultValue }} />
+        )}
+
+        {type === "number" && (
+          <InputFloat validation={{ required }} {...{ register, errors, disabled, placeholder, name, defaultValue }} />
+        )}
+
+        {type === "date" && (
+          <InputDate validation={{ required }} {...{ register, errors, disabled, placeholder, name, defaultValue }} />
+        )}
+
         {type === "array" && (
           <CreateKeyValue {...{ register, errors, control, disabled, placeholder, name, defaultValue }} />
         )}
+
+        {type === "object" && <>Updating properties of type object is not yet supported.</>}
       </FormFieldInput>
     </FormField>
   );

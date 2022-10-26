@@ -1,8 +1,6 @@
 import { SchemaInputType } from "../templates/templateParts/schemaForm/SchemaFormTemplate";
 
 export const mapGatewaySchemaToInputValues = (type: SchemaInputType, schemaValues?: any): any => {
-  if (!schemaValues) return;
-
   switch (type) {
     case "array":
       let values = [];
@@ -15,6 +13,9 @@ export const mapGatewaySchemaToInputValues = (type: SchemaInputType, schemaValue
 
     case "boolean":
     case "string":
+    case "integer":
+    case "date":
+    case "number":
       return schemaValues;
   }
 };

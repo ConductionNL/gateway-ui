@@ -45,7 +45,7 @@ export const ObjectTemplate: React.FC = () => {
           </TableHead>
 
           <TableBody>
-            {getObject.data?.map((object) => (
+            {getObject.data.map((object) => (
               <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
                 <TableCell>{object.id ?? "-"}</TableCell>
                 <TableCell>{object.type?.name ?? "-"}</TableCell>
