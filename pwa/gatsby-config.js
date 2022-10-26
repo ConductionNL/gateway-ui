@@ -42,12 +42,12 @@ module.exports = {
             crumbLabel: "Endpoint",
           },
           {
-            pathname: "/datalayers",
-            crumbLabel: "Data layers",
+            pathname: "/objects",
+            crumbLabel: "Objects",
           },
           {
-            pathname: "/datalayers/[dataLayerId]",
-            crumbLabel: "Data layer",
+            pathname: "/objects/[objectId]",
+            crumbLabel: "Object",
           },
           {
             pathname: "/schemes/[schemeId]",

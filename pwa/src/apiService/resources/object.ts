@@ -20,6 +20,18 @@ export default class Sources {
     return data;
   };
 
+  public getSchema = async (id: string): Promise<any> => {
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      return { ...config, headers: { ...config.headers, Accept: "application/json+schema" } };
+    });
+
+    const { data } = await Send(this._instance, "GET", `admin/object_entities/${id}`);
+
+    return data;
+  };
+
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 

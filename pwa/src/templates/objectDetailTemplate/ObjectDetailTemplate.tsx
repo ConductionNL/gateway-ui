@@ -1,18 +1,18 @@
 import * as React from "react";
-import * as styles from "./DataLayerDetailTemplate.module.css";
+import * as styles from "./ObjectDetailTemplate.module.css";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
 import { useObject } from "../../hooks/object";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { EditDataLayerFormTemplate } from "../templateParts/dataLayersFormTemplate/EditDataLayerFormTemplate";
+import { EditObjectFormTemplate } from "../templateParts/objectsFormTemplate/EditObjectFormTemplate";
 
-interface DataLayerDetailTemplateProps {
+interface ObjectDetailTemplateProps {
   objectId: string;
 }
 
-export const DataLayerDetailTemplate: React.FC<DataLayerDetailTemplateProps> = ({ objectId }) => {
+export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ objectId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
 
@@ -20,11 +20,13 @@ export const DataLayerDetailTemplate: React.FC<DataLayerDetailTemplateProps> = (
   const _useObject = useObject(queryClient);
   const getObject = _useObject.getOne(objectId);
 
+  const getObjectSchema = _useObject.getSchema(objectId);
+
   return (
     <Container layoutClassName={styles.container}>
       {getObject.isError && "Error..."}
 
-      {getObject.isSuccess && <EditDataLayerFormTemplate object={getObject.data} {...{ objectId }} />}
+      {getObject.isSuccess && <EditObjectFormTemplate object={getObject.data} {...{ objectId }} />}
 
       {getObject.isLoading && <Skeleton height="200px" />}
 
