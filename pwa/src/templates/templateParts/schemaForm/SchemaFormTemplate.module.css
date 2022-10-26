@@ -2,10 +2,16 @@
   margin-block-end: var(--gateway-ui-size-lg);
 }
 
-.formContainer {
+.simpleFormContainer {
   display: grid;
   gap: var(--gateway-ui-size-lg);
   grid-template-columns: 1fr 1fr;
+}
+
+.complexFormContainer {
+  display: grid;
+  gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr;
 }
 
 .formContainer > * > * {

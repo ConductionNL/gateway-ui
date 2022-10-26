@@ -24,6 +24,13 @@ export const schema = {
         token: "123",
       },
     },
+    anders: {
+      type: "array",
+      description: "The variables supported by this template (might contain default vallues)",
+      default: {
+        token: "123",
+      },
+    },
     sender: {
       type: "string",
       description: "The sender of the email",

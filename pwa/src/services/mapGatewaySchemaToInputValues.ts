@@ -1,4 +1,4 @@
-import { SchemaInputType } from "../templates/templateParts/generatedSchemaForm/GeneratedSchemaFormTemplate";
+import { SchemaInputType } from "../templates/templateParts/schemaForm/SchemaFormTemplate";
 
 export const mapGatewaySchemaToInputValues = (type: SchemaInputType, schemaValues?: any): any => {
   if (!schemaValues) return;

@@ -1,6 +1,7 @@
 import * as React from "react";
-import * as styles from "./GeneratedSchemaFormTemplate.module.css";
+import * as styles from "./SchemaFormTemplate.module.css";
 import * as _ from "lodash";
+import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, LeadParagraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
@@ -15,22 +16,24 @@ interface ReactHookFormProps {
   control: any; // todo: type this
 }
 
-interface GeneratedSchemaFormTemplateProps {
+interface SchemaFormTemplateProps {
   schema: any;
   disabled: boolean;
 }
 
-export const GeneratedSchemaFormTemplate: React.FC<GeneratedSchemaFormTemplateProps & ReactHookFormProps> = ({
+export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFormProps> = ({
   schema,
   register,
   errors,
   control,
   disabled,
 }) => {
-  const [properties, setProperties] = React.useState<any[]>([]);
+  const [simpleProperties, setSimpleProperties] = React.useState<any[]>([]);
+  const [complexProperties, setComplexProperties] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    setProperties([]);
+    setSimpleProperties([]);
+    setComplexProperties([]);
 
     for (const [key, _value] of Object.entries(schema.properties)) {
       const value = _value as any; // todo: type this
@@ -44,11 +47,12 @@ export const GeneratedSchemaFormTemplate: React.FC<GeneratedSchemaFormTemplatePr
         defaultValue: mapGatewaySchemaToInputValues(value.type, value.default),
       };
 
-      setProperties((p) => [...p, property]);
+      property.type !== "array" && setSimpleProperties((p) => [...p, property]);
+      property.type === "array" && setComplexProperties((p) => [...p, property]);
     }
   }, [schema]);
 
-  if (!properties.length) return <>This schema has no fields.</>;
+  if (!simpleProperties.length) return <>This schema has no fields.</>;
 
   return (
     <div className={styles.container}>
@@ -56,8 +60,18 @@ export const GeneratedSchemaFormTemplate: React.FC<GeneratedSchemaFormTemplatePr
 
       <LeadParagraph>{schema.description}</LeadParagraph>
 
-      <div className={styles.formContainer}>
-        {properties.map(({ name, type, placeholder, description, defaultValue }, idx) => (
+      <div className={clsx(styles.simpleFormContainer, styles.formContainer)}>
+        {simpleProperties.map(({ name, type, placeholder, description, defaultValue }, idx) => (
+          <FormFieldGroup
+            key={idx}
+            required={schema.required.includes(name)}
+            {...{ register, errors, control, disabled, name, type, placeholder, description, defaultValue }}
+          />
+        ))}
+      </div>
+
+      <div className={clsx(styles.complexFormContainer, styles.formContainer)}>
+        {complexProperties.map(({ name, type, placeholder, description, defaultValue }, idx) => (
           <FormFieldGroup
             key={idx}
             required={schema.required.includes(name)}
@@ -106,10 +120,6 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "array" && (
-          <CreateKeyValue {...{ register, errors, control, disabled, placeholder, name, defaultValue }} />
-        )}
-
         {type === "boolean" && (
           <InputCheckbox
             label="True"
@@ -117,6 +127,10 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             defaultChecked
             {...{ register, errors, disabled, placeholder, name }}
           />
+        )}
+
+        {type === "array" && (
+          <CreateKeyValue {...{ register, errors, control, disabled, placeholder, name, defaultValue }} />
         )}
       </FormFieldInput>
     </FormField>
