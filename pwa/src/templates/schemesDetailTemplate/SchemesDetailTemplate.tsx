@@ -7,6 +7,8 @@ import Skeleton from "react-loading-skeleton";
 import { useScheme } from "../../hooks/scheme";
 import { EditSchemesFormTemplate } from "../templateParts/schemesForm/EditSchemesFormTemplate";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { useObject } from "../../hooks/object";
+import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 
 interface SchemesDetailPageProps {
   schemeId: string;
@@ -19,6 +21,9 @@ export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ scheme
   const queryClient = new QueryClient();
   const _useScheme = useScheme(queryClient);
   const getScheme = _useScheme.getOne(schemeId);
+
+  const _useObject = useObject(queryClient);
+  const getObjectsFromEntity = _useObject.getAllFromEntity(schemeId);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -36,13 +41,16 @@ export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ scheme
             }}
             variant="scrollable"
           >
-            <Tab className={styles.tab} label={t("Logs")} value={0} />
+            <Tab className={styles.tab} label={t("Objects")} value={0} />
+            <Tab className={styles.tab} label={t("Logs")} value={1} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getScheme.isLoading && <Skeleton height="200px" />}
+            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
+          </TabPanel>
 
-            {getScheme.isSuccess && <span>Logs</span>}
+          <TabPanel className={styles.tabPanel} value="1">
+            Logs are not yet supported.
           </TabPanel>
         </TabContext>
       </div>

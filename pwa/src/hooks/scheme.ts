@@ -24,6 +24,14 @@ export const useScheme = (queryClient: QueryClient) => {
       enabled: !!schemeId,
     });
 
+  const getSchema = (schemaId: string) =>
+    useQuery<any[], Error>(["schema_schema", schemaId], () => API.Scheme.getSchema(schemaId), {
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+      enabled: !!schemaId,
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Scheme.delete, {
       onSuccess: async (_, variables) => {
@@ -53,5 +61,5 @@ export const useScheme = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getOne, getSchema, remove, createOrEdit };
 };

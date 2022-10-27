@@ -72,7 +72,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       current: pathname.includes("/objects"),
     },
     {
-      label: "Schemes",
+      label: "Schemas",
       icon: <FontAwesomeIcon icon={faClipboardList} />,
       onClick: () => navigate("/schemes"),
       current: pathname.includes("/schemes"),

@@ -24,6 +24,14 @@ export const useObject = (queryClient: QueryClient) => {
       enabled: !!objectId,
     });
 
+  const getAllFromEntity = (entityId: string) =>
+    useQuery<any[], Error>(["object", entityId], () => API.Object.getAllFromEntity(entityId), {
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+      enabled: !!entityId,
+    });
+
   const getSchema = (objectId: string) =>
     useQuery<any[], Error>(["object_schema", objectId], () => API.Object.getSchema(objectId), {
       onError: (error) => {
@@ -61,5 +69,5 @@ export const useObject = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, getSchema, remove, createOrEdit };
+  return { getAll, getOne, getAllFromEntity, getSchema, remove, createOrEdit };
 };

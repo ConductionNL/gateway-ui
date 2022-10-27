@@ -22,7 +22,7 @@ export const SchemesTemplate: React.FC = () => {
   return (
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
-        <Heading1>{t("Schemes")}</Heading1>
+        <Heading1>{t("Schemas")}</Heading1>
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/schemes/new`)}>
             <FontAwesomeIcon icon={faPlus} />
