@@ -55,7 +55,7 @@ export const useObject = (queryClient: QueryClient) => {
       onSuccess: async (newObject) => {
         if (objectId) {
           updateItem(queryClient, "object", newObject);
-          navigate("/objects");
+          queryClient.invalidateQueries(["objects", objectId]);
         }
 
         if (!objectId) {

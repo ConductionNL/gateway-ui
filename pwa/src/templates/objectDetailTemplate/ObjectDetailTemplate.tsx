@@ -30,7 +30,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
 
       {getObject.isLoading && <Skeleton height="200px" />}
 
-      <div className={styles.tabContainer}>
+      {/* <div className={styles.tabContainer}>
         <TabContext value={currentTab.toString()}>
           <Tabs
             value={currentTab}
@@ -47,7 +47,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             {getObject.isSuccess && <span>Logs</span>}
           </TabPanel>
         </TabContext>
-      </div>
+      </div> */}
     </Container>
   );
 };

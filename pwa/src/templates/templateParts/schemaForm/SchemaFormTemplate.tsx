@@ -12,6 +12,11 @@ import { InputFloat } from "@conduction/components/lib/components/formFields/inp
 import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  SelectCreate,
+  SelectMultiple,
+  SelectSingle,
+} from "@conduction/components/lib/components/formFields/select/select";
 
 export type SchemaInputType = "string" | "boolean" | "array" | "integer" | "date" | "number" | "object";
 
@@ -45,11 +50,13 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
 
       const property = {
         type: value.type as SchemaInputType,
+        _enum: value.enum,
+        multiple: value.multiple,
         name: key,
         placeholder: value.example,
         description: value.description,
         required: schema.required.includes(key),
-        defaultValue: mapGatewaySchemaToInputValues(value.type, value.value),
+        defaultValue: mapGatewaySchemaToInputValues(value),
       };
 
       property.type !== "array" && setSimpleProperties((p) => [...p, property]);
@@ -66,11 +73,23 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
       <LeadParagraph>{schema.description}</LeadParagraph>
 
       <div className={clsx(styles.simpleFormContainer, styles.formContainer)}>
-        {simpleProperties.map(({ name, type, placeholder, description, defaultValue }, idx) => (
+        {simpleProperties.map(({ name, type, placeholder, description, defaultValue, _enum, multiple }, idx) => (
           <FormFieldGroup
             key={idx}
             required={schema.required.includes(name)}
-            {...{ register, errors, control, disabled, name, type, placeholder, description, defaultValue }}
+            {...{
+              register,
+              errors,
+              control,
+              disabled,
+              name,
+              type,
+              placeholder,
+              description,
+              defaultValue,
+              _enum,
+              multiple,
+            }}
           />
         ))}
       </div>
@@ -98,6 +117,8 @@ interface FormFieldGroupProps {
   required?: boolean;
   description?: string;
   defaultValue?: any;
+  _enum?: any;
+  multiple?: boolean;
 }
 
 const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
@@ -111,6 +132,8 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   disabled,
   required,
   defaultValue,
+  _enum,
+  multiple,
 }) => {
   return (
     <FormField>
@@ -125,10 +148,34 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           )}
         </div>
 
-        {type === "string" && (
+        {type === "string" && !_enum && !multiple && (
           <InputText
             validation={{ required }}
             {...{ register, errors, control, disabled, placeholder, name, defaultValue }}
+          />
+        )}
+
+        {type === "string" && !_enum && multiple && (
+          <SelectCreate
+            defaultValue={defaultValue}
+            options={defaultValue}
+            {...{ register, errors, disabled, placeholder, name, control }}
+          />
+        )}
+
+        {type === "string" && _enum && !multiple && (
+          <SelectSingle
+            defaultValue={defaultValue.defaultValue}
+            options={defaultValue.options}
+            {...{ register, errors, disabled, placeholder, name, control }}
+          />
+        )}
+
+        {type === "string" && _enum && multiple && (
+          <SelectMultiple
+            defaultValue={defaultValue.defaultValue}
+            options={defaultValue.options}
+            {...{ register, errors, disabled, placeholder, name, control }}
           />
         )}
 
