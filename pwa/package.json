@@ -4,7 +4,9 @@
   "private": true,
   "description": "Gatsby Skeleton Application",
   "author": "Conduction B.V.",
-  "keywords": ["gatsby"],
+  "keywords": [
+    "gatsby"
+  ],
   "scripts": {
     "develop": "gatsby develop",
     "start": "gatsby develop",
@@ -42,7 +44,8 @@
     "react-hook-form": "^7.29.0",
     "react-i18next": "^11.16.6",
     "react-loading-skeleton": "^3.1.0",
-    "react-query": "^3.34.19"
+    "react-query": "^3.34.19",
+    "react-tooltip": "^4.4.3"
   },
   "devDependencies": {
     "@types/dateformat": "^5.0.0",
