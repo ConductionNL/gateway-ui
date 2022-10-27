@@ -9,13 +9,25 @@ export default class Scheme {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/entities");
+    const { data } = await Send(this._instance, "GET", "/admin/entities?limit=100");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/entities/${id}`);
+
+    return data;
+  };
+
+  public getSchema = async (id: string): Promise<any> => {
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      return { ...config, headers: { ...config.headers, Accept: "application/json+schema" } };
+    });
+
+    const { data } = await Send(this._instance, "GET", `admin/entities/${id}`);
 
     return data;
   };

@@ -20,6 +20,12 @@ export default class Sources {
     return data;
   };
 
+  public getAllFromEntity = async (entityId: string): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", `/admin/object_entities?entity.id=${entityId}`);
+
+    return data;
+  };
+
   public getSchema = async (id: string): Promise<any> => {
     const instance = this._instance;
 
