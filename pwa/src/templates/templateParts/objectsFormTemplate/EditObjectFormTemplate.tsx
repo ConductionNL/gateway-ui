@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Alert, Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -58,6 +58,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
         </section>
 
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
+        <Divider />
 
         {getSchema.isSuccess && getSchema.data && (
           <SchemaFormTemplate {...{ register, errors, control }} schema={getSchema.data} disabled={loading} />

@@ -9,6 +9,9 @@ import { CreateKeyValue, InputNumber } from "@conduction/components/lib/componen
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
 import { InputFloat } from "@conduction/components/lib/components/formFields/input";
+import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 
 export type SchemaInputType = "string" | "boolean" | "array" | "integer" | "date" | "number" | "object";
 
@@ -58,7 +61,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
 
   return (
     <div className={styles.container}>
-      <Heading2>{schema.title}</Heading2>
+      <Heading2 className={styles.title}>{schema.title}</Heading2>
 
       <LeadParagraph>{schema.description}</LeadParagraph>
 
@@ -81,6 +84,8 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
           />
         ))}
       </div>
+
+      <ReactTooltip className={styles.tooltip} />
     </div>
   );
 };
@@ -112,7 +117,12 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
       <FormFieldInput>
         <div className={styles.formFieldHeader}>
           <FormFieldLabel>{name}</FormFieldLabel>
-          <span className={styles.description}>{description}</span>
+
+          {description && (
+            <p data-tip={description}>
+              <FontAwesomeIcon data-tip={description} icon={faInfoCircle} />
+            </p>
+          )}
         </div>
 
         {type === "string" && (
@@ -147,7 +157,9 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           <CreateKeyValue {...{ register, errors, control, disabled, placeholder, name, defaultValue }} />
         )}
 
-        {type === "object" && <>Updating properties of type object is not yet supported.</>}
+        {type === "object" && (
+          <span className={styles.unsupported}>Updating object properties is not yet supported.</span>
+        )}
       </FormFieldInput>
     </FormField>
   );

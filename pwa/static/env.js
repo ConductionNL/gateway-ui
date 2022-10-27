@@ -1,22 +1,13 @@
-window.sessionStorage.setItem(
-  "GATSBY_ME_URL",
-  "https://kissdevelopment.commonground.nu/me"
-);
-window.sessionStorage.setItem(
-  "GATSBY_API_URL",
-  "https://kissdevelopment.commonground.nu/api"
-);
+window.sessionStorage.setItem("GATSBY_ME_URL", "https://opencatalogi.nl/me");
+window.sessionStorage.setItem("GATSBY_API_URL", "https://opencatalogi.nl/api");
 window.sessionStorage.setItem(
   "GATSBY_ADMIN_URL",
-  "https://kissdevelopment.commonground.nu/admin"
+  "https://opencatalogi.nl/admin"
 );
-window.sessionStorage.setItem(
-  "GATSBY_BASE_URL",
-  "https://kissdevelopment.commonground.nu"
-);
+window.sessionStorage.setItem("GATSBY_BASE_URL", "https://opencatalogi.nl");
 window.sessionStorage.setItem(
   "GATSBY_FRONTEND_URL",
-  "https://kissdevelopment.commonground.nu:8000"
+  "https://opencatalogi.nl:8000"
 );
 window.sessionStorage.setItem(
   "GATSBY_ORGANIZATION",

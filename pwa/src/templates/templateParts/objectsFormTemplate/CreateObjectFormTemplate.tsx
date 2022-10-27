@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Alert, Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -90,6 +90,8 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
             </FormField>
           </div>
         </div>
+
+        <Divider />
 
         <div>
           {getSchemaSchema.isLoading && <Skeleton height="200px" />}{" "}
