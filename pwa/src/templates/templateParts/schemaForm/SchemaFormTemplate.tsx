@@ -45,7 +45,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
 
       const property = {
         type: value.type as SchemaInputType,
-        name: _.startCase(key),
+        name: key,
         placeholder: value.example,
         description: value.description,
         required: schema.required.includes(key),
@@ -158,7 +158,14 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         )}
 
         {type === "object" && (
-          <span className={styles.unsupported}>Updating object properties is not yet supported.</span>
+          <div className="denhaag-textfield">
+            <input
+              className="denhaag-textfield__input"
+              type="text"
+              disabled
+              placeholder="Updating objects is not yet supported."
+            />
+          </div>
         )}
       </FormFieldInput>
     </FormField>

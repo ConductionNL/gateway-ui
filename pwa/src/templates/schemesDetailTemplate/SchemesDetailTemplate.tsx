@@ -46,6 +46,7 @@ export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ scheme
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
+            {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
             {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
           </TabPanel>
 

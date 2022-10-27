@@ -9,6 +9,7 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
+import { mutateObjectFormData } from "./service";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -35,7 +36,19 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    createOrEditObject.mutate({ payload: data, id: objectId });
+    if (!getSchema.isSuccess) return;
+
+    const payload = mutateObjectFormData(object.entity, data);
+
+    createOrEditObject.mutate({ payload, id: objectId });
+  };
+
+  const handleDeleteObject = () => {
+    const confirmDeletion = confirm("Are you sure you want to delete this object?");
+
+    if (confirmDeletion) {
+      deleteObject.mutate({ id: objectId });
+    }
   };
 
   return (
@@ -50,7 +63,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
               {t("Save")}
             </Button>
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+            <Button onClick={handleDeleteObject} className={clsx(styles.buttonIcon, styles.deleteButton)}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>

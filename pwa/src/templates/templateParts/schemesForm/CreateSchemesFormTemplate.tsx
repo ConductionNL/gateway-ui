@@ -79,6 +79,8 @@ export const CreateSchemesFormTemplate: React.FC<CreateSchemesFormTemplateProps>
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Function")}</FormFieldLabel>
+
+                {/* @ts-ignore */}
                 <SelectSingle
                   name="function"
                   options={functionSelectOptions}
