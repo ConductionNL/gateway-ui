@@ -31,7 +31,7 @@ export const useAction = (queryClient: QueryClient) => {
         navigate("/actions");
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 
@@ -41,7 +41,6 @@ export const useAction = (queryClient: QueryClient) => {
         if (actionId) {
           updateItem(queryClient, "actions", newAction);
           navigate("/actions");
-          console.log({ id: actionId });
         }
 
         if (!actionId) {
@@ -50,7 +49,7 @@ export const useAction = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 

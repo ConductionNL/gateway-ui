@@ -31,7 +31,7 @@ export const useCronjob = (queryClient: QueryClient) => {
         navigate("/cronjobs");
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 
@@ -41,7 +41,6 @@ export const useCronjob = (queryClient: QueryClient) => {
         if (cronjobId) {
           updateItem(queryClient, "cronjobs", newCronjob);
           navigate("/cronjobs");
-          console.log({ id: cronjobId });
         }
 
         if (!cronjobId) {
@@ -50,7 +49,7 @@ export const useCronjob = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 

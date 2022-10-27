@@ -39,7 +39,7 @@ export const useScheme = (queryClient: QueryClient) => {
         navigate("/schemes");
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 
@@ -57,7 +57,7 @@ export const useScheme = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 

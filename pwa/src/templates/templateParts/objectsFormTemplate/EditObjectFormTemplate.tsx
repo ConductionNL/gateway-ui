@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import { Alert, Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -19,7 +19,6 @@ interface EditObjectFormTemplateProps {
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, objectId }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
@@ -34,6 +33,15 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
     control,
     formState: { errors },
   } = useForm();
+
+  React.useEffect(() => {
+    if (createOrEditObject.isLoading || deleteObject.isLoading || getSchema.isLoading) {
+      setLoading(true);
+      return;
+    }
+
+    setLoading(false);
+  }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading]);
 
   const onSubmit = (data: any): void => {
     if (!getSchema.isSuccess) return;
@@ -63,14 +71,16 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
               {t("Save")}
             </Button>
-            <Button onClick={handleDeleteObject} className={clsx(styles.buttonIcon, styles.deleteButton)}>
+            <Button
+              onClick={handleDeleteObject}
+              className={clsx(styles.buttonIcon, styles.deleteButton)}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
           </div>
         </section>
-
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
 
         <Divider />
 

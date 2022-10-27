@@ -31,7 +31,7 @@ export const useSource = (queryClient: QueryClient) => {
         navigate("/sources");
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 
@@ -48,7 +48,7 @@ export const useSource = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 
