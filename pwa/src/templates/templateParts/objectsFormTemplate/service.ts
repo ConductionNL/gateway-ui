@@ -33,7 +33,7 @@ export const mutateObjectFormData = (schema: any, data: any, object?: any) => {
           objectValue.integerValue = parseInt(value, 10);
           break;
         default: // development purposes
-          console.log(attribute.type);
+          console.info(attribute.type);
           break;
       }
     }

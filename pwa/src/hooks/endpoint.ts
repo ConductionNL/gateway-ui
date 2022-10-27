@@ -31,7 +31,7 @@ export const useEndpoint = (queryClient: QueryClient) => {
         navigate("/endpoints");
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 
@@ -49,7 +49,7 @@ export const useEndpoint = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 

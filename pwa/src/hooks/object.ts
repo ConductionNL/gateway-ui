@@ -9,7 +9,7 @@ export const useObject = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
 
   const getAll = () =>
-    useQuery<any[], Error>("object", API.Object.getAll, {
+    useQuery<any[], Error>("objects", API.Object.getAll, {
       onError: (error) => {
         throw new Error(error.message);
       },
@@ -17,7 +17,7 @@ export const useObject = (queryClient: QueryClient) => {
 
   const getOne = (objectId: string) =>
     useQuery<any, Error>(["object", objectId], () => API?.Object.getOne(objectId), {
-      initialData: () => queryClient.getQueryData<any[]>("object")?.find((_object) => _object.id === objectId),
+      initialData: () => queryClient.getQueryData<any[]>("objects")?.find((_object) => _object.id === objectId),
       onError: (error) => {
         throw new Error(error.message);
       },
@@ -25,7 +25,7 @@ export const useObject = (queryClient: QueryClient) => {
     });
 
   const getAllFromEntity = (entityId: string) =>
-    useQuery<any[], Error>(["object", entityId], () => API.Object.getAllFromEntity(entityId), {
+    useQuery<any[], Error>(["objects", entityId], () => API.Object.getAllFromEntity(entityId), {
       onError: (error) => {
         throw new Error(error.message);
       },
@@ -46,7 +46,7 @@ export const useObject = (queryClient: QueryClient) => {
         deleteItem(queryClient, "object", variables.id);
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 
@@ -64,7 +64,7 @@ export const useObject = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 

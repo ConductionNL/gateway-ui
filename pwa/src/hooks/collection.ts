@@ -32,7 +32,7 @@ export const useCollection = (queryClient: QueryClient) => {
         navigate("/collections");
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 
@@ -50,7 +50,7 @@ export const useCollection = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        console.log(error.message);
+        throw new Error(error.message);
       },
     });
 
