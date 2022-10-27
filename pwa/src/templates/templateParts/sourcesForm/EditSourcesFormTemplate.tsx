@@ -60,7 +60,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   };
 
   const handleDelete = (id: string): void => {
-    console.log(id);
     deleteSource.mutateAsync({ id: id });
   };
 
@@ -170,6 +169,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("ContentType")}</FormFieldLabel>
+                {/* @ts-ignore */}
                 <SelectSingle
                   name="type"
                   options={typeSelectOptions}
@@ -190,6 +190,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("authType")}</FormFieldLabel>
+                {/* @ts-ignore */}
                 <SelectSingle
                   {...{ register, errors, control }}
                   name="auth"

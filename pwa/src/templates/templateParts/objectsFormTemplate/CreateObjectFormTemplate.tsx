@@ -12,12 +12,9 @@ import { useObject } from "../../../hooks/object";
 import { useScheme } from "../../../hooks/scheme";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
+import { mutateObjectFormData } from "./service";
 
-interface CreateObjectFormTemplateProps {
-  objectId?: string;
-}
-
-export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> = ({ objectId }) => {
+export const CreateObjectFormTemplate: React.FC = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
@@ -26,7 +23,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
-  const createOrEditObject = _useObjects.createOrEdit(objectId);
+  const createOrEditObject = _useObjects.createOrEdit();
 
   const _useScheme = useScheme(queryClient);
   const getSchemas = _useScheme.getAll();
@@ -49,7 +46,13 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   }, [watchSchema]);
 
   const onSubmit = (data: any): void => {
-    createOrEditObject.mutate({ payload: data, id: objectId });
+    if (!getSchemas.isSuccess) return;
+
+    const _selectedSchemaIndex = getSchemas.data.findIndex((schema) => schema.id === selectedSchema);
+
+    const schema = getSchemas.data[_selectedSchemaIndex];
+
+    createOrEditObject.mutate({ payload: mutateObjectFormData(schema, data) });
   };
 
   return (

@@ -9,7 +9,7 @@ export default class Scheme {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/entities?limit=100");
+    const { data } = await Send(this._instance, "GET", "/admin/entities?limit=1000");
 
     return data;
   };
