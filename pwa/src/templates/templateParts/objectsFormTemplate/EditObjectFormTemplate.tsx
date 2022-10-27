@@ -46,7 +46,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   const onSubmit = (data: any): void => {
     if (!getSchema.isSuccess) return;
 
-    const payload = mutateObjectFormData(object.entity, data);
+    const payload = mutateObjectFormData(object.entity, data, object);
 
     createOrEditObject.mutate({ payload, id: objectId });
   };

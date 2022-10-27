@@ -9,16 +9,35 @@ export const mutateObjectFormData = (schema: any, data: any, object?: any) => {
 
   Object.entries(data).forEach(([key, _value], idx) => {
     const value = _value as any;
+    const objectValue: any = {};
 
     const attribute = schema.attributes[schema.attributes.findIndex((a: any) => a.name === key)];
 
     if (!attribute) return;
 
-    const objectValue: any = {
-      attribute: `/admin/attributes/${attribute.id}`,
-      stringValue: `${value}`, // syntax is intended; always needs to be a string
-      id: object?.objectValues[idx].id,
-    };
+    if (!object) {
+      objectValue.attribute = `/admin/attributes/${attribute.id}`;
+    }
+
+    if (object) {
+      const current = object.objectValues.find((oV: any) => oV.attribute.name === key);
+      objectValue.id = `/admin/values/${current.id}`;
+    }
+
+    if (typeof value === "object" && value.value) {
+      objectValue.simpleArrayValue = [value.value];
+
+      objectValue.stringValue = JSON.stringify([value.value]);
+    }
+
+    if (Array.isArray(value)) {
+      objectValue.simpleArrayValue = value.map((v: any) => v.value);
+      objectValue.stringValue = JSON.stringify(value.map((v: any) => v.value));
+    }
+
+    if (!Array.isArray(value) && typeof value !== "object") {
+      objectValue.stringValue = `${value}`;
+    }
 
     /**
      * Whenever the .type !== string we need to push the actual value to objectValue
@@ -28,6 +47,10 @@ export const mutateObjectFormData = (schema: any, data: any, object?: any) => {
       switch (attribute.type) {
         case "string":
           // already set; do nothing
+          break;
+        case "date":
+          console.log({ value });
+          objectValue.dateTimeValue = value;
           break;
         case "integer":
           objectValue.integerValue = parseInt(value, 10);
