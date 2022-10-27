@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,8 +17,6 @@ import { mutateObjectFormData } from "./service";
 export const CreateObjectFormTemplate: React.FC = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
-
   const [selectedSchema, setSelectedSchema] = React.useState<any>(null);
 
   const queryClient = useQueryClient();
@@ -45,6 +43,15 @@ export const CreateObjectFormTemplate: React.FC = () => {
     setSelectedSchema(watchSchema.value);
   }, [watchSchema]);
 
+  React.useEffect(() => {
+    if (getSchemas.isLoading || getSchemaSchema.isLoading || createOrEditObject.isLoading) {
+      setLoading(true);
+      return;
+    }
+
+    setLoading(false);
+  }, [getSchemas.isLoading, getSchemaSchema.isLoading, createOrEditObject.isLoading]);
+
   const onSubmit = (data: any): void => {
     if (!getSchemas.isSuccess) return;
 
@@ -68,8 +75,6 @@ export const CreateObjectFormTemplate: React.FC = () => {
             </Button>
           </div>
         </section>
-
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
 
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
