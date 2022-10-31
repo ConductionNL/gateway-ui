@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
 import { useDashboardCards } from "../../hooks/dashboardCards";
 import Skeleton from "react-loading-skeleton";
-import { DashboardCard } from "../../components/dashboardCard/dashboardCard";
+import { DashboardCard } from "../../components/dashboardCard/DashboardCard";
 
 export const HomeTemplate: React.FC = () => {
   const { t } = useTranslation();
