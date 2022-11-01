@@ -30,15 +30,23 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
           <EditActionFormTemplate action={getActions.data} {...{ actionId }} />
           <Table>
             <TableHead>
-              <TableHeader>{t("Subscribed Throws")}</TableHeader>
+              <TableRow>
+                <TableHeader>{t("Subscribed Throws")}</TableHeader>
+              </TableRow>
             </TableHead>
+
             <TableBody>
-              {getActions.data.throws?.length === 0 && <TableCell>-</TableCell>}
               {getActions.data.throws.map((thrown: any) => (
                 <TableRow>
                   <TableCell>{thrown}</TableCell>
                 </TableRow>
               ))}
+
+              {!getActions.data.throws.length && (
+                <TableRow>
+                  <TableCell>No subscribed throws.</TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </>

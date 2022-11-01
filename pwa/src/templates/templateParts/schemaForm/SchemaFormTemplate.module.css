@@ -3,7 +3,7 @@
 }
 
 .title {
-  font-size: var(--gateway-ui-font-size-lg);
+  font-size: var(--gateway-ui-font-size-lg) !important;
 }
 
 .simpleFormContainer {
