@@ -14,6 +14,7 @@ import Object from "./resources/object";
 import Scheme from "./resources/scheme";
 import Log from "./resources/log";
 import Collection from "./resources/collection";
+import DashboardCards from "./resources/dashboardCards";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -106,6 +107,10 @@ export default class APIService {
 
   public get Collection(): Collection {
     return new Collection(this.BaseClient);
+  }
+
+  public get DashboardCards(): DashboardCards {
+    return new DashboardCards(this.BaseClient);
   }
 
   // Services
