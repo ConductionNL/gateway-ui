@@ -1,0 +1,5 @@
+.cardsGrid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr 1fr;
+}

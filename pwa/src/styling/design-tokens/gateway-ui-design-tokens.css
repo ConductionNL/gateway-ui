@@ -64,4 +64,5 @@
 
   /* Components */
   --gateway-ui-container-max-width: 2440px;
+  --gateway-ui-card-border-color: 1px solid var(--gateway-ui-color-primary);
 }
