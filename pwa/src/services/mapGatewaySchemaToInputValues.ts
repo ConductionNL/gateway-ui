@@ -1,13 +1,7 @@
 export const mapGatewaySchemaToInputValues = (value: any): any => {
   switch (value.type) {
     case "array":
-      let values = [];
-
-      for (const [key, _value] of Object.entries(value.value)) {
-        values.push({ key, value: _value });
-      }
-
-      return values;
+      return value.value?.map((item: any) => ({ key: item.key, value: item.value }));
 
     case "boolean":
     case "integer":
@@ -18,16 +12,18 @@ export const mapGatewaySchemaToInputValues = (value: any): any => {
     case "string":
       if (value.enum && !value.multiple) {
         const options = value.enum.map((e: any) => ({ label: e, value: e }));
-        const defaultValue =
-          value.value && value.value !== "undefined"
-            ? JSON.parse(value.value).map((dF: any) => ({ label: dF, value: dF }))
-            : [];
+        let defaultValue: any = [];
+
+        if (value.value && value.value !== "undefined") {
+          try {
+            defaultValue = JSON.parse(value.value).map((dF: any) => ({ label: dF, value: dF }));
+          } catch {}
+        }
 
         return { options, defaultValue };
       }
 
       if (value.enum && value.multiple) {
-        console.log({ value });
         const options = value.enum.map((e: any) => ({ label: e, value: e }));
 
         const defaultValue = value.value?.map((v: any) => ({ label: v, value: v }));

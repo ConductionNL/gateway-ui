@@ -1,57 +1,151 @@
 import * as React from "react";
 import * as styles from "./ActionFormTemplate.module.css";
-import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
+import { set, useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
-import { InputCheckbox, InputNumber, InputText, Textarea } from "@conduction/components";
+import { InputCheckbox, InputNumber, InputText, Textarea, SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faTrash, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAction } from "../../../hooks/action";
+import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
+import { validateStringAsJSONArray } from "../../../services/validateStringAsJSONArray";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
+import Skeleton from "react-loading-skeleton";
+import { useCronjob } from "../../../hooks/cronjob";
+import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
+import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import { useDashboardCards } from "../../../hooks/dashboardCards";
 
 interface EditActionFormTemplateProps {
   action: any;
-  actionId?: string;
+  actionId: string;
 }
 
 export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ action, actionId }) => {
   const { t } = useTranslation();
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
+  const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
+  const [actionHandlerSchema, setActionHandlerSchema] = React.useState<any>(action.actionHandlerConfiguration);
 
   const queryClient = useQueryClient();
   const _useAction = useAction(queryClient);
   const createOrEditAction = _useAction.createOrEdit(actionId);
   const deleteAction = _useAction.remove();
 
+  const _useCronjob = useCronjob(queryClient);
+  const getCronjobs = _useCronjob.getAll();
+
+  const _useDashboardCards = useDashboardCards(queryClient);
+  const getDashboardCards = _useDashboardCards.getAll();
+  const mutateDashboardCard = _useDashboardCards.createOrDelete();
+
+  const dashboardCard =
+    getDashboardCards &&
+    getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${action.name}`);
+
+  const AddToDashboard = () => {
+    const data = {
+      name: `dashboardCard-${action.name}`,
+      type: "Action",
+      entity: "Action",
+      object: "dashboardCard",
+      entityId: actionId,
+      ordering: 1,
+    };
+
+    mutateDashboardCard.mutate({ payload: data, id: dashboardCard?.id });
+  };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
+    control,
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    createOrEditAction.mutate({ payload: data, id: actionId });
+    const payload = {
+      ...data,
+      priority: parseInt(data.priority, 10),
+      listens: data.listens?.map((listener: any) => listener.value),
+      throws: data.throws?.map((_throw: any) => _throw.value),
+      class: data.class.value,
+      conditions: data.conditions ? JSON.parse(data.conditions) : [],
+      configuration: {},
+    };
+
+    for (const [key, _] of Object.entries(actionHandlerSchema.properties)) {
+      payload.configuration[key] = data[key];
+      delete payload[key];
+    }
+
+    createOrEditAction.mutate({ payload, id: actionId });
   };
 
-  const handleDelete = (id: string): void => {
-    deleteAction.mutateAsync({ id: id });
+  const handleDeleteAction = () => {
+    const confirmDeletion = confirm("Are you sure you want to delete this action?");
+
+    if (confirmDeletion) {
+      deleteAction.mutate({ id: actionId });
+    }
   };
 
-  const handleSetFormValues = (cronjob: any): void => {
-    const basicFields: string[] = ["name", "description", "listens", "priority", "async", "isLackable", "conditions"];
-    basicFields.forEach((field) => setValue(field, cronjob[field]));
+  const handleSetFormValues = (action: any): void => {
+    const basicFields: string[] = ["name", "description", "priority", "async", "isLockable"];
+    basicFields.forEach((field) => setValue(field, action[field]));
+
+    setValue("conditions", JSON.stringify(action["conditions"]));
+
+    setValue("class", { label: action.class, value: action.class });
+
+    setValue(
+      "listens",
+      action["listens"].map((listen: any) => ({ label: listen, value: listen })),
+    );
+
+    setValue(
+      "throws",
+      action["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
+    );
+
+    if (actionHandlerSchema?.properties) {
+      for (const [key, value] of Object.entries(actionHandlerSchema.properties)) {
+        setValue(key, action.configuration[key]);
+
+        const _value = value as any;
+
+        setActionHandlerSchema((schema: any) => ({
+          ...schema,
+          properties: { ...schema.properties, [key]: { ..._value, value: action.configuration[key] } },
+        }));
+      }
+    }
   };
+
+  React.useEffect(() => {
+    if (!getCronjobs.data) return;
+
+    const cronjobs = getCronjobs.data.map((cronjob) => ({ label: cronjob.name, value: cronjob.name }));
+
+    setListensAndThrows([...cronjobs, ...predefinedSubscriberEvents]);
+  }, [getCronjobs.isSuccess]);
 
   React.useEffect(() => {
     handleSetFormValues(action);
   }, []);
+
+  React.useEffect(() => {
+    if (createOrEditAction.isLoading || deleteAction.isLoading) {
+      setLoading(true);
+      return;
+    }
+
+    setLoading(false);
+  }, [createOrEditAction.isLoading, deleteAction.isLoading]);
 
   return (
     <div className={styles.container}>
@@ -64,13 +158,23 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} disabled={loading}>
+
+            <Button className={styles.buttonIcon} disabled={loading} onClick={AddToDashboard}>
+              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+            </Button>
+
+            <Button
+              onClick={handleDeleteAction}
+              className={clsx(styles.buttonIcon, styles.deleteButton)}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
           </div>
         </section>
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
@@ -79,35 +183,62 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Description")}</FormFieldLabel>
                 <Textarea {...{ register, errors }} name="description" disabled={loading} />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Listens")}</FormFieldLabel>
-                <InputText
-                  {...{ register, errors }}
-                  name="listens"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
+                {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
+
+                {listensAndThrows.length > 0 && (
+                  /* @ts-ignore */
+                  <SelectCreate
+                    options={listensAndThrows}
+                    disabled={loading}
+                    name="listens"
+                    {...{ register, errors, control }}
+                  />
+                )}
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="throws" validation={{ required: true }} disabled={loading} />
+                {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
+
+                {listensAndThrows.length > 0 && (
+                  /* @ts-ignore */
+                  <SelectCreate
+                    options={listensAndThrows}
+                    disabled={loading}
+                    name="throws"
+                    {...{ register, errors, control }}
+                  />
+                )}
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Handler")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="class" validation={{ required: true }} disabled={loading} />
+                <FormFieldLabel>{t("Action handler")}</FormFieldLabel>
+
+                {/* @ts-ignore */}
+                <SelectSingle
+                  name="class"
+                  validation={{ required: true }}
+                  {...{ register, errors, control }}
+                  disabled
+                />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Priority")}</FormFieldLabel>
@@ -119,25 +250,42 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                 />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("async")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="async" validation={{ required: true }} />
+                <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="async" />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="islockable" validation={{ required: true }} />
+                <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="islockable" />
               </FormFieldInput>
             </FormField>
+
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
-                <Textarea {...{ register, errors }} name="conditions" disabled={loading} />
+                <Textarea
+                  {...{ register, errors }}
+                  name="conditions"
+                  disabled={loading}
+                  validation={{ validate: validateStringAsJSONArray }}
+                />
+                {errors["conditions"] && <ErrorMessage message={errors["conditions"].message} />}
               </FormFieldInput>
             </FormField>
           </div>
+
+          {actionHandlerSchema && (
+            <>
+              <Divider />
+
+              <SchemaFormTemplate {...{ register, errors, control }} schema={actionHandlerSchema} disabled={loading} />
+            </>
+          )}
         </div>
       </form>
     </div>

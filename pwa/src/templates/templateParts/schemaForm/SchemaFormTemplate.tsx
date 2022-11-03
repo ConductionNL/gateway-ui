@@ -3,7 +3,7 @@ import * as styles from "./SchemaFormTemplate.module.css";
 import * as _ from "lodash";
 import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
-import { FormField, FormFieldInput, FormFieldLabel, Heading2, LeadParagraph } from "@gemeente-denhaag/components-react";
+import { FormField, FormFieldInput, FormFieldLabel, Heading2, Paragraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { CreateKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
@@ -70,7 +70,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
     <div className={styles.container}>
       <Heading2 className={styles.title}>{schema.title}</Heading2>
 
-      <LeadParagraph>{schema.description}</LeadParagraph>
+      <Paragraph>{schema.description}</Paragraph>
 
       <div className={clsx(styles.simpleFormContainer, styles.formContainer)}>
         {simpleProperties.map(({ name, type, placeholder, description, defaultValue, _enum, multiple }, idx) => (

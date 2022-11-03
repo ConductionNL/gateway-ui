@@ -15,6 +15,13 @@ export const useAction = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllHandlers = () =>
+    useQuery<any[], Error>("action_handlers", API.Action.getAllHandlers, {
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+    });
+
   const getOne = (actionId: string) =>
     useQuery<any, Error>(["actions", actionId], () => API?.Action.getOne(actionId), {
       initialData: () => queryClient.getQueryData<any[]>("actions")?.find((_action) => _action.id === actionId),
@@ -53,5 +60,5 @@ export const useAction = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getAllHandlers, getOne, remove, createOrEdit };
 };
