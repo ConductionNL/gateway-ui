@@ -6,6 +6,7 @@ import { QueryClient } from "react-query";
 import { useDashboardCards } from "../../hooks/dashboardCards";
 import Skeleton from "react-loading-skeleton";
 import { DashboardCard } from "../../components/dashboardCard/DashboardCard";
+import _ from "lodash";
 
 export const HomeTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -21,7 +22,10 @@ export const HomeTemplate: React.FC = () => {
         <div className={styles.cardsGrid}>
           {getDashboardCards.data.map((dashboardCard) => (
             <DashboardCard
-              title={{ label: dashboardCard.object.name, href: `/schemes/${dashboardCard.object.id}` }}
+              title={{
+                label: dashboardCard.object.name,
+                href: `/${_.lowerCase(dashboardCard.type)}s/${dashboardCard.object.id}`,
+              }}
               description={dashboardCard.type}
             />
           ))}
