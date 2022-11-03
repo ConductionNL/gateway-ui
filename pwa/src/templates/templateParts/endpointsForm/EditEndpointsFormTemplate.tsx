@@ -8,10 +8,11 @@ import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useEndpoint } from "../../../hooks/endpoint";
+import { useDashboardCards } from "../../../hooks/dashboardCards";
 
 interface EditEndpointFormTemplateProps {
   endpoint: any;
@@ -23,11 +24,20 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
+  const [dashboardLoading, setDashboardLoading] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const _useEndpoints = useEndpoint(queryClient);
   const createOrEditEndpoint = _useEndpoints.createOrEdit(endpointId);
   const deleteEndpoint = _useEndpoints.remove();
+
+  const _useDashboardCards = useDashboardCards(queryClient);
+  const getDashboardCards = _useDashboardCards.getAll();
+  const mutateDashboardCard = _useDashboardCards.createOrDelete();
+
+  const dashboardCard =
+    getDashboardCards &&
+    getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${endpoint.name}`);
 
   const methodSelectOptions = [
     { label: "GET", value: "GET" },
@@ -53,6 +63,28 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     deleteEndpoint.mutateAsync({ id: id });
   };
 
+  const AddToDashboard = () => {
+    setDashboardLoading(true);
+
+    const data = {
+      name: `dashboardCard-${endpoint.name}`,
+      type: "Endpoint",
+      entity: "Endpoint",
+      object: "dashboardCard",
+      entityId: endpointId,
+      ordering: 1,
+    };
+
+    mutateDashboardCard.mutate(
+      { payload: data, id: dashboardCard?.id },
+      {
+        onSuccess: () => {
+          setDashboardLoading(false);
+        },
+      },
+    );
+  };
+
   const handleSetFormValues = (endpoint: any): void => {
     const basicFields: string[] = ["name", "description", "pathRegex", "tag"];
     basicFields.forEach((field) => setValue(field, endpoint[field]));
@@ -76,9 +108,14 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
-
               {t("Save")}
             </Button>
+
+            <Button className={styles.buttonIcon} disabled={dashboardLoading} onClick={AddToDashboard}>
+              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+            </Button>
+
             <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}

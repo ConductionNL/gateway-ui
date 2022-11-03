@@ -8,11 +8,12 @@ import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowsRotate, faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { translateDate } from "../../../services/dateFormat";
+import { useDashboardCards } from "../../../hooks/dashboardCards";
 
 interface SourcesFormTemplateProps {
   source: any;
@@ -25,10 +26,20 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
+  const [dashboardLoading, setDashboardLoading] = React.useState<boolean>(false);
+
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
   const createOrEditSource = _useSources.createOrEdit(sourceId);
   const deleteSource = _useSources.remove();
+
+  const _useDashboardCards = useDashboardCards(queryClient);
+  const getDashboardCards = _useDashboardCards.getAll();
+  const mutateDashboardCard = _useDashboardCards.createOrDelete();
+
+  const dashboardCard =
+    getDashboardCards &&
+    getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${source.name}`);
 
   const typeSelectOptions = [
     { label: "JSON", value: "json" },
@@ -61,6 +72,28 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
 
   const handleDelete = (id: string): void => {
     deleteSource.mutateAsync({ id: id });
+  };
+
+  const AddToDashboard = () => {
+    setDashboardLoading(true);
+
+    const data = {
+      name: `dashboardCard-${source.name}`,
+      type: "Source",
+      entity: "Gateway",
+      object: "dashboardCard",
+      entityId: sourceId,
+      ordering: 1,
+    };
+
+    mutateDashboardCard.mutate(
+      { payload: data, id: dashboardCard?.id },
+      {
+        onSuccess: () => {
+          setDashboardLoading(false);
+        },
+      },
+    );
   };
 
   const handleSetFormValues = (source: any): void => {
@@ -102,10 +135,17 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
+
             <Button className={styles.buttonIcon}>
               <FontAwesomeIcon icon={faArrowsRotate} />
               {t("Test connection")}
             </Button>
+
+            <Button className={styles.buttonIcon} disabled={dashboardLoading} onClick={AddToDashboard}>
+              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+            </Button>
+
             <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={() => handleDelete(source.id)}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
