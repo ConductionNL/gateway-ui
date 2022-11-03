@@ -27,4 +27,7 @@ export const en = {
   "Back to objects": "Back to objects",
   "Object detail page": "Object detail page",
   "Action handler": "Action handler",
+  Handler: "Handler",
+  Schema: "Schema",
+  Gateway: "Source"
 };

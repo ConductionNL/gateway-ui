@@ -19,4 +19,16 @@ export default class DashboardCards {
 
     return data;
   };
+
+  public createOrDelete = async (variables: { payload: any; id?: string }): Promise<any> => {
+    const { payload, id } = variables;
+
+    if (id) {
+      const { data } = await Send(this._instance, "DELETE", `/admin/dashboardCards/${id}`);
+      return data;
+    }
+
+    const { data } = await Send(this._instance, "POST", "/admin/dashboardCards", payload);
+    return data;
+  };
 }
