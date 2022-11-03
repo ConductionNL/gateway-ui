@@ -24,7 +24,7 @@ export const HomeTemplate: React.FC = () => {
             <DashboardCard
               title={{
                 label: dashboardCard.object.name,
-                href: `/${_.lowerCase(dashboardCard.type)}s/${dashboardCard.object.id}`,
+                href: `/${_.lowerCase(t(dashboardCard.type))}s/${dashboardCard.object.id}`,
               }}
               description={dashboardCard.type}
             />
