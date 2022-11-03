@@ -52,7 +52,6 @@ export const useAction = (queryClient: QueryClient) => {
 
         if (!actionId) {
           addItem(queryClient, "actions", newAction);
-          console.log({ newAction });
           navigate(`/actions/${newAction.id}`);
         }
       },

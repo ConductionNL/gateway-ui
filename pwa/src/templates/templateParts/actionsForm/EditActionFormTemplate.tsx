@@ -6,7 +6,7 @@ import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputNumber, InputText, Textarea, SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faTrash, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAction } from "../../../hooks/action";
@@ -17,7 +17,7 @@ import Skeleton from "react-loading-skeleton";
 import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
-import { isArray } from "lodash";
+import { useDashboardCards } from "../../../hooks/dashboardCards";
 
 interface EditActionFormTemplateProps {
   action: any;
@@ -37,6 +37,27 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
+
+  const _useDashboardCards = useDashboardCards(queryClient);
+  const getDashboardCards = _useDashboardCards.getAll();
+  const mutateDashboardCard = _useDashboardCards.createOrDelete();
+
+  const dashboardCard =
+    getDashboardCards &&
+    getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${action.name}`);
+
+  const AddToDashboard = () => {
+    const data = {
+      name: `dashboardCard-${action.name}`,
+      type: "Action",
+      entity: "Action",
+      object: "dashboardCard",
+      entityId: actionId,
+      ordering: 1,
+    };
+
+    mutateDashboardCard.mutate({ payload: data, id: dashboardCard?.id });
+  };
 
   const {
     register,
@@ -91,7 +112,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
       action["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
     );
 
-    if (actionHandlerSchema.properties) {
+    if (actionHandlerSchema?.properties) {
       for (const [key, value] of Object.entries(actionHandlerSchema.properties)) {
         setValue(key, action.configuration[key]);
 
@@ -136,6 +157,11 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
+            </Button>
+
+            <Button className={styles.buttonIcon} disabled={loading} onClick={AddToDashboard}>
+              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
             <Button
