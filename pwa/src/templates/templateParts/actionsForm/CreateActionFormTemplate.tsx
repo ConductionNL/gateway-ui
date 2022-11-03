@@ -2,9 +2,9 @@ import * as React from "react";
 import * as styles from "./ActionFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputNumber, InputText, Textarea } from "@conduction/components";
+import { InputCheckbox, InputNumber, InputText, Textarea, SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -15,20 +15,19 @@ import { SelectCreate } from "@conduction/components/lib/components/formFields/s
 import Skeleton from "react-loading-skeleton";
 import { validateStringAsJSONArray } from "../../../services/validateStringAsJSONArray";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
+import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 
-interface CreateActionFormTemplateProps {
-  actionId?: string;
-}
-
-export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> = ({ actionId }) => {
+export const CreateActionFormTemplate: React.FC = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
+  const [selectedHanlderSchema, setSelectedHanlderSchema] = React.useState<any>(null);
 
   const queryClient = useQueryClient();
 
   const _useAction = useAction(queryClient);
-  const createOrEditAction = _useAction.createOrEdit(actionId);
+  const createOrEditAction = _useAction.createOrEdit();
+  const getAllHandlers = _useAction.getAllHandlers();
 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
@@ -37,8 +36,19 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm();
+
+  const watchClass = watch("class");
+
+  React.useEffect(() => {
+    if (!watchClass || !getAllHandlers.data) return;
+
+    const selectedHandler = getAllHandlers.data.find((handler) => handler.class === watchClass.value);
+
+    setSelectedHanlderSchema(selectedHandler.configuration);
+  }, [watchClass, getAllHandlers.isSuccess]);
 
   React.useEffect(() => {
     if (!getCronjobs.data) return;
@@ -65,7 +75,7 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
       throws: data.throws?.map((_throw: any) => _throw.value),
     };
 
-    createOrEditAction.mutate({ payload, id: actionId });
+    createOrEditAction.mutate({ payload });
   };
 
   return (
@@ -135,7 +145,22 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Action handler")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="class" validation={{ required: true }} disabled={loading} />
+
+                {getAllHandlers.isLoading && <Skeleton height="50px" />}
+
+                {getAllHandlers.isSuccess && (
+                  // @ts-ignore
+                  <SelectSingle
+                    options={getAllHandlers.data.map((handler: any) => ({
+                      label: handler.class,
+                      value: handler.class,
+                    }))}
+                    name="class"
+                    validation={{ required: true }}
+                    {...{ register, errors, control }}
+                    disabled={loading}
+                  />
+                )}
               </FormFieldInput>
             </FormField>
 
@@ -179,6 +204,13 @@ export const CreateActionFormTemplate: React.FC<CreateActionFormTemplateProps> =
             </FormField>
           </div>
         </div>
+
+        {selectedHanlderSchema && (
+          <>
+            <Divider />
+            <SchemaFormTemplate {...{ register, errors, control }} schema={selectedHanlderSchema} disabled={loading} />
+          </>
+        )}
       </form>
     </div>
   );

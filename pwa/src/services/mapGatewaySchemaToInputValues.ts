@@ -3,8 +3,10 @@ export const mapGatewaySchemaToInputValues = (value: any): any => {
     case "array":
       let values = [];
 
-      for (const [key, _value] of Object.entries(value.value)) {
-        values.push({ key, value: _value });
+      if (value.value) {
+        for (const [key, _value] of Object.entries(value.value)) {
+          values.push({ key, value: _value });
+        }
       }
 
       return values;

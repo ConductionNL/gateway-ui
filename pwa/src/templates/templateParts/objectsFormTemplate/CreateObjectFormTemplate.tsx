@@ -102,7 +102,7 @@ export const CreateObjectFormTemplate: React.FC = () => {
         <Divider />
 
         <div>
-          {getSchemaSchema.isLoading && <Skeleton height="200px" />}{" "}
+          {getSchemaSchema.isLoading && <Skeleton height="200px" />}
           {getSchemaSchema.isSuccess && (
             <SchemaFormTemplate {...{ register, errors, control }} schema={getSchemaSchema.data} disabled={loading} />
           )}
