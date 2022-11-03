@@ -64,11 +64,9 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   };
 
   const AddToDashboard = () => {
-    console.log("click");
-
     const data = {
       name: `dashboardCard-${scheme.name}`,
-      type: "App\\Entity\\Entity",
+      type: "Schema",
       entity: "Entity",
       object: "dashboardCard",
       entityId: schemeId,
