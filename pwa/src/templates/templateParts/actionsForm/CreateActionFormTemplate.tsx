@@ -73,7 +73,15 @@ export const CreateActionFormTemplate: React.FC = () => {
       priority: parseInt(data.priority, 10),
       listens: data.listens?.map((listener: any) => listener.value),
       throws: data.throws?.map((_throw: any) => _throw.value),
+      class: data.class.value,
+      conditions: data.conditions ? JSON.parse(data.conditions) : [],
+      configuration: {},
     };
+
+    for (const [key, _] of Object.entries(selectedHanlderSchema.properties)) {
+      payload.configuration[key] = data[key];
+      delete payload[key];
+    }
 
     createOrEditAction.mutate({ payload });
   };
@@ -119,6 +127,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                     options={listensAndThrows}
                     disabled={loading}
                     name="listens"
+                    validation={{ required: true }}
                     {...{ register, errors, control }}
                   />
                 )}

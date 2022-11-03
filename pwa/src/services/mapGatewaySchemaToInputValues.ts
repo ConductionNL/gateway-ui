@@ -1,15 +1,7 @@
 export const mapGatewaySchemaToInputValues = (value: any): any => {
   switch (value.type) {
     case "array":
-      let values = [];
-
-      if (value.value) {
-        for (const [key, _value] of Object.entries(value.value)) {
-          values.push({ key, value: _value });
-        }
-      }
-
-      return values;
+      return value.value?.map((item: any) => ({ key: item.key, value: item.value }));
 
     case "boolean":
     case "integer":

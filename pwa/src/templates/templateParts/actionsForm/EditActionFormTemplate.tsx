@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as styles from "./ActionFormTemplate.module.css";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputNumber, InputText, Textarea } from "@conduction/components";
+import { InputCheckbox, InputNumber, InputText, Textarea, SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -13,6 +13,11 @@ import { useAction } from "../../../hooks/action";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { validateStringAsJSONArray } from "../../../services/validateStringAsJSONArray";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
+import Skeleton from "react-loading-skeleton";
+import { useCronjob } from "../../../hooks/cronjob";
+import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
+import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import { isArray } from "lodash";
 
 interface EditActionFormTemplateProps {
   action: any;
@@ -22,13 +27,16 @@ interface EditActionFormTemplateProps {
 export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ action, actionId }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
+  const [actionHandlerSchema, setActionHandlerSchema] = React.useState<any>(action.actionHandlerConfiguration);
 
   const queryClient = useQueryClient();
   const _useAction = useAction(queryClient);
   const createOrEditAction = _useAction.createOrEdit(actionId);
   const deleteAction = _useAction.remove();
 
-  console.log(action.actionHandlerConfiguration);
+  const _useCronjob = useCronjob(queryClient);
+  const getCronjobs = _useCronjob.getAll();
 
   const {
     register,
@@ -39,7 +47,22 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    createOrEditAction.mutate({ payload: data, id: actionId });
+    const payload = {
+      ...data,
+      priority: parseInt(data.priority, 10),
+      listens: data.listens?.map((listener: any) => listener.value),
+      throws: data.throws?.map((_throw: any) => _throw.value),
+      class: data.class.value,
+      conditions: data.conditions ? JSON.parse(data.conditions) : [],
+      configuration: {},
+    };
+
+    for (const [key, _] of Object.entries(actionHandlerSchema.properties)) {
+      payload.configuration[key] = data[key];
+      delete payload[key];
+    }
+
+    createOrEditAction.mutate({ payload, id: actionId });
   };
 
   const handleDeleteAction = () => {
@@ -50,12 +73,45 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
     }
   };
 
-  const handleSetFormValues = (cronjob: any): void => {
-    const basicFields: string[] = ["name", "description", "listens", "priority", "async", "isLackable"];
-    basicFields.forEach((field) => setValue(field, cronjob[field]));
+  const handleSetFormValues = (action: any): void => {
+    const basicFields: string[] = ["name", "description", "priority", "async", "isLockable"];
+    basicFields.forEach((field) => setValue(field, action[field]));
 
-    setValue("conditions", JSON.stringify(cronjob["conditions"]));
+    setValue("conditions", JSON.stringify(action["conditions"]));
+
+    setValue("class", { label: action.class, value: action.class });
+
+    setValue(
+      "listens",
+      action["listens"].map((listen: any) => ({ label: listen, value: listen })),
+    );
+
+    setValue(
+      "throws",
+      action["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
+    );
+
+    if (actionHandlerSchema.properties) {
+      for (const [key, value] of Object.entries(actionHandlerSchema.properties)) {
+        setValue(key, action.configuration[key]);
+
+        const _value = value as any;
+
+        setActionHandlerSchema((schema: any) => ({
+          ...schema,
+          properties: { ...schema.properties, [key]: { ..._value, value: action.configuration[key] } },
+        }));
+      }
+    }
   };
+
+  React.useEffect(() => {
+    if (!getCronjobs.data) return;
+
+    const cronjobs = getCronjobs.data.map((cronjob) => ({ label: cronjob.name, value: cronjob.name }));
+
+    setListensAndThrows([...cronjobs, ...predefinedSubscriberEvents]);
+  }, [getCronjobs.isSuccess]);
 
   React.useEffect(() => {
     handleSetFormValues(action);
@@ -112,26 +168,48 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Listens")}</FormFieldLabel>
-                <InputText
-                  {...{ register, errors }}
-                  name="listens"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
+                {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
+
+                {listensAndThrows.length > 0 && (
+                  /* @ts-ignore */
+                  <SelectCreate
+                    options={listensAndThrows}
+                    disabled={loading}
+                    name="listens"
+                    {...{ register, errors, control }}
+                  />
+                )}
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="throws" validation={{ required: true }} disabled={loading} />
+                {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
+
+                {listensAndThrows.length > 0 && (
+                  /* @ts-ignore */
+                  <SelectCreate
+                    options={listensAndThrows}
+                    disabled={loading}
+                    name="throws"
+                    {...{ register, errors, control }}
+                  />
+                )}
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Action handler")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="class" validation={{ required: true }} disabled={loading} />
+
+                {/* @ts-ignore */}
+                <SelectSingle
+                  name="class"
+                  validation={{ required: true }}
+                  {...{ register, errors, control }}
+                  disabled
+                />
               </FormFieldInput>
             </FormField>
 
@@ -150,26 +228,14 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("async")}</FormFieldLabel>
-                <InputCheckbox
-                  {...{ register, errors }}
-                  disabled={loading}
-                  label="on"
-                  name="async"
-                  validation={{ required: true }}
-                />
+                <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="async" />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                <InputCheckbox
-                  {...{ register, errors }}
-                  disabled={loading}
-                  label="on"
-                  name="islockable"
-                  validation={{ required: true }}
-                />
+                <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="islockable" />
               </FormFieldInput>
             </FormField>
 
@@ -187,15 +253,11 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             </FormField>
           </div>
 
-          {action.actionHandlerConfiguration && (
+          {actionHandlerSchema && (
             <>
               <Divider />
 
-              <SchemaFormTemplate
-                {...{ register, errors, control }}
-                schema={action.actionHandlerConfiguration}
-                disabled={loading}
-              />
+              <SchemaFormTemplate {...{ register, errors, control }} schema={actionHandlerSchema} disabled={loading} />
             </>
           )}
         </div>

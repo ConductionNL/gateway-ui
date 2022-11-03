@@ -1,6 +1,7 @@
 import { QueryClient } from "react-query";
 
 const addItem = async (queryClient: QueryClient, queryKey: string, item: any) => {
+  console.log({ item });
   await queryClient.cancelQueries(queryKey);
 
   const previousQueryData = queryClient.getQueryData<any[]>(queryKey);

@@ -36,8 +36,8 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
             </TableHead>
 
             <TableBody>
-              {getActions.data.throws.map((thrown: any) => (
-                <TableRow>
+              {getActions.data.throws.map((thrown: any, idx) => (
+                <TableRow key={idx}>
                   <TableCell>{thrown}</TableCell>
                 </TableRow>
               ))}
