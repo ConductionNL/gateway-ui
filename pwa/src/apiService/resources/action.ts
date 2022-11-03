@@ -20,6 +20,12 @@ export default class Action {
     return data;
   };
 
+  public getAllHandlers = async (): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", "/admin/actionHandlers?limit=1000");
+
+    return data;
+  };
+
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 

@@ -26,6 +26,7 @@ export const nl = {
   ObjectEntities: "Object Entiteiten",
   "Back to objects": "Terug naar objecten",
   "Object detail page": "Object detail pagina",
+  "Action handler": "Action handler",
   Handler: "Handler",
   Schema: "Scheme",
   Gateway: "Source",
