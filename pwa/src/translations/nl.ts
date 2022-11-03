@@ -27,4 +27,6 @@ export const nl = {
   "Back to objects": "Terug naar objecten",
   "Object detail page": "Object detail pagina",
   Handler: "Handler",
+  Schema: "Scheme",
+  Gateway: "Source",
 };
