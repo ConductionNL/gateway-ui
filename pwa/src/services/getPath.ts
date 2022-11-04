@@ -12,7 +12,7 @@ export const getPath = (value: any): any => {
     case "Endpoint":
       return "endpoints";
 
-    case "Object Entity":
+    case "ObjectEntity":
       return "objects";
 
     case "Entity":

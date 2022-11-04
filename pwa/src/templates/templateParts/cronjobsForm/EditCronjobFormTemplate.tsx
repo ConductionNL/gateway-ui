@@ -12,15 +12,17 @@ import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useCronjob } from "../../../hooks/cronjob";
-import { useDashboardCards } from "../../../hooks/dashboardCards";
+import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
 interface EditCronjobFormTemplateProps {
   cronjob: any;
-  cronjobId?: string;
+  cronjobId: string;
 }
 
 export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = ({ cronjob, cronjobId }) => {
   const { t } = useTranslation();
+  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
@@ -31,13 +33,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   const createOrEditCronjob = _useCronjobs.createOrEdit(cronjobId);
   const deleteCronjob = _useCronjobs.remove();
 
-  const _useDashboardCards = useDashboardCards(queryClient);
-  const getDashboardCards = _useDashboardCards.getAll();
-  const mutateDashboardCard = _useDashboardCards.createOrDelete();
-
-  const dashboardCard =
-    getDashboardCards &&
-    getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${cronjob.name}`);
+  const dashboardCard = getDashboardCard(cronjob.name);
 
   const {
     register,
@@ -54,26 +50,8 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     deleteCronjob.mutateAsync({ id: id });
   };
 
-  const AddToDashboard = () => {
-    setDashboardLoading(true);
-
-    const data = {
-      name: `dashboardCard-${cronjob.name}`,
-      type: "Cronjob",
-      entity: "Cronjob",
-      object: "dashboardCard",
-      entityId: cronjobId,
-      ordering: 1,
-    };
-
-    mutateDashboardCard.mutate(
-      { payload: data, id: dashboardCard?.id },
-      {
-        onSuccess: () => {
-          setDashboardLoading(false);
-        },
-      },
-    );
+  const addOrRemoveFromDashboard = () => {
+    addOrRemoveDashboardCard(cronjob.name, "Cronjob", "Cronjob", cronjobId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (cronjob: any): void => {
@@ -101,7 +79,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} disabled={dashboardLoading} onClick={AddToDashboard}>
+            <Button className={styles.buttonIcon} disabled={dashboardLoading} onClick={addOrRemoveFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
