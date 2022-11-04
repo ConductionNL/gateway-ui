@@ -56,6 +56,8 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   } = useForm();
 
   const onSubmit = (data: any): void => {
+    data = { ...data, function: data.function.value };
+
     createOrEditScheme.mutate({ payload: data, id: schemeId });
   };
 
