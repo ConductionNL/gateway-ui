@@ -35,7 +35,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
-  const [currentTab, setCurrentTab] = React.useState<number>(3);
+  const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const [dashboardLoading, setDashboardLoading] = React.useState<boolean>(false);
 
