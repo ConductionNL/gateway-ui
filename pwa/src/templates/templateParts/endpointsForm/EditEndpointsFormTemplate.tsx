@@ -161,6 +161,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Method")}</FormFieldLabel>
+                {/* @ts-ignore */}
                 <SelectSingle
                   name="method"
                   options={methodSelectOptions}

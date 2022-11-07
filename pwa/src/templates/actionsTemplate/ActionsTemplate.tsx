@@ -56,13 +56,13 @@ export const ActionsTemplate: React.FC = () => {
                 <TableCell>{action.name}</TableCell>
                 <TableCell>{action.priority}</TableCell>
                 <TableCell>
-                  <div className={clsx(styles[action.status === "Ok" ? "statusOk" : "statusFailed"])}>
+                  <div className={clsx(styles[action.status === "true" ? "statusFailed" : "statusOk"])}>
                     <Tag label={action.status?.toString() ?? "-"} />
                   </div>
                 </TableCell>
                 <TableCell>{action.status ? "On" : "Off"}</TableCell>
-                <TableCell>{translateDate(i18n.language, action.lastRun) ?? "-"}</TableCell>
-                <TableCell>{action.lastRunTime ?? "-"}</TableCell>
+                <TableCell>{ action.lastRun ?? "-"}</TableCell>
+                <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
                 <TableCell onClick={() => navigate(`/actions/${action.id}`)}>

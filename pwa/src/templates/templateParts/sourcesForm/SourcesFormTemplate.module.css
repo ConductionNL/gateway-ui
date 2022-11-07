@@ -66,6 +66,7 @@
 .name {
   flex: 1;
 }
+
 .status {
   display: flex;
   flex-direction: column;
@@ -74,6 +75,7 @@
 .flex {
   flex: 1;
 }
+
 .flex > *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-md);
 }
@@ -91,8 +93,12 @@
 .expectFormField {
   display: flex;
 }
+
 .expectFormField > :not(:last-child) {
   padding-inline-end: var(--gateway-ui-size-lg) !important;
+}
+.infoButton:hover {
+  cursor: pointer;
 }
 
 /* Status colors */
