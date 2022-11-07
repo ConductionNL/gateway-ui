@@ -24,7 +24,7 @@ export const getPath = (value: any): any => {
     case "Plugin":
       return "plugins";
 
-    case "Collection":
+    case "CollectionEntity":
       return "collections";
   }
 };

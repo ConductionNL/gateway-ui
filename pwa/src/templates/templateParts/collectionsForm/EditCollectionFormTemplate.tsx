@@ -6,7 +6,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputText, Textarea } from "@conduction/components";
+import { InputText } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -26,7 +26,6 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
-  const [dashboardLoading, setDashboardLoading] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const _useCollection = useCollection(queryClient);
@@ -51,7 +50,7 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
   };
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(collection.name, "Collection", "Collection", collectionId, dashboardCard?.id);
+    addOrRemoveDashboardCard(collection.name, "Collection", "CollectionEntity", collectionId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (collection: any): void => {
