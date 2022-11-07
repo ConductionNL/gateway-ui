@@ -134,6 +134,7 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Function")}</FormFieldLabel>
+                {/* @ts-ignore */}
                 <SelectSingle
                   name="function"
                   options={functionSelectOptions}
