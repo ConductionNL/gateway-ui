@@ -18,6 +18,7 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { useDashboardCards } from "../../../hooks/dashboardCards";
+import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
 interface EditActionFormTemplateProps {
   action: any;
@@ -38,25 +39,12 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
 
-  const _useDashboardCards = useDashboardCards(queryClient);
-  const getDashboardCards = _useDashboardCards.getAll();
-  const mutateDashboardCard = _useDashboardCards.createOrDelete();
+  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
-  const dashboardCard =
-    getDashboardCards &&
-    getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${action.name}`);
+  const dashboardCard = getDashboardCard(action.name);
 
-  const AddToDashboard = () => {
-    const data = {
-      name: `dashboardCard-${action.name}`,
-      type: "Action",
-      entity: "Action",
-      object: "dashboardCard",
-      entityId: actionId,
-      ordering: 1,
-    };
-
-    mutateDashboardCard.mutate({ payload: data, id: dashboardCard?.id });
+  const addOrRemoveFromDashboard = () => {
+    addOrRemoveDashboardCard(action.name, "Action", "Action", actionId, dashboardCard?.id);
   };
 
   const {
@@ -159,7 +147,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} disabled={loading} onClick={AddToDashboard}>
+            <Button className={styles.buttonIcon} disabled={loading} onClick={addOrRemoveFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
