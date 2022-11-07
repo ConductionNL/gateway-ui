@@ -4,12 +4,13 @@ import { useForm } from "react-hook-form";
 import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mutateObjectFormData } from "./service";
+import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -18,6 +19,8 @@ interface EditObjectFormTemplateProps {
 
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, objectId }) => {
   const { t } = useTranslation();
+  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
@@ -26,6 +29,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   const deleteObject = _useObjects.remove();
 
   const getSchema = _useObjects.getSchema(objectId);
+
+  const dashboardCard = getDashboardCard(object.id);
 
   const {
     register,
@@ -59,6 +64,10 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
     }
   };
 
+  const addOrRemoveFromDashboard = () => {
+    addOrRemoveDashboardCard(object.id, "Data layer", "ObjectEntity", objectId, dashboardCard?.id);
+  };
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,9 +77,14 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
-
               {t("Save")}
             </Button>
+
+            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+            </Button>
+
             <Button
               onClick={handleDeleteObject}
               className={clsx(styles.buttonIcon, styles.deleteButton)}
