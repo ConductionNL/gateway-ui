@@ -10,6 +10,7 @@ import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mutateObjectFormData } from "./service";
+import { navigate } from "gatsby";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -56,6 +57,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
     if (confirmDeletion) {
       deleteObject.mutate({ id: objectId });
+      navigate("/objects");
     }
   };
 

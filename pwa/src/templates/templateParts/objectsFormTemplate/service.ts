@@ -49,6 +49,7 @@ export const mutateObjectFormData = (schema: any, data: any, object?: any) => {
           // already set; do nothing
           break;
         case "date":
+        case "datetime":
           objectValue.dateTimeValue = value;
           break;
         case "integer":
