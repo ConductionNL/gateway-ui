@@ -8,26 +8,32 @@ import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useCollection } from "../../../hooks/collection";
+import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
 interface EditCollectionFormTemplateProps {
   collection: any;
-  collectionId?: string;
+  collectionId: string;
 }
 
 export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProps> = ({ collection, collectionId }) => {
   const { t } = useTranslation();
+  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
+  const [dashboardLoading, setDashboardLoading] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const _useCollection = useCollection(queryClient);
   const createOrEditCollection = _useCollection.createOrEdit(collectionId);
   const deleteCollection = _useCollection.remove();
+
+  const dashboardCard = getDashboardCard(collection.name);
 
   const {
     register,
@@ -42,6 +48,10 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
 
   const handleDelete = (id: string): void => {
     deleteCollection.mutateAsync({ id: id });
+  };
+
+  const addOrRemoveFromDashboard = () => {
+    addOrRemoveDashboardCard(collection.name, "Collection", "Collection", collectionId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (collection: any): void => {
@@ -62,9 +72,14 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
-
               {t("Save")}
             </Button>
+
+            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+            </Button>
+
             <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
