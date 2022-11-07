@@ -52,6 +52,8 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   } = useForm();
 
   const onSubmit = (data: any): void => {
+    data = { ...data, method: data.method.value };
+
     createOrEditEndpoint.mutate({ payload: data, id: endpointId });
   };
 

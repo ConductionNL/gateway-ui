@@ -35,15 +35,38 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
+.tabPanel {
+  padding-inline-start: var(--gateway-ui-size-lg) !important;
+  padding-inline-end: var(--gateway-ui-size-lg) !important;
+  padding-block-start: var(--gateway-ui-size-lg) !important;
+  padding-block-end: var(--gateway-ui-size-lg) !important;
+}
+
+.tab {
+  max-width: unset !important;
+}
+
 .grid {
   display: grid;
   grid-gap: var(--gateway-ui-size-lg);
   grid-template-columns: 1fr 1fr;
 }
 
+.tooltip {
+  max-width: 250px;
+  background-color: black !important;
+}
+
+.formFieldHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--gateway-ui-size-xs);
+}
+
 .name {
   flex: 1;
 }
+
 .status {
   display: flex;
   flex-direction: column;
@@ -52,6 +75,7 @@
 .flex {
   flex: 1;
 }
+
 .flex > *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-md);
 }
@@ -64,6 +88,17 @@
   --denhaag-button-primary-action-hover-background-color: var(
     --gateway-ui-color-dark-red
   );
+}
+
+.expectFormField {
+  display: flex;
+}
+
+.expectFormField > :not(:last-child) {
+  padding-inline-end: var(--gateway-ui-size-lg) !important;
+}
+.infoButton:hover {
+  cursor: pointer;
 }
 
 /* Status colors */

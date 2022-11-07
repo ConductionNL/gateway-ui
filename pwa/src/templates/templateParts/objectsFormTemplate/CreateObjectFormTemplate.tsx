@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { SelectSingle } from "@conduction/components";
+import { InputText, SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -14,7 +14,11 @@ import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mutateObjectFormData } from "./service";
 
-export const CreateObjectFormTemplate: React.FC = () => {
+interface CreateObjectFormTemplateProps {
+  predefinedSchema?: string;
+}
+
+export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> = ({ predefinedSchema }) => {
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [selectedSchema, setSelectedSchema] = React.useState<any>(null);
@@ -34,6 +38,12 @@ export const CreateObjectFormTemplate: React.FC = () => {
     control,
     formState: { errors },
   } = useForm();
+
+  React.useEffect(() => {
+    if (!predefinedSchema) return;
+
+    setSelectedSchema(predefinedSchema);
+  }, [predefinedSchema]);
 
   const watchSchema = watch("schema");
 
@@ -78,24 +88,44 @@ export const CreateObjectFormTemplate: React.FC = () => {
 
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Select a schema")}</FormFieldLabel>
+            {!predefinedSchema && (
+              <FormField>
+                <FormFieldInput>
+                  <FormFieldLabel>{t("Select a schema")}</FormFieldLabel>
 
-                {getSchemas.isLoading && <Skeleton height="50px" />}
+                  {getSchemas.isLoading && <Skeleton height="50px" />}
+                  {getSchemas.isSuccess && (
+                    // @ts-ignore
+                    <SelectSingle
+                      options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
+                      name="schema"
+                      validation={{ required: true }}
+                      {...{ register, errors, control }}
+                      disabled={loading || getSchemaSchema.isLoading}
+                    />
+                  )}
+                </FormFieldInput>
+              </FormField>
+            )}
 
-                {getSchemas.isSuccess && (
-                  // @ts-ignore
-                  <SelectSingle
-                    options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
-                    name="schema"
-                    validation={{ required: true }}
-                    {...{ register, errors, control }}
-                    disabled={loading || getSchemaSchema.isLoading}
-                  />
-                )}
-              </FormFieldInput>
-            </FormField>
+            {predefinedSchema && (
+              <FormField>
+                <FormFieldInput>
+                  <FormFieldLabel>{t("Selected schema")}</FormFieldLabel>
+
+                  {getSchemas.isLoading && <Skeleton height="50px" />}
+
+                  {getSchemas.isSuccess && (
+                    <InputText
+                      disabled
+                      defaultValue={predefinedSchema}
+                      name="schema"
+                      {...{ register, errors, control }}
+                    />
+                  )}
+                </FormFieldInput>
+              </FormField>
+            )}
           </div>
         </div>
 

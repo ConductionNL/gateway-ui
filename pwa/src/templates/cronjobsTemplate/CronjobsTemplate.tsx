@@ -12,9 +12,10 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import clsx from "clsx";
+import { translateDate } from "../../services/dateFormat";
 
 export const CronjobsTemplate: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const queryClient = new QueryClient();
   const _useCronjob = useCronjob(queryClient);
@@ -65,8 +66,8 @@ export const CronjobsTemplate: React.FC = () => {
                 </TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>{cronjob.crontab}</TableCell>
-                <TableCell>{cronjob.lastRun}</TableCell>
-                <TableCell>{cronjob.nextRun}</TableCell>
+                <TableCell>{translateDate(i18n.language, cronjob.lastRun)}</TableCell>
+                <TableCell>{translateDate(i18n.language, cronjob.nextRun)}</TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>-</TableCell>

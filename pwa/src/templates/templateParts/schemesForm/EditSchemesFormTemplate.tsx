@@ -52,11 +52,17 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   } = useForm();
 
   const onSubmit = (data: any): void => {
+    data = { ...data, function: data.function.value };
+
     createOrEditScheme.mutate({ payload: data, id: schemeId });
   };
 
-  const handleDelete = (id: string): void => {
-    deleteScheme.mutateAsync({ id: id });
+  const handleDeleteScheme = () => {
+    const confirmDeletion = confirm("Are you sure you want to delete this action?");
+
+    if (confirmDeletion) {
+      deleteScheme.mutate({ id: schemeId });
+    }
   };
 
   const addOrRemoveFromDashboard = () => {
@@ -94,7 +100,7 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+            <Button onClick={handleDeleteScheme} className={clsx(styles.buttonIcon, styles.deleteButton)}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>

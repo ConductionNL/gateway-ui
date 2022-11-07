@@ -9,6 +9,9 @@ export const mapGatewaySchemaToInputValues = (value: any): any => {
     case "number":
       return value.value;
 
+    case "datetime":
+      return value.value?.substring(0, 16);
+
     case "string":
       if (value.enum && !value.multiple) {
         const options = value.enum.map((e: any) => ({ label: e, value: e }));

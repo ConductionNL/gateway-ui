@@ -19,7 +19,7 @@ interface CreateSchemesFormTemplateProps {
 export const CreateSchemesFormTemplate: React.FC<CreateSchemesFormTemplateProps> = ({ schemeId }) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
@@ -43,12 +43,16 @@ export const CreateSchemesFormTemplate: React.FC<CreateSchemesFormTemplateProps>
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    createOrEditScheme.mutate({ payload: data, id: schemeId });
+    const payload = {
+      ...data,
+      function: data.function.value,
+    };
+    createOrEditScheme.mutate({ payload, id: schemeId });
   };
 
   return (
     <div className={styles.container}>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{t("Create Scheme")}</Heading1>
 
