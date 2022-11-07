@@ -26,7 +26,6 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
-  const [dashboardLoading, setDashboardLoading] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const _useEndpoints = useEndpoint(queryClient);
@@ -91,7 +90,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} disabled={dashboardLoading} onClick={addOrRemoveFromDashboard}>
+            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

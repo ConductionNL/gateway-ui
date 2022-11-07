@@ -39,8 +39,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
 
-  const [dashboardLoading, setDashboardLoading] = React.useState<boolean>(false);
-
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
   const createOrEditSource = _useSources.createOrEdit(sourceId);
@@ -134,7 +132,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               {t("Test connection")}
             </Button>
 
-            <Button className={styles.buttonIcon} disabled={dashboardLoading} onClick={addOrRemoveFromDashboard}>
+            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
