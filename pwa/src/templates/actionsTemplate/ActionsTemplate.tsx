@@ -36,7 +36,7 @@ export const ActionsTemplate: React.FC = () => {
       {getActions.isError && "Error..."}
 
       {getActions.isSuccess && (
-        <Table>
+        <Table className={styles.table}>
           <TableHead>
             <TableRow>
               <TableHeader>Name</TableHeader>
@@ -56,12 +56,12 @@ export const ActionsTemplate: React.FC = () => {
                 <TableCell>{action.name}</TableCell>
                 <TableCell>{action.priority}</TableCell>
                 <TableCell>
-                  <div className={clsx(styles[action.status === "true" ? "statusFailed" : "statusOk"])}>
+                  <div className={clsx(styles[action.status === true ? "statusOk" : "statusFailed"])}>
                     <Tag label={action.status?.toString() ?? "-"} />
                   </div>
                 </TableCell>
                 <TableCell>{action.status ? "On" : "Off"}</TableCell>
-                <TableCell>{ action.lastRun ?? "-"}</TableCell>
+                <TableCell>{action.lastRun ?? "-"}</TableCell>
                 <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
