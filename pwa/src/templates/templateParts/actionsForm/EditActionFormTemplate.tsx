@@ -17,7 +17,7 @@ import Skeleton from "react-loading-skeleton";
 import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
-import { useDashboardCards } from "../../../hooks/dashboardCards";
+import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
 interface EditActionFormTemplateProps {
   action: any;
@@ -26,6 +26,8 @@ interface EditActionFormTemplateProps {
 
 export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ action, actionId }) => {
   const { t } = useTranslation();
+  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
   const [actionHandlerSchema, setActionHandlerSchema] = React.useState<any>(action.actionHandlerConfiguration);
@@ -38,25 +40,10 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
 
-  const _useDashboardCards = useDashboardCards(queryClient);
-  const getDashboardCards = _useDashboardCards.getAll();
-  const mutateDashboardCard = _useDashboardCards.createOrDelete();
+  const dashboardCard = getDashboardCard(action.name);
 
-  const dashboardCard =
-    getDashboardCards &&
-    getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${action.name}`);
-
-  const AddToDashboard = () => {
-    const data = {
-      name: `dashboardCard-${action.name}`,
-      type: "Action",
-      entity: "Action",
-      object: "dashboardCard",
-      entityId: actionId,
-      ordering: 1,
-    };
-
-    mutateDashboardCard.mutate({ payload: data, id: dashboardCard?.id });
+  const addOrRemoveFromDashboard = () => {
+    addOrRemoveDashboardCard(action.name, "Action", "Action", actionId, dashboardCard?.id);
   };
 
   const {
@@ -159,7 +146,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} disabled={loading} onClick={AddToDashboard}>
+            <Button className={styles.buttonIcon} disabled={loading} onClick={addOrRemoveFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
@@ -254,14 +241,14 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("async")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="async" />
+                <InputCheckbox {...{ register, errors }} label="on" name="async" />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="islockable" />
+                <InputCheckbox {...{ register, errors }} label="on" name="islockable" />
               </FormFieldInput>
             </FormField>
 

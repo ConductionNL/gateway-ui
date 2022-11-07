@@ -2,8 +2,7 @@ import * as React from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
-import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
-import { navigate } from "gatsby";
+import { addItem, deleteItem } from "../services/mutateQueries";
 
 export const useDashboardCards = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);

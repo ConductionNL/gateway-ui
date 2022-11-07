@@ -12,15 +12,17 @@ import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useScheme } from "../../../hooks/scheme";
-import { useDashboardCards } from "../../../hooks/dashboardCards";
+import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
 interface EditCronjobFormTemplateProps {
   scheme: any;
-  schemeId?: string;
+  schemeId: string;
 }
 
 export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = ({ scheme, schemeId }) => {
   const { t } = useTranslation();
+  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
@@ -30,13 +32,7 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   const createOrEditScheme = _useScheme.createOrEdit(schemeId);
   const deleteScheme = _useScheme.remove();
 
-  const _useDashboardCards = useDashboardCards(queryClient);
-  const getDashboardCards = _useDashboardCards.getAll();
-  const mutateDashboardCard = _useDashboardCards.createOrDelete();
-
-  const dashboardCard =
-    getDashboardCards &&
-    getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${scheme.name}`);
+  const dashboardCard = getDashboardCard(scheme.name);
 
   const functionSelectOptions = [
     { label: "No Function", value: "noFunction" },
@@ -69,17 +65,8 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     }
   };
 
-  const AddToDashboard = () => {
-    const data = {
-      name: `dashboardCard-${scheme.name}`,
-      type: "Schema",
-      entity: "Entity",
-      object: "dashboardCard",
-      entityId: schemeId,
-      ordering: 1,
-    };
-
-    mutateDashboardCard.mutate({ payload: data, id: dashboardCard?.id });
+  const addOrRemoveFromDashboard = () => {
+    addOrRemoveDashboardCard(scheme.name, "Schema", "Entity", schemeId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (cronjob: any): void => {
@@ -108,7 +95,7 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} disabled={loading} onClick={AddToDashboard}>
+            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
