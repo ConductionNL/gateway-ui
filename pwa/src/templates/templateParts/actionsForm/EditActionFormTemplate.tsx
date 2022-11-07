@@ -17,7 +17,6 @@ import Skeleton from "react-loading-skeleton";
 import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
-import { useDashboardCards } from "../../../hooks/dashboardCards";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
 interface EditActionFormTemplateProps {
@@ -27,6 +26,8 @@ interface EditActionFormTemplateProps {
 
 export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ action, actionId }) => {
   const { t } = useTranslation();
+  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
   const [actionHandlerSchema, setActionHandlerSchema] = React.useState<any>(action.actionHandlerConfiguration);
@@ -38,8 +39,6 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
-
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
   const dashboardCard = getDashboardCard(action.name);
 

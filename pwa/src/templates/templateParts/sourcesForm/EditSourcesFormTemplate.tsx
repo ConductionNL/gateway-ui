@@ -14,14 +14,17 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { translateDate } from "../../../services/dateFormat";
 import { useDashboardCards } from "../../../hooks/dashboardCards";
+import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
 interface SourcesFormTemplateProps {
   source: any;
-  sourceId?: string;
+  sourceId: string;
 }
 
 export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source, sourceId }) => {
   const { t, i18n } = useTranslation();
+  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
@@ -33,13 +36,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const createOrEditSource = _useSources.createOrEdit(sourceId);
   const deleteSource = _useSources.remove();
 
-  const _useDashboardCards = useDashboardCards(queryClient);
-  const getDashboardCards = _useDashboardCards.getAll();
-  const mutateDashboardCard = _useDashboardCards.createOrDelete();
-
-  const dashboardCard =
-    getDashboardCards &&
-    getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${source.name}`);
+  const dashboardCard = getDashboardCard(source.name);
 
   const typeSelectOptions = [
     { label: "JSON", value: "json" },
@@ -74,26 +71,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     deleteSource.mutateAsync({ id: id });
   };
 
-  const AddToDashboard = () => {
-    setDashboardLoading(true);
-
-    const data = {
-      name: `dashboardCard-${source.name}`,
-      type: "Source",
-      entity: "Gateway",
-      object: "dashboardCard",
-      entityId: sourceId,
-      ordering: 1,
-    };
-
-    mutateDashboardCard.mutate(
-      { payload: data, id: dashboardCard?.id },
-      {
-        onSuccess: () => {
-          setDashboardLoading(false);
-        },
-      },
-    );
+  const addOrRemoveFromDashboard = () => {
+    addOrRemoveDashboardCard(source.name, "Source", "Gateway", sourceId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (source: any): void => {
@@ -141,7 +120,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               {t("Test connection")}
             </Button>
 
-            <Button className={styles.buttonIcon} disabled={dashboardLoading} onClick={AddToDashboard}>
+            <Button className={styles.buttonIcon} disabled={dashboardLoading} onClick={addOrRemoveFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
