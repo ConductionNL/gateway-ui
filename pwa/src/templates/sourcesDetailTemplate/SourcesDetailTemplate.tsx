@@ -60,7 +60,6 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                 </TableHead>
                 <TableBody>
                   <TableRow
-                    className={styles.tableRow}
                     onClick={() => navigate(`/sources/${_getSources.data.id}/${_getSources.data.id}`)}
                     key={_getSources.data.id}
                   >

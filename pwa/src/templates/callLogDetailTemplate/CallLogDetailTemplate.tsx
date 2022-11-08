@@ -23,7 +23,7 @@ export const CallLogDetailTemplate: React.FC<CallLogDetailTemplateProps> = ({ ca
 
   return (
     <div className={styles.container}>
-      <div className={styles.backButton} onClick={() => navigate(`/sources/${sourceId}`)}>
+      <div onClick={() => navigate(`/sources/${sourceId}`)}>
         <Link icon={<ArrowLeftIcon />} iconAlign="start">
           {t("Back to source")}
         </Link>
