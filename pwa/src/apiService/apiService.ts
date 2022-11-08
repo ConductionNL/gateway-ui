@@ -11,7 +11,7 @@ import Source from "./resources/source";
 import Cronjob from "./resources/cronjob";
 import Endpoint from "./resources/endpoint";
 import Object from "./resources/object";
-import Scheme from "./resources/scheme";
+import Schema from "./resources/schema";
 import Log from "./resources/log";
 import Collection from "./resources/collection";
 import DashboardCards from "./resources/dashboardCards";
@@ -98,8 +98,8 @@ export default class APIService {
     return new Object(this.BaseClient);
   }
 
-  public get Scheme(): Scheme {
-    return new Scheme(this.BaseClient);
+  public get Schema(): Schema {
+    return new Schema(this.BaseClient);
   }
 
   public get Log(): Log {

@@ -28,6 +28,6 @@ export const nl = {
   "Object detail page": "Object detail pagina",
   "Action handler": "Action handler",
   Handler: "Handler",
-  Schema: "Scheme",
+  Schema: "Schema",
   Gateway: "Source",
 };

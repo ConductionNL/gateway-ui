@@ -5,27 +5,27 @@ import APIContext from "../apiService/apiContext";
 import { navigate } from "gatsby";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 
-export const useScheme = (queryClient: QueryClient) => {
+export const useSchema = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
 
   const getAll = () =>
-    useQuery<any[], Error>("entities", API.Scheme.getAll, {
+    useQuery<any[], Error>("entities", API.Schema.getAll, {
       onError: (error) => {
         throw new Error(error.message);
       },
     });
 
-  const getOne = (schemeId: string) =>
-    useQuery<any, Error>(["entities", schemeId], () => API?.Scheme.getOne(schemeId), {
-      initialData: () => queryClient.getQueryData<any[]>("entities")?.find((_scheme) => _scheme.id === schemeId),
+  const getOne = (schemaId: string) =>
+    useQuery<any, Error>(["entities", schemaId], () => API?.Schema.getOne(schemaId), {
+      initialData: () => queryClient.getQueryData<any[]>("entities")?.find((_schema) => _schema.id === schemaId),
       onError: (error) => {
         throw new Error(error.message);
       },
-      enabled: !!schemeId,
+      enabled: !!schemaId,
     });
 
   const getSchema = (schemaId: string) =>
-    useQuery<any[], Error>(["schema_schema", schemaId], () => API.Scheme.getSchema(schemaId), {
+    useQuery<any[], Error>(["schema_schema", schemaId], () => API.Schema.getSchema(schemaId), {
       onError: (error) => {
         throw new Error(error.message);
       },
@@ -33,27 +33,27 @@ export const useScheme = (queryClient: QueryClient) => {
     });
 
   const remove = () =>
-    useMutation<any, Error, any>(API.Scheme.delete, {
+    useMutation<any, Error, any>(API.Schema.delete, {
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "entities", variables.id);
-        navigate("/schemes");
+        navigate("/schemas");
       },
       onError: (error) => {
         throw new Error(error.message);
       },
     });
 
-  const createOrEdit = (schemeId?: string) =>
-    useMutation<any, Error, any>(API.Scheme.createOrUpdate, {
-      onSuccess: async (newScheme) => {
-        if (schemeId) {
-          updateItem(queryClient, "entities", newScheme);
-          navigate("/schemes");
+  const createOrEdit = (schemaId?: string) =>
+    useMutation<any, Error, any>(API.Schema.createOrUpdate, {
+      onSuccess: async (newSchema) => {
+        if (schemaId) {
+          updateItem(queryClient, "entities", newSchema);
+          navigate("/schemas");
         }
 
-        if (!schemeId) {
-          addItem(queryClient, "entities", newScheme);
-          navigate(`/schemes/${newScheme.id}`);
+        if (!schemaId) {
+          addItem(queryClient, "entities", newSchema);
+          navigate(`/schemas/${newSchema.id}`);
         }
       },
       onError: (error) => {
