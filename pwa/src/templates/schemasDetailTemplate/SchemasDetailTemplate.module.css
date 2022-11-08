@@ -27,6 +27,10 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
+.addObjectButton {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
 .tableRow {
   cursor: pointer;
 }

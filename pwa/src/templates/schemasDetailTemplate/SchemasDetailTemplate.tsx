@@ -53,13 +53,16 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
-
-            <Button disabled={getSchema.isLoading} onClick={() => navigate(`/objects/new?schema=${getSchema.data.id}`)}>
+            <Button
+              className={styles.addObjectButton}
+              disabled={getSchema.isLoading}
+              onClick={() => navigate(`/objects/new?schema=${getSchema.data.id}`)}
+            >
               <FontAwesomeIcon icon={faPlus} /> Object toevoegen
             </Button>
 
             {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
+            {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
