@@ -14,12 +14,12 @@ import clsx from "clsx";
 import { useSchema } from "../../../hooks/schema";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
-interface EditCronjobFormTemplateProps {
+interface EditSchemaFormTemplateProps {
   schema: any;
   schemaId: string;
 }
 
-export const EditSchemasFormTemplate: React.FC<EditCronjobFormTemplateProps> = ({ schema, schemaId }) => {
+export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({ schema, schemaId }) => {
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 

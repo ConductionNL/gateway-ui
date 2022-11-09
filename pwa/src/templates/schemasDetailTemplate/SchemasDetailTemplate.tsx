@@ -15,6 +15,7 @@ import { translateDate } from "../../services/dateFormat";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { TabsContext } from "../../context/tabs";
 
 interface SchemasDetailPageProps {
   schemaId: string;
@@ -22,7 +23,7 @@ interface SchemasDetailPageProps {
 
 export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schemaId }) => {
   const { t, i18n } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
 
   const queryClient = new QueryClient();
   const _useSchema = useSchema(queryClient);
@@ -39,11 +40,11 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
       {getSchema.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
-        <TabContext value={currentTab.toString()}>
+        <TabContext value={currentTab.schemaDetailTabs.toString()}>
           <Tabs
-            value={currentTab}
+            value={currentTab.schemaDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab(newValue);
+              setCurrentTab({ ...currentTab, schemaDetailTabs: newValue });
             }}
             variant="scrollable"
           >
@@ -66,6 +67,13 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
+            <Button
+              className={styles.addPropertyButton}
+              disabled={getSchema.isLoading}
+              onClick={() => navigate(`/schemas/${schemaId}/new`)}
+            >
+              <FontAwesomeIcon icon={faPlus} /> Property toevoegen
+            </Button>
             {getSchema.isLoading && <Skeleton height="100px" />}
             {getSchema.isSuccess && (
               <Table>
@@ -82,14 +90,18 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                 </TableHead>
                 <TableBody>
                   {getSchema.data.attributes.map((property: any) => (
-                    <TableRow className={styles.tableRow} key={property.id}>
+                    <TableRow
+                      className={styles.tableRow}
+                      onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
+                      key={property.id}
+                    >
                       <TableCell>{property.name ?? "-"}</TableCell>
                       <TableCell>{property.type ?? "-"}</TableCell>
                       <TableCell>{property.function ?? "-"}</TableCell>
                       <TableCell>{property.caseSensitive.toString() ?? "-"}</TableCell>
                       <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
                       <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
-                      <TableCell>
+                      <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
                         <Link icon={<ArrowRightIcon />} iconAlign="start">
                           {t("Details")}
                         </Link>
