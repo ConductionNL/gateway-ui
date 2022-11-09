@@ -42,7 +42,6 @@ export const useObject = (queryClient: QueryClient) => {
   const remove = () =>
     useMutation<any, Error, any>(API.Object.delete, {
       onSuccess: async (_, variables) => {
-        navigate("/objects");
         deleteItem(queryClient, "object", variables.id);
       },
       onError: (error) => {

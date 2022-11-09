@@ -8,7 +8,7 @@ import { FieldValues, UseFormRegister } from "react-hook-form";
 import { CreateKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
-import { InputFloat } from "@conduction/components/lib/components/formFields/input";
+import { InputDateTime, InputFloat } from "@conduction/components/lib/components/formFields/input";
 import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -18,7 +18,7 @@ import {
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
 
-export type SchemaInputType = "string" | "boolean" | "array" | "integer" | "date" | "number" | "object";
+export type SchemaInputType = "string" | "boolean" | "array" | "integer" | "date" | "number" | "object" | "datetime";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -55,7 +55,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
         name: key,
         placeholder: value.example,
         description: value.description,
-        required: schema.required.includes(key),
+        required: schema?.required.includes(key),
         defaultValue: mapGatewaySchemaToInputValues(value),
       };
 
@@ -198,6 +198,13 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "date" && (
           <InputDate validation={{ required }} {...{ register, errors, disabled, placeholder, name, defaultValue }} />
+        )}
+
+        {type === "datetime" && (
+          <InputDateTime
+            validation={{ required }}
+            {...{ register, errors, disabled, placeholder, name, defaultValue }}
+          />
         )}
 
         {type === "array" && (

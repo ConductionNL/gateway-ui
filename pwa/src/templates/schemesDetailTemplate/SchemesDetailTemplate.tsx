@@ -6,14 +6,15 @@ import { Container, Tag } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { useScheme } from "../../hooks/scheme";
 import { EditSchemesFormTemplate } from "../templateParts/schemesForm/EditSchemesFormTemplate";
-import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useObject } from "../../hooks/object";
 import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface SchemesDetailPageProps {
   schemeId: string;
@@ -53,6 +54,11 @@ export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ scheme
 
           <TabPanel className={styles.tabPanel} value="0">
             {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
+
+            <Button disabled={getScheme.isLoading} onClick={() => navigate(`/objects/new?schema=${getScheme.data.id}`)}>
+              <FontAwesomeIcon icon={faPlus} /> Object toevoegen
+            </Button>
+
             {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
           </TabPanel>
 

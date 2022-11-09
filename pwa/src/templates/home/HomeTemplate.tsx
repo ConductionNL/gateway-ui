@@ -24,7 +24,7 @@ export const HomeTemplate: React.FC = () => {
           {getDashboardCards.data.map((dashboardCard) => (
             <DashboardCard
               title={{
-                label: dashboardCard.object.name,
+                label: dashboardCard.object.name ?? dashboardCard.object.id,
                 href: `/${getPath(dashboardCard.entity)}/${dashboardCard.object.id}`,
               }}
               description={dashboardCard.type}
