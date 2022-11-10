@@ -12,7 +12,7 @@ import { useObject } from "../../../hooks/object";
 import { useScheme } from "../../../hooks/scheme";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
-import { mutateObjectFormData } from "./service";
+import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 
 interface CreateObjectFormTemplateProps {
   predefinedSchema?: string;
@@ -63,13 +63,13 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   }, [getSchemas.isLoading, getSchemaSchema.isLoading, createOrEditObject.isLoading]);
 
   const onSubmit = (data: any): void => {
-    if (!getSchemas.isSuccess) return;
+    if (!selectedSchema) return;
 
-    const _selectedSchemaIndex = getSchemas.data.findIndex((schema) => schema.id === selectedSchema);
+    const payload = data;
 
-    const schema = getSchemas.data[_selectedSchemaIndex];
+    delete payload.schema;
 
-    createOrEditObject.mutate({ payload: mutateObjectFormData(schema, data) });
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(payload), entityId: selectedSchema });
   };
 
   return (

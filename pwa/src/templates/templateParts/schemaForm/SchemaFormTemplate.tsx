@@ -55,6 +55,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
         name: key,
         placeholder: value.example,
         description: value.description,
+        readOnly: value.readOnly,
         required: schema?.required.includes(key),
         defaultValue: mapGatewaySchemaToInputValues(value),
       };
@@ -73,33 +74,36 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
       <Paragraph>{schema.description}</Paragraph>
 
       <div className={clsx(styles.simpleFormContainer, styles.formContainer)}>
-        {simpleProperties.map(({ name, type, placeholder, description, defaultValue, _enum, multiple }, idx) => (
-          <FormFieldGroup
-            key={idx}
-            required={schema.required.includes(name)}
-            {...{
-              register,
-              errors,
-              control,
-              disabled,
-              name,
-              type,
-              placeholder,
-              description,
-              defaultValue,
-              _enum,
-              multiple,
-            }}
-          />
-        ))}
+        {simpleProperties.map(
+          ({ name, type, placeholder, description, defaultValue, _enum, multiple, readOnly }, idx) => (
+            <FormFieldGroup
+              key={idx}
+              required={schema.required.includes(name)}
+              {...{
+                register,
+                errors,
+                control,
+                disabled,
+                readOnly,
+                name,
+                type,
+                placeholder,
+                description,
+                defaultValue,
+                _enum,
+                multiple,
+              }}
+            />
+          ),
+        )}
       </div>
 
       <div className={clsx(styles.complexFormContainer, styles.formContainer)}>
-        {complexProperties.map(({ name, type, placeholder, description, defaultValue }, idx) => (
+        {complexProperties.map(({ name, type, placeholder, description, defaultValue, readOnly }, idx) => (
           <FormFieldGroup
             key={idx}
             required={schema.required.includes(name)}
-            {...{ register, errors, control, disabled, name, type, placeholder, description, defaultValue }}
+            {...{ register, errors, control, disabled, name, type, placeholder, description, defaultValue, readOnly }}
           />
         ))}
       </div>
@@ -113,6 +117,7 @@ interface FormFieldGroupProps {
   type: SchemaInputType;
   name: string;
   disabled: boolean;
+  readOnly?: boolean;
   placeholder?: string;
   required?: boolean;
   description?: string;
@@ -131,6 +136,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   control,
   disabled,
   required,
+  readOnly,
   defaultValue,
   _enum,
   multiple,
@@ -139,7 +145,9 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     <FormField>
       <FormFieldInput>
         <div className={styles.formFieldHeader}>
-          <FormFieldLabel>{name}</FormFieldLabel>
+          <FormFieldLabel>
+            {name} {readOnly && <>(read only)</>}
+          </FormFieldLabel>
 
           {description && (
             <p data-tip={description}>
@@ -151,7 +159,8 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         {type === "string" && !_enum && !multiple && (
           <InputText
             validation={{ required }}
-            {...{ register, errors, control, disabled, placeholder, name, defaultValue }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, control, placeholder, name, defaultValue }}
           />
         )}
 
@@ -159,7 +168,8 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           <SelectCreate
             defaultValue={defaultValue}
             options={defaultValue}
-            {...{ register, errors, disabled, placeholder, name, control }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, control }}
           />
         )}
 
@@ -167,7 +177,8 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           <SelectSingle
             defaultValue={defaultValue.defaultValue}
             options={defaultValue.options}
-            {...{ register, errors, disabled, placeholder, name, control }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, control }}
           />
         )}
 
@@ -175,7 +186,8 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           <SelectMultiple
             defaultValue={defaultValue.defaultValue}
             options={defaultValue.options}
-            {...{ register, errors, disabled, placeholder, name, control }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, control }}
           />
         )}
 
@@ -183,32 +195,49 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           <InputCheckbox
             label="True"
             validation={{ required }}
-            defaultChecked
-            {...{ register, errors, disabled, placeholder, name }}
+            defaultChecked={defaultValue}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name }}
           />
         )}
 
         {type === "integer" && (
-          <InputNumber validation={{ required }} {...{ register, errors, disabled, placeholder, name, defaultValue }} />
+          <InputNumber
+            validation={{ required }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, defaultValue }}
+          />
         )}
 
         {type === "number" && (
-          <InputFloat validation={{ required }} {...{ register, errors, disabled, placeholder, name, defaultValue }} />
+          <InputFloat
+            validation={{ required }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, defaultValue }}
+          />
         )}
 
         {type === "date" && (
-          <InputDate validation={{ required }} {...{ register, errors, disabled, placeholder, name, defaultValue }} />
+          <InputDate
+            validation={{ required }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, defaultValue }}
+          />
         )}
 
         {type === "datetime" && (
           <InputDateTime
             validation={{ required }}
-            {...{ register, errors, disabled, placeholder, name, defaultValue }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, defaultValue }}
           />
         )}
 
         {type === "array" && (
-          <CreateKeyValue {...{ register, errors, control, disabled, placeholder, name, defaultValue }} />
+          <CreateKeyValue
+            disabled={disabled || readOnly}
+            {...{ register, errors, control, placeholder, name, defaultValue }}
+          />
         )}
 
         {type === "object" && (
