@@ -15,7 +15,7 @@ export default class Sources {
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/object_entities/${id}?extend[]=entity`);
+    const { data } = await Send(this._instance, "GET", `/admin/object_entities/${id}`);
 
     return data;
   };

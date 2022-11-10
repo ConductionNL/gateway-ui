@@ -14,7 +14,6 @@ export const mapGatewaySchemaToInputValues = (value: any): any => {
 
     case "string":
       if (value.enum && !value.multiple) {
-        console.log({ value });
         const options = value.enum.map((e: any) => ({ label: e, value: e }));
         let defaultValue: any = [];
 
