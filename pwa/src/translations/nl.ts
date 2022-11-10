@@ -31,4 +31,8 @@ export const nl = {
   Schema: "Schema",
   Gateway: "Source",
   "The minLength is bigger than the maxLength": "De minLength is groter dan de maxLength",
+  "The minItems is bigger than the maxItems": "De minItems is groter dan de maxItems",
+  "The minProperties is bigger than the maxProperties": "De minProperties is groter dan de maxProperties",
+  "The minFileSize is bigger than the maxFileSize": "De minFileSize is groter dan de maxFileSize",
+  "The minDate is bigger than the maxDate": "De minDate is groter dan de maxDate",
 };
