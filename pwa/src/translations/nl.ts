@@ -30,4 +30,5 @@ export const nl = {
   Handler: "Handler",
   Schema: "Schema",
   Gateway: "Source",
+  "The minLength is bigger than the maxLength": "De minLength is groter dan de maxLength",
 };

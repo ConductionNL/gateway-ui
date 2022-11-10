@@ -62,6 +62,9 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
   } = useForm();
 
   const onSubmit = (data: any): void => {
+    if (parseInt(data.minLength) > parseInt(data.maxLength))
+      return setFormError(t("The minLength is bigger than the maxLength"));
+
     const payload = {
       ...data,
       type: data.type && data.type.value,
@@ -81,6 +84,15 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
         </Link>
       </div>
 
+      {formError && (
+        <Alert
+          text={formError}
+          title={t("Oops, something went wrong")}
+          variant="error"
+          close={() => setFormError("")}
+        />
+      )}
+
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <section className={styles.section}>
@@ -93,7 +105,6 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
               </Button>
             </div>
           </section>
-          {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
           <div className={styles.gridContainer}>
             <div className={styles.grid}>
               <FormField>

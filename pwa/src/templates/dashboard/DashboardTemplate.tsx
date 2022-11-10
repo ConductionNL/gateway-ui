@@ -11,9 +11,15 @@ export const DashboardTemplate: React.FC = ({ children }) => {
     pageContext: {
       breadcrumb: { crumbs },
     },
+    location: { pathname },
   } = React.useContext(GatsbyContext);
 
-  const translatedCrumbs = crumbs.map((crumb: any) => ({ ...crumb, crumbLabel: _.upperFirst(crumb.crumbLabel) }));
+  const translatedCrumbs = crumbs.map((crumb: any, idx: any) => {
+    const cutPathname = pathname.substring(0, pathname.lastIndexOf("/"));
+    const crumbPathname = idx === 2 ? cutPathname : crumb.pathname;
+
+    return { ...crumb, crumbLabel: _.upperFirst(crumb.crumbLabel), pathname: crumbPathname };
+  });
 
   return (
     <PrivateRoute authenticated={isLoggedIn()}>

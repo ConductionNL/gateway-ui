@@ -69,7 +69,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    if (parseInt(data.minLength) > parseInt(data.maxLength)) return setFormError("minLength is bigger than maxLEngth");
+    if (parseInt(data.minLength) > parseInt(data.maxLength))
+      return setFormError(t("The minLength is bigger than the maxLength"));
 
     const payload = {
       ...data,
@@ -111,6 +112,15 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
 
   return (
     <div className={styles.container}>
+      {formError && (
+        <Alert
+          text={formError}
+          title={t("Oops, something went wrong")}
+          variant="error"
+          close={() => setFormError("")}
+        />
+      )}
+
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <section className={styles.section}>
@@ -128,7 +138,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
               </Button>
             </div>
           </section>
-          {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
           <div className={styles.gridContainer}>
             <div className={styles.grid}>
               <FormField>

@@ -29,5 +29,6 @@ export const en = {
   "Action handler": "Action handler",
   Handler: "Handler",
   Schema: "Schema",
-  Gateway: "Source"
+  Gateway: "Source",
+  "The minLength is bigger than the maxLength": "The minLength is bigger than the maxLength",
 };
