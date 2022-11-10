@@ -9,9 +9,9 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
-import { mutateObjectFormData } from "./service";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
+import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -50,11 +50,11 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading]);
 
   const onSubmit = (data: any): void => {
-    if (!getSchema.isSuccess) return;
+    const payload = data;
 
-    const payload = mutateObjectFormData(object.entity, data, object);
+    delete payload.schema;
 
-    createOrEditObject.mutate({ payload, id: objectId });
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(payload), entityId: null, objectId });
   };
 
   const handleDeleteObject = () => {

@@ -21,9 +21,9 @@ export default class Sources {
   };
 
   public getAllFromEntity = async (entityId: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/object_entities?entity.id=${entityId}`);
+    const { data } = await Send(this._instance, "GET", `/admin/objects/schema/${entityId}`);
 
-    return data;
+    return data.results;
   };
 
   public getSchema = async (id: string): Promise<any> => {
@@ -33,7 +33,7 @@ export default class Sources {
       return { ...config, headers: { ...config.headers, Accept: "application/json+schema" } };
     });
 
-    const { data } = await Send(this._instance, "GET", `admin/object_entities/${id}`);
+    const { data } = await Send(this._instance, "GET", `admin/objects/${id}`);
 
     return data;
   };
@@ -41,19 +41,20 @@ export default class Sources {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/object_entities/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/objects/${id}`);
     return data;
   };
 
-  public createOrUpdate = async (variables: { payload: any; id?: string }): Promise<any> => {
-    const { payload, id } = variables;
+  public createOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
+    const { payload, entityId, objectId } = variables;
 
-    if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/object_entities/${id}`, payload);
+    if (objectId) {
+      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, payload);
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/object_entities", payload);
+    const { data } = await Send(this._instance, "POST", `/admin/objects/schema/${entityId}`, payload);
+
     return data;
   };
 }
