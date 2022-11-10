@@ -18,7 +18,17 @@ import {
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
 
-export type SchemaInputType = "string" | "boolean" | "array" | "integer" | "date" | "number" | "object" | "datetime";
+export type SchemaInputType =
+  | "string"
+  | "boolean"
+  | "array"
+  | "integer"
+  | "int"
+  | "date"
+  | "number"
+  | "object"
+  | "datetime"
+  | "uuid";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -164,6 +174,14 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
+        {type === "uuid" && (
+          <InputText
+            validation={{ required }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, control, placeholder, name, defaultValue }}
+          />
+        )}
+
         {type === "string" && !_enum && multiple && (
           <SelectCreate
             defaultValue={defaultValue}
@@ -201,13 +219,14 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "integer" && (
-          <InputNumber
-            validation={{ required }}
-            disabled={disabled || readOnly}
-            {...{ register, errors, placeholder, name, defaultValue }}
-          />
-        )}
+        {type === "integer" ||
+          (type === "int" && (
+            <InputNumber
+              validation={{ required }}
+              disabled={disabled || readOnly}
+              {...{ register, errors, placeholder, name, defaultValue }}
+            />
+          ))}
 
         {type === "number" && (
           <InputFloat

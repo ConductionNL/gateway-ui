@@ -70,7 +70,6 @@ export const CreateActionFormTemplate: React.FC = () => {
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
-      priority: parseInt(data.priority, 10),
       listens: data.listens?.map((listener: any) => listener.value),
       throws: data.throws?.map((_throw: any) => _throw.value),
       class: data.class.value,
