@@ -11,11 +11,12 @@ import Source from "./resources/source";
 import Cronjob from "./resources/cronjob";
 import Endpoint from "./resources/endpoint";
 import Object from "./resources/object";
-import Scheme from "./resources/scheme";
+import Schema from "./resources/schema";
 import Log from "./resources/log";
 import Collection from "./resources/collection";
 import DashboardCards from "./resources/dashboardCards";
 import CallLog from "./resources/callLog";
+import Attribute from "./resources/attribute";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -98,8 +99,8 @@ export default class APIService {
     return new Object(this.BaseClient);
   }
 
-  public get Scheme(): Scheme {
-    return new Scheme(this.BaseClient);
+  public get Schema(): Schema {
+    return new Schema(this.BaseClient);
   }
 
   public get Log(): Log {
@@ -113,8 +114,13 @@ export default class APIService {
   public get DashboardCards(): DashboardCards {
     return new DashboardCards(this.BaseClient);
   }
+
   public get CallLog(): CallLog {
     return new CallLog(this.BaseClient);
+  }
+
+  public get Attribute(): Attribute {
+    return new Attribute(this.BaseClient);
   }
 
   // Services

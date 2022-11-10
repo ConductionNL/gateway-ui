@@ -28,6 +28,7 @@ export const nl = {
   "Object detail page": "Object detail pagina",
   "Action handler": "Action handler",
   Handler: "Handler",
-  Schema: "Scheme",
+  Schema: "Schema",
   Gateway: "Source",
+  "The minLength is bigger than the maxLength": "De minLength is groter dan de maxLength",
 };

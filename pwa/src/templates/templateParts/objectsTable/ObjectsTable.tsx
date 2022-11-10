@@ -19,7 +19,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
   const queryClient = useQueryClient();
 
   const _useObject = useObject(queryClient);
-  const deleteScheme = _useObject.remove();
+  const deleteSchema = _useObject.remove();
 
   const handleDeleteObject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
@@ -30,7 +30,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
     const confirmDeletion = confirm("Are you sure you want to delete this action?");
 
     if (confirmDeletion) {
-      deleteScheme.mutate({ id: objectId });
+      deleteSchema.mutate({ id: objectId });
     }
   };
 

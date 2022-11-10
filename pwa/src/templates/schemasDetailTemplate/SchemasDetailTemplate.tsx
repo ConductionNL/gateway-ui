@@ -1,11 +1,11 @@
 import * as React from "react";
-import * as styles from "./SchemesDetailTemplate.module.css";
+import * as styles from "./SchemasDetailTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
 import { Container, Tag } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { useScheme } from "../../hooks/scheme";
-import { EditSchemesFormTemplate } from "../templateParts/schemesForm/EditSchemesFormTemplate";
+import { useSchema } from "../../hooks/schema";
+import { EditSchemasFormTemplate } from "../templateParts/schemasForm/EditSchemasFormTemplate";
 import { Button, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useObject } from "../../hooks/object";
 import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
@@ -15,35 +15,36 @@ import { translateDate } from "../../services/dateFormat";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { TabsContext } from "../../context/tabs";
 
-interface SchemesDetailPageProps {
-  schemeId: string;
+interface SchemasDetailPageProps {
+  schemaId: string;
 }
 
-export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ schemeId }) => {
+export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schemaId }) => {
   const { t, i18n } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
 
   const queryClient = new QueryClient();
-  const _useScheme = useScheme(queryClient);
-  const getScheme = _useScheme.getOne(schemeId);
+  const _useSchema = useSchema(queryClient);
+  const getSchema = _useSchema.getOne(schemaId);
 
   const _useObject = useObject(queryClient);
-  const getObjectsFromEntity = _useObject.getAllFromEntity(schemeId);
+  const getObjectsFromEntity = _useObject.getAllFromEntity(schemaId);
 
   return (
     <Container layoutClassName={styles.container}>
-      {getScheme.isError && "Error..."}
+      {getSchema.isError && "Error..."}
 
-      {getScheme.isSuccess && <EditSchemesFormTemplate scheme={getScheme.data} {...{ schemeId }} />}
-      {getScheme.isLoading && <Skeleton height="200px" />}
+      {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
+      {getSchema.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
-        <TabContext value={currentTab.toString()}>
+        <TabContext value={currentTab.schemaDetailTabs.toString()}>
           <Tabs
-            value={currentTab}
+            value={currentTab.schemaDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab(newValue);
+              setCurrentTab({ ...currentTab, schemaDetailTabs: newValue });
             }}
             variant="scrollable"
           >
@@ -53,18 +54,28 @@ export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ scheme
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
-
-            <Button disabled={getScheme.isLoading} onClick={() => navigate(`/objects/new?schema=${getScheme.data.id}`)}>
+            <Button
+              className={styles.addObjectButton}
+              disabled={getSchema.isLoading}
+              onClick={() => navigate(`/objects/new?schema=${getSchema.data.id}`)}
+            >
               <FontAwesomeIcon icon={faPlus} /> Object toevoegen
             </Button>
 
             {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
+            {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            {getScheme.isLoading && <Skeleton height="100px" />}
-            {getScheme.isSuccess && (
+            <Button
+              className={styles.addPropertyButton}
+              disabled={getSchema.isLoading}
+              onClick={() => navigate(`/schemas/${schemaId}/new`)}
+            >
+              <FontAwesomeIcon icon={faPlus} /> Property toevoegen
+            </Button>
+            {getSchema.isLoading && <Skeleton height="100px" />}
+            {getSchema.isSuccess && (
               <Table>
                 <TableHead>
                   <TableRow>
@@ -78,15 +89,19 @@ export const SchemesDetailTemplate: React.FC<SchemesDetailPageProps> = ({ scheme
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {getScheme.data.attributes.map((property: any) => (
-                    <TableRow className={styles.tableRow} key={property.id}>
+                  {getSchema.data.attributes.map((property: any) => (
+                    <TableRow
+                      className={styles.tableRow}
+                      onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
+                      key={property.id}
+                    >
                       <TableCell>{property.name ?? "-"}</TableCell>
                       <TableCell>{property.type ?? "-"}</TableCell>
                       <TableCell>{property.function ?? "-"}</TableCell>
                       <TableCell>{property.caseSensitive.toString() ?? "-"}</TableCell>
                       <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
                       <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
-                      <TableCell>
+                      <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
                         <Link icon={<ArrowRightIcon />} iconAlign="start">
                           {t("Details")}
                         </Link>

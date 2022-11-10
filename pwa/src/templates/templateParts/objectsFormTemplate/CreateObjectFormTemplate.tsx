@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useObject } from "../../../hooks/object";
-import { useScheme } from "../../../hooks/scheme";
+import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
@@ -27,9 +27,9 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   const _useObjects = useObject(queryClient);
   const createOrEditObject = _useObjects.createOrEdit();
 
-  const _useScheme = useScheme(queryClient);
-  const getSchemas = _useScheme.getAll();
-  const getSchemaSchema = _useScheme.getSchema(selectedSchema);
+  const _useSchema = useSchema(queryClient);
+  const getSchemas = _useSchema.getAll();
+  const getSchemaSchema = _useSchema.getSchema(selectedSchema);
 
   const {
     watch,

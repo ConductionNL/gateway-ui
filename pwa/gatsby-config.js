@@ -54,8 +54,12 @@ module.exports = {
             crumbLabel: "Object",
           },
           {
-            pathname: "/schemes/[schemeId]",
+            pathname: "/schemas/[schemaId]",
             crumbLabel: "Schema",
+          },
+          {
+            pathname: "/schemas/[schemaId]/[propertyId]",
+            crumbLabel: "Property",
           },
           {
             pathname: "/logs/[logId]",

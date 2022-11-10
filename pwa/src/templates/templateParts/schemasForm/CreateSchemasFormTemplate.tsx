@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./SchemesFormTemplate.module.css";
+import * as styles from "./SchemasFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
@@ -8,31 +8,23 @@ import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
-import clsx from "clsx";
-import { useScheme } from "../../../hooks/scheme";
-import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import { useSchema } from "../../../hooks/schema";
 
-interface EditCronjobFormTemplateProps {
-  scheme: any;
-  schemeId: string;
+interface CreateSchemasFormTemplateProps {
+  schemaId?: string;
 }
 
-export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = ({ scheme, schemeId }) => {
+export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps> = ({ schemaId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
-
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
-  const _useScheme = useScheme(queryClient);
-  const createOrEditScheme = _useScheme.createOrEdit(schemeId);
-  const deleteScheme = _useScheme.remove();
-
-  const dashboardCard = getDashboardCard(scheme.name);
+  const _useSchema = useSchema(queryClient);
+  const createOrEditSchema = _useSchema.createOrEdit(schemaId);
 
   const functionSelectOptions = [
     { label: "No Function", value: "noFunction" },
@@ -48,61 +40,27 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     handleSubmit,
     control,
     formState: { errors },
-    setValue,
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    data = { ...data, function: data.function.value };
-
-    createOrEditScheme.mutate({ payload: data, id: schemeId });
+    const payload = {
+      ...data,
+      function: data.function.value,
+    };
+    createOrEditSchema.mutate({ payload, id: schemaId });
   };
-
-  const handleDeleteScheme = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this action?");
-
-    if (confirmDeletion) {
-      deleteScheme.mutate({ id: schemeId });
-    }
-  };
-
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(scheme.name, "Schema", "Entity", schemeId, dashboardCard?.id);
-  };
-
-  const handleSetFormValues = (cronjob: any): void => {
-    const basicFields: string[] = ["name", "description", "function", "schema"];
-    basicFields.forEach((field) => setValue(field, cronjob[field]));
-
-    setValue(
-      "function",
-      functionSelectOptions.find((option) => cronjob.function === option.value),
-    );
-  };
-
-  React.useEffect(() => {
-    handleSetFormValues(scheme);
-  }, []);
 
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Schema")}</Heading1>
+          <Heading1>{t("Create Schema")}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
+
               {t("Save")}
-            </Button>
-
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
-              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-            </Button>
-
-            <Button onClick={handleDeleteScheme} className={clsx(styles.buttonIcon, styles.deleteButton)}>
-              <FontAwesomeIcon icon={faTrash} />
-              {t("Delete")}
             </Button>
           </div>
         </section>
@@ -125,6 +83,7 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Function")}</FormFieldLabel>
+
                 {/* @ts-ignore */}
                 <SelectSingle
                   name="function"
@@ -135,11 +94,12 @@ export const EditSchemesFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
                 />
               </FormFieldInput>
             </FormField>
-
-            <FormFieldInput>
-              <FormFieldLabel>{t("Schema")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="schema" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Schema")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="schema" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
           </div>
         </div>
       </form>

@@ -16,7 +16,7 @@ export const getPath = (value: any): any => {
       return "objects";
 
     case "Entity":
-      return "schemes";
+      return "schemas";
 
     case "Log":
       return "logs";

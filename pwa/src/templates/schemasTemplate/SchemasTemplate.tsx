@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./SchemesTemplate.module.css";
+import * as styles from "./SchemasTemplate.module.css";
 import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
@@ -10,30 +10,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { useScheme } from "../../hooks/scheme";
+import { useSchema } from "../../hooks/schema";
 
-export const SchemesTemplate: React.FC = () => {
+export const SchemasTemplate: React.FC = () => {
   const { t } = useTranslation();
 
   const queryClient = new QueryClient();
-  const _useScheme = useScheme(queryClient);
-  const getSchemes = _useScheme.getAll();
+  const _useSchema = useSchema(queryClient);
+  const getSchemas = _useSchema.getAll();
 
   return (
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
         <Heading1>{t("Schemas")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/schemes/new`)}>
+          <Button className={styles.buttonIcon} onClick={() => navigate(`/schemas/new`)}>
             <FontAwesomeIcon icon={faPlus} />
             {t("Add")}
           </Button>
         </div>
       </section>
 
-      {getSchemes.isError && "Error..."}
+      {getSchemas.isError && "Error..."}
 
-      {getSchemes.isSuccess && (
+      {getSchemas.isSuccess && (
         <Table>
           <TableHead>
             <TableRow>
@@ -42,11 +42,11 @@ export const SchemesTemplate: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {getSchemes.data.map((scheme) => (
-              <TableRow className={styles.tableRow} onClick={() => navigate(`/schemes/${scheme.id}`)} key={scheme.id}>
-                <TableCell>{scheme.name}</TableCell>
+            {getSchemas.data.map((schema) => (
+              <TableRow className={styles.tableRow} onClick={() => navigate(`/schemas/${schema.id}`)} key={schema.id}>
+                <TableCell>{schema.name}</TableCell>
 
-                <TableCell onClick={() => navigate(`/schemes/${scheme.id}`)}>
+                <TableCell onClick={() => navigate(`/schemas/${schema.id}`)}>
                   <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
                   </Link>
@@ -57,7 +57,7 @@ export const SchemesTemplate: React.FC = () => {
         </Table>
       )}
 
-      {getSchemes.isLoading && <Skeleton height="200px" />}
+      {getSchemas.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };

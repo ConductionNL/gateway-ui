@@ -74,8 +74,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
     {
       label: "Schemas",
       icon: <FontAwesomeIcon icon={faClipboardList} />,
-      onClick: () => navigate("/schemes"),
-      current: pathname.includes("/schemes"),
+      onClick: () => navigate("/schemas"),
+      current: pathname.includes("/schemas"),
     },
     {
       label: "Logs",
