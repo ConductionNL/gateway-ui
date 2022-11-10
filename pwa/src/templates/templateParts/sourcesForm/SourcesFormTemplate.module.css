@@ -54,7 +54,7 @@
 
 .tooltip {
   max-width: 250px;
-  background-color: black !important;
+  background-color: var(--gateway-ui-color-black) !important;
 }
 
 .formFieldHeader {

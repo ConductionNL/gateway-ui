@@ -3,13 +3,12 @@ import * as styles from "./SourcesDetailTemplate.module.css";
 import { QueryClient } from "react-query";
 import _ from "lodash";
 import { useSource } from "../../hooks/source";
-import { Container, Tag } from "@conduction/components";
+import { Container } from "@conduction/components";
 import { SourcesFormTemplate } from "../templateParts/sourcesForm/EditSourcesFormTemplate";
 import Skeleton from "react-loading-skeleton";
 import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import clsx from "clsx";
 import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
@@ -61,8 +60,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                 </TableHead>
                 <TableBody>
                   <TableRow
-                    className={styles.tableRow}
-                    onClick={() => navigate(`/sources/${_getSources.data.id}/test`)}
+                    onClick={() => navigate(`/sources/${_getSources.data.id}/${_getSources.data.id}`)}
                     key={_getSources.data.id}
                   >
                     <TableCell>{_getSources.data.name ?? "-"}</TableCell>

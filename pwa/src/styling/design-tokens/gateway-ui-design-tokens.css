@@ -53,6 +53,7 @@
 
   /* Colors */
   --gateway-ui-color-white: #ffffff;
+  --gateway-ui-color-black: black;
   --gateway-ui-color-darkgrey: darkgrey;
   --gateway-ui-color-red: red;
   --gateway-ui-color-dark-red: rgb(146, 2, 2);

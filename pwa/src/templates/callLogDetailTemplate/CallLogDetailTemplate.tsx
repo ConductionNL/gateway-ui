@@ -1,18 +1,12 @@
 import * as React from "react";
 import * as styles from "./CallLogDetailTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { useSource } from "../../hooks/source";
 import { QueryClient } from "react-query";
-import { Tag } from "@conduction/components";
 import _ from "lodash";
-import clsx from "clsx";
-import { ArrowRightIcon, ArrowLeftIcon } from "@gemeente-denhaag/icons";
-import { translateDate } from "../../services/dateFormat";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 import Skeleton from "react-loading-skeleton";
 
 interface CallLogDetailTemplateProps {
@@ -29,19 +23,13 @@ export const CallLogDetailTemplate: React.FC<CallLogDetailTemplateProps> = ({ ca
 
   return (
     <div className={styles.container}>
-      <div className={styles.backButton} onClick={() => navigate(`/sources/${sourceId}`)}>
+      <div onClick={() => navigate(`/sources/${sourceId}`)}>
         <Link icon={<ArrowLeftIcon />} iconAlign="start">
           {t("Back to source")}
         </Link>
       </div>
       <section className={styles.section}>
         <Heading1>{t("CallLog")}</Heading1>
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/sources/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
-          </Button>
-        </div>
       </section>
 
       {_getSources.isError && "Error..."}
