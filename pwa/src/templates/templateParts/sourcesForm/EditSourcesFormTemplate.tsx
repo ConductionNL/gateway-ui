@@ -24,6 +24,7 @@ import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { InputFloat } from "@conduction/components/lib/components/formFields/input";
+import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 
 interface SourcesFormTemplateProps {
   source: any;
@@ -77,7 +78,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
 
     const selectedAuth = authSelectOptions.find((authOption) => authOption.value === watchAuth.value);
 
-    setSelectedAuth(selectedAuth);
+    setSelectedAuth(selectedAuth?.value);
+    console.log(selectedAuth);
   }, [watchAuth]);
 
   const onSubmit = (data: any): void => {
@@ -105,9 +107,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
       "dateCreated",
       "dateModified",
       "documentation",
-	  "username",
-	  "password",
-	  "apikey",
+      "username",
+      "password",
+      "apikey",
+	  "jwt",
     ];
     basicFields.forEach((field) => setValue(field, source[field]));
 
@@ -246,49 +249,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                   </FormFieldInput>
                 </FormField>
 
-                {selectedAuth?.value === "apikey" && (
-                  <>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Api key")}</FormFieldLabel>
-                        <InputText
-                          {...{ register, errors }}
-                          name="apikey"
-                          validation={{ required: true }}
-                          disabled={loading}
-                        />
-                      </FormFieldInput>
-                    </FormField>
-                  </>
-                )}
-
-                {selectedAuth?.value === "username-password" && (
-                  <>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Username")}</FormFieldLabel>
-                        <InputText
-                          {...{ register, errors }}
-                          name="username"
-                          validation={{ required: true }}
-                          disabled={loading}
-                        />
-                      </FormFieldInput>
-                    </FormField>
-
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Password")}</FormFieldLabel>
-                        <InputText
-                          {...{ register, errors }}
-                          name="password"
-                          validation={{ required: true }}
-                          disabled={loading}
-                        />
-                      </FormFieldInput>
-                    </FormField>
-                  </>
-                )}
+                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} />}
               </div>
             </div>
           </TabPanel>
