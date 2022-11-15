@@ -51,7 +51,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
     control,
     handleSubmit,
     formState: { errors },
-	watch,
+    watch,
   } = useForm();
 
   const watchAuth = watch("auth");
@@ -61,7 +61,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
 
     const selectedAuth = authSelectOptions.find((authOption) => authOption.value === watchAuth.value);
 
-    setSelectedAuth(selectedAuth);
+    setSelectedAuth(selectedAuth?.value);
   }, [watchAuth]);
 
   const onSubmit = (data: any): void => {

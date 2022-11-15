@@ -16,12 +16,33 @@ export const useSource = (queryClient: QueryClient) => {
     });
 
   const getOne = (sourcesId: string) =>
-    useQuery<any, Error>(["sources", sourcesId], () => API?.Sources.getOne(sourcesId), {
-      initialData: () => queryClient.getQueryData<any[]>("sources")?.find((_sources) => _sources.id === sourcesId),
+    useQuery<any, Error>(
+      ["sources", sourcesId],
+      () => API?.Sources.getOne(sourcesId),
+      {
+        initialData: () =>
+          queryClient
+            .getQueryData<any[]>("sources")
+            ?.find((_sources) => _sources.id === sourcesId),
+        onError: (error) => {
+          throw new Error(error.message);
+        },
+        enabled: !!sourcesId,
+      }
+    );
+
+  const getProxy = (sourceId?: string) =>
+    useMutation<any, Error, any>(API.Sources.getProxy, {
+      onSuccess: async () => {
+        if (sourceId) {
+          navigate("/sources");
+        }
+      },
       onError: (error) => {
+        console.log(error.message);
+
         throw new Error(error.message);
       },
-      enabled: !!sourcesId,
     });
 
   const remove = () =>
@@ -52,5 +73,5 @@ export const useSource = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getOne, remove, createOrEdit, getProxy };
 };
