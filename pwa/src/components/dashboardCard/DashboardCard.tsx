@@ -5,6 +5,8 @@ import { navigate } from "gatsby";
 import _ from "lodash";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
+import { Tag } from "@conduction/components";
 
 export interface DashboardCardProps {
   title: {
@@ -12,9 +14,12 @@ export interface DashboardCardProps {
     href: string;
   };
   description: string;
+  status?: boolean;
+  lastRun?: any;
+  lastCall?: any;
 }
 
-export const DashboardCard: React.FC<DashboardCardProps> = ({ title, description }) => {
+export const DashboardCard: React.FC<DashboardCardProps> = ({ title, description, status, lastRun, lastCall }) => {
   const { t } = useTranslation();
 
   return (
@@ -26,6 +31,16 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, description
       </div>
 
       <Paragraph className={styles.description}>{description}</Paragraph>
+
+      {status && (
+        <div className={clsx(styles[status === true ? "statusOk" : "statusFailed"])}>
+          <Tag label={status?.toString() ?? "-"} />
+        </div>
+      )}
+
+      {lastRun && <div>{lastRun ?? "-"}</div>}
+
+      {lastCall && <div>{lastCall ?? "-"}</div>}
     </div>
   );
 };

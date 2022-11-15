@@ -28,6 +28,9 @@ export const HomeTemplate: React.FC = () => {
                 href: `/${getPath(dashboardCard.entity)}/${dashboardCard.object?.id}`,
               }}
               description={dashboardCard.type}
+              status={dashboardCard?.status}
+              lastRun={dashboardCard?.lastRun}
+              lastCall={dashboardCard?.lastCall}
             />
           ))}
         </div>
