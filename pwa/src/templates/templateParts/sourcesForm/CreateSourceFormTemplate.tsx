@@ -14,6 +14,7 @@ import { useQueryClient } from "react-query";
 import { InputFloat, InputNumber } from "@conduction/components/lib/components/formFields/input";
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
+import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 
 interface CreateSourceFormTemplateProps {
   sourceId?: string;
@@ -148,49 +149,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                   </FormFieldInput>
                 </FormField>
 
-                {selectedAuth?.value === "apikey" && (
-                  <>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Api key")}</FormFieldLabel>
-                        <InputText
-                          {...{ register, errors }}
-                          name="apikey"
-                          validation={{ required: true }}
-                          disabled={loading}
-                        />
-                      </FormFieldInput>
-                    </FormField>
-                  </>
-                )}
-
-                {selectedAuth?.value === "username-password" && (
-                  <>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Username")}</FormFieldLabel>
-                        <InputText
-                          {...{ register, errors }}
-                          name="username"
-                          validation={{ required: true }}
-                          disabled={loading}
-                        />
-                      </FormFieldInput>
-                    </FormField>
-
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Password")}</FormFieldLabel>
-                        <InputText
-                          {...{ register, errors }}
-                          name="password"
-                          validation={{ required: true }}
-                          disabled={loading}
-                        />
-                      </FormFieldInput>
-                    </FormField>
-                  </>
-                )}
+                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} />}
               </div>
             </div>
           </TabPanel>
