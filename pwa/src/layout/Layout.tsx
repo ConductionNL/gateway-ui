@@ -32,7 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   }, []);
 
   React.useEffect(() => {
-    setGatsbyContext({ ...{ pageContext, location, screenSize: screenSize } });
+    setGatsbyContext({ ...{ pageContext, location, screenSize: getScreenSize(window.innerWidth) } });
 
     const JWT = sessionStorage.getItem("JWT");
 
