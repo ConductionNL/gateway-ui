@@ -79,7 +79,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     const selectedAuth = authSelectOptions.find((authOption) => authOption.value === watchAuth.value);
 
     setSelectedAuth(selectedAuth?.value);
-    console.log(selectedAuth);
   }, [watchAuth]);
 
   const onSubmit = (data: any): void => {
