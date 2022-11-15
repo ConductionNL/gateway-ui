@@ -16,20 +16,13 @@ export const useSource = (queryClient: QueryClient) => {
     });
 
   const getOne = (sourcesId: string) =>
-    useQuery<any, Error>(
-      ["sources", sourcesId],
-      () => API?.Sources.getOne(sourcesId),
-      {
-        initialData: () =>
-          queryClient
-            .getQueryData<any[]>("sources")
-            ?.find((_sources) => _sources.id === sourcesId),
-        onError: (error) => {
-          throw new Error(error.message);
-        },
-        enabled: !!sourcesId,
-      }
-    );
+    useQuery<any, Error>(["sources", sourcesId], () => API?.Sources.getOne(sourcesId), {
+      initialData: () => queryClient.getQueryData<any[]>("sources")?.find((_sources) => _sources.id === sourcesId),
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+      enabled: !!sourcesId,
+    });
 
   const getProxy = (sourceId?: string) =>
     useMutation<any, Error, any>(API.Sources.getProxy, {
