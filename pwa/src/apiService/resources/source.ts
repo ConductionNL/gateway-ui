@@ -9,7 +9,7 @@ export default class Source {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/gateways");
+    const { data } = await Send(this._instance, "GET", "/admin/gateways?order[name]=ASC");
 
     return data;
   };
@@ -17,6 +17,13 @@ export default class Source {
   public getOne = async (id: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/gateways/${id}`);
 
+    return data;
+  };
+
+  public getProxy = async (variables: { payload: any; id?: string }): Promise<any> => {
+    const { id } = variables;
+
+    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`);
     return data;
   };
 

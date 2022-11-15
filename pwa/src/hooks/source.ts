@@ -24,6 +24,20 @@ export const useSource = (queryClient: QueryClient) => {
       enabled: !!sourcesId,
     });
 
+  const getProxy = (sourceId?: string) =>
+    useMutation<any, Error, any>(API.Sources.getProxy, {
+      onSuccess: async () => {
+        if (sourceId) {
+          navigate("/sources");
+        }
+      },
+      onError: (error) => {
+        console.log(error.message);
+
+        throw new Error(error.message);
+      },
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Sources.delete, {
       onSuccess: async (_, variables) => {
@@ -52,5 +66,5 @@ export const useSource = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getOne, remove, createOrEdit, getProxy };
 };
