@@ -38,6 +38,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
 
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
@@ -66,7 +67,18 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm();
+
+  const watchAuth = watch("auth");
+
+  React.useEffect(() => {
+    if (!watchAuth) return;
+
+    const selectedAuth = authSelectOptions.find((authOption) => authOption.value === watchAuth.value);
+
+    setSelectedAuth(selectedAuth);
+  }, [watchAuth]);
 
   const onSubmit = (data: any): void => {
     data.type = data.type && data.type.value;
@@ -93,6 +105,9 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
       "dateCreated",
       "dateModified",
       "documentation",
+	  "username",
+	  "password",
+	  "apikey",
     ];
     basicFields.forEach((field) => setValue(field, source[field]));
 
@@ -230,6 +245,50 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     />
                   </FormFieldInput>
                 </FormField>
+
+                {selectedAuth?.value === "apikey" && (
+                  <>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Api key")}</FormFieldLabel>
+                        <InputText
+                          {...{ register, errors }}
+                          name="apikey"
+                          validation={{ required: true }}
+                          disabled={loading}
+                        />
+                      </FormFieldInput>
+                    </FormField>
+                  </>
+                )}
+
+                {selectedAuth?.value === "username-password" && (
+                  <>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Username")}</FormFieldLabel>
+                        <InputText
+                          {...{ register, errors }}
+                          name="username"
+                          validation={{ required: true }}
+                          disabled={loading}
+                        />
+                      </FormFieldInput>
+                    </FormField>
+
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Password")}</FormFieldLabel>
+                        <InputText
+                          {...{ register, errors }}
+                          name="password"
+                          validation={{ required: true }}
+                          disabled={loading}
+                        />
+                      </FormFieldInput>
+                    </FormField>
+                  </>
+                )}
               </div>
             </div>
           </TabPanel>
