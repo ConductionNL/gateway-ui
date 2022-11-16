@@ -6,7 +6,9 @@ import _ from "lodash";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
-import { Tag } from "@conduction/components";
+import { Tag, ToolTip } from "@conduction/components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export interface DashboardCardProps {
   title: {
@@ -35,7 +37,9 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
 
         {status && (
           <div className={clsx(styles[status === true ? "statusOk" : "statusFailed"])}>
-            Status | <Tag label={status?.toString() ?? "-"} />
+            <ToolTip tooltip="Status">
+              <Tag icon={<FontAwesomeIcon icon={status ? faCheck : faXmark} />} label={status?.toString() ?? "-"} />
+            </ToolTip>
           </div>
         )}
       </Paragraph>

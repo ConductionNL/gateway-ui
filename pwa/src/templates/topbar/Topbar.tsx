@@ -17,37 +17,35 @@ export const Topbar: React.FC<TopbarProps> = ({ layoutClassName }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
   return (
-    <>
-      <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>
-        <Collapsible
-          trigger={
-            <div className={styles.topnav}>
-              <div className={styles.logoContainer}>
-                <img
-                  className={styles.logo}
-                  src={Logo}
-                  alt="Conduction"
-                  title="Conduction"
-                  onClick={() => navigate("/")}
-                />
-              </div>
-              <div>
-                <FontAwesomeIcon icon={faBars} />
-              </div>
+    <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>
+      <Collapsible
+        trigger={
+          <div className={styles.topnav}>
+            <div className={styles.logoContainer}>
+              <img
+                className={styles.logo}
+                src={Logo}
+                alt="Conduction"
+                title="Conduction"
+                onClick={() => navigate("/")}
+              />
             </div>
-          }
-          open={isOpen}
-          transitionTime={200}
-          onOpening={() => setIsOpen(true)}
-          onClosing={() => setIsOpen(false)}
-        >
-          <section className={styles.topMenu}>
-            <VerticalMenu items={mainMenuItems()} />
-          </section>
+            <div>
+              <FontAwesomeIcon icon={faBars} />
+            </div>
+          </div>
+        }
+        open={isOpen}
+        transitionTime={200}
+        onOpening={() => setIsOpen(true)}
+        onClosing={() => setIsOpen(false)}
+      >
+        <section className={styles.topMenu}>
+          <VerticalMenu items={mainMenuItems()} />
+        </section>
 
-          <VerticalMenu items={bottomMenuItems()} />
-        </Collapsible>
-      </div>
-    </>
+        <VerticalMenu items={bottomMenuItems()} />
+      </Collapsible>
+    </div>
   );
 };
