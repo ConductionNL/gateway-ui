@@ -15,8 +15,8 @@ export interface DashboardCardProps {
   };
   description: string;
   status?: boolean;
-  lastRun?: any;
-  lastCall?: any;
+  lastRun?: Date;
+  lastCall?: Date;
 }
 
 export const DashboardCard: React.FC<DashboardCardProps> = ({ title, description, status, lastRun, lastCall }) => {
@@ -32,15 +32,17 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, description
 
       <Paragraph className={styles.description}>{description}</Paragraph>
 
-      {status && (
-        <div className={clsx(styles[status === true ? "statusOk" : "statusFailed"])}>
-          <Tag label={status?.toString() ?? "-"} />
-        </div>
-      )}
+      <div className={styles.status}>
+        {status && (
+          <div className={clsx(styles[status === true ? "statusOk" : "statusFailed"])}>
+            <Tag label={status?.toString() ?? "-"} />
+          </div>
+        )}
 
-      {lastRun && <div>{lastRun ?? "-"}</div>}
+        {lastRun && <div>Last run | {lastRun ?? "-"}</div>}
+      </div>
 
-      {lastCall && <div>{lastCall ?? "-"}</div>}
+      {lastCall && <div>Last call | {lastCall ?? "-"}</div>}
     </div>
   );
 };
