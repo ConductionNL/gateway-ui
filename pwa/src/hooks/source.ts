@@ -4,9 +4,13 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
+import { AlertContext } from "../context/alert";
+import { IsLoadingContext } from "../context/isLoading";
 
 export const useSource = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const [_, setAlert] = React.useContext(AlertContext);
+  const [__, setIsLoading] = React.useContext(IsLoadingContext);
 
   const getAll = () =>
     useQuery<any[], Error>("sources", API.Sources.getAll, {
@@ -26,15 +30,25 @@ export const useSource = (queryClient: QueryClient) => {
 
   const getProxy = (sourceId?: string) =>
     useMutation<any, Error, any>(API.Sources.getProxy, {
+      onMutate: () => {
+        setIsLoading({ alert: true });
+      },
       onSuccess: async () => {
-        if (sourceId) {
-          navigate("/sources");
-        }
+        setAlert({ message: "Request succeded with status code 200", body: "", type: "success", active: true });
       },
       onError: (error) => {
-        console.log(error.message);
+        console.log({ error: error });
+        if (error.message === "Network Error") {
+          setAlert({ message: "Request failed due to a Network Error", type: "error", active: true });
+        } else {
+          setAlert({ message: error.message, body: error.response.data, type: "error", active: true });
+        }
+        setIsLoading({ alert: false });
 
         throw new Error(error.message);
+      },
+      onSettled: () => {
+        setIsLoading({ alert: false });
       },
     });
 

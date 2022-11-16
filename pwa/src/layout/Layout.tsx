@@ -11,6 +11,8 @@ import { ThemeProvider } from "../templates/themeProvider/ThemeProvider";
 import Favicon from "react-favicon";
 import Logo from "../assets/svgs/conduction-logo.svg";
 import { TabsProvider, ITabs, tabs as _tabs } from "../context/tabs";
+import { AlertProps, AlertProvider } from "../context/alert";
+import { IsLoadingProps, IsLoadingProvider } from "../context/isLoading";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,6 +24,8 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [API, setAPI] = React.useState<APIService>(React.useContext(APIContext));
   const [gatsbyContext, setGatsbyContext] = React.useState<IGatsbyContext>({ ...{ pageContext, location } });
   const [tabs, setTabs] = React.useState<ITabs>(_tabs);
+  const [alert, setAlert] = React.useState<AlertProps>({ active: false });
+  const [isLoading, setIsLoading] = React.useState<IsLoadingProps>({});
 
   React.useEffect(() => {
     setAPI(new APIService());
@@ -42,15 +46,19 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
       <GatsbyProvider value={gatsbyContext}>
         <APIProvider value={API}>
           <StylesProvider>
-            <TabsProvider value={[tabs, setTabs]}>
-              <ThemeProvider>
-                <Favicon url={Logo} />
+            <AlertProvider value={[alert, setAlert]}>
+              <IsLoadingProvider value={[isLoading, setIsLoading]}>
+                <TabsProvider value={[tabs, setTabs]}>
+                  <ThemeProvider>
+                    <Favicon url={Logo} />
 
-                <div className={styles.container}>
-                  <Content {...{ children }} />
-                </div>
-              </ThemeProvider>
-            </TabsProvider>
+                    <div className={styles.container}>
+                      <Content {...{ children }} />
+                    </div>
+                  </ThemeProvider>
+                </TabsProvider>
+              </IsLoadingProvider>
+            </AlertProvider>
           </StylesProvider>
         </APIProvider>
       </GatsbyProvider>

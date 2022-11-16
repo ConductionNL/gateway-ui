@@ -3,7 +3,7 @@ import * as styles from "./SourcesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
@@ -25,6 +25,7 @@ import { ReactTooltip } from "@conduction/components/lib/components/toolTip/Tool
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { InputFloat } from "@conduction/components/lib/components/formFields/input";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
+import { IsLoadingContext } from "../../../context/isLoading";
 
 interface SourcesFormTemplateProps {
   source: any;
@@ -37,9 +38,9 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
 
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
@@ -97,7 +98,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     addOrRemoveDashboardCard(source.name, "Source", "Gateway", sourceId, dashboardCard?.id);
   };
   const testProxy = () => {
-    _testProxy.mutate({ id: sourceId });
+    const proxyTest = _testProxy.mutate({ id: sourceId });
   };
 
   const handleSetFormValues = (source: any): void => {
@@ -148,12 +149,16 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} onClick={testProxy}>
+            <Button className={styles.buttonIcon} onClick={testProxy} disabled={isLoading.alert}>
               <FontAwesomeIcon icon={faArrowsRotate} />
               {t("Test connection")}
             </Button>
 
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+            <Button
+              className={styles.buttonIcon}
+              onClick={addOrRemoveFromDashboard}
+              disabled={isLoading.addDashboardCard}
+            >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
@@ -179,7 +184,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
             <div className={styles.gridContainer}>
               <div className={styles.grid}>
                 <FormField>
@@ -268,7 +272,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="3">
-            {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
             <div className={styles.gridContainer}>
               <div className={styles.grid}>
                 <FormField>
