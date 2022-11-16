@@ -12,6 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import Alert from "../../components/alert/alert";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -27,6 +28,8 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
   return (
     <Container layoutClassName={styles.container}>
+      <Alert />
+
       {_getSources.isLoading && <Skeleton height="200px" />}
       {_getSources.isError && "Error..."}
 
