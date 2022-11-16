@@ -13,13 +13,13 @@ export interface DashboardCardProps {
     label: string;
     href: string;
   };
-  description: string;
+  type: string;
   status?: boolean;
   lastRun?: Date;
   lastCall?: Date;
 }
 
-export const DashboardCard: React.FC<DashboardCardProps> = ({ title, description, status, lastRun, lastCall }) => {
+export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, status, lastRun, lastCall }) => {
   const { t } = useTranslation();
 
   return (
@@ -30,19 +30,20 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, description
         </Link>
       </div>
 
-      <Paragraph className={styles.description}>{description}</Paragraph>
+      <Paragraph className={styles.statusTypeContainer}>
+        <div>{type}</div>
 
-      <div className={styles.status}>
         {status && (
           <div className={clsx(styles[status === true ? "statusOk" : "statusFailed"])}>
-            <Tag label={status?.toString() ?? "-"} />
+            Status | <Tag label={status?.toString() ?? "-"} />
           </div>
         )}
+      </Paragraph>
 
+      <div>
         {lastRun && <div>Last run | {lastRun ?? "-"}</div>}
+        {lastCall && <div>Last call | {lastCall ?? "-"}</div>}
       </div>
-
-      {lastCall && <div>Last call | {lastCall ?? "-"}</div>}
     </div>
   );
 };

@@ -27,7 +27,7 @@ export const HomeTemplate: React.FC = () => {
                 label: dashboardCard.object?.name ?? dashboardCard.object?.id,
                 href: `/${getPath(dashboardCard.entity)}/${dashboardCard.object?.id}`,
               }}
-              description={dashboardCard.type}
+              type={dashboardCard.type}
               status={dashboardCard?.object?.status}
               lastRun={dashboardCard?.object?.lastRun}
               lastCall={dashboardCard?.object?.lastCall}
