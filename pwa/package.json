@@ -4,7 +4,9 @@
   "private": true,
   "description": "Gatsby Skeleton Application",
   "author": "Conduction B.V.",
-  "keywords": ["gatsby"],
+  "keywords": [
+    "gatsby"
+  ],
   "scripts": {
     "develop": "gatsby develop",
     "start": "gatsby develop",
@@ -36,6 +38,7 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "react": "^17.0.1",
+    "react-collapsible": "^2.10.0",
     "react-dom": "^17.0.1",
     "react-favicon": "^1.0.1",
     "react-helmet": "^6.1.0",

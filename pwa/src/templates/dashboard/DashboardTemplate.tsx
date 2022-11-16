@@ -5,6 +5,7 @@ import { isLoggedIn } from "../../services/auth";
 import { Sidebar } from "../sidebar/Sidebar";
 import { GatsbyContext } from "../../context/gatsby";
 import _ from "lodash";
+import { Topbar } from "../topbar/Topbar";
 
 export const DashboardTemplate: React.FC = ({ children }) => {
   const {
@@ -12,6 +13,7 @@ export const DashboardTemplate: React.FC = ({ children }) => {
       breadcrumb: { crumbs },
     },
     location: { pathname },
+    screenSize,
   } = React.useContext(GatsbyContext);
 
   const translatedCrumbs = crumbs.map((crumb: any, idx: any) => {
@@ -24,7 +26,8 @@ export const DashboardTemplate: React.FC = ({ children }) => {
   return (
     <PrivateRoute authenticated={isLoggedIn()}>
       <Container layoutClassName={styles.container}>
-        <Sidebar layoutClassName={styles.sidebar} />
+        {screenSize !== "mobile" && <Sidebar layoutClassName={styles.sidebar} />}
+        {screenSize === "mobile" && <Topbar />}
 
         <div className={styles.content}>
           <Breadcrumbs crumbs={translatedCrumbs} />
