@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  flex-direction: column;
 }
 
 .sidebar {
@@ -16,4 +17,10 @@
 
 .content > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+@media only screen and (min-width: 576px) {
+  .container {
+    flex-direction: row;
+  }
 }
