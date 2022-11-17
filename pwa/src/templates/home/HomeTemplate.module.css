@@ -1,5 +1,17 @@
 .cardsGrid {
   display: grid;
   grid-gap: var(--gateway-ui-size-lg);
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
+}
+
+@media only screen and (min-width: 992px) {
+  .cardsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .cardsGrid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
