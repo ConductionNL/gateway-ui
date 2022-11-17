@@ -1,0 +1,44 @@
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttons > * {
+  display: flex;
+  align-items: center;
+}
+
+.buttons *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.tableRow {
+  cursor: pointer;
+}
+
+.type {
+  color: var(--gateway-ui-color-darkgrey);
+  font-size: var(--gateway-ui-font-size-md);
+  display: flex;
+  gap: var(--gateway-ui-size-xl);
+}
+
+.descriptionAndTags {
+  display: flex;
+  justify-content: space-between;
+}

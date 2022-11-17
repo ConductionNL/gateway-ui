@@ -4,6 +4,7 @@ import { Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/com
 import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
 import { UserGroupsTemplate } from "../userGroupsTemplate/UserGroupsTemplate";
+import { GatewayDetailTemplate } from "../gatewayDetailTemplate/GatewayDetailTemplate";
 
 export const SettingsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -26,7 +27,9 @@ export const SettingsTemplate: React.FC = () => {
             <Tab className={styles.tab} label={t("User Groups")} value={1} />
           </Tabs>
 
-          <TabPanel className={styles.tabPanel} value="0"></TabPanel>
+          <TabPanel className={styles.tabPanel} value="0">
+            <GatewayDetailTemplate />
+          </TabPanel>
           <TabPanel className={styles.tabPanel} value="1">
             <UserGroupsTemplate />
           </TabPanel>
