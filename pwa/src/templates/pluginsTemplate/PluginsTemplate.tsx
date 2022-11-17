@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { TEMPORARY_PLUGINS } from "../../data/plugin";
+import { PluginCard } from "../../components/pluginCard/PluginCard";
 
 export const PluginsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export const PluginsTemplate: React.FC = () => {
   return (
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
-        <Heading1>{t("Plugins")}</Heading1>
+        <Heading1>{t("Installed Plugins")}</Heading1>
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/plugins/new`)}>
             <FontAwesomeIcon icon={faPlus} />
@@ -30,26 +31,24 @@ export const PluginsTemplate: React.FC = () => {
       {!tempPlugin && "Error..."}
 
       {tempPlugin && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tempPlugin.map((plugin: any) => (
-              <TableRow className={styles.tableRow} onClick={() => navigate(`/plugins/${plugin.id}`)} key={plugin.id}>
-                <TableCell>{plugin.name ?? "-"}</TableCell>
-                <TableCell onClick={() => navigate(`/plugins/${plugin.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <div className={styles.cardsGrid}>
+          {tempPlugin.map((plugin: any) => (
+            <>
+              {console.log(plugin)}
+              <PluginCard
+                title={{
+                  label: plugin.name,
+                  href: `/plugins/a66533fc-386b-45a4-9795-2007057cae18`,
+                }}
+                description={plugin.description}
+                packagistUrl={plugin.url}
+                repositoryUrl={plugin.Repository}
+                downloads={plugin.downloads}
+                favers={plugin.favers}
+              />
+            </>
+          ))}
+        </div>
       )}
     </Container>
   );
