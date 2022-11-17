@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import { Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 
 export interface DashboardCardProps {
   title: {
@@ -16,7 +16,7 @@ export interface DashboardCardProps {
     href: string;
   };
   type: string;
-  status?: boolean;
+  status?: string | boolean;
   lastRun?: Date;
   lastCall?: Date;
 }
@@ -36,9 +36,9 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
         <div>{type}</div>
 
         {status && (
-          <div className={clsx(styles[status === true ? "statusOk" : "statusFailed"])}>
+          <div className={clsx(styles[getStatusColor(status)])}>
             <ToolTip tooltip="Status">
-              <Tag icon={<FontAwesomeIcon icon={status ? faCheck : faXmark} />} label={status?.toString() ?? "-"} />
+              <Tag icon={<FontAwesomeIcon icon={getStatusIcon(status)} />} label={status?.toString() ?? "-"} />
             </ToolTip>
           </div>
         )}

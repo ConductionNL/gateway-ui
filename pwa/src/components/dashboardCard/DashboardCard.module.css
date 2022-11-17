@@ -47,11 +47,11 @@
 
 /* Status colors */
 .statusOk {
-  --conduction-tag-background-color: #69b090;
+  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }
 
 .statusFailed {
-  --conduction-tag-background-color: #dd3c49;
+  --conduction-tag-background-color: var(--gateway-ui-color-status-red);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }

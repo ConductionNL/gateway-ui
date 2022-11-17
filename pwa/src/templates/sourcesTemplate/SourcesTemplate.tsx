@@ -6,7 +6,7 @@ import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@
 import { navigate } from "gatsby";
 import { useSource } from "../../hooks/source";
 import { QueryClient } from "react-query";
-import { Tag } from "@conduction/components";
+import { Tag, ToolTip } from "@conduction/components";
 import _ from "lodash";
 import clsx from "clsx";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
@@ -14,6 +14,7 @@ import { translateDate } from "../../services/dateFormat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
+import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -54,12 +55,17 @@ export const SourcesTemplate: React.FC = () => {
               <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
                 <TableCell>{source.name}</TableCell>
                 <TableCell>
-                  <div className={clsx(styles[source.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                    <Tag label={source.status ?? "-"} />
+                  <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
+                    <ToolTip tooltip="Status">
+                      <Tag
+                        icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
+                        label={source.status?.toString() ?? "no known status"}
+                      />
+                    </ToolTip>
                   </div>
                 </TableCell>
-                <TableCell>{source.lastRun ?? "-"}</TableCell>
                 <TableCell>{source.sync ?? "-"}</TableCell>
+                <TableCell>{source.lastCall ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
                 <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
                 <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
