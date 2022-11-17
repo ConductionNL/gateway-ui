@@ -43,6 +43,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
 
   const onSubmit = (data: any): void => {
     createOrEditCronjob.mutate({ payload: data, id: cronjobId });
+    queryClient.setQueryData(["cronjobs", cronjobId], data);
   };
 
   const handleDelete = (id: string): void => {

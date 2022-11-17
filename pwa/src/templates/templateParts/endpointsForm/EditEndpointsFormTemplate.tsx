@@ -54,6 +54,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     data = { ...data, method: data.method.value };
 
     createOrEditEndpoint.mutate({ payload: data, id: endpointId });
+    queryClient.setQueryData(["endpoint", endpointId], data);
   };
 
   const handleDelete = (id: string): void => {
