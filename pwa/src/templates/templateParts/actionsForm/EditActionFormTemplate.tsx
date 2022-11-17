@@ -71,6 +71,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
     }
 
     createOrEditAction.mutate({ payload, id: actionId });
+    queryClient.setQueryData(["actions", actionId], payload);
   };
 
   const handleDeleteAction = () => {
