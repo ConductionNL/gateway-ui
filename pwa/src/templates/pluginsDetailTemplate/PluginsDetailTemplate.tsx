@@ -5,7 +5,7 @@ import { Container } from "@conduction/components";
 import { TEMPORARYDETAIL_PLUGINS } from "../../data/pluginDetail";
 import { Button, Heading1, LeadParagraph } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowsRotate, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 
 interface PluginsDetailPageProps {
@@ -27,20 +27,31 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
           <section className={styles.section}>
             <Heading1 className={styles.title}>{tempPlugin.name}</Heading1>
 
-            <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} type="submit">
-                <FontAwesomeIcon icon={faArrowsRotate} />
-                {t("Update")}
-              </Button>
+            {tempPlugin.installed && (
+              <div className={styles.buttons}>
+                <Button className={styles.buttonIcon} type="submit">
+                  <FontAwesomeIcon icon={faArrowsRotate} />
+                  {t("Update")}
+                </Button>
 
-              <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Remove")}
-              </Button>
-            </div>
+                <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+                  <FontAwesomeIcon icon={faTrash} />
+                  {t("Remove")}
+                </Button>
+              </div>
+            )}
+            {console.log(tempPlugin.installed)}
+            {!tempPlugin.installed && (
+              <div className={styles.buttons}>
+                <Button className={styles.buttonIcon}>
+                  <FontAwesomeIcon icon={faDownload} />
+                  {t("Install")}
+                </Button>
+              </div>
+            )}
           </section>
 
-          <LeadParagraph className={styles.description}>{tempPlugin.description}</LeadParagraph>
+          <LeadParagraph>{tempPlugin.description}</LeadParagraph>
 
           <section className={styles.data}>
             <div>Type: {tempPlugin.type}</div>

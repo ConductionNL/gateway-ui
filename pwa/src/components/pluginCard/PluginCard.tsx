@@ -45,11 +45,21 @@ export const PluginCard: React.FC<PluginCardProps> = ({
 
       <div className={styles.tags}>
         <ToolTip tooltip="Packagist">
-          <Tag label={t("Packagist")} icon={<PackagistLogo />} onClick={() => open(packagistUrl)} />
+          <Tag
+            layoutClassName={styles.svgLogo}
+            label={t("Packagist")}
+            icon={<PackagistLogo />}
+            onClick={() => open(packagistUrl)}
+          />
         </ToolTip>
 
         <ToolTip tooltip="GitHub">
-          <Tag label={t("Repository")} icon={<GitHubLogo />} onClick={() => open(repositoryUrl)} />
+          <Tag
+            layoutClassName={styles.svgLogo}
+            label={t("Repository")}
+            icon={<GitHubLogo />}
+            onClick={() => open(repositoryUrl)}
+          />
         </ToolTip>
 
         <ToolTip tooltip="Aantal downloads">

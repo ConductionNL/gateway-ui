@@ -53,6 +53,10 @@
   gap: var(--gateway-ui-size-sm);
 }
 
+.svgLogo :not(:last-child) {
+  vertical-align: middle;
+}
+
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);

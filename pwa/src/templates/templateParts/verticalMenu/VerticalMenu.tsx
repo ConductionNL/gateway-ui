@@ -1,12 +1,19 @@
 import React from "react";
 import * as styles from "./VerticalMenu.module.css";
 import { Sidenav, SidenavList, SidenavItem, SidenavLink } from "@gemeente-denhaag/sidenav";
+import clsx from "clsx";
 
 export interface IMenuItem {
   label: string;
   icon: JSX.Element;
   current: boolean;
   onClick: () => any;
+  subItems?: {
+    label: string;
+    icon: JSX.Element;
+    current: boolean;
+    onClick: () => any;
+  }[];
 }
 
 interface VerticalMenuProps {
@@ -25,13 +32,25 @@ export const VerticalMenu: React.FC<VerticalMenuProps> = ({ items, layoutClassNa
     <div className={layoutClassName && layoutClassName}>
       <Sidenav>
         <SidenavList>
-          {items.map(({ onClick, label, icon, current }, idx) => (
-            <SidenavItem key={idx}>
+          {items.map(({ onClick, label, icon, current, subItems }, idx) => (
+            <SidenavItem className={clsx([subItems && styles.test])} key={idx}>
               <SidenavLink href="" onClick={(e) => handleClick(e, onClick)} {...{ current }}>
                 <span className={styles.icon}>{icon}</span>
 
                 {label}
               </SidenavLink>
+              {subItems &&
+                subItems.map(({ onClick, label, icon, current }, idx) => (
+                  <SidenavList className={styles.test1}>
+                    <SidenavItem key={idx}>
+                      <SidenavLink href="" onClick={(e) => handleClick(e, onClick)} {...{ current }}>
+                        <span className={styles.icon}>{icon}</span>
+
+                        {label}
+                      </SidenavLink>
+                    </SidenavItem>
+                  </SidenavList>
+                ))}
             </SidenavItem>
           ))}
         </SidenavList>

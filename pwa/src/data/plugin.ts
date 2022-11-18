@@ -7,6 +7,7 @@ export const TEMPORARY_PLUGINS = [
     repository: "https://github.com/CommonGateway/WaardepapierenBundle",
     downloads: 141,
     favers: 0,
+    installed: false,
   },
   {
     id: "4a354812-7f85-4f86-9baf-669b59cd17bb",
@@ -17,6 +18,28 @@ export const TEMPORARY_PLUGINS = [
     repository: "https://github.com/CommonGateway/XxllncZGWBundle",
     downloads: 1,
     favers: 0,
+    installed: true,
+  },
+  {
+    id: "58a11a64-8410-4435-8416-fbbcbdf63eba",
+    name: "common-gateway/Installed-bundle",
+    description: "A package to see wich packages are Installed",
+    url: "https://packagist.org/packages/common-gateway/xxllnc-zgw-bundle",
+    repository: "https://github.com/CommonGateway/XxllncZGWBundle",
+    downloads: 12,
+    favers: 0,
+    installed: true,
+  },
+
+  {
+    id: "1ce7cb7a-e111-4f89-88b2-2cbbc6bfb840",
+    name: "common-gateway/NotInstalled-bundle",
+    description: "A package to see wich packages are Not Installed",
+    url: "https://packagist.org/packages/common-gateway/xxllnc-zgw-bundle",
+    repository: "https://github.com/CommonGateway/XxllncZGWBundle",
+    downloads: 327,
+    favers: 0,
+    installed: false,
   },
   {
     id: "a66533fc-386b-45a4-9795-2007057cae18",
@@ -26,5 +49,6 @@ export const TEMPORARY_PLUGINS = [
     repository: "https://github.com/CommonGateway/HuwelijksplannerBundle",
     downloads: 1,
     favers: 0,
+    installed: true,
   },
 ];
