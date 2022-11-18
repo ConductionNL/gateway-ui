@@ -9,6 +9,7 @@ import clsx from "clsx";
 import { Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
+import { dateTime } from "../../services/dateTime";
 
 export interface DashboardCardProps {
   title: {
@@ -17,8 +18,8 @@ export interface DashboardCardProps {
   };
   type: string;
   status?: string | boolean;
-  lastRun?: Date;
-  lastCall?: Date;
+  lastRun?: string;
+  lastCall?: string;
 }
 
 export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, status, lastRun, lastCall }) => {
@@ -45,8 +46,16 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
       </Paragraph>
 
       <div>
-        {lastRun && <div>Last run | {lastRun ?? "-"}</div>}
-        {lastCall && <div>Last call | {lastCall ?? "-"}</div>}
+        {lastRun && (
+          <div className={styles.date}>
+            <span>Last run:</span> {dateTime(lastRun) ?? "-"}
+          </div>
+        )}
+        {lastCall && (
+          <div className={styles.date}>
+            <span>Last call:</span> {dateTime(lastCall) ?? "-"}
+          </div>
+        )}
       </div>
     </div>
   );
