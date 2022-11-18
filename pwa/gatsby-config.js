@@ -89,6 +89,14 @@ module.exports = {
             pathname: "/collections/[collectionId]",
             crumbLabel: "collection",
           },
+          {
+            pathname: "/settings/userGroups/[userGroupId]",
+            crumbLabel: "User Group",
+          },
+          {
+            pathname: "/settings/gatewayDetail/[gatewayDetailId]",
+            crumbLabel: "Gateway Detail",
+          },
         ],
       },
     },
