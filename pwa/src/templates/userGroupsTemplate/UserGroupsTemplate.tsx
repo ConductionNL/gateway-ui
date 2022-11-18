@@ -13,10 +13,6 @@ import { TEMPORARY_USERGROUPS } from "../../data/userGroup";
 export const UserGroupsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  //   const queryClient = new QueryClient();
-  //   const _useUserGroup = useUserGroup(queryClient);
-  //   const getUserGroups = _useUserGroup.getAll();
-
   const userGroups = TEMPORARY_USERGROUPS;
 
   return (
@@ -31,9 +27,6 @@ export const UserGroupsTemplate: React.FC = () => {
         </div>
       </section>
 
-      {/* {getUserGroups.isError && "Error..."} */}
-
-      {/* {getUserGroups.isSuccess && ( */}
       <Table>
         <TableHead>
           <TableRow>
@@ -62,9 +55,6 @@ export const UserGroupsTemplate: React.FC = () => {
           ))}
         </TableBody>
       </Table>
-      {/* )} */}
-
-      {/* {getUserGroups.isLoading && <Skeleton height="200px" />} */}
     </Container>
   );
 };
