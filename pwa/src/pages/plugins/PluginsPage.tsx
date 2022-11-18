@@ -4,7 +4,7 @@ import { PluginsTemplate } from "../../templates/pluginsTemplate/PluginsTemplate
 
 const PluginsPage: React.FC = () => (
   <DashboardTemplate>
-    <PluginsTemplate />
+    <PluginsTemplate title="" />
   </DashboardTemplate>
 );
 
