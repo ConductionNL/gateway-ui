@@ -27,8 +27,8 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.tableRow {
-  cursor: pointer;
+.gatewayDetailContainer > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
 }
 
 .type {
@@ -41,4 +41,40 @@
 .descriptionAndTags {
   display: flex;
   justify-content: space-between;
+  gap: var(--gateway-ui-size-md);
+}
+
+.descriptionAndTags > .description {
+  flex: 3;
+}
+
+.descriptionAndTags > .tags {
+  flex: 1;
+}
+
+.descriptionAndTags > .tags > * {
+  margin-inline-end: var(--gateway-ui-size-xs);
+  margin-block-end: var(--gateway-ui-size-xs);
+}
+
+.extraInfo {
+  width: 100%;
+  display: flex;
+  gap: var(--gateway-ui-size-md);
+}
+
+.extraInfo > * {
+  flex: 1;
+}
+
+.extraInfoTable {
+  flex: 3;
+}
+
+.extraInfoSupport > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-md);
+}
+
+.extraInfoSupport > div > *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-md);
 }
