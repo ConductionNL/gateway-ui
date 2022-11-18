@@ -60,6 +60,10 @@
   --gateway-ui-color-green: green;
   --gateway-ui-color-status-green: #69b090;
   --gateway-ui-color-status-red: #dd3c49;
+  --gateway-ui-color-method-get: var(--gateway-ui-color-status-green);
+  --gateway-ui-color-method-post: #51b8f4;
+  --gateway-ui-color-method-put: #e9743a;
+  --gateway-ui-color-method-delete: var(--gateway-ui-color-status-red);
   --gateway-ui-color-primary: #4376fc;
   --gateway-ui-color-primary-hover: #2e5ed9;
   --gateway-ui-background-color: #fafafa;

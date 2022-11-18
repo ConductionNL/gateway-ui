@@ -7,14 +7,14 @@ export const useCallLog = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
 
   const getAll = () =>
-    useQuery<any[], Error>("callLogs", API.Log.getAll, {
+    useQuery<any[], Error>("callLogs", API.CallLog.getAll, {
       onError: (error) => {
         throw new Error(error.message);
       },
     });
 
   const getOne = (callLogId: string) =>
-    useQuery<any, Error>(["callLogs", callLogId], () => API?.Log.getOne(callLogId), {
+    useQuery<any, Error>(["callLogs", callLogId], () => API?.CallLog.getOne(callLogId), {
       initialData: () => queryClient.getQueryData<any[]>("callLogs")?.find((_callLog) => _callLog.id === callLogId),
       onError: (error) => {
         throw new Error(error.message);
@@ -22,5 +22,14 @@ export const useCallLog = (queryClient: QueryClient) => {
       enabled: !!callLogId,
     });
 
-  return { getAll, getOne };
+  const getSourceLog = (sourceId: string) =>
+    useQuery<any, Error>(["callLogs", sourceId], () => API?.CallLog.getSourceLog(sourceId), {
+      initialData: () => queryClient.getQueryData<any[]>("callLogs")?.find((_callLog) => _callLog.id === sourceId),
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+      enabled: !!sourceId,
+    });
+
+  return { getAll, getOne, getSourceLog };
 };

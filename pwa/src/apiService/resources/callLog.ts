@@ -19,4 +19,10 @@ export default class CallLog {
 
     return data;
   };
+
+  public getSourceLog = async (sourceId: string): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", `/admin/logs/calllogs?source.id=${sourceId}`);
+
+    return data;
+  };
 }
