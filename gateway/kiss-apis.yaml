@@ -62,13 +62,13 @@ App\Entity\CollectionEntity:
     testDataLocation: https://raw.githubusercontent.com/ConductionNL/PUB_publiccode/main/data/PUB.json
     loadTestData: true
     autoLoad: true
-  # klantenCollection:
-  #   name: Klanten collection
-  #   sourceType: GitHub
-  #   locationOAS: https://raw.githubusercontent.com/VNG-Realisatie/klanten-api/master/src/openapi.yaml
-  #   testDataLocation: https://raw.githubusercontent.com/ConductionNL/klanten_publiccode/main/data/klanten.json
-  #   loadTestData: true
-  #   autoLoad: true
+  klantenCollection:
+    name: Klanten collection
+    sourceType: GitHub
+    locationOAS: https://raw.githubusercontent.com/VNG-Realisatie/klanten-api/master/src/openapi.yaml
+    testDataLocation: https://raw.githubusercontent.com/ConductionNL/klanten_publiccode/main/data/klanten.json
+    loadTestData: true
+    autoLoad: true
   loggingWriteCollection:
     name: Logging write collection
     sourceType: GitHub

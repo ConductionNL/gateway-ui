@@ -1,19 +1,19 @@
 window.sessionStorage.setItem(
   "GATSBY_ME_URL",
-  "http://localhost/me"
+  "https://dev.opencatalogi.nl/me"
 );
 window.sessionStorage.setItem(
   "GATSBY_API_URL",
-  "http://localhost/api"
+  "https://dev.opencatalogi.nl/api"
 );
 window.sessionStorage.setItem(
   "GATSBY_ADMIN_URL",
-  "http://localhost/admin"
+  "https://dev.opencatalogi.nl/admin"
 );
-window.sessionStorage.setItem("GATSBY_BASE_URL", "http://localhost");
+window.sessionStorage.setItem("GATSBY_BASE_URL", "https://dev.opencatalogi.nl");
 window.sessionStorage.setItem(
   "GATSBY_FRONTEND_URL",
-  "http://localhost:8000"
+  "https://dev.opencatalogi.nl:8000"
 );
 window.sessionStorage.setItem(
   "GATSBY_ORGANIZATION",
