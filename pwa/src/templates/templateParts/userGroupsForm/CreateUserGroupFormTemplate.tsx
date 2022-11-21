@@ -20,23 +20,15 @@ export const CreateUserGroupFormTemplate: React.FC<CreateUserGroupFormTemplatePr
   const [loading, setLoading] = React.useState<boolean>(true);
   const [formError, setFormError] = React.useState<string>("");
 
-  //   const queryClient = useQueryClient();
-  //   const _useUserGroups = useUserGroup(queryClient);
-  //   const createOrEditUserGroup = _useUserGroups.createOrEdit(userGroupId);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any): void => {
-    // createOrEditUserGroup.mutate({ payload: data, id: userGroupId });
-  };
-
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <section className={styles.section}>
           <Heading1>{t("Create User Group")}</Heading1>
 
