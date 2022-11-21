@@ -33,11 +33,11 @@
 
 /* Status colors */
 .statusOk {
-  --conduction-tag-background-color: var(--gateway-ui-color-green);
+  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }
 
 .statusFailed {
-  --conduction-tag-background-color: var(--gateway-ui-color-red);
+  --conduction-tag-background-color: var(--gateway-ui-color-status-red);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }

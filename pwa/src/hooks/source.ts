@@ -37,10 +37,10 @@ export const useSource = (queryClient: QueryClient) => {
         setAlert({ message: "Request succeded with status code 200", body: "", type: "success", active: true });
       },
       onError: (error) => {
-        console.log({ error: error });
         if (error.message === "Network Error") {
           setAlert({ message: "Request failed due to a Network Error", type: "error", active: true });
         } else {
+          // @ts-ignore
           setAlert({ message: error.message, body: error.response.data, type: "error", active: true });
         }
         setIsLoading({ alert: false });
