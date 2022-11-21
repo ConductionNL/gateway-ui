@@ -56,6 +56,8 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           <TabPanel className={styles.tabPanel} value="0">
             {_getCallLogs.isLoading && <Skeleton height="200px" />}
 
+            {_getCallLogs.isError && <div>Error cant find call logs.</div>}
+
             {_getCallLogs.isSuccess && (
               <Table>
                 <TableHead>
