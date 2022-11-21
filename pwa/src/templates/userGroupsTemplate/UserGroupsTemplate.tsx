@@ -20,7 +20,7 @@ export const UserGroupsTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("User groups")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/userGroups/new`)}>
+          <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/usergroups/new`)}>
             <FontAwesomeIcon icon={faPlus} />
             {t("Add")}
           </Button>
@@ -40,7 +40,7 @@ export const UserGroupsTemplate: React.FC = () => {
           {userGroups.map((userGroup) => (
             <TableRow
               className={styles.tableRow}
-              onClick={() => navigate(`/settings/userGroups/${userGroup.id}`)}
+              onClick={() => navigate(`/settings/usergroups/${userGroup.id}`)}
               key={userGroup.id}
             >
               <TableCell>{userGroup.name}</TableCell>
