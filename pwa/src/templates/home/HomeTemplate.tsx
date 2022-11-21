@@ -8,6 +8,7 @@ import Skeleton from "react-loading-skeleton";
 import { DashboardCard } from "../../components/dashboardCard/DashboardCard";
 import _ from "lodash";
 import { getPath } from "../../services/getPath";
+import { Container } from "@conduction/components";
 
 export const HomeTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -17,7 +18,7 @@ export const HomeTemplate: React.FC = () => {
   const getDashboardCards = _useDashboardCards.getAll();
 
   return (
-    <>
+    <Container layoutClassName={styles.container}>
       <Heading1>{t("Dashboard")}</Heading1>
       {getDashboardCards.isSuccess && (
         <div className={styles.cardsGrid}>
@@ -36,6 +37,6 @@ export const HomeTemplate: React.FC = () => {
         </div>
       )}
       {getDashboardCards.isLoading && <Skeleton height="200px" />}
-    </>
+    </Container>
   );
 };

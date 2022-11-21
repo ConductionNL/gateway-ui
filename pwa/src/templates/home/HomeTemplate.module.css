@@ -1,3 +1,7 @@
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
 .cardsGrid {
   display: grid;
   grid-gap: var(--gateway-ui-size-lg);
