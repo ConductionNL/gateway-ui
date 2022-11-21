@@ -23,27 +23,12 @@ export const EditUserGroupFormTemplate: React.FC<EditUserGroupFormTemplateProps>
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
-  //   const queryClient = useQueryClient();
-  //   const _useCronjobs = useCronjob(queryClient);
-  //   const createOrEditCronjob = _useCronjobs.createOrEdit(userGroupId);
-  //   const deleteCronjob = _useCronjobs.remove();
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
   } = useForm();
-
-  const onSubmit = (data: any): void => {
-    // createOrEditCronjob.mutate({ payload: data, id: userGroupId });
-
-    console.log(data);
-  };
-
-  const handleDelete = (id: string): void => {
-    // deleteCronjob.mutateAsync({ id: id });
-  };
 
   const handleSetFormValues = (userGroup: any): void => {
     const basicFields: string[] = ["name", "description", "config"];
@@ -56,7 +41,7 @@ export const EditUserGroupFormTemplate: React.FC<EditUserGroupFormTemplateProps>
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <section className={styles.section}>
           <Heading1>{t("Edit User Group")}</Heading1>
 

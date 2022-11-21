@@ -13,20 +13,11 @@ export const UserGroupsDetailTemplate: React.FC<UserGroupsDetailPageProps> = ({ 
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
 
-  //   const queryClient = new QueryClient();
-  //   const _useUserGroup = useUserGroup(queryClient);
-  //   const getUserGroup = _useUserGroup.getOne(userGroupId);
-
   const userGroup = TEMPORARY_USERGROUPS.find((userGroup) => userGroup.id === userGroupId);
 
   return (
     <Container layoutClassName={styles.container}>
-      {/* {getUserGroup.isError && "Error..."} */}
-
-      {/* {getUserGroup.isSuccess && ( */}
       <EditUserGroupFormTemplate userGroup={userGroup} {...{ userGroupId }} />
-      {/* )} */}
-      {/* {getUserGroup.isLoading && <Skeleton height="200px" />} */}
     </Container>
   );
 };

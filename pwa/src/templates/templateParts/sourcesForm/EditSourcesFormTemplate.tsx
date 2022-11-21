@@ -26,6 +26,7 @@ import { CreateKeyValue } from "@conduction/components/lib/components/formFields
 import { InputFloat } from "@conduction/components/lib/components/formFields/input";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { IsLoadingContext } from "../../../context/isLoading";
+import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
 
 interface SourcesFormTemplateProps {
   source: any;
@@ -88,6 +89,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     data.auth = data.auth && data.auth.value;
 
     createOrEditSource.mutate({ payload: data, id: sourceId });
+    queryClient.setQueryData(["sources", sourceId], data)
   };
 
   const handleDelete = (id: string): void => {
@@ -198,15 +200,12 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                   </FormFieldInput>
                 </FormField>
                 <FormField>
-                  <div
-                    className={clsx(
-                      styles.flex,
-                      styles.status,
-                      styles[source.status === "Ok" ? "statusOk" : "statusFailed"],
-                    )}
-                  >
-                    <FormFieldLabel>{t("Status")}</FormFieldLabel>
-                    <Tag label={source.status ?? "-"} />
+                  <FormFieldLabel>{t("Status")}</FormFieldLabel>
+                  <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
+                    <Tag
+                      icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
+                      label={source.status?.toString() ?? "no known status"}
+                    />
                   </div>
                 </FormField>
                 <FormField>

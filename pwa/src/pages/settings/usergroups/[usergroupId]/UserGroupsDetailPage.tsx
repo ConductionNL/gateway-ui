@@ -6,8 +6,8 @@ import { CreateUserGroupFormTemplate } from "../../../../templates/templateParts
 
 const UserGroupsDetailPage: React.FC<PageProps> = (props: PageProps) => (
   <DashboardTemplate>
-    {props.params.userGroupId === "new" && <CreateUserGroupFormTemplate />}
-    {props.params.userGroupId !== "new" && <UserGroupsDetailTemplate userGroupId={props.params.userGroupId} />}
+    {props.params.usergroupId === "new" && <CreateUserGroupFormTemplate />}
+    {props.params.usergroupId !== "new" && <UserGroupsDetailTemplate userGroupId={props.params.usergroupId} />}
   </DashboardTemplate>
 );
 

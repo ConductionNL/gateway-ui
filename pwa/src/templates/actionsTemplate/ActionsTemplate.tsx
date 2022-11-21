@@ -6,10 +6,10 @@ import { useAction } from "../../hooks/action";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { QueryClient } from "react-query";
-import { Container, Tag } from "@conduction/components";
+import { Container, Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
@@ -58,7 +58,13 @@ export const ActionsTemplate: React.FC = () => {
                   <TableCell>{action.priority}</TableCell>
                   <TableCell>
                     <div className={clsx(styles[action.status === true ? "statusOk" : "statusFailed"])}>
-                      <Tag label={action.status?.toString() ?? "-"} />
+                      <ToolTip tooltip="Status">
+                        <Tag
+                          layoutClassName={styles.tagWidth}
+                          icon={<FontAwesomeIcon icon={action.status === true ? faCheck : faXmark} />}
+                          label={action.status?.toString() ?? "no status"}
+                        />
+                      </ToolTip>
                     </div>
                   </TableCell>
                   <TableCell>{action.status ? "On" : "Off"}</TableCell>
