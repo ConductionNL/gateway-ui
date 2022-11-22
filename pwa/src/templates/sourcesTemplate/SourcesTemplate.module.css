@@ -60,15 +60,15 @@
 }
 
 .tableBoxShadowR::before {
-  box-shadow: inset -12px 0px 10px -6px #ccc;
+  box-shadow: inset 0px 0px 10px -10px #ccc, inset -16px 0px 10px -10px #ccc;
 }
 
 .tableBoxShadowL::before {
-  box-shadow: inset 12px 0px 10px -6px #ccc;
+  box-shadow: inset 16px 0px 10px -10px #ccc, inset -0px 0px 10px -10px #ccc;
 }
 
 .tableBoxShadowM::before {
-  box-shadow: inset 12px 0px 10px -6px #ccc, inset -12px 0px 10px -6px #ccc;
+  box-shadow: inset 16px 0px 10px -10px #ccc, inset -16px 0px 10px -10px #ccc;
 }
 
 /* Status colors */
