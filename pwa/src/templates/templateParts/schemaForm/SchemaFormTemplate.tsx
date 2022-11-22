@@ -17,6 +17,7 @@ import {
   SelectMultiple,
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
+import { validateStringAsJSONArray } from "../../../services/validateStringAsJSONArray";
 
 export type SchemaInputType =
   | "string"
@@ -50,6 +51,8 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
 }) => {
   const [simpleProperties, setSimpleProperties] = React.useState<any[]>([]);
   const [complexProperties, setComplexProperties] = React.useState<any[]>([]);
+
+  // console.log(JSON.stringify(schema.properties.apiSource.properties));
 
   React.useEffect(() => {
     setSimpleProperties([]);
@@ -151,6 +154,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   _enum,
   multiple,
 }) => {
+  // console.log({ defaultValue: typeof defaultValue });
   return (
     <FormField>
       <FormFieldInput>
@@ -259,7 +263,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "object" && <Textarea {...{ register, errors, control, placeholder, name, defaultValue }} />}
+        {type === "object" && <Textarea {...{ register, errors, control, placeholder, name }} />}
       </FormFieldInput>
     </FormField>
   );

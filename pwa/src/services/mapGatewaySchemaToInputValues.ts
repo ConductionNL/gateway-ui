@@ -9,6 +9,10 @@ export const mapGatewaySchemaToInputValues = (value: any): any => {
     case "number":
       return value.value;
 
+    case "object":
+      // console.log({ JSON: JSON.stringify(value.value) });
+      return JSON.stringify(value.value);
+
     case "datetime":
       return value.value?.substring(0, 16);
 

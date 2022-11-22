@@ -49,12 +49,20 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
     setValue,
     control,
   } = useForm();
 
+  const watchClass = watch("apiSource");
+
+  React.useEffect(() => {
+    console.log(watchClass);
+  }, [watchClass]);
+
   const onSubmit = (data: any): void => {
+    // console.log(JSON.parse(data.apiSource));
     const payload = {
       ...data,
       priority: parseInt(data.priority, 10),
@@ -63,6 +71,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
       throws: data.throws?.map((_throw: any) => _throw.value),
       class: data.class.value,
       conditions: data.conditions ? JSON.parse(data.conditions) : [],
+
       configuration: {},
     };
 
@@ -84,7 +93,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   };
 
   const handleSetFormValues = (action: any): void => {
-    const basicFields: string[] = ["name", "description", "priority", "async", "isLockable"];
+    const basicFields: string[] = ["name", "description", "priority", "async", "isLockable", "isActive"];
     basicFields.forEach((field) => setValue(field, action[field]));
 
     setValue("conditions", JSON.stringify(action["conditions"]));
@@ -106,7 +115,17 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
         setValue(key, action.configuration[key]);
 
         const _value = value as any;
-
+        if (typeof value === "object") {
+          // console.log({..._value});
+          // setActionHandlerSchema((schema: any) => ({
+          //   ...schema,
+          //   properties: {
+          //     ...schema.properties,
+          //     [key]: { ..._value, value: JSON.stringify(action.configuration[key]) },
+          //   },
+          // }));
+          // return;
+        }
         setActionHandlerSchema((schema: any) => ({
           ...schema,
           properties: { ...schema.properties, [key]: { ..._value, value: action.configuration[key] } },
@@ -250,14 +269,14 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="isactive" />
+                <InputCheckbox {...{ register, errors }} label="on" name="isActive" />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="islockable" />
+                <InputCheckbox {...{ register, errors }} label="on" name="isLockable" />
               </FormFieldInput>
             </FormField>
 

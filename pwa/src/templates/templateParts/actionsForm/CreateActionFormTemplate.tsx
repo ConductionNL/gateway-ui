@@ -72,7 +72,6 @@ export const CreateActionFormTemplate: React.FC = () => {
       ...data,
       listens: data.listens?.map((listener: any) => listener.value),
       throws: data.throws?.map((_throw: any) => _throw.value),
-      active: true,
       class: data.class.value,
       conditions: data.conditions ? JSON.parse(data.conditions) : [],
       configuration: {},
@@ -189,6 +188,13 @@ export const CreateActionFormTemplate: React.FC = () => {
               <FormFieldInput>
                 <FormFieldLabel>{t("async")}</FormFieldLabel>
                 <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="async" />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                <InputCheckbox {...{ register, errors }} label="on" name="isactive" />
               </FormFieldInput>
             </FormField>
 
