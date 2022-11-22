@@ -79,7 +79,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
           <Heading1>{t("Create Object")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={styles.buttonIcon} type="submit">
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>

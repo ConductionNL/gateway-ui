@@ -91,6 +91,7 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
                   {...{ control, errors }}
                   validation={{ required: true }}
                   disabled={loading}
+                  defaultValue={{ label: "No Function", value: "noFunction" }}
                 />
               </FormFieldInput>
             </FormField>

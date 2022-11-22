@@ -58,6 +58,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
     const payload = {
       ...data,
       priority: parseInt(data.priority, 10),
+      isActive: true,
       listens: data.listens?.map((listener: any) => listener.value),
       throws: data.throws?.map((_throw: any) => _throw.value),
       class: data.class.value,
@@ -243,6 +244,13 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
               <FormFieldInput>
                 <FormFieldLabel>{t("async")}</FormFieldLabel>
                 <InputCheckbox {...{ register, errors }} label="on" name="async" />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                <InputCheckbox {...{ register, errors }} label="on" name="isactive" />
               </FormFieldInput>
             </FormField>
 

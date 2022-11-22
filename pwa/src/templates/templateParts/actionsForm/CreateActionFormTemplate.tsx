@@ -72,6 +72,7 @@ export const CreateActionFormTemplate: React.FC = () => {
       ...data,
       listens: data.listens?.map((listener: any) => listener.value),
       throws: data.throws?.map((_throw: any) => _throw.value),
+      active: true,
       class: data.class.value,
       conditions: data.conditions ? JSON.parse(data.conditions) : [],
       configuration: {},
