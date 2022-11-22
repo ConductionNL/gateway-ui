@@ -43,6 +43,7 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
 
   const onSubmit = (data: any): void => {
     createOrEditCollection.mutate({ payload: data, id: collectionId });
+    queryClient.setQueryData(["collections", collectionId], data);
   };
 
   const handleDelete = (id: string): void => {
