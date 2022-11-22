@@ -13,7 +13,7 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import Skeleton from "react-loading-skeleton";
-import { validateStringAsJSONArray } from "../../../services/validateStringAsJSONArray";
+import { validateStringAsJSONArray } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 
