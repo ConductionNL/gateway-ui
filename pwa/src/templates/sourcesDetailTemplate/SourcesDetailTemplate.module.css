@@ -32,7 +32,7 @@
 /* Method colors */
 
 .getTag {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
+  --conduction-tag-background-color: var(--gateway-ui-color-method-get);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }
 

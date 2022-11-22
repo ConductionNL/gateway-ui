@@ -34,7 +34,7 @@ export const useSource = (queryClient: QueryClient) => {
         setIsLoading({ alert: true });
       },
       onSuccess: async () => {
-        setAlert({ message: "Request succeded with status code 200", body: "", type: "success", active: true });
+        setAlert({ message: "Request succeeded with status code 200", body: "", type: "success", active: true });
       },
       onError: (error) => {
         if (error.message === "Network Error") {
