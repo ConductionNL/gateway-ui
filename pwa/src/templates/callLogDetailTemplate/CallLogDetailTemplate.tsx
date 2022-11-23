@@ -3,11 +3,11 @@ import * as styles from "./CallLogDetailTemplate.module.css";
 import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
-import { useSource } from "../../hooks/source";
 import { QueryClient } from "react-query";
 import _ from "lodash";
 import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 import Skeleton from "react-loading-skeleton";
+import { useCallLog } from "../../hooks/callLog";
 
 interface CallLogDetailTemplateProps {
   calllogId: string;
@@ -18,8 +18,8 @@ export const CallLogDetailTemplate: React.FC<CallLogDetailTemplateProps> = ({ ca
   const { t, i18n } = useTranslation();
 
   const queryClient = new QueryClient();
-  const _useSources = useSource(queryClient);
-  const _getSources = _useSources.getOne(sourceId);
+  const _useCallLogs = useCallLog(queryClient);
+  const _getCallLog = _useCallLogs.getOne(calllogId);
 
   return (
     <div className={styles.container}>
@@ -32,24 +32,24 @@ export const CallLogDetailTemplate: React.FC<CallLogDetailTemplateProps> = ({ ca
         <Heading1>{t("CallLog")}</Heading1>
       </section>
 
-      {_getSources.isError && "Error..."}
+      {_getCallLog.isError && "Error..."}
 
-      {_getSources.isSuccess && (
+      {_getCallLog.isSuccess && (
         <div>
-          <div>Id - {_getSources.data.id ?? "-"}</div>
-          <div>Source - {_getSources.data.source ?? "-"}</div>
-          <div>Endpoint - {_getSources.data.endpoint ?? "-"}</div>
-          <div>Config - {_getSources.data.config ?? "-"}</div>
-          <div>Method - {_getSources.data.method ?? "-"}</div>
-          <div>Response Status - {_getSources.data.responseStatus ?? "-"}</div>
-          <div>Response Status Code - {_getSources.data.responseStatusCode ?? "-"}</div>
-          <div>Response Body - {_getSources.data.responseBody ?? "-"}</div>
-          <div>Date Created - {_getSources.data.dateCreated ?? "-"}</div>
-          <div>Date Modified - {_getSources.data.dateModified ?? "-"}</div>
+          <div>Id - {_getCallLog.data.id ?? "-"}</div>
+          <div>Source - {_getCallLog.data.source.name ?? "-"}</div>
+          <div>Endpoint - {_getCallLog.data.endpoint ?? "-"}</div>
+          <div>Config - {"-"}</div>
+          <div>Method - {_getCallLog.data.method ?? "-"}</div>
+          <div>Response Status - {_getCallLog.data.responseStatus ?? "-"}</div>
+          <div>Response Status Code - {_getCallLog.data.responseStatusCode ?? "-"}</div>
+          <div>Response Body - {_getCallLog.data.responseBody ?? "-"}</div>
+          <div>Date Created - {_getCallLog.data.dateCreated ?? "-"}</div>
+          <div>Date Modified - {_getCallLog.data.dateModified ?? "-"}</div>
         </div>
       )}
 
-      {_getSources.isLoading && <Skeleton height="200px" />}
+      {_getCallLog.isLoading && <Skeleton height="200px" />}
     </div>
   );
 };
