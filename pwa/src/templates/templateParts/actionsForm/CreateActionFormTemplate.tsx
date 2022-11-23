@@ -193,6 +193,13 @@ export const CreateActionFormTemplate: React.FC = () => {
 
             <FormField>
               <FormFieldInput>
+                <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                <InputCheckbox {...{ register, errors }} label="on" name="isactive" />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
                 <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
                 <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="islockable" />
               </FormFieldInput>
