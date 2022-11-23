@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, Paragraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { CreateKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, InputNumber, Textarea } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
 import { InputDateTime, InputFloat } from "@conduction/components/lib/components/formFields/input";
@@ -259,16 +259,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "object" && (
-          <div className="denhaag-textfield">
-            <input
-              className="denhaag-textfield__input"
-              type="text"
-              disabled
-              placeholder="Updating objects is not yet supported."
-            />
-          </div>
-        )}
+        {type === "object" && <Textarea {...{ register, errors, control, placeholder, name, defaultValue }} />}
       </FormFieldInput>
     </FormField>
   );
