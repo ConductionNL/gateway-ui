@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, Paragraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { CreateKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, InputNumber, Textarea } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
 import { InputDateTime, InputFloat } from "@conduction/components/lib/components/formFields/input";
@@ -17,6 +17,8 @@ import {
   SelectMultiple,
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
+import { validateStringAsJSON } from "../../../services/validateJSON";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 export type SchemaInputType =
   | "string"
@@ -260,14 +262,13 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         )}
 
         {type === "object" && (
-          <div className="denhaag-textfield">
-            <input
-              className="denhaag-textfield__input"
-              type="text"
-              disabled
-              placeholder="Updating objects is not yet supported."
+          <>
+            <Textarea
+              {...{ register, errors, control, placeholder, name }}
+              validation={{ validate: validateStringAsJSON }}
             />
-          </div>
+            {errors[name] && <ErrorMessage message={errors[name].message} />}
+          </>
         )}
       </FormFieldInput>
     </FormField>

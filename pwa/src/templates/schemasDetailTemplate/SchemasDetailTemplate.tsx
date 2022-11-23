@@ -89,25 +89,26 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {getSchema.data.attributes.map((property: any) => (
-                    <TableRow
-                      className={styles.tableRow}
-                      onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
-                      key={property.id}
-                    >
-                      <TableCell>{property.name ?? "-"}</TableCell>
-                      <TableCell>{property.type ?? "-"}</TableCell>
-                      <TableCell>{property.function ?? "-"}</TableCell>
-                      <TableCell>{property.caseSensitive.toString() ?? "-"}</TableCell>
-                      <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
-                      <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
-                      <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
-                        <Link icon={<ArrowRightIcon />} iconAlign="start">
-                          {t("Details")}
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {getSchema.data.attributes &&
+                    getSchema.data.attributes.map((property: any) => (
+                      <TableRow
+                        className={styles.tableRow}
+                        onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
+                        key={property.id}
+                      >
+                        <TableCell>{property.name ?? "-"}</TableCell>
+                        <TableCell>{property.type ?? "-"}</TableCell>
+                        <TableCell>{property.function ?? "-"}</TableCell>
+                        <TableCell>{property.caseSensitive.toString() ?? "-"}</TableCell>
+                        <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
+                        <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
+                        <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
+                          <Link icon={<ArrowRightIcon />} iconAlign="start">
+                            {t("Details")}
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             )}
