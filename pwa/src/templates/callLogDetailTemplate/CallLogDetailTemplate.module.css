@@ -1,44 +1,43 @@
 .container > :not(:last-child) {
-    margin-block-end: var(--gateway-ui-size-2xl);
-  }
-  
-  .section {
-    display: flex;
-    justify-content: space-between;
-    margin-block-end: var(--gateway-ui-size-xl);
-  }
-  
-  .buttons {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-  }
-  
-  .buttons > * {
-    display: flex;
-    align-items: center;
-  }
-  
-  .buttons *:not(:last-child) {
-    margin-inline-end: var(--gateway-ui-size-xs);
-  }
-  
-  .buttonIcon > span > svg {
-    margin-inline-end: var(--gateway-ui-size-xs);
-  }
-  
-  .tableRow {
-    cursor: pointer;
-  }
-  
-  /* Status colors */
-  .statusOk {
-    --conduction-tag-background-color: var(--gateway-ui-color-green);
-    --conduction-tag-color: var(--gateway-ui-color-white);
-  }
-  
-  .statusFailed {
-    --conduction-tag-background-color: var(--gateway-ui-color-red);
-    --conduction-tag-color: var(--gateway-ui-color-white);
-  }
-  
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttons > * {
+  display: flex;
+  align-items: center;
+}
+
+.buttons *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.tableRow {
+  cursor: pointer;
+}
+
+/* Status colors */
+.statusOk {
+  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.statusFailed {
+  --conduction-tag-background-color: var(--gateway-ui-color-status-red);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}

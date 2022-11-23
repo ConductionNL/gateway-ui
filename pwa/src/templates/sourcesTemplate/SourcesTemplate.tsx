@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
+import { dateTime } from "../../services/dateTime";
 
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -65,7 +66,7 @@ export const SourcesTemplate: React.FC = () => {
                   </div>
                 </TableCell>
                 <TableCell>{source.sync ?? "-"}</TableCell>
-                <TableCell>{source.lastCall ?? "-"}</TableCell>
+                <TableCell>{(source.lastCall && dateTime(source.lastCall)) ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
                 <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
                 <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
