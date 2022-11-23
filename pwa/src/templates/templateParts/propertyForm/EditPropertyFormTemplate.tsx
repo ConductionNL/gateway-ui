@@ -98,6 +98,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
     };
 
     createOrEditProperty.mutate({ payload, id: propertyId });
+    queryClient.setQueryData(["attributes", propertyId], payload);
   };
 
   const handleDeleteProperty = () => {

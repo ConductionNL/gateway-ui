@@ -55,6 +55,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
     data = { ...data, function: data.function.value };
 
     createOrEditSchema.mutate({ payload: data, id: schemaId });
+    queryClient.setQueryData(["entities", schemaId], data);
   };
 
   const handleDeleteSchema = () => {

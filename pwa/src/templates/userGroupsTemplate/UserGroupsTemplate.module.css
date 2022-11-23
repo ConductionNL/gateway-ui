@@ -1,4 +1,4 @@
-.container > :not(:last-child) {
+.container > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
@@ -33,11 +33,11 @@
 
 /* Status colors */
 .statusOk {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
+  --conduction-tag-background-color: var(--gateway-ui-color-green);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }
 
 .statusFailed {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-red);
+  --conduction-tag-background-color: var(--gateway-ui-color-red);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }

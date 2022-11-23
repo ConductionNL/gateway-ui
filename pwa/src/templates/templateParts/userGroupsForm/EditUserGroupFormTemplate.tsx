@@ -1,99 +1,54 @@
 import * as React from "react";
-import * as styles from "./EndpointsFormTemplate.module.css";
+import * as styles from "./UserGroupFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputText, SelectSingle, Textarea } from "@conduction/components";
+import { InputCheckbox, InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useQueryClient } from "react-query";
+import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
-import { useEndpoint } from "../../../hooks/endpoint";
-import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
-interface EditEndpointFormTemplateProps {
-  endpoint: any;
-  endpointId: string;
+interface EditUserGroupFormTemplateProps {
+  userGroup: any;
+  userGroupId: string;
 }
 
-export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> = ({ endpoint, endpointId }) => {
+export const EditUserGroupFormTemplate: React.FC<EditUserGroupFormTemplateProps> = ({ userGroup, userGroupId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
-  const queryClient = useQueryClient();
-  const _useEndpoints = useEndpoint(queryClient);
-  const createOrEditEndpoint = _useEndpoints.createOrEdit(endpointId);
-  const deleteEndpoint = _useEndpoints.remove();
-
-  const dashboardCard = getDashboardCard(endpoint.name);
-
-  const methodSelectOptions = [
-    { label: "GET", value: "GET" },
-    { label: "POST", value: "POST" },
-    { label: "PUT", value: "PUT" },
-    { label: "UPDATE", value: "UPDATE" },
-    { label: "DELETE", value: "DELETE" },
-  ];
-
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
     setValue,
   } = useForm();
 
-  const onSubmit = (data: any): void => {
-    data = { ...data, method: data.method.value };
-
-    createOrEditEndpoint.mutate({ payload: data, id: endpointId });
-    queryClient.setQueryData(["endpoint", endpointId], data);
-  };
-
-  const handleDelete = (id: string): void => {
-    deleteEndpoint.mutateAsync({ id: id });
-  };
-
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(endpoint.name, "Endpoint", "Endpoint", endpointId, dashboardCard?.id);
-  };
-
-  const handleSetFormValues = (endpoint: any): void => {
-    const basicFields: string[] = ["name", "description", "pathRegex", "tag"];
-    basicFields.forEach((field) => setValue(field, endpoint[field]));
-
-    setValue(
-      "method",
-      methodSelectOptions.find((option) => endpoint.method === option.value),
-    );
+  const handleSetFormValues = (userGroup: any): void => {
+    const basicFields: string[] = ["name", "description", "config"];
+    basicFields.forEach((field) => setValue(field, userGroup[field]));
   };
 
   React.useEffect(() => {
-    handleSetFormValues(endpoint);
+    handleSetFormValues(userGroup);
   }, []);
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <section className={styles.section}>
-          <Heading1>{t("Edit Endpoint")}</Heading1>
+          <Heading1>{t("Edit User Group")}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
-            </Button>
-
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
-              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
             <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
@@ -114,6 +69,13 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
             <FormField>
               <FormFieldInput>
+                <FormFieldLabel>{t("Config")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="config" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
                 <FormFieldLabel>{t("Description")}</FormFieldLabel>
                 <Textarea
                   {...{ register, errors }}
@@ -124,12 +86,14 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
               </FormFieldInput>
             </FormField>
 
+            <FormField></FormField>
+
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Path Regex")}</FormFieldLabel>
-                <InputText
+                <InputCheckbox
                   {...{ register, errors }}
-                  name="pathRegex"
+                  label={t("Scope 1")}
+                  name="scope1"
                   validation={{ required: true }}
                   disabled={loading}
                 />
@@ -138,12 +102,10 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Method")}</FormFieldLabel>
-                {/* @ts-ignore */}
-                <SelectSingle
-                  name="method"
-                  options={methodSelectOptions}
-                  {...{ control, errors }}
+                <InputCheckbox
+                  {...{ register, errors }}
+                  label={t("Scope 2")}
+                  name="scope2"
                   validation={{ required: true }}
                   disabled={loading}
                 />
@@ -152,8 +114,25 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Tag")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="tag" validation={{ required: true }} disabled={loading} />
+                <InputCheckbox
+                  {...{ register, errors }}
+                  label={t("Scope 3")}
+                  name="scope3"
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <InputCheckbox
+                  {...{ register, errors }}
+                  label={t("Scope 4")}
+                  name="scope4"
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
               </FormFieldInput>
             </FormField>
           </div>

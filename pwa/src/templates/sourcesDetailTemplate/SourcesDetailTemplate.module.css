@@ -17,3 +17,36 @@
 .tab {
   max-width: unset !important;
 }
+
+/* Status colors */
+.statusOk {
+  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.statusFailed {
+  --conduction-tag-background-color: var(--gateway-ui-color-status-red);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+/* Method colors */
+
+.getTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.postTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-post);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.putTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-put);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.deleteTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-delete);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}

@@ -45,6 +45,14 @@
   gap: var(--gateway-ui-size-sm);
 }
 
+.date {
+  display: flex;
+}
+
+.date :not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-sm);
+}
+
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);
