@@ -11,7 +11,7 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAction } from "../../../hooks/action";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
-import { validateStringAsJSONArray } from "../../../services/validateJSON";
+import { validateStringAsJSON } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import Skeleton from "react-loading-skeleton";
 import { useCronjob } from "../../../hooks/cronjob";
@@ -277,7 +277,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                   {...{ register, errors }}
                   name="conditions"
                   disabled={loading}
-                  validation={{ validate: validateStringAsJSONArray }}
+                  validation={{ validate: validateStringAsJSON }}
                 />
                 {errors["conditions"] && <ErrorMessage message={errors["conditions"].message} />}
               </FormFieldInput>
