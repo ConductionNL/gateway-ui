@@ -11,7 +11,7 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAction } from "../../../hooks/action";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
-import { validateStringAsJSONArray } from "../../../services/validateStringAsJSONArray";
+import { validateStringAsJSONArray } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import Skeleton from "react-loading-skeleton";
 import { useCronjob } from "../../../hooks/cronjob";
@@ -68,6 +68,11 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
     for (const [key, _] of Object.entries(actionHandlerSchema.properties)) {
       payload.configuration[key] = data[key];
+
+      if (actionHandlerSchema.properties[key].type === "object") {
+        payload.configuration[key] = data[key] ? JSON.parse(data[key]) : {};
+      }
+
       delete payload[key];
     }
 
@@ -103,9 +108,13 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
     if (actionHandlerSchema?.properties) {
       for (const [key, value] of Object.entries(actionHandlerSchema.properties)) {
+        const _value = value as any;
+
         setValue(key, action.configuration[key]);
 
-        const _value = value as any;
+        if (_value.type === "object") {
+          action.configuration[key] && setValue(key, JSON.stringify(action.configuration[key]));
+        }
 
         setActionHandlerSchema((schema: any) => ({
           ...schema,

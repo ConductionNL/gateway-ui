@@ -17,6 +17,8 @@ import {
   SelectMultiple,
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
+import { validateStringAsJSON } from "../../../services/validateJSON";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 export type SchemaInputType =
   | "string"
@@ -259,7 +261,15 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "object" && <Textarea {...{ register, errors, control, placeholder, name, defaultValue }} />}
+        {type === "object" && (
+          <>
+            <Textarea
+              {...{ register, errors, control, placeholder, name }}
+              validation={{ validate: validateStringAsJSON }}
+            />
+            {errors[name] && <ErrorMessage message={errors[name].message} />}
+          </>
+        )}
       </FormFieldInput>
     </FormField>
   );
