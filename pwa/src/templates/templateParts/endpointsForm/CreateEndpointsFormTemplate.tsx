@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useEndpoint } from "../../../hooks/endpoint";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface CreateEndpointFormTemplateProps {
   endpointId?: string;
@@ -63,14 +64,18 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Name")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Description")} <RequiredStar />
+                </FormFieldLabel>
                 <Textarea
                   {...{ register, errors }}
                   name="description"
@@ -82,7 +87,9 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Path Regex")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Path Regex")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText
                   {...{ register, errors }}
                   name="pathRegex"
@@ -94,7 +101,10 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Method")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Method")} <RequiredStar />
+                </FormFieldLabel>
+                {/* @ts-ignore */}
                 <SelectSingle
                   name="method"
                   options={methodSelectOptions}
@@ -107,7 +117,9 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Tag")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Tag")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText {...{ register, errors }} name="tag" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>

@@ -9,6 +9,7 @@ import APIService from "../../../apiService/apiService";
 import { InputText } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface CreatePluginFormTemplateProps {
   pluginId?: string;
@@ -44,7 +45,9 @@ export const CreatePluginFormTemplate: React.FC<CreatePluginFormTemplateProps> =
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Name")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>

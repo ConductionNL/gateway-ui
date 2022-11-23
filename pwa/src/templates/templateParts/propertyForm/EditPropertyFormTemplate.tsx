@@ -13,6 +13,7 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAttribute } from "../../../hooks/attribute";
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface EditPropertyFormTemplateProps {
   property: any;
@@ -220,7 +221,9 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                 <div className={styles.grid}>
                   <FormField>
                     <FormFieldInput>
-                      <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                      <FormFieldLabel>
+                        {t("Name")} <RequiredStar />
+                      </FormFieldLabel>
                       <InputText
                         {...{ register, errors }}
                         name="name"
