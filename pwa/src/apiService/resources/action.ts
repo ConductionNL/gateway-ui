@@ -20,6 +20,13 @@ export default class Action {
     return data;
   };
 
+  public getTestAction = async (variables: { payload: any; id?: string }): Promise<any> => {
+    const { id } = variables;
+
+    const { data } = await Send(this._instance, "GET", `/admin/run_action/${id}`);
+    return data;
+  };
+
   public getAllHandlers = async (): Promise<any> => {
     const { data } = await Send(this._instance, "GET", "/admin/actionHandlers?limit=1000");
 

@@ -6,7 +6,7 @@ import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputNumber, InputText, Textarea, SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faTrash, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faFloppyDisk, faTrash, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAction } from "../../../hooks/action";
@@ -18,6 +18,7 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import { IsLoadingContext } from "../../../context/isLoading";
 
 interface EditActionFormTemplateProps {
   action: any;
@@ -31,11 +32,13 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
   const [actionHandlerSchema, setActionHandlerSchema] = React.useState<any>(action.actionHandlerConfiguration);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = useQueryClient();
   const _useAction = useAction(queryClient);
   const createOrEditAction = _useAction.createOrEdit(actionId);
   const deleteAction = _useAction.remove();
+  const _testAction = _useAction.getTestAction();
 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
@@ -44,6 +47,10 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
   const addOrRemoveFromDashboard = () => {
     addOrRemoveDashboardCard(action.name, "Action", "Action", actionId, dashboardCard?.id);
+  };
+
+  const testAction = () => {
+    const actionTest = _testAction.mutate({ id: actionId });
   };
 
   const {
@@ -157,6 +164,11 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
+            </Button>
+
+            <Button className={styles.buttonIcon} onClick={testAction} disabled={isLoading.alert}>
+              <FontAwesomeIcon icon={faArrowsRotate} />
+              {t("Test Action")}
             </Button>
 
             <Button className={styles.buttonIcon} disabled={loading} onClick={addOrRemoveFromDashboard}>

@@ -4,9 +4,13 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
+import { AlertContext } from "../context/alert";
+import { IsLoadingContext } from "../context/isLoading";
 
 export const useAction = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const [_, setAlert] = React.useContext(AlertContext);
+  const [__, setIsLoading] = React.useContext(IsLoadingContext);
 
   const getAll = () =>
     useQuery<any[], Error>("actions", API.Action.getAll, {
@@ -30,6 +34,30 @@ export const useAction = (queryClient: QueryClient) => {
       },
       enabled: !!actionId,
     });
+    
+  const getTestAction = (actionId?: string) =>
+    useMutation<any, Error, any>(API.Action.getTestAction, {
+      onMutate: () => {
+        setIsLoading({ alert: true });
+      },
+      onSuccess: async () => {
+        setAlert({ message: "Action succeeded with status code 200", body: "", type: "success", active: true });
+      },
+      onError: (error) => {
+        if (error.message === "Network Error") {
+          setAlert({ message: "Action failed due to a Network Error", type: "error", active: true });
+        } else {
+          // @ts-ignore
+          setAlert({ message: error.message, body: error.response.data, type: "error", active: true });
+        }
+        setIsLoading({ alert: false });
+
+        throw new Error(error.message);
+      },
+      onSettled: () => {
+        setIsLoading({ alert: false });
+    },
+  });
 
   const remove = () =>
     useMutation<any, Error, any>(API.Action.delete, {
@@ -60,5 +88,5 @@ export const useAction = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getAllHandlers, getOne, remove, createOrEdit };
+  return { getAll, getAllHandlers, getOne, remove, createOrEdit, getTestAction };
 };
