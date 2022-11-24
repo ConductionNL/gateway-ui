@@ -17,7 +17,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import clsx from "clsx";
 import { dateTime } from "../../services/dateTime";
-import { IsLoadingContext } from "../../context/isLoading";
 import { AlertContext } from "../../context/alert";
 
 interface SourcesDetailTemplateProps {
