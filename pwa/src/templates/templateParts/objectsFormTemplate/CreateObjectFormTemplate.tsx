@@ -54,7 +54,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   }, [watchSchema]);
 
   React.useEffect(() => {
-    if (getSchemas.isLoading || getSchemaSchema.isLoading || createOrEditObject.isLoading) {
+    if ((getSchemas.isLoading && !predefinedSchema) || getSchemaSchema.isLoading || createOrEditObject.isLoading) {
       setLoading(true);
       return;
     }
@@ -113,16 +113,12 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
                 <FormFieldInput>
                   <FormFieldLabel>{t("Selected schema")}</FormFieldLabel>
 
-                  {getSchemas.isLoading && <Skeleton height="50px" />}
-
-                  {getSchemas.isSuccess && (
-                    <InputText
-                      disabled
-                      defaultValue={predefinedSchema}
-                      name="schema"
-                      {...{ register, errors, control }}
-                    />
-                  )}
+                  <InputText
+                    disabled
+                    defaultValue={predefinedSchema}
+                    name="schema"
+                    {...{ register, errors, control }}
+                  />
                 </FormFieldInput>
               </FormField>
             )}
