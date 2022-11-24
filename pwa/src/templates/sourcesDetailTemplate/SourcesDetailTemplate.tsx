@@ -31,6 +31,7 @@ import { IsLoadingContext } from "../../context/isLoading";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { validateStringAsJSON } from "../../services/validateJSON";
+import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -105,7 +106,14 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                     <FormFieldInput>
                       <FormFieldLabel>{t("Method")}</FormFieldLabel>
                       {/* @ts-ignore */}
-                      <SelectSingle {...{ register, errors, control }} name="method" options={methodSelectOptions} />
+                      <SelectSingle
+                        validation={{ required: true }}
+                        {...{ register, errors, control }}
+                        name="method"
+                        options={methodSelectOptions}
+                      />
+
+                      {errors["method"] && <ErrorMessage message="This field is required." />}
                     </FormFieldInput>
                   </FormField>
                   <FormField>
