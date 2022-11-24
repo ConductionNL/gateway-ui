@@ -21,9 +21,22 @@ export default class Source {
   };
 
   public getProxy = async (variables: { payload: any; id?: string }): Promise<any> => {
-    const { id } = variables;
+    const { id, payload } = variables;
 
-    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`);
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      const _config = {
+        ...config,
+        headers: {
+          ...config.headers,
+        },
+      };
+      console.log({ _config, config });
+      return _config;
+    });
+
+    const { data } = await Send(instance, "POST", `/admin/sources/${id}/proxy`);
     return data;
   };
 

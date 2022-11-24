@@ -3,10 +3,20 @@ import * as styles from "./SourcesDetailTemplate.module.css";
 import { QueryClient } from "react-query";
 import _ from "lodash";
 import { useSource } from "../../hooks/source";
-import { Container, Tag } from "@conduction/components";
+import { Container, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
 import { SourcesFormTemplate } from "../templateParts/sourcesForm/EditSourcesFormTemplate";
 import Skeleton from "react-loading-skeleton";
-import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import {
+  Button,
+  FormField,
+  FormFieldInput,
+  FormFieldLabel,
+  Link,
+  Tab,
+  TabContext,
+  TabPanel,
+  Tabs,
+} from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -17,6 +27,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import clsx from "clsx";
 import { dateTime } from "../../services/dateTime";
+import { IsLoadingContext } from "../../context/isLoading";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import { useForm } from "react-hook-form";
+import { validateStringAsJSON } from "../../services/validateJSON";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -25,12 +39,41 @@ interface SourcesDetailTemplateProps {
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
   const { t, i18n } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = new QueryClient();
   const _useSources = useSource(queryClient);
   const _useCallLogs = useCallLog(queryClient);
   const _getSources = _useSources.getOne(sourceId);
   const _getCallLogs = _useCallLogs.getSourceLog(sourceId);
+  const _testProxy = _useSources.getProxy();
+
+  const methodSelectOptions = [
+    { label: "POST", value: "POST" },
+    { label: "PUT", value: "PUT" },
+    { label: "PATCH", value: "PATCH" },
+    { label: "UPDATE", value: "UPDATE" },
+    { label: "GET", value: "GET" },
+    { label: "DELETE", value: "DELETE" },
+  ];
+
+  const onSubmit = (data: any) => {
+    const payload = {
+      ...data,
+      body: data.body ? JSON.parse(data.body) : [],
+    };
+
+    const proxyTest = _testProxy.mutate({ id: sourceId, payload: payload });
+  };
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm();
 
   return (
     <Container layoutClassName={styles.container}>
@@ -50,10 +93,47 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
             }}
             variant="scrollable"
           >
-            <Tab className={styles.tab} label={t("Logs")} value={0} />
+            <Tab className={styles.tab} label={t("Test Connection")} value={0} />
+            <Tab className={styles.tab} label={t("Logs")} value={1} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className={styles.gridContainer}>
+                <div className={styles.grid}>
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Method")}</FormFieldLabel>
+                      {/* @ts-ignore */}
+                      <SelectSingle {...{ register, errors, control }} name="method" options={methodSelectOptions} />
+                    </FormFieldInput>
+                  </FormField>
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Endpoint")}</FormFieldLabel>
+                      <InputText {...{ register, errors }} name="endpoint" />
+                    </FormFieldInput>
+                  </FormField>
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Body")}</FormFieldLabel>
+                      <Textarea {...{ register, errors }} name="body" validation={{ validate: validateStringAsJSON }} />
+                    </FormFieldInput>
+                  </FormField>
+                </div>
+              </div>
+              <Button
+                className={clsx(styles.buttonIcon, styles.testConnectionButton)}
+                disabled={isLoading.alert}
+                type="submit"
+              >
+                <FontAwesomeIcon icon={faArrowsRotate} />
+                {t("Test connection")}
+              </Button>
+            </form>
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="1">
             {_getCallLogs.isLoading && <Skeleton height="200px" />}
 
             {_getCallLogs.isError && <div>Error cant find call logs.</div>}

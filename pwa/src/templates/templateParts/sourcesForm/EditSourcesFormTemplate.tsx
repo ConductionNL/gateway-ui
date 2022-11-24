@@ -89,7 +89,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     data.auth = data.auth && data.auth.value;
 
     createOrEditSource.mutate({ payload: data, id: sourceId });
-    queryClient.setQueryData(["sources", sourceId], data)
+    queryClient.setQueryData(["sources", sourceId], data);
   };
 
   const handleDelete = (id: string): void => {

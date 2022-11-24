@@ -35,6 +35,10 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
+.testConnectionButton {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
 .tabPanel {
   padding-inline-start: var(--gateway-ui-size-lg) !important;
   padding-inline-end: var(--gateway-ui-size-lg) !important;
