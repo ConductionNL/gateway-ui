@@ -2,14 +2,13 @@ import * as React from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
-import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
+import { addItem, deleteItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
-import { AlertContext } from "../context/alert";
 import { IsLoadingContext } from "../context/isLoading";
+import toast from "react-hot-toast";
 
 export const useSource = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
-  const [_, setAlert] = React.useContext(AlertContext);
   const [__, setIsLoading] = React.useContext(IsLoadingContext);
 
   const getAll = () =>
@@ -34,15 +33,15 @@ export const useSource = (queryClient: QueryClient) => {
         setIsLoading({ alert: true });
       },
       onSuccess: async () => {
-        setAlert({ message: "Request succeeded with status code 200", body: "", type: "success", active: true });
+        toast.success("Request succeeded with status code 200");
       },
       onError: (error) => {
         if (error.message === "Network Error") {
-          setAlert({ message: "Request failed due to a Network Error", type: "error", active: true });
+          toast.error("Request failed due to a Network Error");
         } else {
-          // @ts-ignore
-          setAlert({ message: error.message, body: error.response.data, type: "error", active: true });
+          toast.error(error.message);
         }
+
         setIsLoading({ alert: false });
 
         throw new Error(error.message);

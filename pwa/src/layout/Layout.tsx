@@ -12,8 +12,8 @@ import Favicon from "react-favicon";
 import Logo from "../assets/svgs/conduction-logo.svg";
 import { TabsProvider, ITabs, tabs as _tabs } from "../context/tabs";
 import { getScreenSize } from "../services/getScreenSize";
-import { AlertProps, AlertProvider } from "../context/alert";
 import { IsLoadingProps, IsLoadingProvider } from "../context/isLoading";
+import { Toaster } from "react-hot-toast";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -28,7 +28,6 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   });
   const [screenSize, setScreenSize] = React.useState<TScreenSize>("mobile");
   const [tabs, setTabs] = React.useState<ITabs>(_tabs);
-  const [alert, setAlert] = React.useState<AlertProps>({ active: false });
   const [isLoading, setIsLoading] = React.useState<IsLoadingProps>({});
 
   React.useEffect(() => {
@@ -60,19 +59,19 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
       <GatsbyProvider value={gatsbyContext}>
         <APIProvider value={API}>
           <StylesProvider>
-            <AlertProvider value={[alert, setAlert]}>
-              <IsLoadingProvider value={[isLoading, setIsLoading]}>
-                <TabsProvider value={[tabs, setTabs]}>
-                  <ThemeProvider>
-                    <Favicon url={Logo} />
+            <Toaster position="bottom-right" />
 
-                    <div className={styles.container}>
-                      <Content {...{ children }} />
-                    </div>
-                  </ThemeProvider>
-                </TabsProvider>
-              </IsLoadingProvider>
-            </AlertProvider>
+            <IsLoadingProvider value={[isLoading, setIsLoading]}>
+              <TabsProvider value={[tabs, setTabs]}>
+                <ThemeProvider>
+                  <Favicon url={Logo} />
+
+                  <div className={styles.container}>
+                    <Content {...{ children }} />
+                  </div>
+                </ThemeProvider>
+              </TabsProvider>
+            </IsLoadingProvider>
           </StylesProvider>
         </APIProvider>
       </GatsbyProvider>
