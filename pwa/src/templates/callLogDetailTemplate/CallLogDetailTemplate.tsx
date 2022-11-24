@@ -102,11 +102,11 @@ export const CallLogDetailTemplate: React.FC<CallLogDetailTemplateProps> = ({ ca
             </TableBody>
           </Table>
 
-          {_getCallLog.data.responseBody && (
-            <>
-              <Heading3>Response body</Heading3>
-              <iframe className={styles.respondeBody} sandbox="" srcDoc={_getCallLog.data.responseBody}></iframe>
-            </>
+          <Heading3>Response body</Heading3>
+          {_getCallLog.data.responseBody ? (
+            <iframe className={styles.respondeBody} sandbox="" srcDoc={_getCallLog.data.responseBody}></iframe>
+          ) : (
+            <p>This callLog has no response body.</p>
           )}
         </div>
       )}
