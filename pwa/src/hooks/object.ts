@@ -63,8 +63,7 @@ export const useObject = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        // throw new Error(error.message);
-        console.log("error happened, but not throwing");
+        throw new Error(error.message);
       },
     });
 
