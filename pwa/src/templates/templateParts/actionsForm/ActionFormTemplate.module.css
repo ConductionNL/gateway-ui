@@ -41,6 +41,22 @@
   grid-template-columns: 1fr 1fr;
 }
 
+.tabContainer {
+  background: var(--gateway-ui-color-white);
+  margin-block-start: var(--gateway-ui-size-2xl);
+}
+
+.tabPanel {
+  padding-inline-start: var(--gateway-ui-size-lg) !important;
+  padding-inline-end: var(--gateway-ui-size-lg) !important;
+  padding-block-start: var(--gateway-ui-size-lg) !important;
+  padding-block-end: var(--gateway-ui-size-lg) !important;
+}
+
+.tab {
+  max-width: unset !important;
+}
+
 .deleteButton {
   --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
 }
