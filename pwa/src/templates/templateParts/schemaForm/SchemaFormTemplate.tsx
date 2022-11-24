@@ -8,7 +8,7 @@ import { FieldValues, UseFormRegister } from "react-hook-form";
 import { CreateKeyValue, InputNumber, Textarea } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
-import { InputDateTime, InputFloat } from "@conduction/components/lib/components/formFields/input";
+import { InputDateTime, InputFloat, InputURL } from "@conduction/components/lib/components/formFields/input";
 import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -67,6 +67,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
         name: key,
         placeholder: value.example,
         description: value.description,
+        format: value.format,
         readOnly: value.readOnly,
         required: schema?.required.includes(key),
         defaultValue: mapGatewaySchemaToInputValues(value),
@@ -87,7 +88,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
 
       <div className={clsx(styles.simpleFormContainer, styles.formContainer)}>
         {simpleProperties.map(
-          ({ name, type, placeholder, description, defaultValue, _enum, multiple, readOnly }, idx) => (
+          ({ name, type, placeholder, description, format, defaultValue, _enum, multiple, readOnly }, idx) => (
             <FormFieldGroup
               key={idx}
               required={schema.required.includes(name)}
@@ -101,6 +102,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
                 type,
                 placeholder,
                 description,
+                format,
                 defaultValue,
                 _enum,
                 multiple,
@@ -111,11 +113,23 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
       </div>
 
       <div className={clsx(styles.complexFormContainer, styles.formContainer)}>
-        {complexProperties.map(({ name, type, placeholder, description, defaultValue, readOnly }, idx) => (
+        {complexProperties.map(({ name, type, placeholder, description, format, defaultValue, readOnly }, idx) => (
           <FormFieldGroup
             key={idx}
             required={schema.required.includes(name)}
-            {...{ register, errors, control, disabled, name, type, placeholder, description, defaultValue, readOnly }}
+            {...{
+              register,
+              errors,
+              control,
+              disabled,
+              name,
+              type,
+              placeholder,
+              description,
+              format,
+              defaultValue,
+              readOnly,
+            }}
           />
         ))}
       </div>
@@ -133,6 +147,7 @@ interface FormFieldGroupProps {
   placeholder?: string;
   required?: boolean;
   description?: string;
+  format?: string;
   defaultValue?: any;
   _enum?: any;
   multiple?: boolean;
@@ -143,6 +158,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   type,
   placeholder,
   description,
+  format,
   register,
   errors,
   control,
@@ -168,8 +184,16 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           )}
         </div>
 
-        {type === "string" && !_enum && !multiple && (
+        {type === "string" && !_enum && !multiple && !(format === "url") && (
           <InputText
+            validation={{ required }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, control, placeholder, name, defaultValue }}
+          />
+        )}
+
+        {type === "string" && !_enum && !multiple && format === "url" && (
+          <InputURL
             validation={{ required }}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
