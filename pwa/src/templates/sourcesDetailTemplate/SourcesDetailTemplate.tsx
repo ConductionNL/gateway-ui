@@ -17,6 +17,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import clsx from "clsx";
 import { dateTime } from "../../services/dateTime";
+import { IsLoadingContext } from "../../context/isLoading";
+import { AlertContext } from "../../context/alert";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -25,12 +27,17 @@ interface SourcesDetailTemplateProps {
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
   const { t, i18n } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [alert, setAlert] = React.useContext(AlertContext);
 
   const queryClient = new QueryClient();
   const _useSources = useSource(queryClient);
   const _useCallLogs = useCallLog(queryClient);
   const _getSources = _useSources.getOne(sourceId);
   const _getCallLogs = _useCallLogs.getSourceLog(sourceId);
+
+  React.useEffect(() => {
+    setAlert({ active: false })
+  }, [])
 
   return (
     <Container layoutClassName={styles.container}>
