@@ -21,7 +21,6 @@ import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import Alert from "../../components/alert/alert";
 import { useCallLog } from "../../hooks/callLog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
@@ -79,8 +78,6 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
   return (
     <Container layoutClassName={styles.container}>
-      <Alert />
-
       {_getSources.isLoading && <Skeleton height="200px" />}
       {_getSources.isError && "Error..."}
 
