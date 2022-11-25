@@ -6,9 +6,12 @@ import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { TEMPORARY_PLUGINS } from "../../data/plugin";
 import { PluginCard } from "../../components/pluginCard/PluginCard";
 import _ from "lodash";
+import { QueryClient } from "react-query";
+import { usePlugin } from "../../hooks/plugin";
+import Skeleton from "react-loading-skeleton";
+import ReactPaginate from "react-paginate";
 
 export type TPluginTitle = "Installed" | "Search" | "";
 
@@ -19,26 +22,24 @@ interface PluginsPageProps {
 export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
   const { t } = useTranslation();
 
-  const tempPlugin = TEMPORARY_PLUGINS.filter((plugin) => {
-    const installed = title === "Installed" ? true : false;
+  const queryClient = new QueryClient();
+  const _usePlugin = usePlugin(queryClient);
+  let getPlugins;
 
-    if (title === "") {
-      return TEMPORARY_PLUGINS;
-    }
+  switch (title) {
+    case "Installed":
+      getPlugins = _usePlugin.getAllInstalled();
+      break;
 
-    return plugin.installed === installed;
-  });
+    case "Search":
+      getPlugins = _usePlugin.getAllAvailable();
+      break;
 
-  const installed = title === "Installed" ? true : false;
-  let _pluginId = "";
-  if (installed) {
-    _pluginId = "a66533fc-386b-45a4-9795-2007057cae18";
+    default:
+      getPlugins = _usePlugin.getAllInstalled();
   }
-  if (!installed) {
-    _pluginId = "eff8f013-9fea-4abd-b24c-48241b807d01";
-  } else {
-    _pluginId = "a66533fc-386b-45a4-9795-2007057cae18";
-  }
+
+  const pluginsPerPage = 10;
 
   const titleHref = title !== "" ? `${_.lowerCase(title)}/` : "";
 
@@ -54,17 +55,17 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
         </div>
       </section>
 
-      {!tempPlugin && "Error..."}
+      {getPlugins.isSuccess && (
+        <>
+          {/* <PaginatedPlugins {...{ pluginsPerPage, getPlugins }} /> */}
 
-      {tempPlugin && (
-        <div className={styles.cardsGrid}>
-          {tempPlugin.map((plugin: any) => (
-            <>
-              {console.log(plugin)}
+          <div className={styles.cardsGrid}>
+            {getPlugins.data.map((plugin: any) => (
               <PluginCard
+                key={plugin.name}
                 title={{
                   label: plugin.name,
-                  href: `/plugins/${titleHref}${_pluginId}`,
+                  href: `#`,
                 }}
                 description={plugin.description}
                 packagistUrl={plugin.url}
@@ -72,10 +73,45 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
                 downloads={plugin.downloads}
                 favers={plugin.favers}
               />
-            </>
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
+
+      {getPlugins.isLoading && <Skeleton height="200px" />}
+      {getPlugins.isError && <>Oops, something went wrong...</>}
     </Container>
+  );
+};
+
+interface PaginatedPluginsProps {
+  pluginsPerPage: number;
+  getPlugins: any;
+}
+
+const PaginatedPlugins: React.FC<PaginatedPluginsProps> = ({ pluginsPerPage, getPlugins }) => {
+  const [currentPage, setCurrentPage] = React.useState<number>(0);
+
+  const endOffset = currentPage + pluginsPerPage;
+  const currentItems = getPlugins.data.slice(currentPage, endOffset);
+  const pageCount = Math.ceil(getPlugins.data.length / pluginsPerPage);
+
+  const handlePageClick = (event: any) => {
+    const newOffset = (event.selected * pluginsPerPage) % getPlugins.data.length;
+    setCurrentPage(newOffset);
+  };
+
+  return (
+    <>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        renderOnZeroPageCount={() => null}
+      />
+    </>
   );
 };

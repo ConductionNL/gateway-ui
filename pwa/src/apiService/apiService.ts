@@ -18,6 +18,7 @@ import Collection from "./resources/collection";
 import DashboardCards from "./resources/dashboardCards";
 import CallLog from "./resources/callLog";
 import Attribute from "./resources/attribute";
+import Plugin from "./resources/plugin";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -122,6 +123,10 @@ export default class APIService {
 
   public get Attribute(): Attribute {
     return new Attribute(this.BaseClient);
+  }
+
+  public get Plugin(): Plugin {
+    return new Plugin(this.BaseClient);
   }
 
   // Services
