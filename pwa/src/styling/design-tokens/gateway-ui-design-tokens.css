@@ -62,7 +62,9 @@
   --gateway-ui-color-status-red: #dd3c49;
   --gateway-ui-color-method-get: var(--gateway-ui-color-status-green);
   --gateway-ui-color-method-post: #51b8f4;
-  --gateway-ui-color-method-put: #e9743a;
+  --gateway-ui-color-method-put: #95507c;
+  --gateway-ui-color-method-patch: #e9743a;
+  --gateway-ui-color-method-update: #e93aac;
   --gateway-ui-color-method-delete: var(--gateway-ui-color-status-red);
   --gateway-ui-color-primary: #4376fc;
   --gateway-ui-color-primary-hover: #2e5ed9;

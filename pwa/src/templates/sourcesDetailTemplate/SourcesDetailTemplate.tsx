@@ -38,7 +38,7 @@ interface SourcesDetailTemplateProps {
 }
 
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
@@ -72,8 +72,6 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
-    watch,
   } = useForm();
 
   return (
@@ -149,8 +147,6 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
           <TabPanel className={styles.tabPanel} value="1">
             {_getCallLogs.isLoading && <Skeleton height="200px" />}
-
-            {_getCallLogs.isError && <div>Error cant find call logs.</div>}
 
             {_getCallLogs.isSuccess && (
               <Table>

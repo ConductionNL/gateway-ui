@@ -70,3 +70,13 @@
   --conduction-tag-background-color: var(--gateway-ui-color-method-delete);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }
+
+.patchTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-patch);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.updateTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-update);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}

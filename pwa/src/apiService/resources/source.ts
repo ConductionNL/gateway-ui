@@ -23,14 +23,14 @@ export default class Source {
   public getProxy = async (variables: { payload: any; id?: string }): Promise<any> => {
     const { id, payload } = variables;
 
-    if (!(payload.endpoint[0] === "/")) {
+    if (payload.endpoint && !(payload.endpoint[0] === "/")) {
       payload.endpoint = `/${payload.endpoint}`;
     }
 
     this._instance.interceptors.request.use(function (config) {
       return {
         ...config,
-        headers: { ...config.headers, "x-method": payload.method.value },
+        headers: { ...config.headers, "x-method": payload.method.value, "x-endpoint": payload.endpoint },
       };
     });
 
