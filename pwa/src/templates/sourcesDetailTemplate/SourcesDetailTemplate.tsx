@@ -32,6 +32,7 @@ import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { validateStringAsJSON } from "../../services/validateJSON";
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
+import { TabsContext } from "../../context/tabs";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -39,7 +40,7 @@ interface SourcesDetailTemplateProps {
 
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
   const { t, i18n } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = new QueryClient();
@@ -86,11 +87,11 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
       {_getSources.isSuccess && <SourcesFormTemplate source={_getSources.data} sourceId={sourceId} />}
 
       <div className={styles.tabContainer}>
-        <TabContext value={currentTab.toString()}>
+        <TabContext value={currentTab.sourceDetailTabs.toString()}>
           <Tabs
-            value={currentTab}
+            value={currentTab.sourceDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab(newValue);
+              setCurrentTab({ ...currentTab, sourceDetailTabs: newValue });
             }}
             variant="scrollable"
           >
