@@ -7,6 +7,8 @@ import Me from "./services/me";
 
 // Resources
 import Action from "./resources/action";
+import Cronjob from "./resources/cronjob";
+import DashboardCards from "./resources/dashboardCards";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -71,6 +73,14 @@ export default class APIService {
   // Resources
   public get Action(): Action {
     return new Action(this.BaseClient);
+  }
+
+  public get Cronjob(): Cronjob {
+    return new Cronjob(this.BaseClient);
+  }
+
+  public get DashboardCards(): DashboardCards {
+    return new DashboardCards(this.BaseClient);
   }
 
   // Services
