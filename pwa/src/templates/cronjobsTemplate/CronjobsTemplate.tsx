@@ -13,6 +13,7 @@ import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
+import { dateTime } from "../../services/dateTime";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -66,8 +67,8 @@ export const CronjobsTemplate: React.FC = () => {
                 </TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>{cronjob.crontab}</TableCell>
-                <TableCell>{translateDate(i18n.language, cronjob.lastRun)}</TableCell>
-                <TableCell>{translateDate(i18n.language, cronjob.nextRun)}</TableCell>
+                <TableCell>{dateTime(cronjob.lastRun) ?? "-"}</TableCell>
+                <TableCell>{dateTime(cronjob.nextRun) ?? "-"}</TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>-</TableCell>
