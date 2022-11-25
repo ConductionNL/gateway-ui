@@ -5,6 +5,8 @@
 .tabContainer {
   background: var(--gateway-ui-color-white);
   margin-block-start: var(--gateway-ui-size-2xl);
+  padding-block: var(--gateway-ui-size-md);
+  padding-inline: var(--gateway-ui-size-md);
 }
 
 .tabPanel {

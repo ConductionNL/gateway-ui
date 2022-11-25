@@ -23,18 +23,18 @@ export default class Source {
   public getProxy = async (variables: { payload: any; id?: string }): Promise<any> => {
     const { id, payload } = variables;
 
-    this._instance.interceptors.request.use(function (config) {
-      return {
-        ...config,
-        headers: { ...config.headers, method: payload.method.value },
-      };
-    });
-
     if (!(payload.endpoint[0] === "/")) {
       payload.endpoint = `/${payload.endpoint}`;
     }
 
-    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy${payload.endpoint}`, payload.body);
+    this._instance.interceptors.request.use(function (config) {
+      return {
+        ...config,
+        headers: { ...config.headers, "x-method": payload.method.value },
+      };
+    });
+
+    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`, payload.body);
 
     return data;
   };

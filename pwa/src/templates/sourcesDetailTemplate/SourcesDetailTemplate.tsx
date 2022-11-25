@@ -99,46 +99,54 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className={styles.gridContainer}>
-                <div className={styles.grid}>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Method")}</FormFieldLabel>
-                      {/* @ts-ignore */}
-                      <SelectSingle
-                        validation={{ required: true }}
-                        {...{ register, errors, control }}
-                        name="method"
-                        options={methodSelectOptions}
-                      />
+            {_getSources.isLoading && <Skeleton height="200px" />}
+            {_getSources.isSuccess && (
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Button
+                  className={clsx(styles.buttonIcon, styles.testConnectionButton)}
+                  disabled={isLoading.alert}
+                  type="submit"
+                >
+                  <FontAwesomeIcon icon={faArrowsRotate} />
+                  {t("Test connection")}
+                </Button>
 
-                      {errors["method"] && <ErrorMessage message="This field is required." />}
-                    </FormFieldInput>
-                  </FormField>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Endpoint")}</FormFieldLabel>
-                      <InputText {...{ register, errors }} name="endpoint" />
-                    </FormFieldInput>
-                  </FormField>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Body")}</FormFieldLabel>
-                      <Textarea {...{ register, errors }} name="body" validation={{ validate: validateStringAsJSON }} />
-                    </FormFieldInput>
-                  </FormField>
+                <div className={styles.gridContainer}>
+                  <div className={styles.grid}>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Method")}</FormFieldLabel>
+                        {/* @ts-ignore */}
+                        <SelectSingle
+                          validation={{ required: true }}
+                          {...{ register, errors, control }}
+                          name="method"
+                          options={methodSelectOptions}
+                        />
+
+                        {errors["method"] && <ErrorMessage message="This field is required." />}
+                      </FormFieldInput>
+                    </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Endpoint")}</FormFieldLabel>
+                        <InputText {...{ register, errors }} name="endpoint" />
+                      </FormFieldInput>
+                    </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Body")}</FormFieldLabel>
+                        <Textarea
+                          {...{ register, errors }}
+                          name="body"
+                          validation={{ validate: validateStringAsJSON }}
+                        />
+                      </FormFieldInput>
+                    </FormField>
+                  </div>
                 </div>
-              </div>
-              <Button
-                className={clsx(styles.buttonIcon, styles.testConnectionButton)}
-                disabled={isLoading.alert}
-                type="submit"
-              >
-                <FontAwesomeIcon icon={faArrowsRotate} />
-                {t("Test connection")}
-              </Button>
-            </form>
+              </form>
+            )}
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
@@ -197,6 +205,18 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                       </TableCell>
                     </TableRow>
                   ))}
+                  {!_getCallLogs.data.length && (
+                    <>
+                      <TableRow>
+                        <TableCell>Geen logs gevonden</TableCell>
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                      </TableRow>
+                    </>
+                  )}
                 </TableBody>
               </Table>
             )}

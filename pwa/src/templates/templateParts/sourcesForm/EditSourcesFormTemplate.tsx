@@ -47,7 +47,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const _useSources = useSource(queryClient);
   const createOrEditSource = _useSources.createOrEdit(sourceId);
   const deleteSource = _useSources.remove();
-  const _testProxy = _useSources.getProxy();
 
   const dashboardCard = getDashboardCard(source.name);
 
@@ -99,9 +98,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const addOrRemoveFromDashboard = () => {
     addOrRemoveDashboardCard(source.name, "Source", "Gateway", sourceId, dashboardCard?.id);
   };
-  const testProxy = () => {
-    const proxyTest = _testProxy.mutate({ id: sourceId });
-  };
 
   const handleSetFormValues = (source: any): void => {
     const basicFields: string[] = [
@@ -149,11 +145,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
-            </Button>
-
-            <Button className={styles.buttonIcon} onClick={testProxy} disabled={isLoading.alert}>
-              <FontAwesomeIcon icon={faArrowsRotate} />
-              {t("Test connection")}
             </Button>
 
             <Button

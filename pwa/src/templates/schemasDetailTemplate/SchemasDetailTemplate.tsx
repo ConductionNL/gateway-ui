@@ -109,6 +109,19 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                         </TableCell>
                       </TableRow>
                     ))}
+                  {!getSchema.data.attributes.length && (
+                    <>
+                      <TableRow>
+                        <TableCell>Geen properties gevonden</TableCell>
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                      </TableRow>
+                    </>
+                  )}
                 </TableBody>
               </Table>
             )}
