@@ -8,6 +8,14 @@
   padding-block-end: var(--gateway-ui-size-md);
 }
 
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .container > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-md);
 }
@@ -45,12 +53,8 @@
   gap: var(--gateway-ui-size-sm);
 }
 
-.date {
-  display: flex;
-}
-
-.date :not(:last-child) {
-  margin-inline-end: var(--gateway-ui-size-sm);
+.svgLogo :not(:last-child) {
+  vertical-align: middle;
 }
 
 /* Status colors */
