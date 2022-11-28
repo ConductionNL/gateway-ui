@@ -22,8 +22,8 @@ export const usePlugin = (queryClient: QueryClient) => {
       },
     });
 
-  const getAllAvailable = () =>
-    useQuery<any[], Error>("plugins_available", API.Plugin.getAllAvailable, {
+  const getAllAvailable = (searchQuery: string) =>
+    useQuery<any[], Error>("plugins_available", () => API.Plugin.getAllAvailable(searchQuery), {
       onError: (error) => {
         throw new Error(error.message);
       },

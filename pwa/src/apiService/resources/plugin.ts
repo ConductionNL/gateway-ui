@@ -20,8 +20,11 @@ export default class Endpoint {
     return data;
   };
 
-  public getAllAvailable = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/plugins/available");
+  public getAllAvailable = async (searchQuery: string): Promise<any> => {
+    let search;
+    searchQuery && search == `?search=${searchQuery}`;
+
+    const { data } = await Send(this._instance, "GET", `/admin/plugins/available${search}`);
 
     return data;
   };

@@ -21,6 +21,7 @@ interface PluginsPageProps {
 
 export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
   const { t } = useTranslation();
+  const [searchQuery, setSearchQuery] = React.useState<string>("")
 
   const queryClient = new QueryClient();
   const _usePlugin = usePlugin(queryClient);
@@ -32,7 +33,7 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
       break;
 
     case "Search":
-      getPlugins = _usePlugin.getAllAvailable();
+      getPlugins = _usePlugin.getAllAvailable(searchQuery);
       break;
 
     default:
