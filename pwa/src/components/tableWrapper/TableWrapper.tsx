@@ -12,6 +12,7 @@ const TableWrapper: React.FC = ({ children }) => {
   React.useEffect(() => {
     const handleWindowResize = () => {
       setTableIsScrollable(isTableScrollable());
+	  setScrollPosition()
     };
 
     let currentAttempt = 0;
