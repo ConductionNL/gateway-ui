@@ -13,7 +13,6 @@ import { useQueryClient } from "react-query";
 import { useAttribute } from "../../../hooks/attribute";
 import { navigate } from "gatsby";
 import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
-import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 
 interface CreatePropertyFormTemplateProps {
   schemaId: string;

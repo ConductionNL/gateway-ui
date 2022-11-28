@@ -13,7 +13,7 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import Skeleton from "react-loading-skeleton";
-import { validateStringAsJSONArray } from "../../../services/validateStringAsJSONArray";
+import { validateStringAsJSON } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 
@@ -193,6 +193,13 @@ export const CreateActionFormTemplate: React.FC = () => {
 
             <FormField>
               <FormFieldInput>
+                <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                <InputCheckbox {...{ register, errors }} label="on" name="isactive" />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
                 <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
                 <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="islockable" />
               </FormFieldInput>
@@ -205,7 +212,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                   {...{ register, errors }}
                   name="conditions"
                   disabled={loading}
-                  validation={{ validate: validateStringAsJSONArray }}
+                  validation={{ validate: validateStringAsJSON }}
                 />
                 {errors["conditions"] && <ErrorMessage message={errors["conditions"].message} />}
               </FormFieldInput>

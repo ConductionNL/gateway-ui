@@ -2,7 +2,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { handleLogin } from "../../../services/auth";
 import APIContext from "../../../apiService/apiContext";
-import { Alert, Button, FormField, FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/components-react";
+import { Button, FormField, FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/components-react";
 import * as styles from "./LoginFormTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
@@ -12,7 +12,6 @@ export const LoginFormTemplate: React.FC = () => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
 
   const {
     register,
@@ -22,13 +21,10 @@ export const LoginFormTemplate: React.FC = () => {
 
   const onSubmit = async (data: any) => {
     setLoading(true);
-    setFormError("");
 
     API &&
       handleLogin(data, API)
-        .catch((err) => {
-          setFormError(err.message);
-        })
+        .catch(() => undefined)
         .finally(() => {
           setLoading(false);
         });
@@ -36,8 +32,6 @@ export const LoginFormTemplate: React.FC = () => {
 
   return (
     <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-
       <FormField>
         <FormFieldInput>
           <FormFieldLabel>{t("Username")}</FormFieldLabel>

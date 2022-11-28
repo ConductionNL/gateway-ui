@@ -9,7 +9,7 @@
 
 .content {
   width: unset;
-  overflow-y: unset;
+  overflow-y: auto;
   height: calc(100vh - var(--gateway-ui-size-xl) * 2);
   padding-block: var(--gateway-ui-size-xl);
   padding-inline: var(--gateway-ui-size-xl);

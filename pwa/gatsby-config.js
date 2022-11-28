@@ -70,11 +70,31 @@ module.exports = {
             crumbLabel: "Plugin",
           },
           {
+            pathname: "/plugins/installed",
+            crumbLabel: "Installed Plugins",
+          },
+          {
+            pathname: "/plugins/search",
+            crumbLabel: "Search Plugins",
+          },
+          {
+            pathname: "/plugins/installed/[pluginId]",
+            crumbLabel: "Plugin",
+          },
+          {
+            pathname: "/plugins/search/[pluginId]",
+            crumbLabel: "Plugin",
+          },
+          {
             pathname: "/collections/[collectionId]",
             crumbLabel: "collection",
           },
           {
-            pathname: "/settings/userGroups/[userGroupId]",
+            pathname: "/settings/usergroups",
+            crumbLabel: "User Groups",
+          },
+          {
+            pathname: "/settings/usergroups/[usergroupId]",
             crumbLabel: "User Group",
           },
           {

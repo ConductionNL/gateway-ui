@@ -11,7 +11,7 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAction } from "../../../hooks/action";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
-import { validateStringAsJSONArray } from "../../../services/validateStringAsJSONArray";
+import { validateStringAsJSON } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import Skeleton from "react-loading-skeleton";
 import { useCronjob } from "../../../hooks/cronjob";
@@ -58,6 +58,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
     const payload = {
       ...data,
       priority: parseInt(data.priority, 10),
+      isActive: true,
       listens: data.listens?.map((listener: any) => listener.value),
       throws: data.throws?.map((_throw: any) => _throw.value),
       class: data.class.value,
@@ -67,6 +68,11 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
     for (const [key, _] of Object.entries(actionHandlerSchema.properties)) {
       payload.configuration[key] = data[key];
+
+      if (actionHandlerSchema.properties[key].type === "object") {
+        payload.configuration[key] = data[key] ? JSON.parse(data[key]) : {};
+      }
+
       delete payload[key];
     }
 
@@ -102,9 +108,13 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
     if (actionHandlerSchema?.properties) {
       for (const [key, value] of Object.entries(actionHandlerSchema.properties)) {
+        const _value = value as any;
+
         setValue(key, action.configuration[key]);
 
-        const _value = value as any;
+        if (_value.type === "object") {
+          action.configuration[key] && setValue(key, JSON.stringify(action.configuration[key]));
+        }
 
         setActionHandlerSchema((schema: any) => ({
           ...schema,
@@ -248,6 +258,13 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
             <FormField>
               <FormFieldInput>
+                <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                <InputCheckbox {...{ register, errors }} label="on" name="isactive" />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
                 <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
                 <InputCheckbox {...{ register, errors }} label="on" name="islockable" />
               </FormFieldInput>
@@ -260,7 +277,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                   {...{ register, errors }}
                   name="conditions"
                   disabled={loading}
-                  validation={{ validate: validateStringAsJSONArray }}
+                  validation={{ validate: validateStringAsJSON }}
                 />
                 {errors["conditions"] && <ErrorMessage message={errors["conditions"].message} />}
               </FormFieldInput>

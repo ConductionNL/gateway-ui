@@ -67,7 +67,7 @@ export const ActionsTemplate: React.FC = () => {
                       </ToolTip>
                     </div>
                   </TableCell>
-                  <TableCell>{action.status ? "On" : "Off"}</TableCell>
+                  <TableCell>{action.isActive ? "On" : "Off"}</TableCell>
                   <TableCell>{action.lastRun ?? "-"}</TableCell>
                   <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
                   <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>

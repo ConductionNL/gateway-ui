@@ -27,8 +27,10 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.tableRow {
-  cursor: pointer;
+.cardsGrid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
 }
 
 /* Status colors */
