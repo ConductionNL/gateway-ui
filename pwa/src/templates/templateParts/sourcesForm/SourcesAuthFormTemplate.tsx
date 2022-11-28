@@ -4,7 +4,6 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { InputText, Textarea } from "@conduction/components";
 import { useTranslation } from "react-i18next";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 export type TSourcesAuthType = "jwt" | "apikey" | "username-password";
 
@@ -41,18 +40,14 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
         <>
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>
-                {t("Username")} <RequiredStar />
-              </FormFieldLabel>
+              <FormFieldLabel>{t("Username")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="username" validation={{ required: true }} disabled={loading} />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>
-                {t("Password")} <RequiredStar />
-              </FormFieldLabel>
+              <FormFieldLabel>{t("Password")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="password" validation={{ required: true }} disabled={loading} />
             </FormFieldInput>
           </FormField>

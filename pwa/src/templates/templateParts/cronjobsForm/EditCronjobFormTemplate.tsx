@@ -13,7 +13,6 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useCronjob } from "../../../hooks/cronjob";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface EditCronjobFormTemplateProps {
   cronjob: any;
@@ -96,18 +95,14 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Name")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Description")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Description")}</FormFieldLabel>
                 <Textarea
                   {...{ register, errors }}
                   name="description"
@@ -119,9 +114,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Crontab")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Crontab")}</FormFieldLabel>
                 <InputText
                   {...{ register, errors }}
                   name="crontab"
@@ -133,9 +126,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Throws")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Throws")}</FormFieldLabel>
                 {cronjob.throws.map((thrown: any, idx: number) => (
                   <InputText
                     {...{ register, errors }}

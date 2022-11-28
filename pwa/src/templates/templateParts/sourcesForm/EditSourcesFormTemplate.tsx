@@ -27,7 +27,6 @@ import { InputFloat } from "@conduction/components/lib/components/formFields/inp
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { IsLoadingContext } from "../../../context/isLoading";
 import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface SourcesFormTemplateProps {
   source: any;
@@ -90,7 +89,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     data.auth = data.auth && data.auth.value;
 
     createOrEditSource.mutate({ payload: data, id: sourceId });
-    queryClient.setQueryData(["sources", sourceId], data);
+    queryClient.setQueryData(["sources", sourceId], data)
   };
 
   const handleDelete = (id: string): void => {
@@ -191,9 +190,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               <div className={styles.grid}>
                 <FormField>
                   <FormFieldInput>
-                    <FormFieldLabel>
-                      {t("Name")} <RequiredStar />
-                    </FormFieldLabel>
+                    <FormFieldLabel>{t("Name")}</FormFieldLabel>
                     <InputText
                       {...{ register, errors }}
                       name="name"
@@ -234,9 +231,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               <div className={styles.grid}>
                 <FormField>
                   <FormFieldInput>
-                    <FormFieldLabel>
-                      {t("Location")} <RequiredStar />
-                    </FormFieldLabel>
+                    <FormFieldLabel>{t("Location")}</FormFieldLabel>
                     <InputText
                       {...{ register, errors }}
                       name="location"
@@ -248,9 +243,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
 
                 <FormField>
                   <FormFieldInput>
-                    <FormFieldLabel>
-                      {t("authType")} <RequiredStar />
-                    </FormFieldLabel>
+                    <FormFieldLabel>{t("authType")}</FormFieldLabel>
                     {/* @ts-ignore */}
                     <SelectSingle
                       {...{ register, errors, control }}

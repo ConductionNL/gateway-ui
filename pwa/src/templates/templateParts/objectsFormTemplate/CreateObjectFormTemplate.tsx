@@ -13,7 +13,6 @@ import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface CreateObjectFormTemplateProps {
   predefinedSchema?: string;
@@ -92,9 +91,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
             {!predefinedSchema && (
               <FormField>
                 <FormFieldInput>
-                  <FormFieldLabel>
-                    {t("Select a schema")} <RequiredStar />
-                  </FormFieldLabel>
+                  <FormFieldLabel>{t("Select a schema")}</FormFieldLabel>
 
                   {getSchemas.isLoading && <Skeleton height="50px" />}
                   {getSchemas.isSuccess && (

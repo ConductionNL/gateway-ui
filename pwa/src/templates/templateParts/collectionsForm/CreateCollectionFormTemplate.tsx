@@ -11,7 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useCollection } from "../../../hooks/collection";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface CreateCollectionFormTemplateProps {
   collectionId?: string;
@@ -55,9 +54,7 @@ export const CreateCollectionFormTemplate: React.FC<CreateCollectionFormTemplate
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Name")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>

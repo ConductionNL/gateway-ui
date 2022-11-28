@@ -13,7 +13,6 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useSchema } from "../../../hooks/schema";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface EditSchemaFormTemplateProps {
   schema: any;
@@ -113,9 +112,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Name")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
@@ -128,9 +125,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Function")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Function")}</FormFieldLabel>
                 {/* @ts-ignore */}
                 <SelectSingle
                   name="function"
@@ -143,9 +138,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
             </FormField>
 
             <FormFieldInput>
-              <FormFieldLabel>
-                {t("Schema")} <RequiredStar />
-              </FormFieldLabel>
+              <FormFieldLabel>{t("Schema")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="schema" validation={{ required: true }} disabled={loading} />
             </FormFieldInput>
           </div>

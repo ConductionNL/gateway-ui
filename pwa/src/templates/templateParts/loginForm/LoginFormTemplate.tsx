@@ -7,7 +7,6 @@ import * as styles from "./LoginFormTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputText, InputPassword } from "@conduction/components";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 export const LoginFormTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -35,16 +34,12 @@ export const LoginFormTemplate: React.FC = () => {
     <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
       <FormField>
         <FormFieldInput>
-          <FormFieldLabel>
-            {t("Username")} <RequiredStar />
-          </FormFieldLabel>
+          <FormFieldLabel>{t("Username")}</FormFieldLabel>
           <InputText {...{ register, errors }} name="username" validation={{ required: true }} disabled={loading} />
         </FormFieldInput>
       </FormField>
       <FormField>
-        <FormFieldLabel>
-          {t("Password")} <RequiredStar />
-        </FormFieldLabel>
+        <FormFieldLabel>{t("Password")}</FormFieldLabel>
         <FormFieldInput>
           <InputPassword {...{ register, errors }} name="password" validation={{ required: true }} disabled={loading} />
         </FormFieldInput>
