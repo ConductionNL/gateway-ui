@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./SchemasFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -23,9 +21,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const _useSchema = useSchema(queryClient);
@@ -70,19 +66,28 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
     addOrRemoveDashboardCard(schema.name, "Schema", "Entity", schemaId, dashboardCard?.id);
   };
 
-  const handleSetFormValues = (cronjob: any): void => {
+  const handleSetFormValues = (schema: any): void => {
     const basicFields: string[] = ["name", "description", "function", "schema"];
-    basicFields.forEach((field) => setValue(field, cronjob[field]));
+    basicFields.forEach((field) => setValue(field, schema[field]));
 
     setValue(
       "function",
-      functionSelectOptions.find((option) => cronjob.function === option.value),
+      functionSelectOptions.find((option) => schema.function === option.value),
     );
   };
 
   React.useEffect(() => {
     handleSetFormValues(schema);
   }, []);
+
+  React.useEffect(() => {
+    if (createOrEditSchema.isLoading || deleteSchema.isLoading) {
+      setLoading(true);
+      return;
+    }
+
+    setLoading(false);
+  }, [createOrEditSchema.isLoading, deleteSchema.isLoading]);
 
   return (
     <div className={styles.container}>
@@ -96,18 +101,22 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button onClick={handleDeleteSchema} className={clsx(styles.buttonIcon, styles.deleteButton)}>
+            <Button
+              onClick={handleDeleteSchema}
+              className={clsx(styles.buttonIcon, styles.deleteButton)}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
           </div>
         </section>
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
