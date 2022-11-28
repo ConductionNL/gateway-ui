@@ -9,29 +9,35 @@ import clsx from "clsx";
 import { TEMPORARYDETAIL_PLUGINS } from "../../data/pluginDetail";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import _ from "lodash";
+import { QueryClient } from "react-query";
+import { usePlugin } from "../../hooks/plugin";
+import Skeleton from "react-loading-skeleton";
 
 interface PluginsDetailPageProps {
-  pluginId: string;
+  pluginName: string;
 }
 
-export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ pluginId }) => {
+export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ pluginName }) => {
   const { t } = useTranslation();
 
-  const tempPlugin = TEMPORARYDETAIL_PLUGINS.find((plugin: any) => {
-    return plugin.id === pluginId;
-  });
+  const queryClient = new QueryClient();
+  const _usePlugin = usePlugin(queryClient);
+  const getPlugin = _usePlugin.getOne(pluginName.replace(/\_/g, "/"));
+
+  console.log(getPlugin);
 
   return (
     <>
       <Container layoutClassName={styles.container}>
-        {!tempPlugin && "Error..."}
-        {tempPlugin && (
+        {getPlugin.isLoading && <Skeleton height="200px" />}
+        {getPlugin.isError && "Error..."}
+        {getPlugin.isSuccess && (
           <div className={styles.gatewayDetailContainer}>
             <div>
               <section className={styles.section}>
-                <Heading1 className={styles.title}>{tempPlugin.name}</Heading1>
+                <Heading1 className={styles.title}>{getPlugin.data.name}</Heading1>
 
-                {tempPlugin.installed && (
+                {getPlugin.data.installed && (
                   <div className={styles.buttons}>
                     <Button className={styles.buttonIcon} type="submit">
                       <FontAwesomeIcon icon={faArrowsRotate} />
@@ -44,8 +50,8 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                     </Button>
                   </div>
                 )}
-                {console.log(tempPlugin.installed)}
-                {!tempPlugin.installed && (
+                {console.log(getPlugin.data.installed)}
+                {!getPlugin.data.installed && (
                   <div className={styles.buttons}>
                     <Button className={styles.buttonIcon}>
                       <FontAwesomeIcon icon={faDownload} />
@@ -56,32 +62,38 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
               </section>
 
               <div className={styles.type}>
-                <p>{`Type: ${tempPlugin.type}`}</p>
-                <p>{`Names: ${tempPlugin.names.join(", ")}`}</p>
-                <p>{`Versions: ${tempPlugin.versions.join(", ")}`}</p>
+                <p>{`Type: ${getPlugin.data.type}`}</p>
+                <p>{`Names: ${getPlugin.data.names.join(", ")}`}</p>
+                <p>{`Versions: ${getPlugin.data.versions.join(", ")}`}</p>
               </div>
 
               <div className={styles.descriptionAndTags}>
-                <LeadParagraph className={styles.description}>{tempPlugin.description}</LeadParagraph>
+                <LeadParagraph className={styles.description}>{getPlugin.data.description}</LeadParagraph>
 
                 <div className={styles.tags}>
-                  {tempPlugin?.licenses &&
-                    tempPlugin.licenses.length > 0 &&
-                    tempPlugin.licenses.map((license) => (
+                  {getPlugin.data?.licenses &&
+                    getPlugin.data.licenses.length > 0 &&
+                    getPlugin.data.licenses.map((license: any) => (
                       <ToolTip tooltip={`License ${license?.osi}`}>
                         <Tag label={_.upperFirst(license?.name)} onClick={() => open(license?.url)} />
                       </ToolTip>
                     ))}
 
-                  {tempPlugin?.source && (
-                    <ToolTip tooltip={`Source ${tempPlugin.source?.reference}`}>
-                      <Tag label={_.upperFirst(tempPlugin.source?.type)} onClick={() => open(tempPlugin.source?.url)} />
+                  {getPlugin.data?.source && (
+                    <ToolTip tooltip={`Source ${getPlugin.data.source?.reference}`}>
+                      <Tag
+                        label={_.upperFirst(getPlugin.data.source?.type)}
+                        onClick={() => open(getPlugin.data.source?.url)}
+                      />
                     </ToolTip>
                   )}
 
-                  {tempPlugin?.dist && (
-                    <ToolTip tooltip={`Dist ${tempPlugin.dist?.reference}`}>
-                      <Tag label={_.upperFirst(tempPlugin.dist?.type)} onClick={() => open(tempPlugin.dist?.url)} />
+                  {getPlugin.data?.dist && (
+                    <ToolTip tooltip={`Dist ${getPlugin.data.dist?.reference}`}>
+                      <Tag
+                        label={_.upperFirst(getPlugin.data.dist?.type)}
+                        onClick={() => open(getPlugin.data.dist?.url)}
+                      />
                     </ToolTip>
                   )}
                 </div>
@@ -93,34 +105,34 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 <Table>
                   <TableHead>
                     <TableRow>
-                      {tempPlugin?.requires && <TableHeader>requires</TableHeader>}
-                      {tempPlugin?.devRequires && <TableHeader>dev requires</TableHeader>}
-                      {tempPlugin?.autoload && <TableHeader>autoload</TableHeader>}
+                      {getPlugin.data?.requires && <TableHeader>requires</TableHeader>}
+                      {getPlugin.data?.devRequires && <TableHeader>dev requires</TableHeader>}
+                      {getPlugin.data?.autoload && <TableHeader>autoload</TableHeader>}
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      {tempPlugin?.requires && (
+                      {getPlugin.data?.requires && (
                         <TableCell>
-                          {Object.entries(tempPlugin.requires).map(([key, value]) => (
+                          {Object.entries(getPlugin.data.requires).map(([key, value]) => (
                             <>
                               {key} {value} <br />
                             </>
                           ))}
                         </TableCell>
                       )}
-                      {tempPlugin?.devRequires && (
+                      {getPlugin.data?.devRequires && (
                         <TableCell>
-                          {Object.entries(tempPlugin.devRequires).map(([key, value]) => (
+                          {Object.entries(getPlugin.data.devRequires).map(([key, value]) => (
                             <>
                               {key} {value} <br />
                             </>
                           ))}
                         </TableCell>
                       )}
-                      {tempPlugin?.autoload && (
+                      {getPlugin.data?.autoload && (
                         <TableCell>
-                          {Object.entries(tempPlugin.autoload).map(([key, value]) => (
+                          {Object.entries(getPlugin.data.autoload).map(([key, value]) => (
                             <>
                               {key} {Object.keys(value)} <br />
                             </>
@@ -134,8 +146,12 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
               <div className={styles.extraInfoSupport}>
                 <Heading3>Support</Heading3>
                 <div>
-                  {tempPlugin.support.source && <Button onClick={() => open(tempPlugin.support.source)}>Source</Button>}
-                  {tempPlugin.support.issues && <Button onClick={() => open(tempPlugin.support.issues)}>Issues</Button>}
+                  {getPlugin.data.support.source && (
+                    <Button onClick={() => open(getPlugin.data.support.source)}>Source</Button>
+                  )}
+                  {getPlugin.data.support.issues && (
+                    <Button onClick={() => open(getPlugin.data.support.issues)}>Issues</Button>
+                  )}
                 </div>
               </div>
             </div>

@@ -32,6 +32,12 @@ export default class Endpoint {
     return data;
   };
 
+  public getOne = async (name: string): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", `/admin/plugins/view?plugin=${name}`);
+
+    return data;
+  };
+
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 

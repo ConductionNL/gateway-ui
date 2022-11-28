@@ -60,12 +60,12 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
           {/* <PaginatedPlugins {...{ pluginsPerPage, getPlugins }} /> */}
 
           <div className={styles.cardsGrid}>
-            {getPlugins.data.map((plugin: any) => (
+            {getPlugins.data.map((plugin: any, idx: number) => (
               <PluginCard
-                key={plugin.name}
+                key={idx}
                 title={{
                   label: plugin.name,
-                  href: `#`,
+                  href: `/plugins/${titleHref}${plugin.name.replace(/\//g, "_")}`,
                 }}
                 description={plugin.description}
                 packagistUrl={plugin.url}

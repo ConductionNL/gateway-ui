@@ -36,6 +36,15 @@ export const usePlugin = (queryClient: QueryClient) => {
       },
     });
 
+  const getOne = (pluginName: string) =>
+    useQuery<any, Error>(["plugin", pluginName], () => API?.Plugin.getOne(pluginName), {
+      initialData: () => queryClient.getQueryData<any[]>("plugins")?.find((_plugin) => _plugin.name === pluginName),
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+      enabled: !!pluginName,
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Plugin.delete, {
       onSuccess: async (_, variables) => {
@@ -47,5 +56,5 @@ export const usePlugin = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAllInstalled, getAllAudit, getAllAvailable, getView, remove };
+  return { getAllInstalled, getAllAudit, getAllAvailable, getView, getOne, remove };
 };
