@@ -57,7 +57,7 @@ export const SourcesTemplate: React.FC = () => {
               {getSources.data.map((source) => (
                 <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
                   <TableCell>{source.name}</TableCell>
-                  <TableCell>
+                  <TableCell className={styles.tableCellFullWidth}>
                     <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
                       <ToolTip tooltip="Status">
                         <Tag
@@ -68,7 +68,9 @@ export const SourcesTemplate: React.FC = () => {
                     </div>
                   </TableCell>
                   <TableCell>{source.sync ?? "-"}</TableCell>
-                  <TableCell>{(source.lastCall && dateTime(source.lastCall)) ?? "-"}</TableCell>
+                  <TableCell className={styles.tableCellFullWidth}>
+                    {(source.lastCall && dateTime(source.lastCall)) ?? "-"}
+                  </TableCell>
                   <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
                   <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
                   <TableCell onClick={() => navigate(`/sources/${source.id}`)}>

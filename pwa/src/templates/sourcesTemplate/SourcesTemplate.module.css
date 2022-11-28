@@ -35,6 +35,10 @@
   cursor: pointer;
 }
 
+.tableCellFullWidth > * {
+  width: max-content;
+}
+
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);
