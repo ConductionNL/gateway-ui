@@ -54,3 +54,7 @@
 .tab {
   max-width: unset !important;
 }
+
+.downloadSchemaButton {
+  text-decoration: none;
+}

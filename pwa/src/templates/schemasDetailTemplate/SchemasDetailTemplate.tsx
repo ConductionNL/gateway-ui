@@ -28,6 +28,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const queryClient = new QueryClient();
   const _useSchema = useSchema(queryClient);
   const getSchema = _useSchema.getOne(schemaId);
+  const getSchemaSchema = _useSchema.getSchema(schemaId);
 
   const _useObject = useObject(queryClient);
   const getObjectsFromEntity = _useObject.getAllFromEntity(schemaId);
@@ -51,6 +52,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             <Tab className={styles.tab} label={t("Objects")} value={0} />
             <Tab className={styles.tab} label={t("Properties")} value={1} />
             <Tab className={styles.tab} label={t("Logs")} value={2} />
+            <Tab className={styles.tab} label={t("Downloads")} value={3} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
@@ -113,8 +115,23 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               </Table>
             )}
           </TabPanel>
+
           <TabPanel className={styles.tabPanel} value="2">
             Logs are not yet supported.
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="3">
+            {getSchemaSchema.isLoading && <Skeleton height="50px" />}
+
+            {getSchemaSchema.isSuccess && (
+              <a
+                className={styles.downloadSchemaButton}
+                href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
+                download="schema.json"
+              >
+                <Button disabled={!getSchemaSchema.isSuccess}>Download JSON Schema</Button>
+              </a>
+            )}
           </TabPanel>
         </TabContext>
       </div>
