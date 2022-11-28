@@ -16,7 +16,6 @@ import Skeleton from "react-loading-skeleton";
 import { validateStringAsJSON } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 export const CreateActionFormTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -104,9 +103,7 @@ export const CreateActionFormTemplate: React.FC = () => {
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Name")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
@@ -120,9 +117,7 @@ export const CreateActionFormTemplate: React.FC = () => {
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Listens")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Listens")}</FormFieldLabel>
                 {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
 
                 {listensAndThrows.length > 0 && (
@@ -157,9 +152,7 @@ export const CreateActionFormTemplate: React.FC = () => {
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Action handler")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Action handler")}</FormFieldLabel>
 
                 {getAllHandlers.isLoading && <Skeleton height="50px" />}
 
@@ -181,9 +174,7 @@ export const CreateActionFormTemplate: React.FC = () => {
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Priority")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Priority")}</FormFieldLabel>
                 <InputNumber
                   {...{ register, errors }}
                   name="priority"

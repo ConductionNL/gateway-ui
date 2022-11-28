@@ -13,7 +13,6 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useEndpoint } from "../../../hooks/endpoint";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface EditEndpointFormTemplateProps {
   endpoint: any;
@@ -108,18 +107,14 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Name")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Description")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Description")}</FormFieldLabel>
                 <Textarea
                   {...{ register, errors }}
                   name="description"
@@ -131,9 +126,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Path Regex")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Path Regex")}</FormFieldLabel>
                 <InputText
                   {...{ register, errors }}
                   name="pathRegex"
@@ -145,9 +138,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Method")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Method")}</FormFieldLabel>
                 {/* @ts-ignore */}
                 <SelectSingle
                   name="method"
@@ -161,9 +152,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Tag")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Tag")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="tag" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>

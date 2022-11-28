@@ -11,7 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useSchema } from "../../../hooks/schema";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface CreateSchemasFormTemplateProps {
   schemaId?: string;
@@ -70,9 +69,7 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Name")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
@@ -85,9 +82,7 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Function")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Function")}</FormFieldLabel>
 
                 {/* @ts-ignore */}
                 <SelectSingle
@@ -101,9 +96,7 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
             </FormField>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Schema")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Schema")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="schema" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>

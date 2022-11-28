@@ -10,7 +10,6 @@ import { InputCheckbox, InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
-import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface EditUserGroupFormTemplateProps {
   userGroup: any;
@@ -63,27 +62,21 @@ export const EditUserGroupFormTemplate: React.FC<EditUserGroupFormTemplateProps>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Name")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Config")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Config")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="config" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>
-                  {t("Description")} <RequiredStar />
-                </FormFieldLabel>
+                <FormFieldLabel>{t("Description")}</FormFieldLabel>
                 <Textarea
                   {...{ register, errors }}
                   name="description"
