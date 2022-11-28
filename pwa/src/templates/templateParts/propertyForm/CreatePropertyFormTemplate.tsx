@@ -13,6 +13,8 @@ import { useQueryClient } from "react-query";
 import { useAttribute } from "../../../hooks/attribute";
 import { navigate } from "gatsby";
 import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
+import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface CreatePropertyFormTemplateProps {
   schemaId: string;
@@ -135,7 +137,9 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                 <div className={styles.grid}>
                   <FormField>
                     <FormFieldInput>
-                      <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                      <FormFieldLabel>
+                        {t("Name")} <RequiredStar />
+                      </FormFieldLabel>
                       <InputText
                         {...{ register, errors }}
                         name="name"

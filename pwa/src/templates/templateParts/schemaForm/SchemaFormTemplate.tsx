@@ -17,6 +17,7 @@ import {
   SelectMultiple,
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 import { validateStringAsJSON } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
@@ -174,7 +175,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
       <FormFieldInput>
         <div className={styles.formFieldHeader}>
           <FormFieldLabel>
-            {name} {readOnly && <>(read only)</>}
+            {name} {required && <RequiredStar/>} {readOnly && <>(read only)</>}
           </FormFieldLabel>
 
           {description && (

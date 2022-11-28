@@ -13,6 +13,7 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useCollection } from "../../../hooks/collection";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface EditCollectionFormTemplateProps {
   collection: any;
@@ -91,7 +92,9 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Name")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>

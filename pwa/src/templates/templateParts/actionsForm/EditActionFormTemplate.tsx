@@ -18,6 +18,7 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface EditActionFormTemplateProps {
   action: any;
@@ -177,7 +178,9 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Name")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
@@ -225,7 +228,9 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Action handler")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Action handler")} <RequiredStar />
+                </FormFieldLabel>
 
                 {/* @ts-ignore */}
                 <SelectSingle
@@ -239,7 +244,9 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Priority")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Priority")} <RequiredStar />
+                </FormFieldLabel>
                 <InputNumber
                   {...{ register, errors }}
                   name="priority"

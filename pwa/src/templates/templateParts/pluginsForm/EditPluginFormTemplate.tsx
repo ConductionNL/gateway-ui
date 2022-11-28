@@ -10,6 +10,7 @@ import { InputText } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface EditPluginFormTemplateProps {
   plugin: any;
@@ -61,7 +62,9 @@ export const EditPluginFormTemplate: React.FC<EditPluginFormTemplateProps> = ({ 
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Name")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>

@@ -9,6 +9,7 @@ import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface CreateUserGroupFormTemplateProps {
   userGroupId?: string;
@@ -44,21 +45,27 @@ export const CreateUserGroupFormTemplate: React.FC<CreateUserGroupFormTemplatePr
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Name")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Config")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Config")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText {...{ register, errors }} name="config" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Description")} <RequiredStar />
+                </FormFieldLabel>
                 <Textarea
                   {...{ register, errors }}
                   name="description"

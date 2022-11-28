@@ -15,6 +15,7 @@ import { InputFloat, InputNumber } from "@conduction/components/lib/components/f
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface CreateSourceFormTemplateProps {
   sourceId?: string;
@@ -105,7 +106,9 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
               <div className={styles.grid}>
                 <FormField>
                   <FormFieldInput>
-                    <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                    <FormFieldLabel>
+                      {t("Name")} <RequiredStar />
+                    </FormFieldLabel>
                     <InputText
                       {...{ register, errors }}
                       name="name"
@@ -125,7 +128,9 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
               <div className={styles.grid}>
                 <FormField>
                   <FormFieldInput>
-                    <FormFieldLabel>{t("Location")}</FormFieldLabel>
+                    <FormFieldLabel>
+                      {t("Location")} <RequiredStar />
+                    </FormFieldLabel>
                     <InputText
                       {...{ register, errors }}
                       name="location"
@@ -137,7 +142,9 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
 
                 <FormField>
                   <FormFieldInput>
-                    <FormFieldLabel>{t("authType")}</FormFieldLabel>
+                    <FormFieldLabel>
+                      {t("authType")} <RequiredStar />
+                    </FormFieldLabel>
                     {/* @ts-ignore */}
                     <SelectSingle
                       {...{ register, errors, control }}

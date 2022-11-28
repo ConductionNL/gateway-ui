@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useCronjob } from "../../../hooks/cronjob";
+import RequiredStar from "../../../components/requiredStar/RequiredStar";
 
 interface CreateCronjobFormTemplateProps {
   cronjobId?: string;
@@ -54,14 +55,18 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
           <div className={styles.grid}>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Name")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Description")} <RequiredStar />
+                </FormFieldLabel>
                 <Textarea
                   {...{ register, errors }}
                   name="description"
@@ -73,7 +78,9 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Crontab")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Crontab")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText
                   {...{ register, errors }}
                   name="crontab"
@@ -85,7 +92,9 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Throws")}</FormFieldLabel>
+                <FormFieldLabel>
+                  {t("Throws")} <RequiredStar />
+                </FormFieldLabel>
                 <InputText
                   {...{ register, errors }}
                   name={"throws"}
