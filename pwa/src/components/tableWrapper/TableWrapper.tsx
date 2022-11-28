@@ -12,14 +12,14 @@ const TableWrapper: React.FC = ({ children }) => {
   React.useEffect(() => {
     const handleWindowResize = () => {
       setTableIsScrollable(isTableScrollable());
-	  setScrollPosition()
+      setScrollPosition();
     };
 
     let currentAttempt = 0;
     let attemptsTillFail = 50;
     const checkExist = setInterval(function () {
       if (TableScrollWrapper?.current) {
-        handleWindowResize();
+        setTableIsScrollable(isTableScrollable());
         clearInterval(checkExist);
       }
       if (attemptsTillFail == currentAttempt) clearInterval(checkExist);
