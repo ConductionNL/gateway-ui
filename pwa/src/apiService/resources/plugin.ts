@@ -21,8 +21,7 @@ export default class Endpoint {
   };
 
   public getAllAvailable = async (searchQuery: string): Promise<any> => {
-    let search;
-    searchQuery && search == `?search=${searchQuery}`;
+    let search = searchQuery ? `?search=${searchQuery}` : "";
 
     const { data } = await Send(this._instance, "GET", `/admin/plugins/available${search}`);
 
