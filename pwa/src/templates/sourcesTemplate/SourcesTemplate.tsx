@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
+import TableWrapper from "../../components/tableWrapper/TableWrapper";
 import { dateTime } from "../../services/dateTime";
 
 export const SourcesTemplate: React.FC = () => {
@@ -39,45 +40,49 @@ export const SourcesTemplate: React.FC = () => {
       {getSources.isError && "Error..."}
 
       {getSources.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Status")}</TableHeader>
-              <TableHeader>{t("Related Sync objects")}</TableHeader>
-              <TableHeader>{t("Last call")}</TableHeader>
-              <TableHeader>{t("Created")}</TableHeader>
-              <TableHeader>{t("Modified")}</TableHeader>
-              <TableHeader />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getSources.data.map((source) => (
-              <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
-                <TableCell>{source.name}</TableCell>
-                <TableCell>
-                  <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
-                    <ToolTip tooltip="Status">
-                      <Tag
-                        icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
-                        label={source.status?.toString() ?? "no known status"}
-                      />
-                    </ToolTip>
-                  </div>
-                </TableCell>
-                <TableCell>{source.sync ?? "-"}</TableCell>
-                <TableCell>{dateTime(t(i18n.language), source.lastCall) ?? "-"}</TableCell>
-                <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
-                <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
-                <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
+        <TableWrapper>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Status")}</TableHeader>
+                <TableHeader>{t("Related Sync objects")}</TableHeader>
+                <TableHeader>{t("Last call")}</TableHeader>
+                <TableHeader>{t("Created")}</TableHeader>
+                <TableHeader>{t("Modified")}</TableHeader>
+                <TableHeader />
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getSources.data.map((source) => (
+                <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
+                  <TableCell>{source.name}</TableCell>
+                  <TableCell className={styles.tableCellFullWidth}>
+                    <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
+                      <ToolTip tooltip="Status">
+                        <Tag
+                          icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
+                          label={source.status?.toString() ?? "no known status"}
+                        />
+                      </ToolTip>
+                    </div>
+                  </TableCell>
+                  <TableCell>{source.sync ?? "-"}</TableCell>
+                  <TableCell className={styles.tableCellFullWidth}>
+                    {dateTime(t(i18n.language), source.lastCall) ?? "-"}
+                  </TableCell>
+                  <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
+                  <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
+                  <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
+                    <Link icon={<ArrowRightIcon />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableWrapper>
       )}
 
       {getSources.isLoading && <Skeleton height="200px" />}
