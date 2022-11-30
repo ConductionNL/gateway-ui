@@ -13,11 +13,8 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useCronjob } from "../../../hooks/cronjob";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
-import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { validateStringAsCronTab } from "../../../services/stringValidations";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
-import { validateStringAsJSONArray } from "../../../services/validateJSON";
-import Cronjobs from "../../../pages/cronjobs";
 
 interface EditCronjobFormTemplateProps {
   cronjob: any;
@@ -68,10 +65,6 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   const handleSetFormValues = (cronjob: any): void => {
     const basicFields: string[] = ["name", "description", "crontab"];
     basicFields.forEach((field) => setValue(field, cronjob[field]));
-
-    // cronjob.throws.map((thrown: any, idx: number) => {
-    //   setValue(`throws${idx}`, thrown);
-    // });
 
     setValue("throws", cronjob.throws.toString());
   };
@@ -144,9 +137,6 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
               <FormFieldLabel>{t("Throws")}</FormFieldLabel>
               <Textarea name="throws" {...{ register, errors, control }} />
               {errors["throws"] && <ErrorMessage message={errors["throws"].message} />}
-
-              {/* @ts-ignore */}
-              {/* <CreateKeyValue name="throws" {...{ register, errors, control }} /> */}
             </FormFieldInput>
           </FormField>
         </div>
