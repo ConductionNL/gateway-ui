@@ -42,6 +42,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [headers, setHeaders] = React.useState<any[]>([]);
+  const [query, setQuery] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
@@ -74,6 +76,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   } = useForm();
 
   const watchAuth = watch("auth");
+  const watchHeaders = watch("headers");
+  const watchQuery = watch("query");
 
   React.useEffect(() => {
     if (!watchAuth) return;
@@ -82,6 +86,22 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
 
     setSelectedAuth(selectedAuth?.value);
   }, [watchAuth]);
+
+  React.useEffect(() => {
+    if (!watchHeaders) return;
+
+    const newHeaders = watchHeaders?.map((item: any) => ({ key: item.key, value: item.value }));
+
+    watchHeaders !== headers && setHeaders(newHeaders);
+  }, [watchHeaders]);
+
+  React.useEffect(() => {
+    if (!watchQuery) return;
+
+    const newQuery = watchQuery?.map((item: any) => ({ key: item.key, value: item.value }));
+
+    watchQuery !== query && setQuery(newQuery);
+  }, [watchQuery]);
 
   const onSubmit = (data: any): void => {
     data.type = data.type && data.type.value;
@@ -125,6 +145,9 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
       "auth",
       authSelectOptions.find((option) => source.auth === option.value),
     );
+
+    setHeaders(source.headers);
+    setQuery(source.query);
   };
 
   React.useEffect(() => {
@@ -253,12 +276,12 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
 
           <TabPanel className={styles.tabPanel} value="1">
             {/* @ts-ignore */}
-            <CreateKeyValue {...{ register, errors, control }} />
+            <CreateKeyValue name="query" defaultValue={query} {...{ register, errors, control }} />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="2">
             {/* @ts-ignore */}
-            <CreateKeyValue {...{ register, errors, control }} />
+            <CreateKeyValue name="headers" defaultValue={headers} {...{ register, errors, control }} />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="3">

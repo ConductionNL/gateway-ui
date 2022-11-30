@@ -11,6 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useCronjob } from "../../../hooks/cronjob";
+import { validateStringAsCronTab } from "../../../services/stringValidations";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface CreateCronjobFormTemplateProps {
   cronjobId?: string;
@@ -19,7 +21,7 @@ interface CreateCronjobFormTemplateProps {
 export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps> = ({ cronjobId }) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
@@ -29,11 +31,17 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    createOrEditCronjob.mutate({ payload: data, id: cronjobId });
+    const payload = {
+      ...data,
+      throws: data.throws.split(","),
+    };
+
+    createOrEditCronjob.mutate({ payload, id: cronjobId });
   };
 
   return (
@@ -77,21 +85,19 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
                 <InputText
                   {...{ register, errors }}
                   name="crontab"
-                  validation={{ required: true }}
+                  validation={{ validate: validateStringAsCronTab, required: true }}
                   disabled={loading}
                 />
+
+                {errors["crontab"] && <ErrorMessage message={errors["crontab"].message} />}
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-                <InputText
-                  {...{ register, errors }}
-                  name={"throws"}
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
+                <Textarea name="throws" {...{ register, errors, control }} />
+                {errors["throws"] && <ErrorMessage message={errors["throws"].message} />}
               </FormFieldInput>
             </FormField>
           </div>

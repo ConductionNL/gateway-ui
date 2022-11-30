@@ -13,6 +13,8 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useCronjob } from "../../../hooks/cronjob";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import { validateStringAsCronTab } from "../../../services/stringValidations";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface EditCronjobFormTemplateProps {
   cronjob: any;
@@ -39,15 +41,21 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     handleSubmit,
     formState: { errors },
     setValue,
+    control,
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    createOrEditCronjob.mutate({ payload: data, id: cronjobId });
-    queryClient.setQueryData(["cronjobs", cronjobId], data);
+    const payload = {
+      ...data,
+      throws: data.throws.split(","),
+    };
+
+    createOrEditCronjob.mutate({ payload, id: cronjobId });
+    queryClient.setQueryData(["cronjobs", cronjobId], payload);
   };
 
-  const handleDelete = (id: string): void => {
-    deleteCronjob.mutateAsync({ id: id });
+  const handleDelete = () => {
+    deleteCronjob.mutate({ id: cronjobId });
   };
 
   const addOrRemoveFromDashboard = () => {
@@ -58,9 +66,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     const basicFields: string[] = ["name", "description", "crontab"];
     basicFields.forEach((field) => setValue(field, cronjob[field]));
 
-    cronjob.throws.map((thrown: any, idx: number) => {
-      setValue(`throws${idx}`, thrown);
-    });
+    setValue("throws", cronjob.throws.toString());
   };
 
   React.useEffect(() => {
@@ -84,7 +90,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
@@ -118,27 +124,21 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
                 <InputText
                   {...{ register, errors }}
                   name="crontab"
-                  validation={{ required: true }}
+                  validation={{ validate: validateStringAsCronTab, required: true }}
                   disabled={loading}
                 />
-              </FormFieldInput>
-            </FormField>
 
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-                {cronjob.throws.map((thrown: any, idx: number) => (
-                  <InputText
-                    {...{ register, errors }}
-                    name={`throws${idx}`}
-                    defaultValue={thrown.label}
-                    validation={{ required: true }}
-                    disabled={loading}
-                  />
-                ))}
+                {errors["crontab"] && <ErrorMessage message={errors["crontab"].message} />}
               </FormFieldInput>
             </FormField>
           </div>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Throws")}</FormFieldLabel>
+              <Textarea name="throws" {...{ register, errors, control }} />
+              {errors["throws"] && <ErrorMessage message={errors["throws"].message} />}
+            </FormFieldInput>
+          </FormField>
         </div>
       </form>
     </div>

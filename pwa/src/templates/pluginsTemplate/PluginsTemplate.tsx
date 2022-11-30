@@ -60,7 +60,6 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
         <div className={styles.cardsGrid}>
           {tempPlugin.map((plugin: any) => (
             <>
-              {console.log(plugin)}
               <PluginCard
                 title={{
                   label: plugin.name,

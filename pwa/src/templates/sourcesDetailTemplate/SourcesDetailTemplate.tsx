@@ -191,8 +191,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                           />
                         </div>
                       </TableCell>
-                      <TableCell>{dateTime(callLog.dateCreated) ?? "-"}</TableCell>
-
+                      <TableCell>{dateTime(t(i18n.language), callLog.dateCreated) ?? "-"}</TableCell>
                       <TableCell onClick={() => navigate(`/sources/${callLog.id}/test`)}>
                         <Link icon={<ArrowRightIcon />} iconAlign="start">
                           {t("Details")}

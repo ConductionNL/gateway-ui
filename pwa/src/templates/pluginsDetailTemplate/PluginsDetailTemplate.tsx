@@ -44,7 +44,6 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                     </Button>
                   </div>
                 )}
-                {console.log(tempPlugin.installed)}
                 {!tempPlugin.installed && (
                   <div className={styles.buttons}>
                     <Button className={styles.buttonIcon}>
