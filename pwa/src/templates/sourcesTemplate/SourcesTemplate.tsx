@@ -66,7 +66,7 @@ export const SourcesTemplate: React.FC = () => {
                   </div>
                 </TableCell>
                 <TableCell>{source.sync ?? "-"}</TableCell>
-                <TableCell>{(source.lastCall && dateTime(source.lastCall)) ?? "-"}</TableCell>
+                <TableCell>{dateTime(t(i18n.language), source.lastCall) ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
                 <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
                 <TableCell onClick={() => navigate(`/sources/${source.id}`)}>

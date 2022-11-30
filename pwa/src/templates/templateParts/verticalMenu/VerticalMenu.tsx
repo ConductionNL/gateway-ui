@@ -33,7 +33,7 @@ export const VerticalMenu: React.FC<VerticalMenuProps> = ({ items, layoutClassNa
       <Sidenav>
         <SidenavList>
           {items.map(({ onClick, label, icon, current, subItems }, idx) => (
-            <SidenavItem className={clsx([subItems && styles.test])} key={idx}>
+            <SidenavItem className={clsx([subItems && styles.hasSubitems])} key={idx}>
               <SidenavLink href="" onClick={(e) => handleClick(e, onClick)} {...{ current }}>
                 <span className={styles.icon}>{icon}</span>
 
@@ -41,7 +41,7 @@ export const VerticalMenu: React.FC<VerticalMenuProps> = ({ items, layoutClassNa
               </SidenavLink>
               {subItems &&
                 subItems.map(({ onClick, label, icon, current }, idx) => (
-                  <SidenavList className={styles.test1}>
+                  <SidenavList className={styles.subItem} key={idx}>
                     <SidenavItem key={idx}>
                       <SidenavLink href="" onClick={(e) => handleClick(e, onClick)} {...{ current }}>
                         <span className={styles.icon}>{icon}</span>
