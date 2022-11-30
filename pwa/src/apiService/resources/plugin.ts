@@ -40,10 +40,10 @@ export default class Endpoint {
     return data;
   };
 
-  public delete = async (variables: { id: string }): Promise<any> => {
-    const { id } = variables;
+  public delete = async (variables: { name: string }): Promise<any> => {
+    const { name } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/plugins/remove/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/plugins/remove?plugin=${name}`);
     return data;
   };
 }

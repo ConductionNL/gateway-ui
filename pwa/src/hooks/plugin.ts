@@ -48,7 +48,7 @@ export const usePlugin = (queryClient: QueryClient) => {
   const remove = () =>
     useMutation<any, Error, any>(API.Plugin.delete, {
       onSuccess: async (_, variables) => {
-        deleteItem(queryClient, "plugin", variables.id);
+        deleteItem(queryClient, "plugin", variables.name);
         navigate("/plugins");
       },
       onError: (error) => {

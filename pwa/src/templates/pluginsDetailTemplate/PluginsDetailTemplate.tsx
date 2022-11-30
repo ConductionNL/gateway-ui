@@ -6,7 +6,6 @@ import { Button, Heading1, Heading3, LeadParagraph } from "@gemeente-denhaag/com
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsRotate, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
-import { TEMPORARYDETAIL_PLUGINS } from "../../data/pluginDetail";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import _ from "lodash";
 import { QueryClient } from "react-query";
@@ -15,16 +14,24 @@ import Skeleton from "react-loading-skeleton";
 
 interface PluginsDetailPageProps {
   pluginName: string;
+  installed: boolean;
 }
 
-export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ pluginName }) => {
+export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ pluginName, installed }) => {
   const { t } = useTranslation();
 
   const queryClient = new QueryClient();
   const _usePlugin = usePlugin(queryClient);
-  const getPlugin = _usePlugin.getOne(pluginName.replace(/\_/g, "/"));
+  const getPlugin = _usePlugin.getOne(pluginName.replace("_", "/"));
+  const deletePlugin = _usePlugin.remove();
 
-  console.log(getPlugin);
+  const handleDeletePlugin = () => {
+    const confirmDeletion = confirm("Are you sure you want to delete this action?");
+
+    if (confirmDeletion) {
+      deletePlugin.mutate({ name: pluginName.replace("_", "/") });
+    }
+  };
 
   return (
     <>
@@ -37,21 +44,20 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
               <section className={styles.section}>
                 <Heading1 className={styles.title}>{getPlugin.data.name}</Heading1>
 
-                {getPlugin.data.installed && (
+                {!installed && (
                   <div className={styles.buttons}>
                     <Button className={styles.buttonIcon} type="submit">
                       <FontAwesomeIcon icon={faArrowsRotate} />
                       {t("Update")}
                     </Button>
 
-                    <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+                    <Button onClick={handleDeletePlugin} className={clsx(styles.buttonIcon, styles.deleteButton)}>
                       <FontAwesomeIcon icon={faTrash} />
                       {t("Remove")}
                     </Button>
                   </div>
                 )}
-                {console.log(getPlugin.data.installed)}
-                {!getPlugin.data.installed && (
+                {!installed && (
                   <div className={styles.buttons}>
                     <Button className={styles.buttonIcon}>
                       <FontAwesomeIcon icon={faDownload} />

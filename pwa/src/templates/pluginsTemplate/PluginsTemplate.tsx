@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./PluginsTemplate.module.css";
-import { Button, FormField, FormFieldInput, FormFieldLabel, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
 import { Container, InputText } from "@conduction/components";
@@ -11,8 +11,6 @@ import _ from "lodash";
 import { QueryClient } from "react-query";
 import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
-import ReactPaginate from "react-paginate";
-import { useForm } from "react-hook-form";
 import { PluginsSearchBarTemplate } from "./PluginsSearchBarTemplate";
 
 export type TPluginTitle = "Installed" | "Search" | "";
@@ -39,10 +37,9 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
       break;
 
     default:
-      getPlugins = _usePlugin.getAllInstalled();
+      getPlugins = _usePlugin.getAllAvailable(searchQuery);
+    //   getPlugins = _usePlugin.getAllInstalled(); // change to this one once stable
   }
-
-  const pluginsPerPage = 10;
 
   const titleHref = title !== "" ? `${_.lowerCase(title)}/` : "";
 
@@ -58,7 +55,7 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
         </div>
       </section>
 
-      <PluginsSearchBarTemplate {...{ searchQuery, setSearchQuery }} />
+      {title === "Search" && <PluginsSearchBarTemplate {...{ searchQuery, setSearchQuery }} />}
 
       {getPlugins.isSuccess && (
         <>
@@ -69,7 +66,7 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
                 key={idx}
                 title={{
                   label: plugin.name,
-                  href: `/plugins/${titleHref}${plugin.name.replace(/\//g, "_")}`,
+                  href: `/plugins/${titleHref}${plugin.name.replace("/", "_")}`,
                 }}
                 description={plugin.description}
                 packagistUrl={plugin.url}
