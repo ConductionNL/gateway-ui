@@ -38,7 +38,7 @@ interface SourcesDetailTemplateProps {
 }
 
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
