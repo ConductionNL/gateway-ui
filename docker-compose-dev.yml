@@ -23,6 +23,7 @@ services:
             - RABBITMQ_USERNAME=${RABBITMQ_USERNAME}
             - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
             - MAILGUN=${MAILGUN}
+            - CACHE_URL=mongodb://api-platform:!ChangeMe!@mongodb
         ports:
             - "82:80"
 
