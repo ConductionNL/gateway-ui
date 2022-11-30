@@ -137,6 +137,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                           name="body"
                           validation={{ validate: validateStringAsJSON }}
                         />
+                        {errors["body"] && <ErrorMessage message={errors["body"].message} />}
                       </FormFieldInput>
                     </FormField>
                   </div>
