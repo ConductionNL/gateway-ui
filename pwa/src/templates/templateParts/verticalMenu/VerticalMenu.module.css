@@ -5,12 +5,12 @@
   height: 18px;
 }
 
-.test {
+.hasSubitems {
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
 }
 
-.test1 * {
+.subItem * {
   margin-inline-start: var(--gateway-ui-size-2xs);
 }
