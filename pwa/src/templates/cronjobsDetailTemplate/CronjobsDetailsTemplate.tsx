@@ -36,7 +36,6 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
             </TableHead>
             <TableBody>
               {getCronjob.data.throws?.length === 0 && <TableCell>-</TableCell>}
-              {console.log({ throws: getCronjob.data.throws })}
               {getCronjob.data.throws.map((thrown: any, idx: number) => (
                 <TableRow key={idx}>
                   <TableCell>{thrown}</TableCell>

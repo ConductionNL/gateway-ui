@@ -9,9 +9,6 @@ export const dateTime = (language: TLanguageCodes, dateTime: string) => {
 
   const _language = languageOptions.find((_language) => _language.label === _.upperCase(language));
 
-  console.log(language);
-  console.log(_language);
-
   const localDate = newDate.toLocaleDateString(_language?.value);
   const localTime = newDate.toLocaleTimeString(_language?.value);
   return (

@@ -53,8 +53,6 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
       throws: data.throws.split(","),
     };
 
-    console.log(payload);
-
     createOrEditCronjob.mutate({ payload, id: cronjobId });
     queryClient.setQueryData(["cronjobs", cronjobId], payload);
   };
