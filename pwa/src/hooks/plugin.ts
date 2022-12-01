@@ -45,6 +45,16 @@ export const usePlugin = (queryClient: QueryClient) => {
       enabled: !!pluginName,
     });
 
+  const install = () =>
+    useMutation<any, Error, any>(API.Plugin.install, {
+      onSuccess: async (installedPlugin) => {
+        console.log({ installedPlugin });
+      },
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Plugin.delete, {
       onSuccess: async (_, variables) => {
@@ -56,5 +66,5 @@ export const usePlugin = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAllInstalled, getAllAudit, getAllAvailable, getView, getOne, remove };
+  return { getAllInstalled, getAllAudit, getAllAvailable, getView, getOne, install, remove };
 };

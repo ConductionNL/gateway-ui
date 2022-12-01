@@ -24,6 +24,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
   const _usePlugin = usePlugin(queryClient);
   const getPlugin = _usePlugin.getOne(pluginName.replace("_", "/"));
   const deletePlugin = _usePlugin.remove();
+  const installPlugin = _usePlugin.install();
 
   const handleDeletePlugin = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this action?");
@@ -31,6 +32,12 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
     if (confirmDeletion) {
       deletePlugin.mutate({ name: pluginName.replace("_", "/") });
     }
+  };
+
+  const handleInstallPlugin = () => {
+    const payload = { name: pluginName.replace("_", "/") };
+
+    installPlugin.mutate(payload);
   };
 
   return (
@@ -59,7 +66,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 )}
                 {!installed && (
                   <div className={styles.buttons}>
-                    <Button className={styles.buttonIcon}>
+                    <Button onClick={handleInstallPlugin} className={styles.buttonIcon}>
                       <FontAwesomeIcon icon={faDownload} />
                       {t("Install")}
                     </Button>
@@ -140,6 +147,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                         <TableCell>
                           {Object.entries(getPlugin.data.autoload).map(([key, value]) => (
                             <>
+                              {/* @ts-ignore */}
                               {key} {Object.keys(value)} <br />
                             </>
                           ))}

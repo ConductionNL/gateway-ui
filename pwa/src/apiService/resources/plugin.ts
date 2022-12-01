@@ -46,4 +46,12 @@ export default class Endpoint {
     const { data } = await Send(this._instance, "DELETE", `/admin/plugins/remove?plugin=${name}`);
     return data;
   };
+
+  public install = async (variables: { name: string }): Promise<any> => {
+    const { name } = variables;
+
+    const { data } = await Send(this._instance, "POST", `/admin/plugins/install?plugin=${name}`);
+
+    return data;
+  };
 }
