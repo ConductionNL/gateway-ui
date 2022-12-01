@@ -23,7 +23,10 @@ export default class Source {
   public getProxy = async (variables: { payload: any; id?: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`);
+    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`, undefined, {
+      loading: "Testing connection...",
+      success: "Connection successful.",
+    });
     return data;
   };
 
