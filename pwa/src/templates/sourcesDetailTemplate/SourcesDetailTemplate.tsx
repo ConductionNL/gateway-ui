@@ -47,7 +47,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
   const _useCallLogs = useCallLog(queryClient);
   const _getSources = _useSources.getOne(sourceId);
   const _getCallLogs = _useCallLogs.getSourceLog(sourceId);
-  const _testProxy = _useSources.getProxy();
+  const _testProxy = _useSources.getProxy(sourceId);
 
   const methodSelectOptions = [
     { label: "POST", value: "POST" },
