@@ -44,7 +44,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
               <section className={styles.section}>
                 <Heading1 className={styles.title}>{getPlugin.data.name}</Heading1>
 
-                {!installed && (
+                {installed && (
                   <div className={styles.buttons}>
                     <Button className={styles.buttonIcon} type="submit">
                       <FontAwesomeIcon icon={faArrowsRotate} />
