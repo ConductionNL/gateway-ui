@@ -27,14 +27,14 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
   const deletePlugin = _usePlugin.remove();
 
   const handleUpgradePlugin = () => {
-    upgradePlugin.mutate({ name: pluginName.replace("_", "/") });
+    upgradePlugin.mutate({ name: getPlugin.data.name });
   };
 
   const handleDeletePlugin = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this action?");
 
     if (confirmDeletion) {
-      deletePlugin.mutate({ name: pluginName.replace("_", "/") });
+      deletePlugin.mutate({ name: getPlugin.data.name });
     }
   };
 
