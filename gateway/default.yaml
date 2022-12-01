@@ -864,7 +864,7 @@ App\Entity\Cronjob:
         throws: 
             - 'commongateway.cronjob.trigger'
         data: []
-        isActive: true
+        isEnabled: true
 
 #App\Entity\Action:
 #    NotificationAction:

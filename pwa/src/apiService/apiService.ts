@@ -18,6 +18,7 @@ import Collection from "./resources/collection";
 import DashboardCards from "./resources/dashboardCards";
 import CallLog from "./resources/callLog";
 import Attribute from "./resources/attribute";
+import Plugin from "./resources/plugin";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -124,6 +125,10 @@ export default class APIService {
     return new Attribute(this.BaseClient);
   }
 
+  public get Plugin(): Plugin {
+    return new Plugin(this.BaseClient);
+  }
+
   // Services
   public get Login(): Login {
     return new Login(this.LoginClient);
@@ -134,11 +139,17 @@ export default class APIService {
   }
 }
 
+interface PromiseMessage {
+  loading?: string;
+  success?: string;
+}
+
 export const Send = (
   instance: AxiosInstance,
   method: "GET" | "POST" | "PUT" | "DELETE",
   endpoint: string,
   payload?: JSON,
+  promiseMessage?: PromiseMessage,
 ): Promise<AxiosResponse> => {
   const _payload = JSON.stringify(payload);
 
@@ -165,22 +176,22 @@ export const Send = (
 
     case "POST":
       return toast.promise(instance.post(endpoint, _payload), {
-        loading: "Creating item...",
-        success: "Succesfully created item",
+        loading: promiseMessage?.loading ?? "Creating item...",
+        success: promiseMessage?.success ?? "Succesfully created item",
         error: (err) => err.message,
       });
 
     case "PUT":
       return toast.promise(instance.put(endpoint, _payload), {
-        loading: "Updating item...",
+        loading: promiseMessage?.loading ?? "Updating item...",
         success: "Succesfully updated item",
         error: (err) => err.message,
       });
 
     case "DELETE":
       return toast.promise(instance.delete(endpoint), {
-        loading: "Deleting item...",
-        success: "Succesfully deleted item",
+        loading: promiseMessage?.loading ?? "Deleting item...",
+        success: promiseMessage?.success ?? "Succesfully deleted item",
         error: (err) => err.message,
       });
   }

@@ -19,7 +19,7 @@ interface CreateEndpointFormTemplateProps {
 export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProps> = ({ endpointId }) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
-  const [loading, setLoading] = React.useState<boolean>(true);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();

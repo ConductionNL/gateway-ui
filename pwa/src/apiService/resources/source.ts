@@ -34,7 +34,10 @@ export default class Source {
       };
     });
 
-    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`, payload.body);
+    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`, payload.body, {
+      loading: "Testing connection...",
+      success: "Connection successful.",
+    });
 
     return data;
   };
