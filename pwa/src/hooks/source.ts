@@ -1,5 +1,5 @@
 import * as React from "react";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem } from "../services/mutateQueries";
@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 export const useSource = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
   const [__, setIsLoading] = React.useContext(IsLoadingContext);
+  const _queryClient = useQueryClient();
 
   const getAll = () =>
     useQuery<any[], Error>("sources", API.Sources.getAll, {
@@ -43,10 +44,15 @@ export const useSource = (queryClient: QueryClient) => {
         }
 
         setIsLoading({ alert: false });
+        _queryClient.invalidateQueries(["callLogs", sourceId]);
+        _queryClient.invalidateQueries(["sources", sourceId]);
 
         throw new Error(error.message);
       },
       onSettled: () => {
+        _queryClient.invalidateQueries(["callLogs", sourceId]);
+        _queryClient.invalidateQueries(["sources", sourceId]);
+
         setIsLoading({ alert: false });
       },
     });

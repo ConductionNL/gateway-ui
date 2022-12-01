@@ -23,7 +23,7 @@ export interface DashboardCardProps {
 }
 
 export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, status, lastRun, lastCall }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <div className={styles.container}>
@@ -48,12 +48,12 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
       <div>
         {lastRun && (
           <div className={styles.date}>
-            <span>Last run:</span> {dateTime(lastRun) ?? "-"}
+            <span>Last run:</span> {dateTime(t(i18n.language), lastRun) ?? "-"}
           </div>
         )}
         {lastCall && (
           <div className={styles.date}>
-            <span>Last call:</span> {dateTime(lastCall) ?? "-"}
+            <span>Last call:</span> {dateTime(t(i18n.language), lastCall) ?? "-"}
           </div>
         )}
       </div>

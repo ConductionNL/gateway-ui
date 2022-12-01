@@ -21,12 +21,24 @@ export default class Source {
   };
 
   public getProxy = async (variables: { payload: any; id?: string }): Promise<any> => {
-    const { id } = variables;
+    const { id, payload } = variables;
 
-    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`, undefined, {
+    if (payload.endpoint && !(payload.endpoint[0] === "/")) {
+      payload.endpoint = `/${payload.endpoint}`;
+    }
+
+    this._instance.interceptors.request.use(function (config) {
+      return {
+        ...config,
+        headers: { ...config.headers, "x-method": payload.method.value, "x-endpoint": payload.endpoint },
+      };
+    });
+
+    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`, payload.body, {
       loading: "Testing connection...",
       success: "Connection successful.",
     });
+
     return data;
   };
 

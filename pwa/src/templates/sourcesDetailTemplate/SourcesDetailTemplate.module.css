@@ -5,6 +5,8 @@
 .tabContainer {
   background: var(--gateway-ui-color-white);
   margin-block-start: var(--gateway-ui-size-2xl);
+  padding-block: var(--gateway-ui-size-md);
+  padding-inline: var(--gateway-ui-size-md);
 }
 
 .tabPanel {
@@ -16,6 +18,24 @@
 
 .tab {
   max-width: unset !important;
+}
+
+.grid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}
+
+.gridContainer > *:not(:first-child) {
+  margin-block-start: var(--gateway-ui-size-sm);
+}
+
+.testConnectionButton {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
 }
 
 /* Status colors */
@@ -48,5 +68,15 @@
 
 .deleteTag {
   --conduction-tag-background-color: var(--gateway-ui-color-method-delete);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.patchTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-patch);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.updateTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-update);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }
