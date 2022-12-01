@@ -7,7 +7,7 @@ import { PluginsDetailTemplate } from "../../../../templates/pluginsDetailTempla
 const InstalledPluginDetailPage: React.FC<PageProps> = (props: PageProps) => (
   <DashboardTemplate>
     {props.params.pluginId === "new" && <CreatePluginFormTemplate />}
-    {props.params.pluginId !== "new" && <PluginsDetailTemplate pluginId={props.params.pluginId} />}
+    {props.params.pluginId !== "new" && <PluginsDetailTemplate installed={true} pluginName={props.params.pluginId} />}
   </DashboardTemplate>
 );
 
