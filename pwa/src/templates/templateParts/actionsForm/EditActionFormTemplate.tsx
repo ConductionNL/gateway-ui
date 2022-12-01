@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./ActionFormTemplate.module.css";
 import { set, useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Divider, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputNumber, InputText, Textarea, SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,6 +31,8 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
   const [actionHandlerSchema, setActionHandlerSchema] = React.useState<any>(action.actionHandlerConfiguration);
+
+  const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = useQueryClient();
   const _useAction = useAction(queryClient);
@@ -173,124 +175,155 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
           </div>
         </section>
 
-        <div className={styles.gridContainer}>
-          <div className={styles.grid}>
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
-              </FormFieldInput>
-            </FormField>
+        <div className={styles.tabContainer}>
+          <TabContext value={currentTab.toString()}>
+            <Tabs
+              value={currentTab}
+              onChange={(_, newValue: number) => {
+                setCurrentTab(newValue);
+              }}
+              variant="scrollable"
+            >
+              <Tab className={styles.tab} label={t("General")} value={0} />
+              <Tab className={styles.tab} label={t("Advanced")} value={1} />
+            </Tabs>
 
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                <Textarea {...{ register, errors }} name="description" disabled={loading} />
-              </FormFieldInput>
-            </FormField>
+            <TabPanel className={styles.tabPanel} value="0">
+              <div className={styles.gridContainer}>
+                <div className={styles.grid}>
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                      <InputText
+                        {...{ register, errors }}
+                        name="name"
+                        validation={{ required: true }}
+                        disabled={loading}
+                      />
+                    </FormFieldInput>
+                  </FormField>
 
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Listens")}</FormFieldLabel>
-                {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                      <Textarea {...{ register, errors }} name="description" disabled={loading} />
+                    </FormFieldInput>
+                  </FormField>
 
-                {listensAndThrows.length > 0 && (
-                  /* @ts-ignore */
-                  <SelectCreate
-                    options={listensAndThrows}
-                    disabled={loading}
-                    name="listens"
-                    {...{ register, errors, control }}
-                  />
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Listens")}</FormFieldLabel>
+                      {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
+
+                      {listensAndThrows.length > 0 && (
+                        /* @ts-ignore */
+                        <SelectCreate
+                          options={listensAndThrows}
+                          disabled={loading}
+                          name="listens"
+                          {...{ register, errors, control }}
+                        />
+                      )}
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Throws")}</FormFieldLabel>
+                      {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
+
+                      {listensAndThrows.length > 0 && (
+                        /* @ts-ignore */
+                        <SelectCreate
+                          options={listensAndThrows}
+                          disabled={loading}
+                          name="throws"
+                          {...{ register, errors, control }}
+                        />
+                      )}
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Action handler")}</FormFieldLabel>
+
+                      {/* @ts-ignore */}
+                      <SelectSingle
+                        name="class"
+                        validation={{ required: true }}
+                        {...{ register, errors, control }}
+                        disabled
+                      />
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Priority")}</FormFieldLabel>
+                      <InputNumber
+                        {...{ register, errors }}
+                        name="priority"
+                        validation={{ required: true }}
+                        disabled={loading}
+                      />
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("async")}</FormFieldLabel>
+                      <InputCheckbox {...{ register, errors }} label="on" name="async" />
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                      <InputCheckbox {...{ register, errors }} label="on" name="isactive" />
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
+                      <InputCheckbox {...{ register, errors }} label="on" name="islockable" />
+                    </FormFieldInput>
+                  </FormField>
+                </div>
+
+                {actionHandlerSchema && (
+                  <>
+                    <Divider />
+
+                    <SchemaFormTemplate
+                      {...{ register, errors, control }}
+                      schema={actionHandlerSchema}
+                      disabled={loading}
+                    />
+                  </>
                 )}
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-                {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
-
-                {listensAndThrows.length > 0 && (
-                  /* @ts-ignore */
-                  <SelectCreate
-                    options={listensAndThrows}
-                    disabled={loading}
-                    name="throws"
-                    {...{ register, errors, control }}
-                  />
-                )}
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Action handler")}</FormFieldLabel>
-
-                {/* @ts-ignore */}
-                <SelectSingle
-                  name="class"
-                  validation={{ required: true }}
-                  {...{ register, errors, control }}
-                  disabled
-                />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Priority")}</FormFieldLabel>
-                <InputNumber
-                  {...{ register, errors }}
-                  name="priority"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("async")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="async" />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="isactive" />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="islockable" />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
-                <Textarea
-                  {...{ register, errors }}
-                  name="conditions"
-                  disabled={loading}
-                  validation={{ validate: validateStringAsJSON }}
-                />
-                {errors["conditions"] && <ErrorMessage message={errors["conditions"].message} />}
-              </FormFieldInput>
-            </FormField>
-          </div>
-
-          {actionHandlerSchema && (
-            <>
-              <Divider />
-
-              <SchemaFormTemplate {...{ register, errors, control }} schema={actionHandlerSchema} disabled={loading} />
-            </>
-          )}
+              </div>
+            </TabPanel>
+            <TabPanel className={styles.tabPanel} value="1">
+              <div className={styles.gridContainer}>
+                <div className={styles.grid}>
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
+                      <Textarea
+                        {...{ register, errors }}
+                        name="conditions"
+                        disabled={loading}
+                        validation={{ validate: validateStringAsJSON }}
+                      />
+                      {errors["conditions"] && <ErrorMessage message={errors["conditions"].message} />}
+                    </FormFieldInput>
+                  </FormField>
+                </div>
+              </div>
+            </TabPanel>
+          </TabContext>
         </div>
       </form>
     </div>
