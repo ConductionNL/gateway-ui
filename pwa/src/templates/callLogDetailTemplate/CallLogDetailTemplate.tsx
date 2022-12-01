@@ -93,11 +93,11 @@ export const CallLogDetailTemplate: React.FC<CallLogDetailTemplateProps> = ({ ca
               </TableRow>
               <TableRow>
                 <TableHeader>Date Created</TableHeader>
-                <TableCell>{dateTime(_getCallLog.data.dateCreated) ?? "-"}</TableCell>
+                <TableCell>{dateTime(t(i18n.language),_getCallLog.data.dateCreated) ?? "-"}</TableCell>
               </TableRow>
               <TableRow>
                 <TableHeader>Date Modified</TableHeader>
-                <TableCell>{dateTime(_getCallLog.data.dateModified) ?? "-"}</TableCell>
+                <TableCell>{dateTime(t(i18n.language),_getCallLog.data.dateModified) ?? "-"}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
