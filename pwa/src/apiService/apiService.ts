@@ -139,11 +139,17 @@ export default class APIService {
   }
 }
 
+interface PromiseMessage {
+  loading?: string;
+  success?: string;
+}
+
 export const Send = (
   instance: AxiosInstance,
   method: "GET" | "POST" | "PUT" | "DELETE",
   endpoint: string,
   payload?: JSON,
+  promiseMessage?: PromiseMessage,
 ): Promise<AxiosResponse> => {
   const _payload = JSON.stringify(payload);
 
@@ -170,22 +176,22 @@ export const Send = (
 
     case "POST":
       return toast.promise(instance.post(endpoint, _payload), {
-        loading: "Creating item...",
-        success: "Succesfully created item",
+        loading: promiseMessage?.loading ?? "Creating item...",
+        success: promiseMessage?.success ?? "Succesfully created item",
         error: (err) => err.message,
       });
 
     case "PUT":
       return toast.promise(instance.put(endpoint, _payload), {
-        loading: "Updating item...",
+        loading: promiseMessage?.loading ?? "Updating item...",
         success: "Succesfully updated item",
         error: (err) => err.message,
       });
 
     case "DELETE":
       return toast.promise(instance.delete(endpoint), {
-        loading: "Deleting item...",
-        success: "Succesfully deleted item",
+        loading: promiseMessage?.loading ?? "Deleting item...",
+        success: promiseMessage?.success ?? "Succesfully deleted item",
         error: (err) => err.message,
       });
   }
