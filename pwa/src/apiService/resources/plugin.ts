@@ -40,6 +40,13 @@ export default class Endpoint {
     return data;
   };
 
+  public upgrade = async (variables: { name: string }): Promise<any> => {
+    const { name } = variables;
+
+    const { data } = await Send(this._instance, "POST", `/admin/plugins/upgrade?plugin=${name}`);
+    return data;
+  };
+
   public delete = async (variables: { name: string }): Promise<any> => {
     const { name } = variables;
 

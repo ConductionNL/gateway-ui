@@ -2,7 +2,7 @@ import * as React from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
-import { deleteItem } from "../services/mutateQueries";
+import { deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
 
 export const usePlugin = (queryClient: QueryClient) => {
@@ -45,6 +45,17 @@ export const usePlugin = (queryClient: QueryClient) => {
       enabled: !!pluginName,
     });
 
+  const upgrade = () =>
+    useMutation<any, Error, any>(API.Plugin.upgrade, {
+      onSuccess: async (_, variables) => {
+        updateItem(queryClient, "plugin", variables.name);
+        navigate("/plugins");
+      },
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Plugin.delete, {
       onSuccess: async (_, variables) => {
@@ -56,5 +67,5 @@ export const usePlugin = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAllInstalled, getAllAudit, getAllAvailable, getView, getOne, remove };
+  return { getAllInstalled, getAllAudit, getAllAvailable, getView, getOne, upgrade, remove };
 };

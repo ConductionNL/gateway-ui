@@ -23,7 +23,12 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
   const queryClient = new QueryClient();
   const _usePlugin = usePlugin(queryClient);
   const getPlugin = _usePlugin.getOne(pluginName.replace("_", "/"));
+  const upgradePlugin = _usePlugin.upgrade();
   const deletePlugin = _usePlugin.remove();
+
+  const handleUpgradePlugin = () => {
+    upgradePlugin.mutate({ name: pluginName.replace("_", "/") });
+  };
 
   const handleDeletePlugin = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this action?");
@@ -46,9 +51,9 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
 
                 {installed && (
                   <div className={styles.buttons}>
-                    <Button className={styles.buttonIcon} type="submit">
+                    <Button onClick={handleUpgradePlugin} className={styles.buttonIcon} type="submit">
                       <FontAwesomeIcon icon={faArrowsRotate} />
-                      {t("Update")}
+                      {t("Upgrade")}
                     </Button>
 
                     <Button onClick={handleDeletePlugin} className={clsx(styles.buttonIcon, styles.deleteButton)}>
