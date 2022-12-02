@@ -63,7 +63,13 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+                <InputText
+                  {...{ register, errors }}
+                  name="name"
+                  validation={{ required: true, maxLength: 225 }}
+                  disabled={loading}
+                />
+                {errors["name"] && <ErrorMessage message={errors["name"].message} />}
               </FormFieldInput>
             </FormField>
 
@@ -73,9 +79,10 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
                 <Textarea
                   {...{ register, errors }}
                   name="description"
-                  validation={{ required: true }}
+                  validation={{ required: true, maxLength: 225 }}
                   disabled={loading}
                 />
+                {errors["description"] && <ErrorMessage message={errors["description"].message} />}
               </FormFieldInput>
             </FormField>
 
@@ -88,7 +95,6 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
                   validation={{ validate: validateStringAsCronTab, required: true }}
                   disabled={loading}
                 />
-
                 {errors["crontab"] && <ErrorMessage message={errors["crontab"].message} />}
               </FormFieldInput>
             </FormField>

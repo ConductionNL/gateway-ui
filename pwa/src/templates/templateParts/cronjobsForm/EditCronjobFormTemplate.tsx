@@ -102,7 +102,13 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+                <InputText
+                  {...{ register, errors }}
+                  name="name"
+                  validation={{ required: true, maxLength: 225 }}
+                  disabled={loading}
+                />
+                {errors["name"] && <ErrorMessage message={errors["name"].message} />}
               </FormFieldInput>
             </FormField>
 
@@ -112,9 +118,10 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
                 <Textarea
                   {...{ register, errors }}
                   name="description"
-                  validation={{ required: true }}
+                  validation={{ required: true, maxLength: 225 }}
                   disabled={loading}
                 />
+                {errors["description"] && <ErrorMessage message={errors["description"].message} />}
               </FormFieldInput>
             </FormField>
 

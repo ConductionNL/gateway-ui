@@ -138,15 +138,6 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
     handleSetFormValues(action);
   }, []);
 
-  React.useEffect(() => {
-    if (createOrEditAction.isLoading || deleteAction.isLoading) {
-      setLoading(true);
-      return;
-    }
-
-    setLoading(false);
-  }, [createOrEditAction.isLoading, deleteAction.isLoading]);
-
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -197,9 +188,10 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                       <InputText
                         {...{ register, errors }}
                         name="name"
-                        validation={{ required: true }}
+                        validation={{ required: true, maxLength: 225 }}
                         disabled={loading}
                       />
+                      {errors["name"] && <ErrorMessage message={errors["name"].message} />}
                     </FormFieldInput>
                   </FormField>
 

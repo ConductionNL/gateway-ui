@@ -60,15 +60,6 @@ export const CreateActionFormTemplate: React.FC = () => {
     setListensAndThrows([...cronjobs, ...predefinedSubscriberEvents]);
   }, [getCronjobs.isSuccess]);
 
-  React.useEffect(() => {
-    if (getCronjobs.isLoading || createOrEditAction.isLoading) {
-      setLoading(true);
-      return;
-    }
-
-    setLoading(false);
-  }, [getCronjobs.isLoading, createOrEditAction.isLoading]);
-
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
@@ -123,9 +114,10 @@ export const CreateActionFormTemplate: React.FC = () => {
                       <InputText
                         {...{ register, errors }}
                         name="name"
-                        validation={{ required: true }}
+                        validation={{ required: true, maxLength: 225 }}
                         disabled={loading}
                       />
+                      {errors["name"] && <ErrorMessage message={errors["name"].message} />}
                     </FormFieldInput>
                   </FormField>
 
