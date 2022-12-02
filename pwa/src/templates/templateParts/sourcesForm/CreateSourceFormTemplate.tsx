@@ -85,10 +85,27 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
   }, [watchQuery]);
 
   const onSubmit = (data: any): void => {
-    data.type = data.type && data.type.value;
-    data.auth = data.auth && data.auth.value;
+    const payload = {
+      ...data,
+      type: data.type && data.type.value,
+      auth: data.auth && data.auth.value,
+      configuration: {
+        connect_timeout: data.connect_timeout,
+        debug: data.debug,
+        decode_content: data.decode_content,
+        delay: data.delay,
+        expect: data.expect,
+        force_ip_resolve: data.force_ip_resolve,
+        verify: data.verify,
+        version: data.version,
+        read_timeout: data.read_timeout,
+        proxy: data.proxy,
+        idn_conversion: data.idn_conversion,
+        https_errors: data.https_errors,
+      },
+    };
 
-    createOrEditSource.mutate({ payload: data, id: sourceId });
+    createOrEditSource.mutate({ payload, id: sourceId });
   };
 
   return (
