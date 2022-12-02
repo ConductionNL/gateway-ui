@@ -3,7 +3,7 @@ import * as styles from "./SourcesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Switch, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
@@ -104,11 +104,28 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   }, [watchQuery]);
 
   const onSubmit = (data: any): void => {
-    data.type = data.type && data.type.value;
-    data.auth = data.auth && data.auth.value;
+    const payload = {
+      ...data,
+      type: data.type && data.type.value,
+      auth: data.auth && data.auth.value,
+      configuration: {
+        connect_timeout: data.connect_timeout,
+        debug: data.debug,
+        decode_content: data.decode_content,
+        delay: data.delay,
+        expect: data.expect,
+        force_ip_resolve: data.force_ip_resolve,
+        verify: data.verify,
+        version: data.version,
+        read_timeout: data.read_timeout,
+        proxy: data.proxy,
+        idn_conversion: data.idn_conversion,
+        https_errors: data.https_errors,
+      },
+    };
 
-    createOrEditSource.mutate({ payload: data, id: sourceId });
-    queryClient.setQueryData(["sources", sourceId], data);
+    createOrEditSource.mutate({ payload, id: sourceId });
+    queryClient.setQueryData(["sources", sourceId], payload);
   };
 
   const handleDelete = (id: string): void => {
@@ -133,6 +150,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
       "password",
       "apikey",
       "jwt",
+      "connect_timeout",
     ];
     basicFields.forEach((field) => setValue(field, source[field]));
 
@@ -145,6 +163,18 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
       "auth",
       authSelectOptions.find((option) => source.auth === option.value),
     );
+
+    if (source.configuration) {
+      for (const [key, value] of Object.entries(source.configuration)) {
+        const _value = value as any;
+
+        setValue(key, source.configuration[key]);
+
+        if (typeof _value === "object") {
+          source.configuration[key] && setValue(key, JSON.stringify(source.configuration[key]));
+        }
+      }
+    }
 
     setHeaders(source.headers);
     setQuery(source.query);
@@ -357,7 +387,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                   </div>
                   <div className={styles.expectFormField}>
                     <InputCheckbox name="decode_content" label="True" {...{ register, errors }} />
-                    <InputNumber name="expect" {...{ register, errors }} />
+                    <InputNumber name="decode_content" {...{ register, errors }} />
                   </div>
                 </FormField>
 
