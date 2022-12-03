@@ -67,7 +67,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   };
 
   const handleSetFormValues = (schema: any): void => {
-    const basicFields: string[] = ["name", "description", "function", "schema"];
+    const basicFields: string[] = ["name", "description", "function", "reference"];
     basicFields.forEach((field) => setValue(field, schema[field]));
 
     setValue(
@@ -147,8 +147,8 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
             </FormField>
 
             <FormFieldInput>
-              <FormFieldLabel>{t("Schema")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="schema" validation={{ required: true }} disabled={loading} />
+              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="reference" disabled={loading} />
             </FormFieldInput>
           </div>
         </div>

@@ -96,8 +96,8 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
             </FormField>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Schema")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="schema" validation={{ required: true }} disabled={loading} />
+                <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="reference" disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>
