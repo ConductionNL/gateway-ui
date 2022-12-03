@@ -44,30 +44,34 @@ export const PluginCard: React.FC<PluginCardProps> = ({
       <Paragraph className={styles.description}>{description}</Paragraph>
 
       <div className={styles.tags}>
-        <ToolTip tooltip="Packagist">
-          <Tag
-            layoutClassName={styles.svgLogo}
-            label={t("Packagist")}
-            icon={<PackagistLogo />}
-            onClick={() => open(packagistUrl)}
-          />
-        </ToolTip>
+        {packagistUrl && (
+          <ToolTip tooltip="Packagist">
+            <Tag
+              layoutClassName={styles.svgLogo}
+              label={t("Packagist")}
+              icon={<PackagistLogo />}
+              onClick={() => open(packagistUrl)}
+            />
+          </ToolTip>
+        )}
 
-        <ToolTip tooltip="GitHub">
-          <Tag
-            layoutClassName={styles.svgLogo}
-            label={t("Repository")}
-            icon={<GitHubLogo />}
-            onClick={() => open(repositoryUrl)}
-          />
-        </ToolTip>
+        {repositoryUrl && (
+          <ToolTip tooltip="GitHub">
+            <Tag
+              layoutClassName={styles.svgLogo}
+              label={t("Repository")}
+              icon={<GitHubLogo />}
+              onClick={() => open(repositoryUrl)}
+            />
+          </ToolTip>
+        )}
 
         <ToolTip tooltip="Aantal downloads">
-          <Tag label={downloads} icon={<FontAwesomeIcon icon={faDownload} />} />
+          <Tag label={downloads ?? 0} icon={<FontAwesomeIcon icon={faDownload} />} />
         </ToolTip>
 
         <ToolTip tooltip="Aantal favers">
-          <Tag label={favers} icon={<FontAwesomeIcon icon={faDownload} />} />
+          <Tag label={favers ?? 0} icon={<FontAwesomeIcon icon={faDownload} />} />
         </ToolTip>
       </div>
     </div>

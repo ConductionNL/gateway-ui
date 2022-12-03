@@ -15,6 +15,7 @@ import { InputFloat, InputNumber } from "@conduction/components/lib/components/f
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface CreateSourceFormTemplateProps {
   sourceId?: string;
@@ -146,9 +147,10 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                     <InputText
                       {...{ register, errors }}
                       name="name"
-                      validation={{ required: true }}
+                      validation={{ required: true, maxLength: 225 }}
                       disabled={loading}
                     />
+                    {errors["name"] && <ErrorMessage message={errors["name"].message} />}
                   </FormFieldInput>
                 </FormField>
               </div>
@@ -166,9 +168,10 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                     <InputText
                       {...{ register, errors }}
                       name="location"
-                      validation={{ required: true }}
+                      validation={{ required: true, maxLength: 225 }}
                       disabled={loading}
                     />
+                    {errors["location"] && <ErrorMessage message={errors["location"].message} />}
                   </FormFieldInput>
                 </FormField>
 

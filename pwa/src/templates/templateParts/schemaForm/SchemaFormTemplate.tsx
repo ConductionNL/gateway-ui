@@ -71,6 +71,8 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
         readOnly: value.readOnly,
         required: schema?.required.includes(key),
         defaultValue: mapGatewaySchemaToInputValues(value),
+        minLength: value.minLength,
+        maxLength: value.maxLength,
       };
 
       property.type !== "array" && setSimpleProperties((p) => [...p, property]);
@@ -88,7 +90,22 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
 
       <div className={clsx(styles.simpleFormContainer, styles.formContainer)}>
         {simpleProperties.map(
-          ({ name, type, placeholder, description, format, defaultValue, _enum, multiple, readOnly }, idx) => (
+          (
+            {
+              name,
+              type,
+              placeholder,
+              description,
+              format,
+              defaultValue,
+              _enum,
+              multiple,
+              readOnly,
+              maxLength,
+              minLength,
+            },
+            idx,
+          ) => (
             <FormFieldGroup
               key={idx}
               required={schema.required.includes(name)}
@@ -106,6 +123,8 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
                 defaultValue,
                 _enum,
                 multiple,
+                maxLength,
+                minLength,
               }}
             />
           ),
@@ -113,25 +132,29 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
       </div>
 
       <div className={clsx(styles.complexFormContainer, styles.formContainer)}>
-        {complexProperties.map(({ name, type, placeholder, description, format, defaultValue, readOnly }, idx) => (
-          <FormFieldGroup
-            key={idx}
-            required={schema.required.includes(name)}
-            {...{
-              register,
-              errors,
-              control,
-              disabled,
-              name,
-              type,
-              placeholder,
-              description,
-              format,
-              defaultValue,
-              readOnly,
-            }}
-          />
-        ))}
+        {complexProperties.map(
+          ({ name, type, placeholder, description, format, defaultValue, readOnly, maxLength, minLength }, idx) => (
+            <FormFieldGroup
+              key={idx}
+              required={schema.required.includes(name)}
+              {...{
+                register,
+                errors,
+                control,
+                disabled,
+                name,
+                type,
+                placeholder,
+                description,
+                format,
+                defaultValue,
+                readOnly,
+                maxLength,
+                minLength,
+              }}
+            />
+          ),
+        )}
       </div>
 
       <ReactTooltip className={styles.tooltip} />
@@ -151,6 +174,8 @@ interface FormFieldGroupProps {
   defaultValue?: any;
   _enum?: any;
   multiple?: boolean;
+  maxLength?: number;
+  minLength?: number;
 }
 
 const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
@@ -168,6 +193,8 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   defaultValue,
   _enum,
   multiple,
+  maxLength,
+  minLength,
 }) => {
   return (
     <FormField>
@@ -186,7 +213,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "string" && !_enum && !multiple && !(format === "url") && (
           <InputText
-            validation={{ required }}
+            validation={{ required, maxLength, minLength }}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
           />
@@ -194,7 +221,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "string" && !_enum && !multiple && format === "url" && (
           <InputURL
-            validation={{ required }}
+            validation={{ required, maxLength, minLength }}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
           />
@@ -202,7 +229,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "uuid" && (
           <InputText
-            validation={{ required }}
+            validation={{ required, maxLength, minLength }}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
           />
@@ -248,7 +275,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         {type === "integer" ||
           (type === "int" && (
             <InputNumber
-              validation={{ required }}
+              validation={{ required, maxLength, minLength }}
               disabled={disabled || readOnly}
               {...{ register, errors, placeholder, name, defaultValue }}
             />
@@ -256,7 +283,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "number" && (
           <InputFloat
-            validation={{ required }}
+            validation={{ required, maxLength, minLength }}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name, defaultValue }}
           />
@@ -289,7 +316,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           <>
             <Textarea
               {...{ register, errors, control, placeholder, name }}
-              validation={{ validate: validateStringAsJSON }}
+              validation={{ validate: validateStringAsJSON, maxLength, minLength }}
             />
             {errors[name] && <ErrorMessage message={errors[name].message} />}
           </>

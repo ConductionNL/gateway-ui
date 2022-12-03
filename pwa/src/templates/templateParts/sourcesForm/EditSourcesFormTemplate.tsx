@@ -27,6 +27,7 @@ import { InputFloat } from "@conduction/components/lib/components/formFields/inp
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { IsLoadingContext } from "../../../context/isLoading";
 import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface SourcesFormTemplateProps {
   source: any;
@@ -238,9 +239,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     <InputText
                       {...{ register, errors }}
                       name="name"
-                      validation={{ required: true }}
+                      validation={{ required: true, maxLength: 225 }}
                       disabled={loading}
                     />
+                    {errors["name"] && <ErrorMessage message={errors["name"].message} />}
                   </FormFieldInput>
                 </FormField>
                 <FormField>
@@ -279,9 +281,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     <InputText
                       {...{ register, errors }}
                       name="location"
-                      validation={{ required: true }}
+                      validation={{ required: true, maxLength: 225 }}
                       disabled={loading}
                     />
+                    {errors["location"] && <ErrorMessage message={errors["location"].message} />}
                   </FormFieldInput>
                 </FormField>
 
