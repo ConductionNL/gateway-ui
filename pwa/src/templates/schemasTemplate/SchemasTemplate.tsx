@@ -26,7 +26,7 @@ export const SchemasTemplate: React.FC = () => {
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/schemas/new`)}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
+            {t("Add Schema")}
           </Button>
         </div>
       </section>

@@ -26,11 +26,17 @@ export default class DashboardCards {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "DELETE", `/admin/dashboardCards/${id}`);
+      const { data } = await Send(this._instance, "DELETE", `/admin/dashboardCards/${id}`, undefined, {
+        loading: "Removing from dashboard...",
+        success: "Succesfully removed from dashboard.",
+      });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/dashboardCards", payload);
+    const { data } = await Send(this._instance, "POST", "/admin/dashboardCards", payload, {
+      loading: "Adding to dashboard...",
+      success: "Succesfully added to dashboard.",
+    });
     return data;
   };
 }

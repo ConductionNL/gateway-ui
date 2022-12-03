@@ -29,7 +29,7 @@ export const CronjobsTemplate: React.FC = () => {
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/cronjobs/new`)}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
+            {t("Add Cronjob")}
           </Button>
         </div>
       </section>

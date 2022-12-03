@@ -32,7 +32,7 @@ export const SourcesTemplate: React.FC = () => {
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/sources/new`)}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
+            {t("Add Source")}
           </Button>
         </div>
       </section>

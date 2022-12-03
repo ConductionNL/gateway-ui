@@ -62,6 +62,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   ];
 
   const authSelectOptions = [
+    { label: "No Auth", value: "none" },
     { label: "API Key", value: "apikey" },
     { label: "JWT", value: "jwt" },
     { label: "Username and Password", value: "username-password" },
