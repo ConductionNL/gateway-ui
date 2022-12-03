@@ -105,9 +105,13 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Reference")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="reference" disabled={loading} />
-                  validation={{ required: true, maxLength: 225 }}
-                {errors["schema"] && <ErrorMessage message={errors["schema"].message} />}
+                <InputText
+                  {...{ register, errors }}
+                  name="reference"
+                  disabled={loading}
+                  validation={{ maxLength: 225 }}
+                />
+                {errors["reference"] && <ErrorMessage message={errors["reference"].message} />}
               </FormFieldInput>
             </FormField>
           </div>
