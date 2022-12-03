@@ -22,7 +22,7 @@ export const UserGroupsTemplate: React.FC = () => {
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/usergroups/new`)}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
+            {t("Add User group")}
           </Button>
         </div>
       </section>

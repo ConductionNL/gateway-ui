@@ -60,7 +60,7 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
       {getPlugins.isSuccess && (
         <>
           <div className={styles.cardsGrid}>
-            {!getPlugins.data[0] && <span>Geen plugins zijn terug gevonden</span>}
+            {!getPlugins.data[0] && <span>{("No plugins found")}</span>}
             {getPlugins.data.map((plugin: any, idx: number) => (
               <PluginCard
                 key={idx}

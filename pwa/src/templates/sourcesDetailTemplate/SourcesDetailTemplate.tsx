@@ -202,7 +202,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                   {!_getCallLogs.data.length && (
                     <>
                       <TableRow>
-                        <TableCell>Geen logs gevonden</TableCell>
+                        <TableCell>{t("No logs found")}</TableCell>
                         <TableCell />
                         <TableCell />
                         <TableCell />

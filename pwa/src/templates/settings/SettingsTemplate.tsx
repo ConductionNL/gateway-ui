@@ -5,21 +5,22 @@ import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
 import { UserGroupsTemplate } from "../userGroupsTemplate/UserGroupsTemplate";
 import { GatewayDetailTemplate } from "../gatewayDetailTemplate/GatewayDetailTemplate";
+import { TabsContext } from "../../context/tabs";
 
 export const SettingsTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
 
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Settings")}</Heading1>
 
       <div className={styles.tabContainer}>
-        <TabContext value={currentTab.toString()}>
+        <TabContext value={currentTab.settingsDetailTabs.toString()}>
           <Tabs
-            value={currentTab}
+            value={currentTab.settingsDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab(newValue);
+              setCurrentTab({ ...currentTab, settingsDetailTabs: newValue });
             }}
             variant="scrollable"
           >
