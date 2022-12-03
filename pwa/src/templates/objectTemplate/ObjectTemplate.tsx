@@ -28,7 +28,7 @@ export const ObjectTemplate: React.FC = () => {
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate("/objects/new")}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
+            {t("Add Object")}
           </Button>
         </div>
       </section>

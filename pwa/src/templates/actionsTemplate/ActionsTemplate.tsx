@@ -28,7 +28,7 @@ export const ActionsTemplate: React.FC = () => {
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/actions/new`)}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
+            {t("Add Action")}
           </Button>
         </div>
       </section>

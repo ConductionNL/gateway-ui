@@ -26,7 +26,7 @@ export const CollectionsTemplate: React.FC = () => {
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/collections/new`)}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
+            {t("Add Collection")}
           </Button>
         </div>
       </section>

@@ -27,7 +27,7 @@ export const EndpointsTemplate: React.FC = () => {
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/endpoints/new`)}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
+            {t("Add Endpoint")}
           </Button>
         </div>
       </section>
