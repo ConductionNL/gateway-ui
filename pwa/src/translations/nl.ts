@@ -29,6 +29,7 @@ export const nl = {
   "Add Object": "Object Toevoegen",
   "Add Schema": "Schema Toevoegen",
   "Add Collection": "Collection Toevoegen",
+  "Add User group": "User group Toevoegen",
   Attributes: "Attributen",
   ObjectEntities: "Object Entiteiten",
   "Back to objects": "Terug naar objecten",
@@ -42,4 +43,9 @@ export const nl = {
   "The minProperties is bigger than the maxProperties": "De minProperties is groter dan de maxProperties",
   "The minFileSize is bigger than the maxFileSize": "De minFileSize is groter dan de maxFileSize",
   "The minDate is bigger than the maxDate": "De minDate is groter dan de maxDate",
+  "No properties found": "Geen properties gevonden",
+  "No logs found": "Geen logs gevonden",
+  "No objects found": "Geen objecten gevonden",
+  "No plugins found": "Geen plugins gevonden",
+  "Search on name": "Zoek op naam",
 };

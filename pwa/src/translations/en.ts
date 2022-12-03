@@ -29,6 +29,7 @@ export const en = {
   "Add Object": "Add Object",
   "Add Schema": "Add Schema",
   "Add Collection": "Add Collection",
+  "Add User group": "Add User group",
   Attributes: "Attributes",
   ObjectEntities: "ObjectEntities",
   "Back to objects": "Back to objects",
@@ -42,4 +43,9 @@ export const en = {
   "The minProperties is bigger than the maxProperties": "The minProperties is bigger than the maxProperties",
   "The minFileSize is bigger than the maxFileSize": "The minFileSize is bigger than the maxFileSize",
   "The minDate is bigger than the maxDate": "The minDate is bigger than the maxDate",
+  "No properties found": "No properties found",
+  "No logs found": "No logs found",
+  "No objects found": "No objects found",
+  "No plugins found": "No plugins found",
+  "Search on name": "Search on name",
 };

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { InputText } from "@conduction/components";
 import _ from "lodash";
+import { useTranslation } from "react-i18next";
 
 interface PluginsSearchBarTemplateProps {
   searchQuery: any;
@@ -11,6 +12,8 @@ interface PluginsSearchBarTemplateProps {
 }
 
 export const PluginsSearchBarTemplate: React.FC<PluginsSearchBarTemplateProps> = ({ searchQuery, setSearchQuery }) => {
+  const { t } = useTranslation();
+
   const {
     register,
     watch,
@@ -42,7 +45,7 @@ export const PluginsSearchBarTemplate: React.FC<PluginsSearchBarTemplateProps> =
     >
       <FormField>
         <FormFieldInput>
-          <FormFieldLabel>Zoek op naam</FormFieldLabel>
+          <FormFieldLabel>{t("Search on name")}</FormFieldLabel>
           <InputText name="search" validation={{ required: true }} {...{ errors, register }} />
         </FormFieldInput>
       </FormField>

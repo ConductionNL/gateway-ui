@@ -73,7 +73,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
 
         {!objects.length && (
           <TableRow>
-            <TableCell>Geen objecten gevonden</TableCell>
+            <TableCell>{t("No objects found")}</TableCell>
             <TableCell />
             <TableCell />
             <TableCell />
