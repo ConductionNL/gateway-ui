@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useSchema } from "../../../hooks/schema";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface CreateSchemasFormTemplateProps {
   schemaId?: string;
@@ -38,6 +39,7 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
   const {
     register,
     handleSubmit,
+    watch,
     control,
     formState: { errors },
   } = useForm();
@@ -70,7 +72,13 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+                <InputText
+                  {...{ register, errors }}
+                  name="name"
+                  validation={{ required: true, maxLength: 225 }}
+                  disabled={loading}
+                />
+                {errors["name"] && <ErrorMessage message={errors["name"].message} />}
               </FormFieldInput>
             </FormField>
             <FormField>
@@ -98,6 +106,8 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
               <FormFieldInput>
                 <FormFieldLabel>{t("Reference")}</FormFieldLabel>
                 <InputText {...{ register, errors }} name="reference" disabled={loading} />
+                  validation={{ required: true, maxLength: 225 }}
+                {errors["schema"] && <ErrorMessage message={errors["schema"].message} />}
               </FormFieldInput>
             </FormField>
           </div>

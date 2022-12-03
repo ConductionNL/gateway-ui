@@ -47,7 +47,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
 
   return (
     <div className={styles.container}>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{t("Create Endpoint")}</Heading1>
 

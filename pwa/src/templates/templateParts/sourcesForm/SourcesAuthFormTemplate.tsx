@@ -4,6 +4,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { InputText, Textarea } from "@conduction/components";
 import { useTranslation } from "react-i18next";
 import { FieldValues, UseFormRegister } from "react-hook-form";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 export type TSourcesAuthType = "jwt" | "apikey" | "username-password" | "none";
 
@@ -32,7 +33,8 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
         <FormField>
           <FormFieldInput>
             <FormFieldLabel>{t("Api key")}</FormFieldLabel>
-            <Textarea {...{ register, errors }} name="apikey" disabled={loading} />
+            <Textarea {...{ register, errors }} name="apikey" validation={{ maxLength: 225 }} disabled={loading} />
+            {errors["apikey"] && <ErrorMessage message={errors["apikey"].message} />}
           </FormFieldInput>
         </FormField>
       );
@@ -43,14 +45,26 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Username")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="username" validation={{ required: true }} disabled={loading} />
+              <InputText
+                {...{ register, errors }}
+                name="username"
+                validation={{ required: true, maxLength: 225 }}
+                disabled={loading}
+              />
+              {errors["username"] && <ErrorMessage message={errors["username"].message} />}
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Password")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="password" validation={{ required: true }} disabled={loading} />
+              <InputText
+                {...{ register, errors }}
+                name="password"
+                validation={{ required: true, maxLength: 225 }}
+                disabled={loading}
+              />
+              {errors["password"] && <ErrorMessage message={errors["password"].message} />}
             </FormFieldInput>
           </FormField>
         </>

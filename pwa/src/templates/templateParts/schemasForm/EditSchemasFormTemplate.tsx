@@ -11,6 +11,7 @@ import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useSchema } from "../../../hooks/schema";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface EditSchemaFormTemplateProps {
   schema: any;
@@ -122,7 +123,13 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+                <InputText
+                  {...{ register, errors }}
+                  name="name"
+                  validation={{ required: true, maxLength: 225 }}
+                  disabled={loading}
+                />
+                {errors["name"] && <ErrorMessage message={errors["name"].message} />}
               </FormFieldInput>
             </FormField>
             <FormField>
@@ -149,6 +156,8 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
             <FormFieldInput>
               <FormFieldLabel>{t("Reference")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="reference" disabled={loading} />
+                validation={{ required: true, maxLength: 225 }}
+              {errors["schema"] && <ErrorMessage message={errors["schema"].message} />}
             </FormFieldInput>
           </div>
         </div>
