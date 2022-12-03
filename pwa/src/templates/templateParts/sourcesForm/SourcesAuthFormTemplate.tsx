@@ -5,7 +5,7 @@ import { InputText, Textarea } from "@conduction/components";
 import { useTranslation } from "react-i18next";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 
-export type TSourcesAuthType = "jwt" | "apikey" | "username-password";
+export type TSourcesAuthType = "jwt" | "apikey" | "username-password" | "none";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -25,6 +25,8 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
   const [loading, setLoading] = React.useState<boolean>(false);
 
   switch (selectedAuth) {
+    case "none":
+      return <></>;
     case "apikey":
       return (
         <FormField>
