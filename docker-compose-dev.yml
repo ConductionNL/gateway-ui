@@ -107,6 +107,15 @@ services:
         - RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME}
         - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
 
+    mongodb:
+      image: mongo
+      restart: always
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: api-platform
+        MONGO_INITDB_ROOT_PASSWORD: '!ChangeMe!'
+      ports:
+        - "27017:27017"
+
 volumes:
     db-data: {}
     uc-data: {}
