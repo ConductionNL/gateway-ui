@@ -12,8 +12,8 @@ export const useSource = (queryClient: QueryClient) => {
   const [__, setIsLoading] = React.useContext(IsLoadingContext);
   const _queryClient = useQueryClient();
 
-  const getAll = () =>
-    useQuery<any[], Error>("sources", API.Sources.getAll, {
+  const getAll = (page: number) =>
+    useQuery<any[], Error>(["sources", page], () => API.Sources.getAll(page), {
       onError: (error) => {
         throw new Error(error.message);
       },

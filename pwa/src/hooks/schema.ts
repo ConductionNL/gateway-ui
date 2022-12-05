@@ -8,8 +8,8 @@ import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 export const useSchema = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
 
-  const getAll = () =>
-    useQuery<any[], Error>("entities", API.Schema.getAll, {
+  const getAll = (page: number) =>
+    useQuery<any[], Error>(["entities", page], () => API.Schema.getAll(page), {
       onError: (error) => {
         throw new Error(error.message);
       },

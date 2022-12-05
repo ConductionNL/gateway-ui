@@ -68,10 +68,13 @@
   --gateway-ui-color-method-delete: var(--gateway-ui-color-status-red);
   --gateway-ui-color-primary: #4376fc;
   --gateway-ui-color-primary-hover: #2e5ed9;
+  --gateway-ui-color-disabled: #d5cdcd;
   --gateway-ui-background-color: #fafafa;
   --gateway-ui-side-bar-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
 
   /* Components */
   --gateway-ui-container-max-width: 2440px;
   --gateway-ui-card-border-color: 1px solid var(--gateway-ui-color-primary);
+  --gateway-ui-pagination-active-color: var(--gateway-ui-color-primary);
+  --gateway-ui-pagination-active-color-hover: var(--gateway-ui-color-primary-hover);
 }

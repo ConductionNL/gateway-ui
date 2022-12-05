@@ -36,7 +36,7 @@ export const ActionsTemplate: React.FC = () => {
       {getActions.isError && "Error..."}
 
       {getActions.isSuccess && (
-        <div>
+        <>
           <Table className={styles.table}>
             <TableHead>
               <TableRow>
@@ -81,7 +81,7 @@ export const ActionsTemplate: React.FC = () => {
               ))}
             </TableBody>
           </Table>
-        </div>
+        </>
       )}
 
       {getActions.isLoading && <Skeleton height="200px" />}

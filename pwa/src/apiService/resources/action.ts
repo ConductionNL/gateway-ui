@@ -8,8 +8,10 @@ export default class Action {
     this._instance = _instance;
   }
 
-  public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/actions");
+  public getAll = async (page: number): Promise<any> => {
+    let limit = page ? `?page=${page}&limit=10` : ""
+
+    const { data } = await Send(this._instance, "GET", `/admin/actions${limit}`);
 
     return data;
   };

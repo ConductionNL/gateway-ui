@@ -8,8 +8,8 @@ import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 export const useCronjob = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
 
-  const getAll = () =>
-    useQuery<any[], Error>("cronjobs", API.Cronjob.getAll, {
+  const getAll = (page: number) =>
+    useQuery<any[], Error>(["cronjobs", page], () => API.Cronjob.getAll(page), {
       onError: (error) => {
         throw new Error(error.message);
       },

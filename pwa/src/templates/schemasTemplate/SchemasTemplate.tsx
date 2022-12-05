@@ -11,13 +11,29 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { useSchema } from "../../hooks/schema";
+import TableWrapper from "../../components/tableWrapper/TableWrapper";
+import { PaginatedItems } from "../../components/pagination/pagination";
 
 export const SchemasTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(3);
 
   const queryClient = new QueryClient();
   const _useSchema = useSchema(queryClient);
-  const getSchemas = _useSchema.getAll();
+  const getSchemas = _useSchema.getAll(currentPage);
+
+  // React.useEffect(() => {
+  //   if (getSchemas.isSuccess && screenSize === "mobile") {
+  //     setMarginPageDisplayed(2);
+  //   }
+  //   if (getSchemas.isSuccess && screenSize === "mobile" && getSchemas.data.pages > 100) {
+  //     setMarginPageDisplayed(1);
+  //   }
+  //   if (getSchemas.isSuccess && screenSize !== "mobile") {
+  //     setMarginPageDisplayed(3);
+  //   }
+  // }, [getSchemas]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -34,27 +50,45 @@ export const SchemasTemplate: React.FC = () => {
       {getSchemas.isError && "Error..."}
 
       {getSchemas.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getSchemas.data.map((schema) => (
-              <TableRow className={styles.tableRow} onClick={() => navigate(`/schemas/${schema.id}`)} key={schema.id}>
-                <TableCell>{schema.name}</TableCell>
+        <>
+          <TableWrapper>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableHeader>{t("Name")}</TableHeader>
+                  <TableHeader></TableHeader>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {getSchemas.data.map((schema) => (
+                  <TableRow
+                    className={styles.tableRow}
+                    onClick={() => navigate(`/schemas/${schema.id}`)}
+                    key={schema.id}
+                  >
+                    <TableCell>{schema.name}</TableCell>
 
-                <TableCell onClick={() => navigate(`/schemas/${schema.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                    <TableCell onClick={() => navigate(`/schemas/${schema.id}`)}>
+                      <Link icon={<ArrowRightIcon />} iconAlign="start">
+                        {t("Details")}
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableWrapper>
+
+          {!!getSchemas.data.length && (
+            <PaginatedItems
+              pages={5}
+              currentPage={currentPage}
+              setPage={setCurrentPage}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={marginPagesDisplayed}
+            />
+          )}
+        </>
       )}
 
       {getSchemas.isLoading && <Skeleton height="200px" />}
