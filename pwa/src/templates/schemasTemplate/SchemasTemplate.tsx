@@ -53,6 +53,14 @@ export const SchemasTemplate: React.FC = () => {
                 </TableCell>
               </TableRow>
             ))}
+            {!getSchemas.data.length && (
+              <>
+                <TableRow>
+                  <TableCell>{t("No schemas found")}</TableCell>
+                  <TableCell />
+                </TableRow>
+              </>
+            )}
           </TableBody>
         </Table>
       )}

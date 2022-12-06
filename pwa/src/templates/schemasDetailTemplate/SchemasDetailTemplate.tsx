@@ -59,7 +59,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               disabled={getSchema.isLoading}
               onClick={() => navigate(`/objects/new?schema=${getSchema.data.id}`)}
             >
-              <FontAwesomeIcon icon={faPlus} /> Object toevoegen
+              <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
             {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
@@ -72,7 +72,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               disabled={getSchema.isLoading}
               onClick={() => navigate(`/schemas/${schemaId}/new`)}
             >
-              <FontAwesomeIcon icon={faPlus} /> Property toevoegen
+              <FontAwesomeIcon icon={faPlus} /> {t("Add Property")}
             </Button>
             {getSchema.isLoading && <Skeleton height="100px" />}
             {getSchema.isSuccess && (

@@ -47,5 +47,8 @@ export const en = {
   "No logs found": "No logs found",
   "No objects found": "No objects found",
   "No plugins found": "No plugins found",
+  "No schemas found": "No schemas found",
+  "No actions found": "No actions found",
+  "No sources found": "No sources found",
   "Search on name": "Search on name",
 };
