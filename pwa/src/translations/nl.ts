@@ -47,5 +47,8 @@ export const nl = {
   "No logs found": "Geen logs gevonden",
   "No objects found": "Geen objecten gevonden",
   "No plugins found": "Geen plugins gevonden",
+  "No schemas found": "Geen schemas gevonden",
+  "No actions found": "Geen actions gevonden",
+  "No sources found": "Geen sources gevonden",
   "Search on name": "Zoek op naam",
 };
