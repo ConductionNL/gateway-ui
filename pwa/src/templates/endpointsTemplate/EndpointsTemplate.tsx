@@ -61,6 +61,16 @@ export const EndpointsTemplate: React.FC = () => {
                 <TableCell>{endpoint.throws ?? "-"}</TableCell>
               </TableRow>
             ))}
+            {!getEndpoints.data.length && (
+              <TableRow>
+                <TableCell>{t("No endpoints found")}</TableCell>
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       )}

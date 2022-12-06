@@ -79,6 +79,19 @@ export const ActionsTemplate: React.FC = () => {
                   </TableCell>
                 </TableRow>
               ))}
+              {!getActions.data.length && (
+                <TableRow>
+                  <TableCell>{t("No actions found")}</TableCell>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </>
