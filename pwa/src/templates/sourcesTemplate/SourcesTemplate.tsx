@@ -81,17 +81,15 @@ export const SourcesTemplate: React.FC = () => {
                 </TableRow>
               ))}
               {!getSources.data.length && (
-                <>
-                  <TableRow>
-                    <TableCell>{t("No sources found")}</TableCell>
-                    <TableCell />
-                    <TableCell />
-                    <TableCell />
-                    <TableCell />
-                    <TableCell />
-                    <TableCell />
-                  </TableRow>
-                </>
+                <TableRow>
+                  <TableCell>{t("No sources found")}</TableCell>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
               )}
             </TableBody>
           </Table>

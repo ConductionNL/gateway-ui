@@ -62,16 +62,14 @@ export const EndpointsTemplate: React.FC = () => {
               </TableRow>
             ))}
             {!getEndpoints.data.length && (
-              <>
-                <TableRow>
-                  <TableCell>{t("No endpoints found")}</TableCell>
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                </TableRow>
-              </>
+              <TableRow>
+                <TableCell>{t("No endpoints found")}</TableCell>
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+              </TableRow>
             )}
           </TableBody>
         </Table>

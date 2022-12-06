@@ -50,5 +50,7 @@ export const nl = {
   "No schemas found": "Geen schemas gevonden",
   "No actions found": "Geen actions gevonden",
   "No sources found": "Geen sources gevonden",
+  "No cronjobs found": "Geen cronjobs gevonden",
+  "No endpoints found": "Geen endpoints gevonden",
   "Search on name": "Zoek op naam",
 };

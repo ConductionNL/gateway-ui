@@ -118,17 +118,15 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
                     </TableRow>
                   ))}
                   {!getSynchronizations.data.length && (
-                    <>
-                      <TableRow>
-                        <TableCell>{t("No synchronizations found")}</TableCell>
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                      </TableRow>
-                    </>
+                    <TableRow>
+                      <TableCell>{t("No synchronizations found")}</TableCell>
+                      <TableCell />
+                      <TableCell />
+                      <TableCell />
+                      <TableCell />
+                      <TableCell />
+                      <TableCell />
+                    </TableRow>
                   )}
                 </TableBody>
               </Table>

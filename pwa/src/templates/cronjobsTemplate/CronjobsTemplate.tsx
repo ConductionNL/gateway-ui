@@ -80,20 +80,18 @@ export const CronjobsTemplate: React.FC = () => {
               </TableRow>
             ))}
             {!getCronjobs.data.length && (
-              <>
-                <TableRow>
-                  <TableCell>{t("No cronjobs found")}</TableCell>
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                </TableRow>
-              </>
+              <TableRow>
+                <TableCell>{t("No cronjobs found")}</TableCell>
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+              </TableRow>
             )}
           </TableBody>
         </Table>
