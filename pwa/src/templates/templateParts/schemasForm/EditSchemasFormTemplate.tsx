@@ -6,7 +6,7 @@ import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useSchema } from "../../../hooks/schema";
@@ -28,6 +28,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   const _useSchema = useSchema(queryClient);
   const createOrEditSchema = _useSchema.createOrEdit(schemaId);
   const deleteSchema = _useSchema.remove();
+  const getSchemaSchema = _useSchema.getSchema(schemaId);
 
   const dashboardCard = getDashboardCard(schema.name);
 
@@ -101,6 +102,17 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
+
+            <a
+              className={styles.downloadSchemaButton}
+              href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
+              download="schema.json"
+            >
+              <Button className={styles.buttonIcon} disabled={!getSchemaSchema.isSuccess}>
+                <FontAwesomeIcon icon={faDownload} />
+                Download
+              </Button>
+            </a>
 
             <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
