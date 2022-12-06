@@ -19,6 +19,7 @@ import DashboardCards from "./resources/dashboardCards";
 import CallLog from "./resources/callLog";
 import Attribute from "./resources/attribute";
 import Plugin from "./resources/plugin";
+import Synchroniation from "./resources/synchronization";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -127,6 +128,10 @@ export default class APIService {
 
   public get Plugin(): Plugin {
     return new Plugin(this.BaseClient);
+  }
+
+  public get Synchroniation(): Synchroniation {
+    return new Synchroniation(this.BaseClient);
   }
 
   // Services

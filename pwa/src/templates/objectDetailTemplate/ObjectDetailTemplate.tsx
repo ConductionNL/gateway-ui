@@ -1,27 +1,20 @@
 import * as React from "react";
 import * as styles from "./ObjectDetailTemplate.module.css";
-import {
-  Button,
-  FormField,
-  FormFieldInput,
-  FormFieldLabel,
-  Tab,
-  TabContext,
-  TabPanel,
-  Tabs,
-} from "@gemeente-denhaag/components-react";
+import { Button, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
 import { useObject } from "../../hooks/object";
-import { Container, InputText, Textarea } from "@conduction/components";
+import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { EditObjectFormTemplate } from "../templateParts/objectsFormTemplate/EditObjectFormTemplate";
 import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
-import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
-import { validateStringAsJSON } from "../../services/validateJSON";
-import { useForm } from "react-hook-form";
+import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { navigate } from "gatsby";
+import { useCronjob } from "../../hooks/cronjob";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
+import { useSync } from "../../hooks/synchronization";
+import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -35,22 +28,21 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
   const _useObject = useObject(queryClient);
   const getObject = _useObject.getOne(objectId);
 
-  const getObjectSchema = _useObject.getSchema(objectId);
+  const _useSync = useSync(queryClient);
+  const getSynchronizations = _useSync.getAll();
+  const deleteSync = _useSync.remove();
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const handleDeleteObject = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
+    syncId: string,
+  ) => {
+    e.stopPropagation();
 
-  const onSubmit = (data: any) => {
-    const payload = {
-      ...data,
-      body: data.body ? JSON.parse(data.body) : [],
-    };
+    const confirmDeletion = confirm("Are you sure you want to delete this action?");
 
-    // const proxyTest = _testProxy.mutate({ id: sourceId, payload: payload });
+    if (confirmDeletion) {
+      deleteSync.mutate({ id: syncId });
+    }
   };
 
   return (
@@ -83,12 +75,63 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             {getObject.isSuccess && (
               <Button
                 className={clsx(styles.buttonIcon, styles.testConnectionButton)}
-                // disabled={isLoading.alert}
-                type="submit"
+                onClick={() => navigate(`/objects/${objectId}/new`)}
               >
-                <FontAwesomeIcon icon={faArrowsRotate} />
-                {t("Test connection")}
+                <FontAwesomeIcon icon={faPlus} /> {t("Add Sync")}
               </Button>
+            )}
+            {getSynchronizations.isSuccess && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeader>Id</TableHeader>
+                    <TableHeader>Source</TableHeader>
+                    <TableHeader>Action</TableHeader>
+                    <TableHeader>ExternalId</TableHeader>
+                    <TableHeader>Endpoint</TableHeader>
+                    <TableHeader></TableHeader>
+                    <TableHeader></TableHeader>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {getSynchronizations.data.map((synchronization: any) => (
+                    <TableRow onClick={() => navigate(`${synchronization.id}`)} key={synchronization.id}>
+                      <TableCell>{synchronization.id}</TableCell>
+                      <TableCell>{synchronization.source ?? "-"}</TableCell>
+                      <TableCell>{synchronization.action?.name ?? "-"}</TableCell>
+                      <TableCell>{synchronization.externalId ?? "-"}</TableCell>
+                      <TableCell>{synchronization.endpoint ?? "-"}</TableCell>
+                      <TableCell>
+                        <Button
+                          onClick={(e) => handleDeleteObject(e, synchronization.id)}
+                          className={clsx(styles.buttonIcon, styles.deleteButton)}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                          {t("Delete")}
+                        </Button>
+                      </TableCell>
+                      <TableCell onClick={() => navigate(`/objects/${objectId}/${synchronization.id}`)}>
+                        <Link icon={<ArrowRightIcon />} iconAlign="start">
+                          {t("Details")}
+                        </Link>
+                      </TableCell>{" "}
+                    </TableRow>
+                  ))}
+                  {!getSynchronizations.data.length && (
+                    <>
+                      <TableRow>
+                        <TableCell>{t("No synchronizations found")}</TableCell>
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                      </TableRow>
+                    </>
+                  )}
+                </TableBody>
+              </Table>
             )}
           </TabPanel>
         </TabContext>
