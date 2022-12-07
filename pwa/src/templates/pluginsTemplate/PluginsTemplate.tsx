@@ -12,6 +12,8 @@ import { QueryClient } from "react-query";
 import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { PluginsSearchBarTemplate } from "./PluginsSearchBarTemplate";
+import { PaginatedItems } from "../../components/pagination/pagination";
+import { GatsbyContext } from "../../context/gatsby";
 
 export type TPluginTitle = "Installed" | "Search" | "";
 
@@ -21,11 +23,14 @@ interface PluginsPageProps {
 
 export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
   const { t } = useTranslation();
+  const { screenSize } = React.useContext(GatsbyContext);
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(5);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
 
   const queryClient = new QueryClient();
   const _usePlugin = usePlugin(queryClient);
-  let getPlugins;
+  let getPlugins: any;
 
   switch (title) {
     case "Installed":
@@ -33,15 +38,30 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
       break;
 
     case "Search":
-      getPlugins = _usePlugin.getAllAvailable(searchQuery);
+      getPlugins = _usePlugin.getAllAvailable(searchQuery, currentPage);
       break;
 
     default:
-      getPlugins = _usePlugin.getAllAvailable(searchQuery);
-    //   getPlugins = _usePlugin.getAllInstalled(); // change to this one once stable
+      getPlugins = _usePlugin.getAllInstalled();
   }
 
-  const titleHref = title !== "" ? `${_.lowerCase(title)}/` : "";
+  const titleHref = !!title ? `${_.lowerCase(title)}/` : "";
+
+  /*
+    Plugins Available endpoint need a limit query param
+  */
+
+  React.useEffect(() => {
+    if (getPlugins.isSuccess && screenSize === "mobile") {
+      setMarginPageDisplayed(3);
+    }
+    // if (getPlugins.isSuccess && screenSize === "mobile" && getPlugins.data.pages > 100) {
+    //   setMarginPageDisplayed(2);
+    // }
+    if (getPlugins.isSuccess && screenSize !== "mobile") {
+      setMarginPageDisplayed(5);
+    }
+  }, [getPlugins]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -60,7 +80,7 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
       {getPlugins.isSuccess && (
         <>
           <div className={styles.cardsGrid}>
-            {!getPlugins.data[0] && <span>{("No plugins found")}</span>}
+            {!getPlugins.data[0] && <span>{t("No plugins found")}</span>}
             {getPlugins.data.map((plugin: any, idx: number) => (
               <PluginCard
                 key={idx}
@@ -76,6 +96,16 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
               />
             ))}
           </div>
+
+          {!!getPlugins.data && !!title && title !== "Installed" && (
+            <PaginatedItems
+              pages={10}
+              currentPage={currentPage}
+              setPage={setCurrentPage}
+              pageRangeDisplayed={2}
+              marginPagesDisplayed={marginPagesDisplayed}
+            />
+          )}
         </>
       )}
 

@@ -22,12 +22,16 @@ export const usePlugin = (queryClient: QueryClient) => {
       },
     });
 
-  const getAllAvailable = (searchQuery: string) =>
-    useQuery<any[], Error>(["plugins_available", searchQuery], () => API.Plugin.getAllAvailable(searchQuery), {
-      onError: (error) => {
-        throw new Error(error.message);
+  const getAllAvailable = (searchQuery: string, page: number) =>
+    useQuery<any[], Error>(
+      ["plugins_available", searchQuery, page],
+      () => API.Plugin.getAllAvailable(searchQuery, page),
+      {
+        onError: (error) => {
+          throw new Error(error.message);
+        },
       },
-    });
+    );
 
   const getView = () =>
     useQuery<any, Error>("plugin_view", API.Plugin.getView, {
