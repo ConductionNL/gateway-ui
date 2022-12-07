@@ -9,9 +9,7 @@ export default class Cronjob {
   }
 
   public getAll = async (page: number): Promise<any> => {
-    let limit = page ? `?page=${page}&limit=10` : ""
-
-    const { data } = await Send(this._instance, "GET", `/admin/cronjobs${limit}`);
+    const { data } = await Send(this._instance, "GET", `/admin/cronjobs?page=${page}&limit=10`);
 
     return data;
   };

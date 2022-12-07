@@ -18,27 +18,29 @@ import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndI
 import TableWrapper from "../../components/tableWrapper/TableWrapper";
 import { dateTime } from "../../services/dateTime";
 import { PaginatedItems } from "../../components/pagination/pagination";
+import { GatsbyContext } from "../../context/gatsby";
 
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const { screenSize } = React.useContext(GatsbyContext);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(3);
+  const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(5);
 
   const queryClient = new QueryClient();
   const _useSources = useSource(queryClient);
   const getSources = _useSources.getAll(currentPage);
 
-  // React.useEffect(() => {
-  //   if (getSources.isSuccess && screenSize === "mobile") {
-  //     setMarginPageDisplayed(2);
-  //   }
-  //   if (getSources.isSuccess && screenSize === "mobile" && getSources.data.pages > 100) {
-  //     setMarginPageDisplayed(1);
-  //   }
-  //   if (getSources.isSuccess && screenSize !== "mobile") {
-  //     setMarginPageDisplayed(3);
-  //   }
-  // }, [getSources]);
+  React.useEffect(() => {
+    if (getSources.isSuccess && screenSize === "mobile") {
+      setMarginPageDisplayed(3);
+    }
+    // if (getSources.isSuccess && screenSize === "mobile" && getSources.data.pages > 100) {
+    //   setMarginPageDisplayed(2);
+    // }
+    if (getSources.isSuccess && screenSize !== "mobile") {
+      setMarginPageDisplayed(5);
+    }
+  }, [getSources]);
 
   return (
     <div className={styles.container}>
@@ -115,9 +117,9 @@ export const SourcesTemplate: React.FC = () => {
             </Table>
           </TableWrapper>
 
-          {!!getSources.data.length && (
+          {!!getSources.data && (
             <PaginatedItems
-              pages={3}
+              pages={10}
               currentPage={currentPage}
               setPage={setCurrentPage}
               pageRangeDisplayed={2}

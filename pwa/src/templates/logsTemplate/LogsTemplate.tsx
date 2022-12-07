@@ -9,6 +9,7 @@ import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { useLog } from "../../hooks/log";
+import TableWrapper from "../../components/tableWrapper/TableWrapper";
 
 export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -24,26 +25,28 @@ export const LogsTemplate: React.FC = () => {
       {getLog.isError && "Error..."}
 
       {getLog.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Id")}</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getLog.data.map((log) => (
-              <TableRow className={styles.tableRow} onClick={() => navigate(`/logs/${log.id}`)} key={log.id}>
-                <TableCell>{log.id ?? "-"}</TableCell>
-                <TableCell onClick={() => navigate(`/logs/${log.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
+        <TableWrapper>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>{t("Id")}</TableHeader>
+                <TableHeader></TableHeader>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getLog.data.map((log) => (
+                <TableRow className={styles.tableRow} onClick={() => navigate(`/logs/${log.id}`)} key={log.id}>
+                  <TableCell>{log.id ?? "-"}</TableCell>
+                  <TableCell onClick={() => navigate(`/logs/${log.id}`)}>
+                    <Link icon={<ArrowRightIcon />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableWrapper>
       )}
 
       {getLog.isLoading && <Skeleton height="200px" />}

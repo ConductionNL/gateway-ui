@@ -9,9 +9,7 @@ export default class Source {
   }
 
   public getAll = async (page: number): Promise<any> => {
-    let limit = page ? `&page=${page}&limit=10` : ""
-
-    const { data } = await Send(this._instance, "GET", `/admin/gateways?order[name]=ASC${limit}`);
+    const { data } = await Send(this._instance, "GET", `/admin/gateways?order[name]=ASC&page=${page}&limit=10`);
 
     return data;
   };

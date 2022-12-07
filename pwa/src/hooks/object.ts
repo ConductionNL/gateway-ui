@@ -8,8 +8,8 @@ import { navigate } from "gatsby";
 export const useObject = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
 
-  const getAll = () =>
-    useQuery<any[], Error>("objects", API.Object.getAll, {
+  const getAll = (page: number) =>
+    useQuery<any[], Error>(["objects", page], () => API.Object.getAll(page), {
       onError: (error) => {
         throw new Error(error.message);
       },

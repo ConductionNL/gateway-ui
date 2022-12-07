@@ -13,9 +13,11 @@ import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { useSchema } from "../../hooks/schema";
 import TableWrapper from "../../components/tableWrapper/TableWrapper";
 import { PaginatedItems } from "../../components/pagination/pagination";
+import { GatsbyContext } from "../../context/gatsby";
 
 export const SchemasTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const { screenSize } = React.useContext(GatsbyContext);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(3);
 
@@ -23,17 +25,17 @@ export const SchemasTemplate: React.FC = () => {
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll(currentPage);
 
-  // React.useEffect(() => {
-  //   if (getSchemas.isSuccess && screenSize === "mobile") {
-  //     setMarginPageDisplayed(2);
-  //   }
-  //   if (getSchemas.isSuccess && screenSize === "mobile" && getSchemas.data.pages > 100) {
-  //     setMarginPageDisplayed(1);
-  //   }
-  //   if (getSchemas.isSuccess && screenSize !== "mobile") {
-  //     setMarginPageDisplayed(3);
-  //   }
-  // }, [getSchemas]);
+  React.useEffect(() => {
+    if (getSchemas.isSuccess && screenSize === "mobile") {
+      setMarginPageDisplayed(3);
+    }
+    // if (getSchemas.isSuccess && screenSize === "mobile" && getSchemas.data.pages > 100) {
+    //   setMarginPageDisplayed(2);
+    // }
+    if (getSchemas.isSuccess && screenSize !== "mobile") {
+      setMarginPageDisplayed(5);
+    }
+  }, [getSchemas]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -85,12 +87,12 @@ export const SchemasTemplate: React.FC = () => {
             </Table>
           </TableWrapper>
 
-          {!!getSchemas.data.length && (
+          {!!getSchemas.data && (
             <PaginatedItems
-              pages={5}
+              pages={10}
               currentPage={currentPage}
               setPage={setCurrentPage}
-              pageRangeDisplayed={2}
+              pageRangeDisplayed={5}
               marginPagesDisplayed={marginPagesDisplayed}
             />
           )}

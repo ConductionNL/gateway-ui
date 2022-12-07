@@ -8,8 +8,8 @@ export default class Endpoint {
     this._instance = _instance;
   }
 
-  public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/endpoints");
+  public getAll = async (page: number): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", `/admin/endpoints?limit=10&page=${page}`);
 
     return data;
   };

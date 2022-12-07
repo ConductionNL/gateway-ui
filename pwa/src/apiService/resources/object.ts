@@ -8,8 +8,8 @@ export default class Sources {
     this._instance = _instance;
   }
 
-  public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/object_entities");
+  public getAll = async (page: number): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", `/admin/object_entities?page=${page}&limit=8`);
 
     return data;
   };

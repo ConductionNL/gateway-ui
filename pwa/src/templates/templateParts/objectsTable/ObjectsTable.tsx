@@ -10,6 +10,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
 import { useQueryClient } from "react-query";
+import TableWrapper from "../../../components/tableWrapper/TableWrapper";
 
 interface ObjectsTableProps {
   objects: any[];
@@ -35,53 +36,55 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
   };
 
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableHeader>{t("Id")}</TableHeader>
-          <TableHeader>{t("Name")}</TableHeader>
-          <TableHeader>{t("Type")}</TableHeader>
-          <TableHeader>{t("Sources")}</TableHeader>
-          <TableHeader></TableHeader>
-          <TableHeader></TableHeader>
-        </TableRow>
-      </TableHead>
-
-      <TableBody>
-        {objects.map((object) => (
-          <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
-            <TableCell>{object.id ?? "-"}</TableCell>
-            <TableCell>{object.name ?? "NVT"}</TableCell>
-            <TableCell>{object.type?.name ?? "-"}</TableCell>
-            <TableCell>{object.sources ?? "-"}</TableCell>
-            <TableCell>
-              <Button
-                onClick={(e) => handleDeleteObject(e, object.id)}
-                className={clsx(styles.buttonIcon, styles.deleteButton)}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Delete")}
-              </Button>
-            </TableCell>
-            <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
-              <Link icon={<ArrowRightIcon />} iconAlign="start">
-                {t("Details")}
-              </Link>
-            </TableCell>
-          </TableRow>
-        ))}
-
-        {!objects.length && (
+    <TableWrapper>
+      <Table>
+        <TableHead>
           <TableRow>
-            <TableCell>{t("No objects found")}</TableCell>
-            <TableCell />
-            <TableCell />
-            <TableCell />
-            <TableCell />
-            <TableCell />
+            <TableHeader>{t("Id")}</TableHeader>
+            <TableHeader>{t("Name")}</TableHeader>
+            <TableHeader>{t("Type")}</TableHeader>
+            <TableHeader>{t("Sources")}</TableHeader>
+            <TableHeader></TableHeader>
+            <TableHeader></TableHeader>
           </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        </TableHead>
+
+        <TableBody>
+          {objects.map((object) => (
+            <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
+              <TableCell>{object.id ?? "-"}</TableCell>
+              <TableCell>{object.name ?? "NVT"}</TableCell>
+              <TableCell>{object.type?.name ?? "-"}</TableCell>
+              <TableCell>{object.sources ?? "-"}</TableCell>
+              <TableCell>
+                <Button
+                  onClick={(e) => handleDeleteObject(e, object.id)}
+                  className={clsx(styles.buttonIcon, styles.deleteButton)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                  {t("Delete")}
+                </Button>
+              </TableCell>
+              <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
+                <Link icon={<ArrowRightIcon />} iconAlign="start">
+                  {t("Details")}
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
+
+          {!objects.length && (
+            <TableRow>
+              <TableCell>{t("No objects found")}</TableCell>
+              <TableCell />
+              <TableCell />
+              <TableCell />
+              <TableCell />
+              <TableCell />
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </TableWrapper>
   );
 };

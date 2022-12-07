@@ -21,13 +21,13 @@
 }
 
 .tableBoxShadowR::before {
-  box-shadow: inset 0px 0px 10px -10px #ccc, inset -16px 0px 10px -10px #ccc;
+  box-shadow: inset 0px 0px 10px -10px rgba(0, 0, 0, 0.2), inset -16px 0px 10px -10px rgba(0, 0, 0, 0.2);
 }
 
 .tableBoxShadowL::before {
-  box-shadow: inset 16px 0px 10px -10px #ccc, inset -0px 0px 10px -10px #ccc;
+  box-shadow: inset 16px 0px 10px -10px rgba(0, 0, 0, 0.2), inset -0px 0px 10px -10px rgba(0, 0, 0, 0.2);
 }
 
 .tableBoxShadowM::before {
-  box-shadow: inset 16px 0px 10px -10px #ccc, inset -16px 0px 10px -10px #ccc;
+  box-shadow: inset 16px 0px 10px -10px rgba(0, 0, 0, 0.2), inset -16px 0px 10px -10px rgba(0, 0, 0, 0.2);
 }

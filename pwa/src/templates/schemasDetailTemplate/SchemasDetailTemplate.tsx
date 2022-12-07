@@ -16,6 +16,7 @@ import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabsContext } from "../../context/tabs";
+import TableWrapper from "../../components/tableWrapper/TableWrapper";
 
 interface SchemasDetailPageProps {
   schemaId: string;
@@ -76,52 +77,54 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             </Button>
             {getSchema.isLoading && <Skeleton height="100px" />}
             {getSchema.isSuccess && (
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader>{t("Name")}</TableHeader>
-                    <TableHeader>{t("Type")}</TableHeader>
-                    <TableHeader>{t("Function")}</TableHeader>
-                    <TableHeader>{t("Case sensitive")}</TableHeader>
-                    <TableHeader>{t("Created")}</TableHeader>
-                    <TableHeader>{t("Modified")}</TableHeader>
-                    <TableHeader />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {getSchema.data.attributes &&
-                    getSchema.data.attributes.map((property: any) => (
-                      <TableRow
-                        className={styles.tableRow}
-                        onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
-                        key={property.id}
-                      >
-                        <TableCell>{property.name ?? "-"}</TableCell>
-                        <TableCell>{property.type ?? "-"}</TableCell>
-                        <TableCell>{property.function ?? "-"}</TableCell>
-                        <TableCell>{property.caseSensitive.toString() ?? "-"}</TableCell>
-                        <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
-                        <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
-                        <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
-                          <Link icon={<ArrowRightIcon />} iconAlign="start">
-                            {t("Details")}
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  {!getSchema.data.attributes?.length && (
+              <TableWrapper>
+                <Table>
+                  <TableHead>
                     <TableRow>
-                      <TableCell>{t("No properties found")}</TableCell>
-                      <TableCell />
-                      <TableCell />
-                      <TableCell />
-                      <TableCell />
-                      <TableCell />
-                      <TableCell />
+                      <TableHeader>{t("Name")}</TableHeader>
+                      <TableHeader>{t("Type")}</TableHeader>
+                      <TableHeader>{t("Function")}</TableHeader>
+                      <TableHeader>{t("Case sensitive")}</TableHeader>
+                      <TableHeader>{t("Created")}</TableHeader>
+                      <TableHeader>{t("Modified")}</TableHeader>
+                      <TableHeader />
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                  </TableHead>
+                  <TableBody>
+                    {getSchema.data.attributes &&
+                      getSchema.data.attributes.map((property: any) => (
+                        <TableRow
+                          className={styles.tableRow}
+                          onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
+                          key={property.id}
+                        >
+                          <TableCell>{property.name ?? "-"}</TableCell>
+                          <TableCell>{property.type ?? "-"}</TableCell>
+                          <TableCell>{property.function ?? "-"}</TableCell>
+                          <TableCell>{property.caseSensitive.toString() ?? "-"}</TableCell>
+                          <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
+                          <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
+                          <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
+                            <Link icon={<ArrowRightIcon />} iconAlign="start">
+                              {t("Details")}
+                            </Link>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    {!getSchema.data.attributes?.length && (
+                      <TableRow>
+                        <TableCell>{t("No properties found")}</TableCell>
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                        <TableCell />
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableWrapper>
             )}
           </TabPanel>
 

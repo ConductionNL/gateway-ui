@@ -43,8 +43,8 @@ export const GatewayDetailTemplate: React.FC = () => {
 
               <div className={styles.type}>
                 <p>{`Type: ${getPlugins.data?.type}`}</p>
-                <p>{`Names: ${getPlugins.data?.names.join(", ")}`}</p>
-                <p>{`Versions: ${getPlugins.data?.versions.join(", ")}`}</p>
+                <p>{`Names: ${getPlugins.data?.names?.join(", ")}`}</p>
+                <p>{`Versions: ${getPlugins.data?.versions?.join(", ")}`}</p>
               </div>
 
               <div className={styles.descriptionAndTags}>

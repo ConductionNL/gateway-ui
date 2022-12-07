@@ -22,23 +22,23 @@ export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { screenSize } = React.useContext(GatsbyContext);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(3);
+  const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(5);
 
   const queryClient = new QueryClient();
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll(currentPage);
 
-  // React.useEffect(() => {
-  //   if (getCronjobs.isSuccess && screenSize === "mobile") {
-  //     setMarginPageDisplayed(2);
-  //   }
-  //   if (getCronjobs.isSuccess && screenSize === "mobile" && getCronjobs.data.pages > 100) {
-  //     setMarginPageDisplayed(1);
-  //   }
-  //   if (getCronjobs.isSuccess && screenSize !== "mobile") {
-  //     setMarginPageDisplayed(3);
-  //   }
-  // }, [getCronjobs]);
+  React.useEffect(() => {
+    if (getCronjobs.isSuccess && screenSize === "mobile") {
+      setMarginPageDisplayed(3);
+    }
+    // if (getCronjobs.isSuccess && screenSize === "mobile" && getCronjobs.data.pages > 100) {
+    //   setMarginPageDisplayed(2);
+    // }
+    if (getCronjobs.isSuccess && screenSize !== "mobile") {
+      setMarginPageDisplayed(5);
+    }
+  }, [getCronjobs]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -117,9 +117,9 @@ export const CronjobsTemplate: React.FC = () => {
             </Table>
           </TableWrapper>
 
-          {!!getCronjobs.data.length && (
+          {!!getCronjobs.data && (
             <PaginatedItems
-              pages={2}
+              pages={10}
               currentPage={currentPage}
               setPage={setCurrentPage}
               pageRangeDisplayed={2}

@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { TEMPORARY_USERGROUPS } from "../../data/userGroup";
+import TableWrapper from "../../components/tableWrapper/TableWrapper";
 
 export const UserGroupsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -27,34 +28,36 @@ export const UserGroupsTemplate: React.FC = () => {
         </div>
       </section>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeader>{t("Name")}</TableHeader>
-            <TableHeader>{t("Description")}</TableHeader>
-            <TableHeader>{t("Config")}</TableHeader>
-            <TableHeader></TableHeader>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {userGroups.map((userGroup) => (
-            <TableRow
-              className={styles.tableRow}
-              onClick={() => navigate(`/settings/usergroups/${userGroup.id}`)}
-              key={userGroup.id}
-            >
-              <TableCell>{userGroup.name}</TableCell>
-              <TableCell>{userGroup.description ?? "-"}</TableCell>
-              <TableCell>{userGroup.config ?? "-"}</TableCell>
-              <TableCell onClick={() => navigate(`/settings/userGroups/${userGroup.id}`)}>
-                <Link icon={<ArrowRightIcon />} iconAlign="start">
-                  {t("Details")}
-                </Link>
-              </TableCell>
+      <TableWrapper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader>{t("Description")}</TableHeader>
+              <TableHeader>{t("Config")}</TableHeader>
+              <TableHeader></TableHeader>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {userGroups.map((userGroup) => (
+              <TableRow
+                className={styles.tableRow}
+                onClick={() => navigate(`/settings/usergroups/${userGroup.id}`)}
+                key={userGroup.id}
+              >
+                <TableCell>{userGroup.name}</TableCell>
+                <TableCell>{userGroup.description ?? "-"}</TableCell>
+                <TableCell>{userGroup.config ?? "-"}</TableCell>
+                <TableCell onClick={() => navigate(`/settings/userGroups/${userGroup.id}`)}>
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableWrapper>
     </Container>
   );
 };
