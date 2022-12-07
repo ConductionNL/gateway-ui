@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as styles from "./TableWrapper.module.css";
+import _ from "lodash";
 import clsx from "clsx";
 
 const TableWrapper: React.FC = ({ children }) => {
@@ -10,21 +11,14 @@ const TableWrapper: React.FC = ({ children }) => {
   const isTableScrollable = () => TableScrollWrapper?.current?.scrollWidth > TableScrollWrapper?.current?.clientWidth;
 
   React.useEffect(() => {
-    const handleWindowResize = () => {
+    TableScrollWrapper.current && setTableIsScrollable(isTableScrollable());
+  }, [TableScrollWrapper]);
+
+  React.useEffect(() => {
+    const handleWindowResize = _.debounce(() => {
       setTableIsScrollable(isTableScrollable());
       setScrollPosition();
-    };
-
-    let currentAttempt = 0;
-    let attemptsTillFail = 50;
-    const checkExist = setInterval(function () {
-      if (TableScrollWrapper?.current) {
-        setTableIsScrollable(isTableScrollable());
-        clearInterval(checkExist);
-      }
-      if (attemptsTillFail == currentAttempt) clearInterval(checkExist);
-      else currentAttempt++;
-    }, 100);
+    }, 80);
 
     window.addEventListener("resize", handleWindowResize);
 
