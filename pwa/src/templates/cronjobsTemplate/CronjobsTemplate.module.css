@@ -8,22 +8,22 @@
   margin-block-end: var(--gateway-ui-size-xl);
 }
 
-.buttons {
+.buttonsContainer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
-.buttons > * {
+.buttonsContainer > * {
   display: flex;
   align-items: center;
 }
 
-.buttons *:not(:last-child) {
+.buttonsContainer *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.buttonIcon > span > svg {
+.buttonsContainer > button > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 

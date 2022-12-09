@@ -2,7 +2,7 @@ import * as React from "react";
 import { PageProps } from "gatsby";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
 import { CronjobsDetailTemplate } from "../../../templates/cronjobsDetailTemplate/CronjobsDetailsTemplate";
-import { CreateCronjobFormTemplate } from "../../../templates/templateParts/cronjobsForm/CreateCronjobsFormTemplate";
+import { CreateCronjobFormTemplate } from "../../../templates/templateParts/cronjobsForm/CreateCronjobFormTemplate";
 
 const CronjobDetailPage: React.FC<PageProps> = (props: PageProps) => (
   <DashboardTemplate>

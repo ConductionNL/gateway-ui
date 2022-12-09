@@ -11,31 +11,31 @@ export const useCronjob = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("cronjobs", API.Cronjob.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.error(error.message);
       },
     });
 
   const getOne = (cronjobId: string) =>
-    useQuery<any, Error>(["cronjobs", cronjobId], () => API?.Cronjob.getOne(cronjobId), {
+    useQuery<any, Error>(["cronjobs", cronjobId], () => API.Cronjob.getOne(cronjobId), {
       initialData: () => queryClient.getQueryData<any[]>("cronjobs")?.find((_cronjob) => _cronjob.id === cronjobId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.error(error.message);
       },
       enabled: !!cronjobId,
     });
 
   const remove = () =>
-    useMutation<any, Error, any>(API.Cronjob.delete, {
+    useMutation<any, Error, any>(API.Cronjob.remove, {
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "cronjobs", variables.id);
         navigate("/cronjobs");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.error(error.message);
       },
     });
 
-  const createOrEdit = (cronjobId?: string) =>
+  const createOrUpdate = (cronjobId?: string) =>
     useMutation<any, Error, any>(API.Cronjob.createOrUpdate, {
       onSuccess: async (newCronjob) => {
         if (cronjobId) {
@@ -49,9 +49,9 @@ export const useCronjob = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.error(error.message);
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getOne, remove, createOrUpdate };
 };

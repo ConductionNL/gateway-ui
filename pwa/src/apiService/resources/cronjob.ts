@@ -20,7 +20,7 @@ export default class Cronjob {
     return data;
   };
 
-  public delete = async (variables: { id: string }): Promise<any> => {
+  public remove = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
     const { data } = await Send(this._instance, "DELETE", `/admin/cronjobs/${id}`);

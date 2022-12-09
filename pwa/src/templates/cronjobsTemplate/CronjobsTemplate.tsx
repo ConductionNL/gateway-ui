@@ -12,11 +12,10 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import clsx from "clsx";
-import { translateDate } from "../../services/dateFormat";
 import { dateTime } from "../../services/dateTime";
 
 export const CronjobsTemplate: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const queryClient = new QueryClient();
   const _useCronjob = useCronjob(queryClient);
@@ -26,8 +25,8 @@ export const CronjobsTemplate: React.FC = () => {
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
         <Heading1>{t("Cronjobs")}</Heading1>
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/cronjobs/new`)}>
+        <div className={styles.buttonsContainer}>
+          <Button onClick={() => navigate(`/cronjobs/new`)}>
             <FontAwesomeIcon icon={faPlus} />
             {t("Add")}
           </Button>
@@ -43,10 +42,10 @@ export const CronjobsTemplate: React.FC = () => {
               <TableHeader>{t("Name")}</TableHeader>
               <TableHeader>{t("Status")}</TableHeader>
               <TableHeader>{t("Active")}</TableHeader>
-              <TableHeader>CronTab</TableHeader>
+              <TableHeader>{t("CronTab")}</TableHeader>
               <TableHeader>{t("Last run")}</TableHeader>
               <TableHeader>{t("Next run")}</TableHeader>
-              <TableHeader>Status</TableHeader>
+              <TableHeader>{t("Status")}</TableHeader>
               <TableHeader>{t("Date created")}</TableHeader>
               <TableHeader>{t("Date modified")}</TableHeader>
               <TableHeader></TableHeader>
@@ -79,6 +78,20 @@ export const CronjobsTemplate: React.FC = () => {
                 </TableCell>
               </TableRow>
             ))}
+            {!getCronjobs.data.length && (
+              <TableRow>
+                <TableCell>{t("No Cronjobs found")}</TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       )}

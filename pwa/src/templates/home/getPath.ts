@@ -1,5 +1,16 @@
-export const getPath = (value: any): any => {
-  switch (value) {
+type TgetPath =
+  | "Action"
+  | "Gateway"
+  | "Cronjob"
+  | "Endpoint"
+  | "ObjectEntity"
+  | "Entity"
+  | "Log"
+  | "Plugin"
+  | "CollectionEntity";
+
+export const getPath = (path: TgetPath): string => {
+  switch (path) {
     case "Action":
       return "actions";
 

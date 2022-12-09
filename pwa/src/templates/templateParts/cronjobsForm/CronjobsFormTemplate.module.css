@@ -6,31 +6,28 @@
   padding-block-end: var(--gateway-ui-size-md);
 }
 
-.gridContainer > *:not(:first-child) {
-  margin-block-start: var(--gateway-ui-size-sm);
-}
 .section {
   display: flex;
   justify-content: space-between;
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.buttons {
+.buttonsContainer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
-.buttons > * {
+.buttonsContainer > * {
   display: flex;
   align-items: center;
 }
 
-.buttons *:not(:last-child) {
+.buttonsContainer *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.buttonIcon > span > svg {
+.buttonsContainer > button > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 

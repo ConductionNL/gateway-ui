@@ -31,6 +31,8 @@
 
   --utrecht-form-input-font-size: var(--gateway-ui-font-size-md);
   --utrecht-form-label-font-size: var(--gateway-ui-font-size-md);
+
+  --gateway-ui-card-border-color: 1px solid var(--gateway-ui-color-primary);
 }
 
 .select-module--select--63d48 > div {

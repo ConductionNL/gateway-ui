@@ -55,11 +55,13 @@
   --gateway-ui-color-white: #ffffff;
   --gateway-ui-color-black: black;
   --gateway-ui-color-darkgrey: darkgrey;
+  --gateway-ui-color-light-red: #dd3c49;
   --gateway-ui-color-red: red;
   --gateway-ui-color-dark-red: rgb(146, 2, 2);
+  --gateway-ui-color-light-green: #69b090;
   --gateway-ui-color-green: green;
-  --gateway-ui-color-status-green: #69b090;
-  --gateway-ui-color-status-red: #dd3c49;
+  --gateway-ui-color-status-green: var(--gateway-ui-color-light-green);
+  --gateway-ui-color-status-red: var(--gateway-ui-color-light-red);
   --gateway-ui-color-method-get: var(--gateway-ui-color-status-green);
   --gateway-ui-color-method-post: #51b8f4;
   --gateway-ui-color-method-put: #e9743a;
@@ -71,5 +73,4 @@
 
   /* Components */
   --gateway-ui-container-max-width: 2440px;
-  --gateway-ui-card-border-color: 1px solid var(--gateway-ui-color-primary);
 }
