@@ -1,7 +1,7 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
-export default class Action {
+export default class Cronjob {
   private _instance: AxiosInstance;
 
   constructor(_instance: AxiosInstance) {
@@ -9,19 +9,13 @@ export default class Action {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/actions");
+    const { data } = await Send(this._instance, "GET", "/admin/cronjobs");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/actions/${id}`);
-
-    return data;
-  };
-
-  public getAllHandlers = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/actionHandlers?limit=1000");
+    const { data } = await Send(this._instance, "GET", `/admin/cronjobs/${id}`);
 
     return data;
   };
@@ -29,7 +23,7 @@ export default class Action {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/actions/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/cronjobs/${id}`);
     return data;
   };
 
@@ -37,11 +31,11 @@ export default class Action {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/actions/${id}`, payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/cronjobs/${id}`, payload);
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/actions", payload);
+    const { data } = await Send(this._instance, "POST", "/admin/cronjobs", payload);
     return data;
   };
 }
