@@ -60,12 +60,12 @@
   --gateway-ui-color-dark-red: rgb(146, 2, 2);
   --gateway-ui-color-light-green: #69b090;
   --gateway-ui-color-green: green;
-  --gateway-ui-color-status-green: var(--gateway-ui-color-light-green);
-  --gateway-ui-color-status-red: var(--gateway-ui-color-light-red);
-  --gateway-ui-color-method-get: var(--gateway-ui-color-status-green);
+  --gateway-ui-color-success: var(--gateway-ui-color-light-green);
+  --gateway-ui-color-error: var(--gateway-ui-color-light-red);
+  --gateway-ui-color-method-get: var(--gateway-ui-color-success);
   --gateway-ui-color-method-post: #51b8f4;
   --gateway-ui-color-method-put: #e9743a;
-  --gateway-ui-color-method-delete: var(--gateway-ui-color-status-red);
+  --gateway-ui-color-method-delete: var(--gateway-ui-color-light-red);
   --gateway-ui-color-primary: #4376fc;
   --gateway-ui-color-primary-hover: #2e5ed9;
   --gateway-ui-background-color: #fafafa;

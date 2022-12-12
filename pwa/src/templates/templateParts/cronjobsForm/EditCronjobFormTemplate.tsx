@@ -10,6 +10,7 @@ import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useCronjob } from "../../../hooks/cronjob";
+import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 
 interface EditCronjobFormTemplateProps {
   cronjob: any;
@@ -31,9 +32,12 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     handleSubmit,
     formState: { errors },
     setValue,
+    control,
   } = useForm();
 
   const onSubmit = (data: any): void => {
+    data.throws = data.throws.map((_throw: any) => _throw.value);
+
     createOrUpdateCronjob.mutate({ payload: data, id: cronjobId });
     queryClient.setQueryData(["cronjobs", cronjobId], data);
   };
@@ -46,9 +50,10 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     const basicFields: string[] = ["name", "description", "crontab"];
     basicFields.forEach((field) => setValue(field, cronjob[field]));
 
-    cronjob.throws.map((thrown: any, idx: number) => {
-      setValue(`throws${idx}`, thrown);
-    });
+    setValue(
+      `throws`,
+      cronjob?.throws.map((_throw: string) => ({ label: _throw, value: _throw })),
+    );
   };
 
   React.useEffect(() => {
@@ -108,15 +113,14 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-              {cronjob.throws.map((thrown: any, idx: number) => (
-                <InputText
-                  {...{ register, errors }}
-                  name={`throws${idx}`}
-                  defaultValue={thrown.label}
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
-              ))}
+              {/* @ts-ignore */}
+              <SelectCreate
+                options={[]}
+                disabled={loading}
+                name="throws"
+                validation={{ required: true }}
+                {...{ register, errors, control }}
+              />
             </FormFieldInput>
           </FormField>
         </div>

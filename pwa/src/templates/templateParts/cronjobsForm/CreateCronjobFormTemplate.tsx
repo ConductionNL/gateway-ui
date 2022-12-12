@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useCronjob } from "../../../hooks/cronjob";
+import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 
 export const CreateCronjobFormTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -22,9 +23,12 @@ export const CreateCronjobFormTemplate: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm();
 
   const onSubmit = (data: any): void => {
+    data.throws = data.throws.map((_throw: any) => _throw.value);
+
     createOrUpdateCronjob.mutate({ payload: data });
   };
 
@@ -76,7 +80,14 @@ export const CreateCronjobFormTemplate: React.FC = () => {
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="throws" validation={{ required: true }} disabled={loading} />
+              {/* @ts-ignore */}
+              <SelectCreate
+                options={[]}
+                disabled={loading}
+                name="throws"
+                validation={{ required: true }}
+                {...{ register, errors, control }}
+              />
             </FormFieldInput>
           </FormField>
         </div>
