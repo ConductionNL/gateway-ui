@@ -1,4 +1,7 @@
 :root {
+  /* favicon */
+  --gateway-ui-favicon: url("../../assets/svgs/conduction-logo.svg");
+
   /* Sizes */
   --gateway-ui-size-4xs: 1px;
   --gateway-ui-size-3xs: 2px;
@@ -50,6 +53,19 @@
 
   /* Colors */
   --gateway-ui-color-white: #ffffff;
+  --gateway-ui-color-black: black;
+  --gateway-ui-color-darkgrey: darkgrey;
+  --gateway-ui-color-red: red;
+  --gateway-ui-color-dark-red: rgb(146, 2, 2);
+  --gateway-ui-color-green: green;
+  --gateway-ui-color-status-green: #69b090;
+  --gateway-ui-color-status-red: #dd3c49;
+  --gateway-ui-color-method-get: var(--gateway-ui-color-status-green);
+  --gateway-ui-color-method-post: #51b8f4;
+  --gateway-ui-color-method-put: #95507c;
+  --gateway-ui-color-method-patch: #e9743a;
+  --gateway-ui-color-method-update: #e93aac;
+  --gateway-ui-color-method-delete: var(--gateway-ui-color-status-red);
   --gateway-ui-color-primary: #4376fc;
   --gateway-ui-color-primary-hover: #2e5ed9;
   --gateway-ui-background-color: #fafafa;
@@ -57,4 +73,5 @@
 
   /* Components */
   --gateway-ui-container-max-width: 2440px;
+  --gateway-ui-card-border-color: 1px solid var(--gateway-ui-color-primary);
 }
