@@ -10,6 +10,7 @@ import APIService from "../../apiService/apiService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
+  faDatabase,
   faGear,
   faGrip,
   faHome,
@@ -52,6 +53,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       icon: <FontAwesomeIcon icon={faHourglass} />,
       onClick: () => navigate("/cronjobs"),
       current: pathname.includes("/cronjobs"),
+    },
+    {
+      label: "Data layer",
+      icon: <FontAwesomeIcon icon={faDatabase} />,
+      onClick: () => navigate("/objects"),
+      current: pathname.includes("/objects"),
     },
   ];
 
