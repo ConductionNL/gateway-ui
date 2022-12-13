@@ -1,0 +1,98 @@
+#  Collections
+App\Entity\CollectionEntity:
+  waardepapierenCollection:
+    autoLoad: true
+    loadTestData: true
+    locationOAS: https://raw.githubusercontent.com/CommonGateway/WaardepapierenAPI/main/OAS.yaml
+    name: Waardepapieren
+    sourceType: GitHub
+    prefix: waar
+    #  testDataLocation: https://raw.githubusercontent.com/ConductionNL/brc_publiccode/main/data/brc.json
+
+  templateCollection:
+    autoLoad: true
+    loadTestData: true
+    locationOAS: https://raw.githubusercontent.com/CommonGateway/TemplateAPI/main/OAS.yaml
+    name: Template
+    sourceType: GitHub
+    testDataLocation: https://raw.githubusercontent.com/CommonGateway/TemplateAPI/main/data/waardepapieren.json
+#  Gateway
+App\Entity\Endpoint:
+  dynamicCertificateEndpoint:
+    name: Dynamic certificate
+    description: Endpoint for dynamic certificates that use the request body as data
+    pathRegex: "^(waar/dynamic_certificates)$"
+    methods: ["POST"]
+    method: "POST"
+    operationType: collection
+    throws:
+      - commongateway.dynamiccertficate.trigger
+  openZaakCertificateEndpoint:
+    name: OpenZaak webhoo
+    description: Endpoint for OpenZaak webhook that has a zaak id
+    pathRegex: "^(waar/webhook)$"
+    methods: ["POST"]
+    method: "POST"
+    operationType: collection
+    throws:
+      - commongateway.openzaakwebhook.trigger
+
+#  Gateway
+App\Entity\Gateway:
+  haalcentraalPinkGateway:
+    name: Haalcentraal BRP Pink API
+    type: json
+    auth: none
+    location: https://apitest.locgov.nl/iconnect/apihcbrp/mks/1.3.0
+    accept: application/json
+
+App\Entity\Action:
+  WaardepapierenAction:
+    name: WaardepapierenAction
+    description: This is a action to validate a certificate.
+    listens:
+      - "commongateway.response.pre"
+    throws: []
+    conditions:
+      "==":
+        - var: entity
+        - "certificateEntityId"
+    class: CommonGateway\WaardepapierenBundle\ActionHandler\WaardepapierenHandler
+    priority: 0
+    async: false
+    isEnabled: true
+    configuration:
+      source: "haalcentraalPinkGatewayId"
+      templateGroup: "waardepapierenTemplateGroupId"
+      authorization:
+        certificate: "encoded"
+        certificateKey: "encoded"
+      certificateKey: "encoded"
+
+  WaardepapierenDynamicAction:
+    name: WaardepapierenDynamicAction
+    description: This is a action to create a dynamic certificate.
+    listens:
+      - "commongateway.dynamiccertficate.trigger"
+    throws: []
+    conditions:
+      "==": [1, 1]
+    class: CommonGateway\WaardepapierenBundle\ActionHandler\WaardepapierenDynamicHandler
+    priority: 0
+    async: false
+    isEnabled: true
+    configuration: {}
+
+  WaardepapierenOpenZaakAction:
+    name: WaardepapierenOpenZaakAction
+    description: This is a action to create a dynamic certificate.
+    listens:
+      - "commongateway.openzaakwebhook.trigger"
+    throws: []
+    conditions:
+      "==": [1, 1]
+    class: CommonGateway\WaardepapierenBundle\ActionHandler\WaardepapierenOpenZaakHandler
+    priority: 0
+    async: false
+    isEnabled: true
+    configuration: {}

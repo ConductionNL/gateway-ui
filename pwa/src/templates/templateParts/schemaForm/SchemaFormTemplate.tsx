@@ -253,7 +253,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "string" && _enum && multiple && (
+        {(type === "string" || type === "object") && _enum && multiple && (
           <SelectMultiple
             defaultValue={defaultValue.defaultValue}
             options={defaultValue.options}
@@ -312,7 +312,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "object" && (
+        {type === "object" && !_enum && !multiple && (
           <>
             <Textarea
               {...{ register, errors, control, placeholder, name }}
