@@ -4,3 +4,13 @@
   width: 18px;
   height: 18px;
 }
+
+.hasSubitems {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.subItem * {
+  margin-inline-start: var(--gateway-ui-size-2xs);
+}

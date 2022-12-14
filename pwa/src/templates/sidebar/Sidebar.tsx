@@ -10,11 +10,14 @@ import APIService from "../../apiService/apiService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRightFromBracket,
+  faDownload,
   faGear,
   faGrip,
   faHome,
   faHourglass,
+  faMagnifyingGlass,
   faPlay,
+  faPuzzlePiece,
 } from "@fortawesome/free-solid-svg-icons";
 import Logo from "./../../assets/svgs/conduction-logo.svg";
 
@@ -52,6 +55,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
       icon: <FontAwesomeIcon icon={faHourglass} />,
       onClick: () => navigate("/cronjobs"),
       current: pathname.includes("/cronjobs"),
+    },
+    {
+      label: "Plugins",
+      icon: <FontAwesomeIcon icon={faPuzzlePiece} />,
+      onClick: () => navigate("/plugins"),
+      current: pathname.includes("/plugins"),
+      subItems: [
+        {
+          label: "Installed Plugins",
+          icon: <FontAwesomeIcon icon={faDownload} />,
+          onClick: () => navigate("/plugins/installed"),
+          current: pathname.includes("/plugins/installed"),
+        },
+        {
+          label: "Search Plugins",
+          icon: <FontAwesomeIcon icon={faMagnifyingGlass} />,
+          onClick: () => navigate("/plugins/search"),
+          current: pathname.includes("/plugins/search"),
+        },
+      ],
     },
   ];
 
