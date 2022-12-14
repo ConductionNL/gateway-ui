@@ -26,8 +26,8 @@ module.exports = {
         autoGenHomeLabel: "Dashboard",
         crumbLabelUpdates: [
           {
-            pathname: "/actions/[actionId]",
-            crumbLabel: "Action",
+            pathname: "/collections/[collectionId]",
+            crumbLabel: "collection",
           },
         ],
       },
