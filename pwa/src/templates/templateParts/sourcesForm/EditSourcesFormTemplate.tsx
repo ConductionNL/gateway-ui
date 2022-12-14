@@ -178,8 +178,21 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
       }
     }
 
-    setHeaders(source.headers);
-    setQuery(source.query);
+    console.log(Array.isArray(source.headers));
+
+    if (Array.isArray(source.headers) || source.headers === undefined) {
+      setHeaders(source.headers);
+    } else {
+      const newHeaders = Object.entries(source.headers).map(([key, value]) => ({ key, value: value }));
+      setHeaders(newHeaders);
+    }
+
+    if (Array.isArray(source.query) || source.query === undefined) {
+      setQuery(source.query);
+    } else {
+      const newQuery = Object.entries(source.query).map(([key, value]) => ({ key, value: value }));
+      setQuery(newQuery);
+    }
   };
 
   React.useEffect(() => {
