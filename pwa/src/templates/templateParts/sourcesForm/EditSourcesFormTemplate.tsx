@@ -178,8 +178,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
       }
     }
 
-    console.log(Array.isArray(source.headers));
-
     if (Array.isArray(source.headers) || source.headers === undefined) {
       setHeaders(source.headers);
     } else {
