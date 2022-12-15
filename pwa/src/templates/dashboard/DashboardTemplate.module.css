@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  flex-direction: column;
 }
 
 .sidebar {
@@ -7,7 +8,7 @@
 }
 
 .content {
-  width: 100%;
+  width: unset;
   overflow-y: auto;
   height: calc(100vh - var(--gateway-ui-size-xl) * 2);
   padding-block: var(--gateway-ui-size-xl);
@@ -15,5 +16,16 @@
 }
 
 .content > *:not(:last-child) {
-  margin-block-end: var(--gateway-ui-size-xl);
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+@media only screen and (min-width: 576px) {
+  .container {
+    flex-direction: row;
+  }
+
+  .content {
+    overflow-y: auto;
+    width: 100%;
+  }
 }
