@@ -66,7 +66,6 @@ export const EndpointsTemplate: React.FC = () => {
                 <TableCell />
                 <TableCell />
                 <TableCell />
-                <TableCell />
               </TableRow>
             )}
           </TableBody>

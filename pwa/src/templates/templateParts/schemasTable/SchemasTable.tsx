@@ -21,7 +21,7 @@ export const SchemasTable: React.FC<SchemasTableProps> = ({ schemas }) => {
       </TableHead>
       <TableBody>
         {schemas.map((schema) => (
-          <TableRow className={styles.tableRow} onClick={() => navigate(`/schemas/${schema.id}`)} key={schema.id}>
+          <TableRow onClick={() => navigate(`/schemas/${schema.id}`)} key={schema.id}>
             <TableCell>{schema.name}</TableCell>
 
             <TableCell onClick={() => navigate(`/schemas/${schema.id}`)}>

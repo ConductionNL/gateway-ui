@@ -278,7 +278,6 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                   <SelectSingle
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
-                    validation={{ required: true }}
                     {...{ register, errors, control }}
                   />
                 )}
@@ -301,7 +300,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
             </FormField>
           </div>
         </div>
-        
+
         <section className={styles.descriptionSection}>
           <FormField>
             <FormFieldInput>
