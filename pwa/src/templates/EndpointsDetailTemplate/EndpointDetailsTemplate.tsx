@@ -57,8 +57,6 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
                     </TableRow>
                   ))}
 
-                  {console.log(getEndpoint.data)}
-
                   {!getEndpoint.data.throws.length && (
                     <TableRow>
                       <TableCell>No subscribed throws.</TableCell>
