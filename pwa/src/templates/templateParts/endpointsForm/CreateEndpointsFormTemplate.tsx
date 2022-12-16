@@ -3,7 +3,6 @@ import * as styles from "./EndpointsFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, {
-  FormFieldDescription,
   FormFieldGroup,
   FormFieldGroupLabel,
   FormFieldInput,
@@ -21,6 +20,8 @@ import { CreateKeyValue } from "@conduction/components/lib/components/formFields
 import { useSource } from "../../../hooks/source";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../../hooks/schema";
+import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 
 interface CreateEndpointFormTemplateProps {
   endpointId?: string;
@@ -33,6 +34,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
   const [formError, setFormError] = React.useState<string>("");
   const [pathParts, setPathParts] = React.useState<any[]>([]);
   const [methods, setMethods] = React.useState<any[]>([]);
+  const [throws, setThrows] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
   const _useEndpoints = useEndpoint(queryClient);
@@ -68,12 +70,12 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
     const payload = {
       ...data,
       method: data.method && data.method.value,
-      path: data.path.split(","),
-      throws: data.throws ? data.throws.split(",") : null,
+      path: data.path.split("/"),
+      throws: data.throws?.map((_throw: any) => _throw.value),
       proxy: data.source && `/admin/gateways/${data.source.value}`,
       methods: methods,
       operationType: data.operationType.value,
-      entities: data.schemas.map((schema: any) => `/admin/entities/${schema.value}`),
+      entities: data.schemas && data.schemas.map((schema: any) => `/admin/entities/${schema.value}`),
     };
     createOrEditEndpoint.mutate({ payload, id: endpointId });
   };
@@ -90,6 +92,10 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
       return newMethodArray;
     }
   };
+
+  React.useEffect(() => {
+    setThrows([...predefinedSubscriberEvents]);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -143,7 +149,10 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="throws" disabled={loading} />
+              {throws.length > 0 && (
+                // @ts-ignore
+                <SelectCreate options={throws} name="throws" {...{ register, errors, control }} />
+              )}
             </FormFieldInput>
           </FormField>
 
@@ -211,14 +220,12 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
           </FormFieldGroup>
         </div>
 
-        <section className={styles.section}>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Description")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="description" disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-        </section>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>{t("Description")}</FormFieldLabel>
+            <Textarea {...{ register, errors }} name="description" disabled={loading} />
+          </FormFieldInput>
+        </FormField>
 
         <section className={styles.section}>
           <FormField>

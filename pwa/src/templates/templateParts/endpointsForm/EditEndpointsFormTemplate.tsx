@@ -22,6 +22,8 @@ import { useSource } from "../../../hooks/source";
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
+import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 
 interface EditEndpointFormTemplateProps {
   endpoint: any;
@@ -37,6 +39,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   const [formError, setFormError] = React.useState<string>("");
   const [methods, setMethods] = React.useState<any[]>([]);
   const [pathParts, setPathParts] = React.useState<any[]>([]);
+  const [throws, setThrows] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
   const _useEndpoints = useEndpoint(queryClient);
@@ -77,14 +80,13 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     const payload = {
       ...data,
       method: data.method && data.method.value,
-      path: data.path.split(","),
-      throws: data.throws ? data.throws.split(",") : null,
+      path: data.path ? data.path.split("/") : null,
+      throws: data.throws?.map((_throw: any) => _throw.value),
       proxy: data.source && `/admin/gateways/${data.source.value}`,
       entities: data.schemas.map((schema: any) => `/admin/entities/${schema.value}`),
       methods: methods,
       operationType: data.operationType.value,
     };
-
     createOrEditEndpoint.mutate({ payload, id: endpointId });
     queryClient.setQueryData(["endpoint", endpointId], data);
   };
@@ -114,9 +116,11 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     const basicFields: string[] = ["name", "description", "pathRegex", "tag"];
     basicFields.forEach((field) => setValue(field, endpoint[field]));
 
-    setValue("path", endpoint.path.toString());
-    setValue("throws", endpoint.throws && endpoint.throws.toString());
-
+    setValue("path", endpoint.path && endpoint.path.join("/"));
+    setValue(
+      "throws",
+      endpoint["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
+    );
     setValue(
       "method",
       methodSelectOptions.find((option) => endpoint.method === option.value),
@@ -152,6 +156,13 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
   React.useEffect(() => {
     handleSetFormValues(endpoint);
+
+    const newThrowsFilter = endpoint.throws.filter(
+      (_throw: any) => !predefinedSubscriberEvents.some((event) => event.value === _throw),
+    );
+    const newThrows = newThrowsFilter.map((_throw: any) => ({ label: _throw, value: _throw }));
+
+    setThrows([...newThrows, ...predefinedSubscriberEvents]);
   }, []);
 
   return (
@@ -217,7 +228,17 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="throws" disabled={loading} />
+              {throws.length <= 0 && <Skeleton height="50px" />}
+
+              {throws.length > 0 && (
+                // @ts-ignore
+                <SelectCreate
+                  options={throws}
+                  name="throws"
+                  validation={{ required: true }}
+                  {...{ register, errors, control }}
+                />
+              )}
             </FormFieldInput>
           </FormField>
 
@@ -233,7 +254,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
               <FormFieldLabel>{t("Select a source")}</FormFieldLabel>
 
               {getSources.isLoading && getSource.isLoading && <Skeleton height="50px" />}
-              {getSources.isSuccess && getSource.isSuccess && (
+              {getSources.isSuccess && (getSource.isSuccess || !endpoint.proxy) && (
                 // @ts-ignore
                 <SelectSingle
                   options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
@@ -325,14 +346,12 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
           </FormFieldGroup>
         </div>
 
-        <section className={styles.section}>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Description")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="description" disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-        </section>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>{t("Description")}</FormFieldLabel>
+            <Textarea {...{ register, errors }} name="description" disabled={loading} />
+          </FormFieldInput>
+        </FormField>
 
         <section className={styles.section}>
           <FormField>
