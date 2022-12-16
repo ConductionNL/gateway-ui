@@ -43,7 +43,6 @@ export const EndpointsTemplate: React.FC = () => {
               <TableHeader>Path regex</TableHeader>
               <TableHeader>Date Created</TableHeader>
               <TableHeader>Date Modified</TableHeader>
-              <TableHeader>Throws</TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -58,7 +57,6 @@ export const EndpointsTemplate: React.FC = () => {
                 <TableCell>{endpoint.pathRegex ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
                 <TableCell>{translateDate(i18n.language, endpoint.dateModified)}</TableCell>
-                <TableCell>{endpoint.throws ?? "-"}</TableCell>
               </TableRow>
             ))}
             {!getEndpoints.data.length && (
