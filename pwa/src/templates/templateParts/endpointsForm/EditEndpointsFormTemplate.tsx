@@ -55,19 +55,6 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
 
-  const methodSelectOptions = [
-    { label: "GET", value: "GET" },
-    { label: "POST", value: "POST" },
-    { label: "PUT", value: "PUT" },
-    { label: "UPDATE", value: "UPDATE" },
-    { label: "DELETE", value: "DELETE" },
-  ];
-
-  const operationTypeSelectOptions = [
-    { label: "Item", value: "item" },
-    { label: "Collection", value: "collection" },
-  ];
-
   const {
     register,
     handleSubmit,
@@ -79,13 +66,11 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
-      method: data.method && data.method.value,
       path: data.path ? data.path.split("/") : null,
       throws: data.throws?.map((_throw: any) => _throw.value),
       proxy: data.source && `/admin/gateways/${data.source.value}`,
       entities: data.schemas.map((schema: any) => `/admin/entities/${schema.value}`),
       methods: methods,
-      operationType: data.operationType.value,
     };
     createOrEditEndpoint.mutate({ payload, id: endpointId });
     queryClient.setQueryData(["endpoint", endpointId], data);
@@ -120,15 +105,6 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     setValue(
       "throws",
       endpoint["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
-    );
-    setValue(
-      "method",
-      methodSelectOptions.find((option) => endpoint.method === option.value),
-    );
-
-    setValue(
-      "operationType",
-      operationTypeSelectOptions.find((option) => endpoint.operationType === option.value),
     );
 
     setValue(
@@ -189,169 +165,151 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.grid}>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Name")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
+        <div className={styles.gridContainer}>
+          <div className={styles.grid}>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Name")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
 
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Operation Type")}</FormFieldLabel>
-              {/* @ts-ignore */}
-              <SelectSingle
-                name="operationType"
-                options={operationTypeSelectOptions}
-                {...{ control, errors }}
-                validation={{ required: true }}
-                disabled={loading}
-              />
-            </FormFieldInput>
-          </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Path")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="path" validation={{ required: true }} disabled={loading} />
+              </FormFieldInput>
+            </FormField>
 
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Path")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="path" validation={{ required: true }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Path Regex")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="pathRegex" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
 
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Path Regex")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="pathRegex" disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-              {throws.length <= 0 && <Skeleton height="50px" />}
-
-              {throws.length > 0 && (
-                // @ts-ignore
-                <SelectCreate
-                  options={throws}
-                  name="throws"
-                  validation={{ required: true }}
-                  {...{ register, errors, control }}
+            <FormFieldGroup>
+              <FormFieldGroupLabel>Methods</FormFieldGroupLabel>
+              <FormFieldInput className={styles.grid}>
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("GET")}
+                      onChange={() => addToArray("GET")}
+                    />
+                  }
+                  label="GET"
                 />
-              )}
-            </FormFieldInput>
-          </FormField>
-
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Tag")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="tag" disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Select a source")}</FormFieldLabel>
-
-              {getSources.isLoading && getSource.isLoading && <Skeleton height="50px" />}
-              {getSources.isSuccess && (getSource.isSuccess || !endpoint.proxy) && (
-                // @ts-ignore
-                <SelectSingle
-                  options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
-                  name="source"
-                  validation={{ required: true }}
-                  {...{ register, errors, control }}
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("POST")}
+                      onChange={() => addToArray("POST")}
+                    />
+                  }
+                  label="POST"
                 />
-              )}
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Select a schema")}</FormFieldLabel>
-
-              {getSchemas.isLoading && <Skeleton height="50px" />}
-              {getSchemas.isSuccess && (
-                // @ts-ignore
-                <SelectMultiple
-                  options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
-                  name="schemas"
-                  {...{ register, errors, control }}
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("PUT")}
+                      onChange={() => addToArray("PUT")}
+                    />
+                  }
+                  label="PUT"
                 />
-              )}
-            </FormFieldInput>
-          </FormField>
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("PATCH")}
+                      onChange={() => addToArray("PATCH")}
+                    />
+                  }
+                  label="PATCH"
+                />
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("DELETE")}
+                      onChange={() => addToArray("DELETE")}
+                    />
+                  }
+                  label="DELETE"
+                />
+              </FormFieldInput>
+            </FormFieldGroup>
 
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Method")}</FormFieldLabel>
-              {/* @ts-ignore */}
-              <SelectSingle name="method" options={methodSelectOptions} {...{ control, errors }} disabled={loading} />
-            </FormFieldInput>
-          </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Throws")}</FormFieldLabel>
+                {throws.length <= 0 && <Skeleton height="50px" />}
 
-          <FormFieldGroup>
-            <FormFieldGroupLabel>Methods</FormFieldGroupLabel>
-            <FormFieldInput className={styles.grid}>
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    checked={endpoint.methods && endpoint.methods.includes("GET")}
-                    onChange={() => addToArray("GET")}
+                {throws.length > 0 && (
+                  // @ts-ignore
+                  <SelectCreate
+                    options={throws}
+                    name="throws"
+                    validation={{ required: true }}
+                    {...{ register, errors, control }}
                   />
-                }
-                label="GET"
-              />
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    checked={endpoint.methods && endpoint.methods.includes("POST")}
-                    onChange={() => addToArray("POST")}
+                )}
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Tag")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="tag" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Select a source")}</FormFieldLabel>
+
+                {getSources.isLoading && getSource.isLoading && <Skeleton height="50px" />}
+                {getSources.isSuccess && (getSource.isSuccess || !endpoint.proxy) && (
+                  // @ts-ignore
+                  <SelectSingle
+                    options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
+                    name="source"
+                    validation={{ required: true }}
+                    {...{ register, errors, control }}
                   />
-                }
-                label="POST"
-              />
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    checked={endpoint.methods && endpoint.methods.includes("PUT")}
-                    onChange={() => addToArray("PUT")}
+                )}
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Select a schema")}</FormFieldLabel>
+
+                {getSchemas.isLoading && <Skeleton height="50px" />}
+                {getSchemas.isSuccess && (
+                  // @ts-ignore
+                  <SelectMultiple
+                    options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
+                    name="schemas"
+                    {...{ register, errors, control }}
                   />
-                }
-                label="PUT"
-              />
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    checked={endpoint.methods && endpoint.methods.includes("PATCH")}
-                    onChange={() => addToArray("PATCH")}
-                  />
-                }
-                label="PATCH"
-              />
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    checked={endpoint.methods && endpoint.methods.includes("DELETE")}
-                    onChange={() => addToArray("DELETE")}
-                  />
-                }
-                label="DELETE"
-              />
-            </FormFieldInput>
-          </FormFieldGroup>
+                )}
+              </FormFieldInput>
+            </FormField>
+          </div>
         </div>
-
-        <FormField>
-          <FormFieldInput>
-            <FormFieldLabel>{t("Description")}</FormFieldLabel>
-            <Textarea {...{ register, errors }} name="description" disabled={loading} />
-          </FormFieldInput>
-        </FormField>
+        
+        <section className={styles.descriptionSection}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Description")}</FormFieldLabel>
+              <Textarea {...{ register, errors }} name="description" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+        </section>
 
         <section className={styles.section}>
           <FormField>

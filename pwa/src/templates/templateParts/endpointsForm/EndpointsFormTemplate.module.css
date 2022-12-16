@@ -6,13 +6,17 @@
   padding-block-end: var(--gateway-ui-size-md);
 }
 
-.gridContainer > *:not(:first-child) {
-  margin-block-start: var(--gateway-ui-size-sm);
+.gridContainer {
+  margin-block-end: var(--gateway-ui-size-2xl);
 }
 
 .section {
   display: flex;
   justify-content: space-between;
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.descriptionSection {
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
