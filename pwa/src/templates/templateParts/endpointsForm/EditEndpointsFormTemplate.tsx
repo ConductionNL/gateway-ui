@@ -2,17 +2,28 @@ import * as React from "react";
 import * as styles from "./EndpointsFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
-import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import FormField, {
+  FormFieldGroup,
+  FormFieldGroupLabel,
+  FormFieldInput,
+  FormFieldLabel,
+} from "@gemeente-denhaag/form-field";
+import { Alert, Button, Checkbox, FormControlLabel, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputText, SelectSingle, Textarea } from "@conduction/components";
+import { InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useEndpoint } from "../../../hooks/endpoint";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import { useSource } from "../../../hooks/source";
+import { useSchema } from "../../../hooks/schema";
+import Skeleton from "react-loading-skeleton";
+import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
+import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 
 interface EditEndpointFormTemplateProps {
   endpoint: any;
@@ -26,6 +37,9 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
+  const [methods, setMethods] = React.useState<any[]>([]);
+  const [pathParts, setPathParts] = React.useState<any[]>([]);
+  const [throws, setThrows] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
   const _useEndpoints = useEndpoint(queryClient);
@@ -34,13 +48,12 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
   const dashboardCard = getDashboardCard(endpoint.name);
 
-  const methodSelectOptions = [
-    { label: "GET", value: "GET" },
-    { label: "POST", value: "POST" },
-    { label: "PUT", value: "PUT" },
-    { label: "UPDATE", value: "UPDATE" },
-    { label: "DELETE", value: "DELETE" },
-  ];
+  const _useSource = useSource(queryClient);
+  const getSources = _useSource.getAll();
+  const getSource = _useSource.getOne(endpoint?.proxy?.id);
+
+  const _useSchema = useSchema(queryClient);
+  const getSchemas = _useSchema.getAll();
 
   const {
     register,
@@ -51,14 +64,33 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    data = { ...data, method: data.method.value };
-
-    createOrEditEndpoint.mutate({ payload: data, id: endpointId });
+    const payload = {
+      ...data,
+      path: data.path ? data.path.split("/") : null,
+      throws: data.throws?.map((_throw: any) => _throw.value),
+      proxy: data.source && `/admin/gateways/${data.source.value}`,
+      entities: data.schemas.map((schema: any) => `/admin/entities/${schema.value}`),
+      methods: methods,
+    };
+    createOrEditEndpoint.mutate({ payload, id: endpointId });
     queryClient.setQueryData(["endpoint", endpointId], data);
   };
 
-  const handleDelete = (id: string): void => {
-    deleteEndpoint.mutateAsync({ id: id });
+  const addToArray = (value: string) => {
+    !methods.includes(value) ? methods.push(value) : removeMethod(methods, value);
+
+    function removeMethod<T>(newMethodArray: Array<T>, value: T): Array<T> {
+      const index = newMethodArray.indexOf(value);
+      if (index > -1) {
+        newMethodArray.splice(index, 1);
+        setMethods(newMethodArray);
+      }
+      return newMethodArray;
+    }
+  };
+
+  const handleDelete = () => {
+    deleteEndpoint.mutate({ id: endpointId });
   };
 
   const addOrRemoveFromDashboard = () => {
@@ -69,14 +101,44 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     const basicFields: string[] = ["name", "description", "pathRegex", "tag"];
     basicFields.forEach((field) => setValue(field, endpoint[field]));
 
+    setValue("path", endpoint.path && endpoint.path.join("/"));
     setValue(
-      "method",
-      methodSelectOptions.find((option) => endpoint.method === option.value),
+      "throws",
+      endpoint["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
     );
+
+    setValue(
+      "schemas",
+      endpoint.entities?.map((schema: any) => ({ label: schema.name, value: schema.id })),
+    );
+
+    setMethods(endpoint.methods);
+
+    if (Array.isArray(endpoint.pathArray) || endpoint.pathArray === undefined) {
+      setPathParts(endpoint.pathArray);
+    } else {
+      const newPathParts = Object.entries(endpoint.pathArray).map(([key, value]) => ({ key, value: value }));
+      setPathParts(newPathParts);
+    }
+  };
+
+  const handleSetSelectFormValues = (endpoint: any): void => {
+    getSource.isSuccess && setValue("source", { label: getSource.data.name, value: getSource.data.id });
   };
 
   React.useEffect(() => {
+    handleSetSelectFormValues(endpoint);
+  }, [getSource.isSuccess]);
+
+  React.useEffect(() => {
     handleSetFormValues(endpoint);
+
+    const newThrowsFilter = endpoint.throws.filter(
+      (_throw: any) => !predefinedSubscriberEvents.some((event) => event.value === _throw),
+    );
+    const newThrows = newThrowsFilter.map((_throw: any) => ({ label: _throw, value: _throw }));
+
+    setThrows([...newThrows, ...predefinedSubscriberEvents]);
   }, []);
 
   return (
@@ -96,7 +158,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
@@ -114,50 +176,149 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                <Textarea
-                  {...{ register, errors }}
-                  name="description"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
+                <FormFieldLabel>{t("Path")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="path" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Path Regex")}</FormFieldLabel>
-                <InputText
-                  {...{ register, errors }}
-                  name="pathRegex"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
+                <InputText {...{ register, errors }} name="pathRegex" disabled={loading} />
               </FormFieldInput>
             </FormField>
 
+            <FormFieldGroup>
+              <FormFieldGroupLabel>Methods</FormFieldGroupLabel>
+              <FormFieldInput className={styles.grid}>
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("GET")}
+                      onChange={() => addToArray("GET")}
+                    />
+                  }
+                  label="GET"
+                />
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("POST")}
+                      onChange={() => addToArray("POST")}
+                    />
+                  }
+                  label="POST"
+                />
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("PUT")}
+                      onChange={() => addToArray("PUT")}
+                    />
+                  }
+                  label="PUT"
+                />
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("PATCH")}
+                      onChange={() => addToArray("PATCH")}
+                    />
+                  }
+                  label="PATCH"
+                />
+                <FormControlLabel
+                  input={
+                    <Checkbox
+                      name="checkbox"
+                      checked={endpoint.methods && endpoint.methods.includes("DELETE")}
+                      onChange={() => addToArray("DELETE")}
+                    />
+                  }
+                  label="DELETE"
+                />
+              </FormFieldInput>
+            </FormFieldGroup>
+
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Method")}</FormFieldLabel>
-                {/* @ts-ignore */}
-                <SelectSingle
-                  name="method"
-                  options={methodSelectOptions}
-                  {...{ control, errors }}
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
+                <FormFieldLabel>{t("Throws")}</FormFieldLabel>
+                {throws.length <= 0 && <Skeleton height="50px" />}
+
+                {throws.length > 0 && (
+                  // @ts-ignore
+                  <SelectCreate
+                    options={throws}
+                    name="throws"
+                    validation={{ required: true }}
+                    {...{ register, errors, control }}
+                  />
+                )}
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Tag")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="tag" validation={{ required: true }} disabled={loading} />
+                <InputText {...{ register, errors }} name="tag" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Select a source")}</FormFieldLabel>
+
+                {getSources.isLoading && getSource.isLoading && <Skeleton height="50px" />}
+                {getSources.isSuccess && (getSource.isSuccess || !endpoint.proxy) && (
+                  // @ts-ignore
+                  <SelectSingle
+                    options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
+                    name="source"
+                    {...{ register, errors, control }}
+                  />
+                )}
+              </FormFieldInput>
+            </FormField>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Select a schema")}</FormFieldLabel>
+
+                {getSchemas.isLoading && <Skeleton height="50px" />}
+                {getSchemas.isSuccess && (
+                  // @ts-ignore
+                  <SelectMultiple
+                    options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
+                    name="schemas"
+                    {...{ register, errors, control }}
+                  />
+                )}
               </FormFieldInput>
             </FormField>
           </div>
         </div>
+
+        <section className={styles.descriptionSection}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Description")}</FormFieldLabel>
+              <Textarea {...{ register, errors }} name="description" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+        </section>
+
+        <section className={styles.section}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>
+              {/* @ts-ignore */}
+              <CreateKeyValue name="pathArray" defaultValue={pathParts} {...{ register, errors, control }} />{" "}
+            </FormFieldInput>
+          </FormField>
+        </section>
       </form>
     </div>
   );

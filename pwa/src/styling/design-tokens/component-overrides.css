@@ -31,6 +31,21 @@
 
   --utrecht-form-input-font-size: var(--gateway-ui-font-size-md);
   --utrecht-form-label-font-size: var(--gateway-ui-font-size-md);
+
+  --utrecht-custom-checkbox-checked-background-color: var(
+    --gateway-ui-color-primary
+  );
+  --utrecht-custom-checkbox-checked-border-color: var(
+    --gateway-ui-color-primary
+  );
+
+  --denhaag-checkbox-hover-checked-background-color: var(
+    --gateway-ui-color-primary-hover
+  );
+
+  --denhaag-checkbox-hover-checked-border-color: var(
+    --gateway-ui-color-primary-hover
+  );
 }
 
 .select-module--select--63d48 > div {

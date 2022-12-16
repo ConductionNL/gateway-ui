@@ -19,7 +19,7 @@ export const handleLogin = async (data: IUnvalidatedUser, API: APIService) => {
       navigate("/");
     }),
     {
-      loading: "Loging in...",
+      loading: "Logging in...",
       success: "Welcome back",
       error: (err) => err.message,
     },
