@@ -1,6 +1,15 @@
 import * as React from "react";
 import * as styles from "./GatewayDetailTemplate.module.css";
-import { Button, Heading1, Heading2, Heading3, Heading4, Link, Paragraph } from "@gemeente-denhaag/components-react";
+import {
+  Button,
+  Divider,
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Link,
+  Paragraph,
+} from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -42,49 +51,107 @@ export const GatewayDetailTemplate: React.FC = () => {
             <div className={styles.type}>
               <p>{`Type: ${getPlugins.data?.type}`}</p>
               <p>{`Language: ${getPlugins.data?.language}`}</p>
-              <p>{`Dependents: ${getPlugins.data?.dependents}`}</p>
             </div>
 
-            <div className={styles.descriptionAndRepo}>
+            <div>
               <Paragraph>{getPlugins.data?.description}</Paragraph>
-
-              <Paragraph>
-                go to{" "}
-                <span onClick={() => open(getPlugins.data.repository)}>
-                  <Link icon={<ExternalLinkIcon />}>
-                    repository
-                  </Link>
-                </span>
-              </Paragraph>
             </div>
           </div>
 
-          <Heading3>Downloads</Heading3>
-          <div className={styles.downloads}>
-            <div>
-              <Heading4>Total</Heading4>
-              <CircleIndicatorTemplate
-                layoutClassName={styles.downloadIndicatorContainer}
-                value={getPlugins.data?.downloads.total}
-              />
+          <div>
+            <h3>Downloads</h3>
+            <div className={styles.cardsContainer}>
+              <div className={styles.card}>
+                <Heading4>Total</Heading4>
+                <div className={styles.cardContent}>
+                  <CircleIndicatorTemplate
+                    layoutClassName={styles.downloadIndicatorContainer}
+                    value={getPlugins.data?.downloads.total}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.card}>
+                <Heading4>Monthly</Heading4>
+                <div className={styles.cardContent}>
+                  <CircleIndicatorTemplate
+                    layoutClassName={styles.downloadIndicatorContainer}
+                    maxValue={getPlugins.data?.downloads.total}
+                    value={getPlugins.data?.downloads.monthly}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.card}>
+                <Heading4>Daily</Heading4>
+                <div className={styles.cardContent}>
+                  <CircleIndicatorTemplate
+                    layoutClassName={styles.downloadIndicatorContainer}
+                    maxValue={getPlugins.data?.downloads.total}
+                    value={getPlugins.data?.downloads.daily}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Divider />
+
+          <div>
+            <h3 onClick={() => open(getPlugins.data.repository)}>
+              <Link icon={<ExternalLinkIcon />}>Github</Link>
+            </h3>
+            <div className={styles.cardsContainer}>
+              <div className={styles.card}>
+                <Heading4>Forks</Heading4>
+                <div className={styles.cardContent}>
+                  <Heading1>{getPlugins.data.github_forks}</Heading1>
+                </div>
+              </div>
+
+              <div className={styles.card}>
+                <Heading4>Stars</Heading4>
+                <div className={styles.cardContent}>
+                  <Heading1>{getPlugins.data.github_stars}</Heading1>
+                </div>
+              </div>
+
+              <div className={styles.card}>
+                <Heading4>Watchers</Heading4>
+                <div className={styles.cardContent}>
+                  <Heading1>{getPlugins.data.github_watchers}</Heading1>
+                </div>
+              </div>
+
+              <div className={styles.card}>
+                <Heading4>Open issues</Heading4>
+                <div className={styles.cardContent}>
+                  <Heading1>{getPlugins.data.github_open_issues}</Heading1>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.cardsContainer}>
+            <div className={styles.card}>
+              <Heading4>Dependents</Heading4>
+              <div className={styles.cardContent}>
+                <Heading1>{getPlugins.data.dependents}</Heading1>
+              </div>
             </div>
 
-            <div>
-              <Heading4>Monthly</Heading4>
-              <CircleIndicatorTemplate
-                layoutClassName={styles.downloadIndicatorContainer}
-                maxValue={getPlugins.data?.downloads.total}
-                value={getPlugins.data?.downloads.monthly}
-              />
+            <div className={styles.card}>
+              <Heading4>Faves</Heading4>
+              <div className={styles.cardContent}>
+                <Heading1>{getPlugins.data.favers}</Heading1>
+              </div>
             </div>
 
-            <div>
-              <Heading4>Daily</Heading4>
-              <CircleIndicatorTemplate
-                layoutClassName={styles.downloadIndicatorContainer}
-                maxValue={getPlugins.data?.downloads.total}
-                value={getPlugins.data?.downloads.daily}
-              />
+            <div className={styles.card}>
+              <Heading4>Suggesters</Heading4>
+              <div className={styles.cardContent}>
+                <Heading1>{getPlugins.data.suggesters}</Heading1>
+              </div>
             </div>
           </div>
         </div>

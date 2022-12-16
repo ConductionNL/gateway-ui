@@ -45,22 +45,34 @@
 }
 
 .downloadIndicatorContainer {
-  height: 124px;
+  height: 100%;
+  width: fit-content;
 }
 
-.downloads {
+.cardsContainer {
   display: flex;
-  gap: var(--gateway-ui-size-xl);
+  flex-wrap: wrap;
+  gap: var(--gateway-ui-size-lg);
 }
 
-.downloads > div {
+.card {
   background-color: var(--gateway-ui-color-lightgrey);
-  padding-block: var(--gateway-ui-size-md);
-  padding-inline: var(--gateway-ui-size-md);
-  border-radius: 24px;
+  padding-block: var(--gateway-ui-size-sm);
+  padding-inline: var(--gateway-ui-size-sm);
+  border-radius: 12px;
+  width: 110px;
+  text-align: center;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--gateway-ui-size-sm);
+}
+
+.card .cardContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

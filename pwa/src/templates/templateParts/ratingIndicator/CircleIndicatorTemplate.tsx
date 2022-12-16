@@ -16,19 +16,18 @@ export const CircleIndicatorTemplate: React.FC<CircleIndicatorTemplateProps> = (
   layoutClassName,
 }) => {
   return (
-    <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>
+    <div className={clsx([layoutClassName && layoutClassName])}>
       <PieChart
-        className={styles.ratingPieChart}
         data={[
           {
             value: 1,
             key: 1,
             color: getTokenValue(styles.ratingActiveColor),
-            title: `${value}${value && maxValue && "/" || ""}${maxValue ?? ""}`,
+            title: `${value} ${(maxValue && "/") || ""} ${maxValue ?? ""}`,
           },
         ]}
         reveal={(value / (maxValue ?? value)) * 100}
-        lineWidth={20}
+        lineWidth={10}
         background={getTokenValue(styles.ratingDisabledColor)}
         startAngle={270}
         lengthAngle={360}
