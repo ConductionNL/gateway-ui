@@ -27,7 +27,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
   ) => {
     e.stopPropagation();
 
-    const confirmDeletion = confirm("Are you sure you want to delete this action?");
+    const confirmDeletion = confirm("Are you sure you want to delete this object?");
 
     if (confirmDeletion) {
       deleteSchema.mutate({ id: objectId });
