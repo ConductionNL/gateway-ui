@@ -51,13 +51,13 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
             {getEndpoint.isSuccess && (
               <Table>
                 <TableBody>
-                  {getEndpoint.data.throws.map((thrown: any, idx: number) => (
+                  {getEndpoint.data.throws?.map((thrown: any, idx: number) => (
                     <TableRow key={idx}>
                       <TableCell>{thrown}</TableCell>
                     </TableRow>
                   ))}
 
-                  {!getEndpoint.data.throws.length && (
+                  {!getEndpoint.data.throws?.length && (
                     <TableRow>
                       <TableCell>No subscribed throws.</TableCell>
                     </TableRow>
