@@ -104,7 +104,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     setValue("path", endpoint.path && endpoint.path.join("/"));
     setValue(
       "throws",
-      endpoint["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
+      endpoint["throws"]?.map((_throw: any) => ({ label: _throw, value: _throw })),
     );
 
     setValue(
@@ -133,12 +133,16 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   React.useEffect(() => {
     handleSetFormValues(endpoint);
 
-    const newThrowsFilter = endpoint.throws.filter(
+    const newThrowsFilter = endpoint.throws?.filter(
       (_throw: any) => !predefinedSubscriberEvents.some((event) => event.value === _throw),
     );
-    const newThrows = newThrowsFilter.map((_throw: any) => ({ label: _throw, value: _throw }));
+    const newThrows = newThrowsFilter?.map((_throw: any) => ({ label: _throw, value: _throw }));
 
-    setThrows([...newThrows, ...predefinedSubscriberEvents]);
+    if (endpoint.throws) {
+      setThrows([...predefinedSubscriberEvents, ...newThrows]);
+    } else {
+      setThrows([...predefinedSubscriberEvents]);
+    }
   }, []);
 
   return (
