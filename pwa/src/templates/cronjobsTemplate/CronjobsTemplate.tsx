@@ -6,9 +6,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { QueryClient } from "react-query";
 import { useCronjob } from "../../hooks/cronjob";
 import { navigate } from "gatsby";
-import { Container, Tag } from "@conduction/components";
+import { Container, Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import clsx from "clsx";
@@ -42,11 +42,10 @@ export const CronjobsTemplate: React.FC = () => {
             <TableRow>
               <TableHeader>{t("Name")}</TableHeader>
               <TableHeader>{t("Status")}</TableHeader>
-              <TableHeader>{t("Active")}</TableHeader>
+              <TableHeader>{t("Enabled")}</TableHeader>
               <TableHeader>CronTab</TableHeader>
               <TableHeader>{t("Last run")}</TableHeader>
               <TableHeader>{t("Next run")}</TableHeader>
-              <TableHeader>Status</TableHeader>
               <TableHeader>{t("Date created")}</TableHeader>
               <TableHeader>{t("Date modified")}</TableHeader>
               <TableHeader></TableHeader>
@@ -61,15 +60,21 @@ export const CronjobsTemplate: React.FC = () => {
               >
                 <TableCell>{cronjob.name}</TableCell>
                 <TableCell>
-                  <div className={clsx(styles[cronjob.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                    <Tag label={cronjob.status?.toString() ?? "-"} />
+                  <div className={clsx(styles[cronjob.status === true ? "statusOk" : "statusFailed"])}>
+                    <ToolTip tooltip="Status">
+                      <Tag
+                        layoutClassName={styles.tagWidth}
+                        icon={<FontAwesomeIcon icon={cronjob.status === true ? faCheck : faXmark} />}
+                        label={cronjob.status?.toString() ?? "no status"}
+                      />
+                    </ToolTip>
                   </div>
                 </TableCell>
-                <TableCell>-</TableCell>
+                <TableCell>{cronjob.isEnabled ? "Yes" : "No"}</TableCell>
                 <TableCell>{cronjob.crontab}</TableCell>
                 <TableCell>{dateTime(t(i18n.language), cronjob.lastRun) ?? "-"}</TableCell>
                 <TableCell>{dateTime(t(i18n.language), cronjob.nextRun) ?? "-"}</TableCell>
-                <TableCell>-</TableCell>
+
                 <TableCell>{translateDate(i18n.language, cronjob.dateCreated)}</TableCell>
                 <TableCell>{translateDate(i18n.language, cronjob.dateMo)}</TableCell>
                 <TableCell onClick={() => navigate(`/cronjobs/${cronjob.id}`)}>
