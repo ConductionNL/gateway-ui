@@ -8,6 +8,7 @@ import { StylesProvider } from "@gemeente-denhaag/components-react";
 import { Head } from "./Head";
 import { Content } from "../Content";
 import { ThemeProvider } from "../templates/themeProvider/ThemeProvider";
+import { TabsProvider, ITabs, tabs as _tabs } from "../context/tabs";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [API, setAPI] = React.useState<APIService>(React.useContext(APIContext));
   const [gatsbyContext, setGatsbyContext] = React.useState<IGatsbyContext>({ ...{ pageContext, location } });
+  const [tabs, setTabs] = React.useState<ITabs>(_tabs);
 
   React.useEffect(() => {
     setAPI(new APIService());
@@ -38,11 +40,13 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
       <GatsbyProvider value={gatsbyContext}>
         <APIProvider value={API}>
           <StylesProvider>
-            <ThemeProvider>
-              <div className={styles.container}>
-                <Content {...{ children }} />
-              </div>
-            </ThemeProvider>
+            <TabsProvider value={[tabs, setTabs]}>
+              <ThemeProvider>
+                <div className={styles.container}>
+                  <Content {...{ children }} />
+                </div>
+              </ThemeProvider>
+            </TabsProvider>
           </StylesProvider>
         </APIProvider>
       </GatsbyProvider>

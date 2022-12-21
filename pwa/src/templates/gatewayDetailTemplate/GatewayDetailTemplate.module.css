@@ -1,0 +1,78 @@
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttons > * {
+  display: flex;
+  align-items: center;
+}
+
+.buttons *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.gatewayDetailContainer > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.type {
+  color: var(--gateway-ui-color-darkgrey);
+  font-size: var(--gateway-ui-font-size-md);
+  display: flex;
+  gap: var(--gateway-ui-size-xl);
+}
+
+.extraInfo {
+  width: 100%;
+  display: flex;
+  gap: var(--gateway-ui-size-md);
+}
+
+.downloadIndicatorContainer {
+  height: 100%;
+  width: fit-content;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gateway-ui-size-lg);
+}
+
+.card {
+  background-color: var(--gateway-ui-color-lightgrey);
+  padding-block: var(--gateway-ui-size-sm);
+  padding-inline: var(--gateway-ui-size-sm);
+  border-radius: 12px;
+  width: 110px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gateway-ui-size-sm);
+}
+
+.card .cardContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
