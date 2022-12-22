@@ -8,6 +8,7 @@ import { StylesProvider } from "@gemeente-denhaag/components-react";
 import { Head } from "./Head";
 import { Content } from "../Content";
 import { ThemeProvider } from "../templates/themeProvider/ThemeProvider";
+import { Toaster } from "react-hot-toast";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -38,6 +39,8 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
       <GatsbyProvider value={gatsbyContext}>
         <APIProvider value={API}>
           <StylesProvider>
+            <Toaster position="bottom-right" />
+
             <ThemeProvider>
               <div className={styles.container}>
                 <Content {...{ children }} />

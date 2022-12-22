@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { handleAutomaticLogout, validateSession } from "../services/auth";
+import toast from "react-hot-toast";
 
 // Services
 import Login from "./services/login";
@@ -83,11 +84,17 @@ export default class APIService {
   }
 }
 
+interface PromiseMessage {
+  loading?: string;
+  success?: string;
+}
+
 export const Send = (
   instance: AxiosInstance,
   method: "GET" | "POST" | "PUT" | "DELETE",
   endpoint: string,
   payload?: JSON,
+  promiseMessage?: PromiseMessage,
 ): Promise<AxiosResponse> => {
   const _payload = JSON.stringify(payload);
 
@@ -106,12 +113,31 @@ export const Send = (
 
   switch (method) {
     case "GET":
-      return instance.get(endpoint);
+      const response = instance.get(endpoint);
+
+      response.catch((err) => toast.error(err.message));
+
+      return response;
+
     case "POST":
-      return instance.post(endpoint, _payload);
+      return toast.promise(instance.post(endpoint, _payload), {
+        loading: promiseMessage?.loading ?? "Creating item...",
+        success: promiseMessage?.success ?? "Succesfully created item",
+        error: (err) => err.message,
+      });
+
     case "PUT":
-      return instance.put(endpoint, _payload);
+      return toast.promise(instance.put(endpoint, _payload), {
+        loading: promiseMessage?.loading ?? "Updating item...",
+        success: promiseMessage?.loading ?? "Succesfully updated item",
+        error: (err) => err.message,
+      });
+
     case "DELETE":
-      return instance.delete(endpoint);
+      return toast.promise(instance.delete(endpoint), {
+        loading: promiseMessage?.loading ?? "Deleting item...",
+        success: promiseMessage?.success ?? "Succesfully deleted item",
+        error: (err) => err.message,
+      });
   }
 };
