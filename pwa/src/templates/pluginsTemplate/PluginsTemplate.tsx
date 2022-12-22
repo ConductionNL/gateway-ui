@@ -47,12 +47,6 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
         <Heading1>{t(`${title} Plugins`)}</Heading1>
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/plugins/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
-          </Button>
-        </div>
       </section>
 
       {title === "Search" && <PluginsSearchBarTemplate {...{ searchQuery, setSearchQuery }} />}
@@ -71,7 +65,7 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
                 description={plugin.description}
                 packagistUrl={plugin.url}
                 repositoryUrl={plugin.Repository}
-                downloads={plugin.downloads}
+                downloads={plugin.downloads.total}
                 favers={plugin.favers}
               />
             ))}

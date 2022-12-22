@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GitHubLogo } from "../../assets/svgs/GitHub";
-import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faStar } from "@fortawesome/free-solid-svg-icons";
 import { PackagistLogo } from "../../assets/svgs/Packagist";
 
 export interface PluginCardProps {
@@ -45,7 +45,7 @@ export const PluginCard: React.FC<PluginCardProps> = ({
 
       <div className={styles.tags}>
         {packagistUrl && (
-          <ToolTip tooltip="Packagist">
+          <ToolTip tooltip=" View Packagist">
             <Tag
               layoutClassName={styles.svgLogo}
               label={t("Packagist")}
@@ -71,7 +71,7 @@ export const PluginCard: React.FC<PluginCardProps> = ({
         </ToolTip>
 
         <ToolTip tooltip="Aantal favers">
-          <Tag label={favers ?? 0} icon={<FontAwesomeIcon icon={faDownload} />} />
+          <Tag label={favers ?? 0} icon={<FontAwesomeIcon icon={faStar} />} />
         </ToolTip>
       </div>
     </div>

@@ -14,7 +14,7 @@ import {
   Paragraph,
 } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowsRotate, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faCloudArrowDown, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import _ from "lodash";
@@ -23,6 +23,7 @@ import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { CircleIndicatorTemplate } from "../templateParts/ratingIndicator/CircleIndicatorTemplate";
 import { ExternalLinkIcon } from "@gemeente-denhaag/icons";
+import { GitHubLogo } from "../../assets/svgs/GitHub";
 
 interface PluginsDetailPageProps {
   pluginName: string;
@@ -57,10 +58,12 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
 
               {installed && (
                 <div className={styles.buttons}>
-                  <Button className={styles.buttonIcon} type="submit">
-                    <FontAwesomeIcon icon={faArrowsRotate} />
-                    {t("Update")}
-                  </Button>
+                  {getPlugin.data.update && (
+                    <Button className={styles.buttonIcon} type="submit">
+                      <FontAwesomeIcon icon={faArrowsRotate} />
+                      {t("Update")}
+                    </Button>
+                  )}
 
                   <Button onClick={handleDeletePlugin} className={clsx(styles.buttonIcon, styles.deleteButton)}>
                     <FontAwesomeIcon icon={faTrash} />
@@ -80,17 +83,76 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
 
             <div>
               <div className={styles.type}>
-                <p>{`Type: ${getPlugin.data?.type}`}</p>
-                <p>{`Language: ${getPlugin.data?.language}`}</p>
+                {getPlugin.data?.version && <p>{`Installed version: ${getPlugin.data?.version}`}</p>}
+                <p>{`last update time: ${new Date(getPlugin.data?.time).toLocaleString()}`}</p>
               </div>
 
-              <div>
-                <Paragraph>{getPlugin.data?.description}</Paragraph>
+              <div className={styles.descriptionAndTags}>
+                <Paragraph className={styles.description}>{getPlugin.data?.description}</Paragraph>
+
+                <div className={styles.tags}>
+                  {getPlugin.data?.license &&
+                    getPlugin.data.license.length > 0 &&
+                    getPlugin.data.license.map((_license: any) => (
+                      <ToolTip tooltip={`License ${_license}`}>
+                        <Tag label={_.upperFirst(_license)} />
+                      </ToolTip>
+                    ))}
+
+                  {getPlugin.data?.source && (
+                    <ToolTip tooltip={`Source ${getPlugin.data.source?.reference}`}>
+                      <Tag
+					    icon={<GitHubLogo />}
+                        label={_.upperFirst(getPlugin.data.source?.type)}
+                        onClick={() => open(getPlugin.data.source?.url)}
+                      />
+                    </ToolTip>
+                  )}
+
+                  {getPlugin.data?.homepage && <Tag label="homepage" onClick={() => open(getPlugin.data.homepage)} />}
+                </div>
               </div>
             </div>
 
+            <div className={styles.extraInfo}>
+              <div className={styles.extraInfoTable}>
+                <Table>
+                  <TableHead>
+                    <TableRow>{getPlugin.data?.require && <TableHeader>requires</TableHeader>}</TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      {getPlugin.data?.require && (
+                        <TableCell>
+                          {Object.entries(getPlugin.data.require).map(([key, value]) => (
+                            <>
+                              {key} {value} <br />
+                            </>
+                          ))}
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
+              <div className={styles.extraInfoSupport}>
+                <Heading3>Support</Heading3>
+                <div>
+                  {getPlugin.data.support?.source && (
+                    <Button onClick={() => open(getPlugin.data.support.source)}>Source</Button>
+                  )}
+                  {getPlugin.data.support?.issues && (
+                    <Button onClick={() => open(getPlugin.data.support.issues)}>Issues</Button>
+                  )}
+                  {getPlugin.data.dist && <Button onClick={() => open(getPlugin.data.dist.url)}>Downloads</Button>}
+                </div>
+              </div>
+            </div>
+
+            <Divider />
+
             <div>
-              <h3>Downloads</h3>
+              <Heading3>Downloads</Heading3>
               <div className={styles.cardsContainer}>
                 <div className={styles.card}>
                   <Heading4>Total</Heading4>
@@ -183,6 +245,20 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 <div className={styles.cardContent}>
                   <Heading1>{getPlugin.data.suggesters}</Heading1>
                 </div>
+              </div>
+            </div>
+
+            <Divider />
+
+            <div>
+              <Heading3>Maintainers</Heading3>
+              <div className={styles.maintainersContainer}>
+                {getPlugin.data.maintainers.map((maintainer: any) => (
+                  <div className={styles.maintainer}>
+                    <img src={maintainer.avatar_url} />
+                    <Heading4>{maintainer.name}</Heading4>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
