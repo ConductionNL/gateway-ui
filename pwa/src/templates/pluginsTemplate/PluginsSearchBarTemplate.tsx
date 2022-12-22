@@ -27,11 +27,9 @@ export const PluginsSearchBarTemplate: React.FC<PluginsSearchBarTemplateProps> =
     });
   }, [searchQuery]);
 
-  const SetSearchQuery = (search: string) => setSearchQuery(search)
-
   React.useEffect(() => {
     const subscription = watch(({ search }) => {
-      SetSearchQuery(search);
+      setSearchQuery(search);
     });
 
     return () => subscription.unsubscribe();
