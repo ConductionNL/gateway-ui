@@ -79,8 +79,6 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
             </section>
 
             <div>
-              <Heading2>{getPlugin.data?.name}</Heading2>
-
               <div className={styles.type}>
                 <p>{`Type: ${getPlugin.data?.type}`}</p>
                 <p>{`Language: ${getPlugin.data?.language}`}</p>
