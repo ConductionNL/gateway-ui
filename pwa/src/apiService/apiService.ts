@@ -84,6 +84,10 @@ export default class APIService {
   public get Action(): Action {
     return new Action(this.BaseClient);
   }
+  
+  public get Plugin(): Plugin {
+    return new Plugin(this.BaseClient);
+  }
 
   public get Sources(): Source {
     return new Source(this.BaseClient);
