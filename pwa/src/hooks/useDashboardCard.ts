@@ -37,7 +37,7 @@ export const useDashboardCard = () => {
     const data = {
       name: `dashboardCard-${name}`,
       type,
-      entity,
+      entity: `App\\Entity\\${entity}`,
       object: "dashboardCard",
       entityId,
       ordering: 1,
