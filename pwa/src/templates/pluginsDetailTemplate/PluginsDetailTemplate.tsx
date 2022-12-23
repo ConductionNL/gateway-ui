@@ -100,9 +100,9 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                     ))}
 
                   {getPlugin.data?.source && (
-                    <ToolTip tooltip={`Source ${getPlugin.data.source?.reference}`}>
+                    <ToolTip tooltip={`Source`}>
                       <Tag
-					    icon={<GitHubLogo />}
+                        icon={<GitHubLogo />}
                         label={_.upperFirst(getPlugin.data.source?.type)}
                         onClick={() => open(getPlugin.data.source?.url)}
                       />
@@ -114,40 +114,54 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
               </div>
             </div>
 
-            <div className={styles.extraInfo}>
-              <div className={styles.extraInfoTable}>
-                <Table>
-                  <TableHead>
-                    <TableRow>{getPlugin.data?.require && <TableHeader>requires</TableHeader>}</TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      {getPlugin.data?.require && (
-                        <TableCell>
-                          {Object.entries(getPlugin.data.require).map(([key, value]) => (
-                            <>
-                              {key} {value} <br />
-                            </>
-                          ))}
-                        </TableCell>
+            {(getPlugin.data?.require || getPlugin.data.support) && (
+              <div className={styles.extraInfo}>
+                {getPlugin.data?.require && (
+                  <div className={styles.extraInfoTable}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>{getPlugin.data?.require && <TableHeader>requires</TableHeader>}</TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          {getPlugin.data?.require && (
+                            <TableCell>
+                              {Object.entries(getPlugin.data.require).map(([key, value]) => (
+                                <>
+                                  {key} {value} <br />
+                                </>
+                              ))}
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+                {getPlugin.data.support && (
+                  <div className={styles.extraInfoSupport}>
+                    <Heading3>Support</Heading3>
+                    <div>
+                      {getPlugin.data.support?.source && (
+                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
+                          Source
+                        </Button>
                       )}
-                    </TableRow>
-                  </TableBody>
-                </Table>
+                      {getPlugin.data.support?.issues && (
+                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
+                          Issues
+                        </Button>
+                      )}
+                      {getPlugin.data.dist && (
+                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.dist.url)}>
+                          Download
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className={styles.extraInfoSupport}>
-                <Heading3>Support</Heading3>
-                <div>
-                  {getPlugin.data.support?.source && (
-                    <Button onClick={() => open(getPlugin.data.support.source)}>Source</Button>
-                  )}
-                  {getPlugin.data.support?.issues && (
-                    <Button onClick={() => open(getPlugin.data.support.issues)}>Issues</Button>
-                  )}
-                  {getPlugin.data.dist && <Button onClick={() => open(getPlugin.data.dist.url)}>Downloads</Button>}
-                </div>
-              </div>
-            </div>
+            )}
 
             <Divider />
 
