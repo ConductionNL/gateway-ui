@@ -53,4 +53,5 @@ export const nl = {
   "No cronjobs found": "Geen cronjobs gevonden",
   "No endpoints found": "Geen endpoints gevonden",
   "Search on name": "Zoek op naam",
+  "Update to": "Updaten naar",
 };

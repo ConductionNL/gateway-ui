@@ -106,11 +106,11 @@
   border-radius: 12px;
   width: 110px;
   text-align: center;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--gateway-ui-size-sm);
+  box-shadow: 1px 1px 2px 0px rgb(192, 192, 192);
 }
 
 .card .cardContent {
@@ -119,13 +119,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-/* this is essentially a parent selector */
-.cardContent:has(.downloadsDownloadButton) {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
 }
 
 .downloadsDownloadButton {
