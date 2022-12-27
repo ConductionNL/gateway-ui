@@ -87,7 +87,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                   {!!getPlugin.data.update && (
                     <Button className={styles.buttonIcon} type="submit">
                       <FontAwesomeIcon icon={faArrowsRotate} />
-                      {t("Update to")} {getPlugin.data.update}
+                      {t("Upgrade to")} {getPlugin.data.update}
                     </Button>
                   )}
 
