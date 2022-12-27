@@ -14,19 +14,22 @@ import Skeleton from "react-loading-skeleton";
 import { ExternalLinkIcon } from "@gemeente-denhaag/icons";
 import { GitHubLogo } from "../../assets/svgs/GitHub";
 import TableWrapper from "../../components/tableWrapper/TableWrapper";
+import { VerticalMenu } from "../templateParts/verticalMenu/VerticalMenu";
 
 interface PluginsDetailPageProps {
   pluginName: string;
-  installed: boolean;
 }
 
-export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ pluginName, installed }) => {
+export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ pluginName }) => {
   const { t } = useTranslation();
+  const [currentRequire, setCurrentRequire] = React.useState<string>("");
 
   const queryClient = new QueryClient();
   const _usePlugin = usePlugin(queryClient);
   const getPlugin = _usePlugin.getOne(pluginName.replace("_", "/"));
   const deletePlugin = _usePlugin.remove();
+
+  const installed = getPlugin.isSuccess && getPlugin.data.version ? true : false;
 
   const handleDeletePlugin = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this action?");
@@ -35,6 +38,39 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
       deletePlugin.mutate({ name: pluginName.replace("_", "/") });
     }
   };
+
+  const handleDownloadButton = (data: string) => {
+    const confirmDeletion = confirm(
+      t(
+        "This file comes from a 3rd party and can potentially be harmfull for your PC. Are you sure you want to download this?",
+      ),
+    );
+
+    if (confirmDeletion) {
+      open(data);
+    }
+  };
+
+  const versionsSideBar =
+    getPlugin.isSuccess &&
+    Object.values(getPlugin.data.versions).map((data: any) => ({
+      label: data.version,
+      current: data.version === currentRequire,
+      onClick: () => setCurrentRequire(data.version),
+    }));
+
+  React.useEffect(() => {
+    if (!getPlugin.data) return;
+
+    if (!getPlugin.data.version) {
+      versionsSideBar &&
+        versionsSideBar.map((version: any) => {
+          version.label.includes("main" || "master") && setCurrentRequire(version.label);
+        });
+    }
+
+    getPlugin.data.version && setCurrentRequire(getPlugin.data.version);
+  }, [getPlugin.isSuccess]);
 
   return (
     <>
@@ -73,7 +109,11 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
 
             <div>
               <div className={styles.type}>
-                {getPlugin.data?.version && <p>{`Installed version: ${getPlugin.data?.version}`}</p>}
+                {getPlugin.data?.version && (
+                  <p>{`Installed version: ${
+                    getPlugin.data.update ? getPlugin.data?.version : `Latest (${getPlugin.data?.version})`
+                  } `}</p>
+                )}
                 <p>{`last update time: ${new Date(getPlugin.data?.time).toLocaleString()}`}</p>
               </div>
 
@@ -109,133 +149,139 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 </div>
               </div>
             </div>
-
-            {(getPlugin.data?.require || getPlugin.data.support) && (
-              <div className={styles.extraInfo}>
-                {getPlugin.data?.require && (
-                  <div className={styles.extraInfoTable}>
-                    <Table>
-                      <TableHead>
-                        <TableRow>{getPlugin.data?.require && <TableHeader>requires</TableHeader>}</TableRow>
-                      </TableHead>
-                      <TableBody>
-                        <TableRow>
-                          {getPlugin.data?.require && (
-                            <TableCell>
-                              {Object.entries(getPlugin.data.require).map(([key, value]) => (
-                                <>
-                                  {key} {value} <br />
-                                </>
-                              ))}
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </div>
-                )}
-                {getPlugin.data.support && (
-                  <div className={styles.extraInfoSupport}>
-                    <Heading3>Support</Heading3>
-                    <div>
-                      {getPlugin.data.support?.source && (
-                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
-                          Source
-                        </Button>
-                      )}
-                      {getPlugin.data.support?.issues && (
-                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
-                          Issues
-                        </Button>
-                      )}
-                      {getPlugin.data.dist && (
-                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.dist.url)}>
-                          Download
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                )}
+            {getPlugin.data.support && (
+              <div className={styles.extraInfoSupport}>
+                <Heading3>Support</Heading3>
+                <div>
+                  {getPlugin.data.support?.source && (
+                    <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
+                      Source
+                    </Button>
+                  )}
+                  {getPlugin.data.support?.issues && (
+                    <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
+                      Issues
+                    </Button>
+                  )}
+                  {getPlugin.data.dist && (
+                    <Button icon={<ExternalLinkIcon />} onClick={() => handleDownloadButton(getPlugin.data.dist.url)}>
+                      Download
+                    </Button>
+                  )}
+                </div>
               </div>
             )}
-
-            <Divider />
-
-            <div>
-              <Heading3>Downloads</Heading3>
-              <div className={styles.cardsContainer}>
-                <div className={styles.card}>
-                  <Heading4>Total</Heading4>
-                  <div className={styles.cardContent}>
-                    <Heading3>{getPlugin.data?.downloads?.total}</Heading3>
-                  </div>
-                </div>
-
-                <div className={styles.card}>
-                  <Heading4>Monthly</Heading4>
-                  <div className={styles.cardContent}>
-                    <Heading3>{getPlugin.data?.downloads?.monthly}</Heading3>
-                  </div>
-                </div>
-
-                <div className={styles.card}>
-                  <Heading3>Daily</Heading3>
-                  <div className={styles.cardContent}>
-                    <Heading3>{getPlugin.data?.downloads?.daily}</Heading3>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <Divider />
-
-            <div>
-              <h3>
-                <span onClick={() => open(getPlugin.data.repository)}>
-                  <Link icon={<ExternalLinkIcon />}>Github</Link>
-                </span>
-              </h3>
-              <div>
-                <TableWrapper>
+            <div className={styles.requiredTableContainer}>
+              <div className={styles.mainSections}>
+                <div className={styles.extraInfoTable}>
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableHeader>Forks</TableHeader>
-                        <TableHeader>Stars</TableHeader>
-                        <TableHeader>Watchers</TableHeader>
-                        <TableHeader>Open issues</TableHeader>
-                        <TableHeader>Dependents</TableHeader>
-                        <TableHeader>Faves</TableHeader>
-                        <TableHeader>Suggesters</TableHeader>
+                        <TableHeader className={styles.requiredTableHeader}>
+                          <span>{currentRequire}</span>
+                          <span>
+                            {currentRequire && new Date(getPlugin.data.versions[currentRequire].time).toLocaleString()}
+                          </span>
+                        </TableHeader>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       <TableRow>
-                        <TableCell>{getPlugin.data.github_forks}</TableCell>
-                        <TableCell>{getPlugin.data.github_stars}</TableCell>
-                        <TableCell>{getPlugin.data.github_watchers}</TableCell>
-                        <TableCell>{getPlugin.data.github_open_issues}</TableCell>
-                        <TableCell>{getPlugin.data.dependents}</TableCell>
-                        <TableCell>{getPlugin.data.favers}</TableCell>
-                        <TableCell>{getPlugin.data.suggesters}</TableCell>
+                        <TableCell>
+                          requires: <br />
+                          <ul>
+                            {currentRequire &&
+                              Object.entries(getPlugin.data.versions[currentRequire].require).map(([key, value]) => (
+                                <>
+                                  <li>
+                                    {key}: {value}
+                                  </li>
+                                </>
+                              ))}
+                          </ul>
+                        </TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>
-                </TableWrapper>
-              </div>
-            </div>
+                </div>
+                <Divider />
+                <div>
+                  <Heading3>Downloads</Heading3>
+                  <div className={styles.cardsContainer}>
+                    <div className={styles.card}>
+                      <Heading4>Total</Heading4>
+                      <div className={styles.cardContent}>
+                        <Heading3>{getPlugin.data?.downloads?.total}</Heading3>
+                      </div>
+                    </div>
 
-            <Divider />
+                    <div className={styles.card}>
+                      <Heading4>Monthly</Heading4>
+                      <div className={styles.cardContent}>
+                        <Heading3>{getPlugin.data?.downloads?.monthly}</Heading3>
+                      </div>
+                    </div>
 
-            <div>
-              <Heading3>Maintainers</Heading3>
-              <div className={styles.maintainersContainer}>
-                {getPlugin.data.maintainers.map((maintainer: any) => (
-                  <div className={styles.maintainer}>
-                    <img src={maintainer.avatar_url} />
-                    <Heading4>{maintainer.name}</Heading4>
+                    <div className={styles.card}>
+                      <Heading3>Daily</Heading3>
+                      <div className={styles.cardContent}>
+                        <Heading3>{getPlugin.data?.downloads?.daily}</Heading3>
+                      </div>
+                    </div>
                   </div>
-                ))}
+                </div>
+                <Divider />
+                <div>
+                  <h3>
+                    <span onClick={() => open(getPlugin.data.repository)}>
+                      <Link icon={<ExternalLinkIcon />}>Github</Link>
+                    </span>
+                  </h3>
+                  <div>
+                    <TableWrapper>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableHeader>Forks</TableHeader>
+                            <TableHeader>Stars</TableHeader>
+                            <TableHeader>Watchers</TableHeader>
+                            <TableHeader>Open issues</TableHeader>
+                            <TableHeader>Dependents</TableHeader>
+                            <TableHeader>Faves</TableHeader>
+                            <TableHeader>Suggesters</TableHeader>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell>{getPlugin.data.github_forks}</TableCell>
+                            <TableCell>{getPlugin.data.github_stars}</TableCell>
+                            <TableCell>{getPlugin.data.github_watchers}</TableCell>
+                            <TableCell>{getPlugin.data.github_open_issues}</TableCell>
+                            <TableCell>{getPlugin.data.dependents}</TableCell>
+                            <TableCell>{getPlugin.data.favers}</TableCell>
+                            <TableCell>{getPlugin.data.suggesters}</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </TableWrapper>
+                  </div>
+                </div>
+                <Divider />
+                <div>
+                  <Heading3>Maintainers</Heading3>
+                  <div className={styles.maintainersContainer}>
+                    {getPlugin.data.maintainers.map((maintainer: any) => (
+                      <div className={styles.maintainer}>
+                        <img src={maintainer.avatar_url} />
+                        <Heading4>{maintainer.name}</Heading4>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className={styles.requiredSideNavContainer}>
+                {/* @ts-ignore */}
+                <VerticalMenu layoutClassName={styles.requiredSideNav} items={versionsSideBar} />
               </div>
             </div>
           </div>

@@ -145,3 +145,26 @@
     --gateway-ui-color-dark-red
   );
 }
+
+.requiredTableContainer {
+  display: flex;
+  gap: 14px;
+}
+
+.requiredTableHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.requiredSideNav {
+  --denhaag-sidenav-link-padding-block-end: 2px;
+  --denhaag-sidenav-link-padding-block-start: 2px;
+}
+
+.mainSections {
+  flex: 4;
+}
+
+.requiredSideNavContainer {
+  flex: 1;
+}
