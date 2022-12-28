@@ -28,17 +28,22 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
   const _usePlugin = usePlugin(queryClient);
   const getPlugin = _usePlugin.getOne(pluginName.replace("_", "/"));
   const deletePlugin = _usePlugin.remove();
+  const upgradePlugin = _usePlugin.upgrade();
 
   const installed = getPlugin.isSuccess && getPlugin.data.version ? true : false;
 
   const pluginRepository = getPlugin.isSuccess && getPlugin.data.repository;
   const getReadMe = _usePlugin.getReadMe(pluginRepository);
 
+  const handleUpgradePlugin = () => {
+    upgradePlugin.mutate({ name: getPlugin.data.name });
+  };
+
   const handleDeletePlugin = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this action?");
 
     if (confirmDeletion) {
-      deletePlugin.mutate({ name: pluginName.replace("_", "/") });
+      deletePlugin.mutate({ name: getPlugin.data.name });
     }
   };
 
@@ -87,12 +92,12 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
 
               {installed && (
                 <div className={styles.buttons}>
-                  {!!getPlugin.data.update && (
-                    <Button className={styles.buttonIcon} type="submit">
-                      <FontAwesomeIcon icon={faArrowsRotate} />
-                      {t("Upgrade to")} {getPlugin.data.update}
-                    </Button>
-                  )}
+                  {/* {!!getPlugin.data.update && ( */}
+                  <Button onClick={handleUpgradePlugin} className={styles.buttonIcon} type="submit">
+                    <FontAwesomeIcon icon={faArrowsRotate} />
+                    {t("Upgrade to")} {getPlugin.data.update}
+                  </Button>
+                  {/* )} */}
 
                   <Button onClick={handleDeletePlugin} className={clsx(styles.buttonIcon, styles.deleteButton)}>
                     <FontAwesomeIcon icon={faTrash} />

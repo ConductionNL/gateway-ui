@@ -40,10 +40,23 @@ export default class Plugin {
     return data;
   };
 
+  public upgrade = async (variables: { name: string }): Promise<any> => {
+    const { name } = variables;
+
+    const { data } = await Send(this._instance, "POST", `/admin/plugins/upgrade?plugin=${name}`, undefined, {
+      loading: "Updating package...",
+      success: "Package successfully updated.",
+    });
+    return data;
+  };
+
   public delete = async (variables: { name: string }): Promise<any> => {
     const { name } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/plugins/remove?plugin=${name}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/plugins/remove?plugin=${name}`, undefined, {
+      loading: "Removing package...",
+      success: "Package successfully removed.",
+    });
     return data;
   };
 }
