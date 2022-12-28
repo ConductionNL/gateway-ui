@@ -28,13 +28,18 @@ export const GatewayDetailTemplate: React.FC = () => {
   const queryClient = new QueryClient();
   const _usePlugin = usePlugin(queryClient);
   const getPlugins = _usePlugin.getView();
+  const upgradePlugin = _usePlugin.upgrade();
+
+  const handleUpgradePlugin = () => {
+    upgradePlugin.mutate({ name: getPlugins.data.name });
+  };
 
   return (
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
         <Heading1>{t("Gateway Detail")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit">
+          <Button onClick={handleUpgradePlugin} className={styles.buttonIcon} type="submit">
             <FontAwesomeIcon icon={faArrowsRotate} />
             {t(getPlugins.data?.update ? "Upgrade to" : "Upgrade")} {getPlugins.data?.update && getPlugins.data.update}
           </Button>
