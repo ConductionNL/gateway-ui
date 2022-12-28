@@ -4,7 +4,15 @@ import { useTranslation } from "react-i18next";
 import { Container, Tag, ToolTip } from "@conduction/components";
 import { Button, Divider, Heading1, Heading3, Heading4, Link, Paragraph } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowsRotate, faDownload, faHome, faScroll, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowsRotate,
+  faChevronDown,
+  faChevronUp,
+  faDownload,
+  faHome,
+  faScroll,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import _ from "lodash";
@@ -23,6 +31,7 @@ interface PluginsDetailPageProps {
 export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ pluginName }) => {
   const { t } = useTranslation();
   const [currentRequire, setCurrentRequire] = React.useState<string>("");
+  const [showmoreVersions, setShowmoreVersions] = React.useState<boolean>(false);
 
   const queryClient = new QueryClient();
   const _usePlugin = usePlugin(queryClient);
@@ -64,13 +73,13 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
     }
   };
 
-  const versionsSideBar =
-    getPlugin.isSuccess &&
-    Object.values(getPlugin.data.versions).map((data: any) => ({
-      label: data.version,
-      current: data.version === currentRequire,
-      onClick: () => setCurrentRequire(data.version),
-    }));
+  const versionsSideBar = getPlugin.isSuccess
+    ? Object.values(getPlugin.data.versions).map((data: any) => ({
+        label: data.version,
+        current: data.version === currentRequire,
+        onClick: () => setCurrentRequire(data.version),
+      }))
+    : [];
 
   React.useEffect(() => {
     if (!getPlugin.data) return;
@@ -184,9 +193,10 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 </div>
               </div>
             )}
-            <div className={styles.requiredTableContainer}>
-              <div className={styles.mainSections}>
-                <div className={styles.extraInfoTable}>
+
+            <div className={styles.sectionContainer}>
+              <div className={styles.mainSection}>
+                <div className={styles.requiredTable}>
                   <Table>
                     <TableHead>
                       <TableRow>
@@ -217,95 +227,88 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                     </TableBody>
                   </Table>
                 </div>
-                <Divider />
                 <div>
-                  <Heading3>Downloads</Heading3>
-                  <div className={styles.cardsContainer}>
-                    <div className={styles.card}>
-                      <Heading4>Total</Heading4>
-                      <div className={styles.cardContent}>
-                        <Heading3>{getPlugin.data?.downloads?.total}</Heading3>
-                      </div>
-                    </div>
-
-                    <div className={styles.card}>
-                      <Heading4>Monthly</Heading4>
-                      <div className={styles.cardContent}>
-                        <Heading3>{getPlugin.data?.downloads?.monthly}</Heading3>
-                      </div>
-                    </div>
-
-                    <div className={styles.card}>
-                      <Heading3>Daily</Heading3>
-                      <div className={styles.cardContent}>
-                        <Heading3>{getPlugin.data?.downloads?.daily}</Heading3>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <Divider />
-                <div>
-                  <h3>
-                    <span onClick={() => open(getPlugin.data.repository)}>
-                      <Link icon={<ExternalLinkIcon />}>Github</Link>
-                    </span>
-                  </h3>
+                  <Heading3>README</Heading3>
+                  {getReadMe.isLoading && <Skeleton height="200px" />}
                   <div>
-                    <TableWrapper>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableHeader>Forks</TableHeader>
-                            <TableHeader>Stars</TableHeader>
-                            <TableHeader>Watchers</TableHeader>
-                            <TableHeader>Open issues</TableHeader>
-                            <TableHeader>Dependents</TableHeader>
-                            <TableHeader>Faves</TableHeader>
-                            <TableHeader>Suggesters</TableHeader>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          <TableRow>
-                            <TableCell>{getPlugin.data.github_forks}</TableCell>
-                            <TableCell>{getPlugin.data.github_stars}</TableCell>
-                            <TableCell>{getPlugin.data.github_watchers}</TableCell>
-                            <TableCell>{getPlugin.data.github_open_issues}</TableCell>
-                            <TableCell>{getPlugin.data.dependents}</TableCell>
-                            <TableCell>{getPlugin.data.favers}</TableCell>
-                            <TableCell>{getPlugin.data.suggesters}</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </TableWrapper>
+                    {getReadMe.data ? (
+                      <div dangerouslySetInnerHTML={{ __html: getReadMe.data }} />
+                    ) : (
+                      <p>This plugin has no README</p>
+                    )}
                   </div>
                 </div>
+              </div>
+              <div className={styles.sideBarSection}>
+                <VerticalMenu
+                  layoutClassName={styles.requiredSideNav}
+                  items={showmoreVersions ? versionsSideBar : versionsSideBar.slice(0, 6)}
+                />
+                {versionsSideBar.length > 6 && (
+                  <div
+                    className={styles.showmoreVersionsButton}
+                    onClick={() => setShowmoreVersions((showmoreVersions) => !showmoreVersions)}
+                  >
+                    {showmoreVersions ? (
+                      <FontAwesomeIcon icon={faChevronUp} />
+                    ) : (
+                      <FontAwesomeIcon icon={faChevronDown} />
+                    )}
+                  </div>
+                )}
+
                 <Divider />
-                <div>
+
+                <div className={styles.sideBarTitle}>
                   <Heading3>Maintainers</Heading3>
                   <div className={styles.maintainersContainer}>
                     {getPlugin.data.maintainers.map((maintainer: any) => (
-                      <div className={styles.maintainer}>
-                        <img src={maintainer.avatar_url} />
-                        <Heading4>{maintainer.name}</Heading4>
-                      </div>
+                      <ToolTip tooltip={maintainer.name}>
+                        <div className={styles.maintainer}>
+                          <img src={maintainer.avatar_url} />
+                        </div>
+                      </ToolTip>
                     ))}
                   </div>
                 </div>
+                <Divider />
+                <div className={styles.sideBarTitle}>
+                  <Heading3>Downloads</Heading3>
+                  <div className={styles.downloadsContent}>
+                    <div>
+                      <span>Total</span>
+                      <div>
+                        <span>{getPlugin.data?.downloads?.total}</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <span>Monthly</span>
+                      <div>
+                        <span>{getPlugin.data?.downloads?.monthly}</span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <span>Daily</span>
+                      <div>
+                        <span>{getPlugin.data?.downloads?.daily}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <Divider />
+                <div className={styles.sideBarTitle}>
+                  <Heading3>Github</Heading3>
+                  <div>Forks: {getPlugin.data.github_forks}</div>
+                  <div>Stars: {getPlugin.data.github_stars}</div>
+                  <div>Watchers: {getPlugin.data.github_watchers}</div>
+                  <div>Open issues: {getPlugin.data.github_open_issues}</div>
+                  <div>Dependents: {getPlugin.data.dependents}</div>
+                  <div>Favers: {getPlugin.data.favers}</div>
+                  <div>Suggesters: {getPlugin.data.suggesters}</div>
+                </div>
               </div>
-              <div className={styles.requiredSideNavContainer}>
-                {/* @ts-ignore */}
-                <VerticalMenu layoutClassName={styles.requiredSideNav} items={versionsSideBar} />
-              </div>
-            </div>
-            <Divider />
-            <Heading3>README</Heading3>
-            {getReadMe.isLoading && <Skeleton height="200px" />}
-            <div>
-              {getReadMe.data ? (
-                <div dangerouslySetInnerHTML={{ __html: getReadMe.data }} />
-              ) : (
-                <p>This plugin has no README</p>
-              )}
             </div>
           </div>
         )}
