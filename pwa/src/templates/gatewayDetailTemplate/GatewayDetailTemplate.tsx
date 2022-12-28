@@ -5,6 +5,7 @@ import {
   Divider,
   Heading1,
   Heading2,
+  Heading3,
   Heading4,
   Link,
   Paragraph,
@@ -17,8 +18,9 @@ import _ from "lodash";
 import { QueryClient } from "react-query";
 import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
-import { CircleIndicatorTemplate } from "../templateParts/ratingIndicator/CircleIndicatorTemplate";
 import { ExternalLinkIcon } from "@gemeente-denhaag/icons";
+import TableWrapper from "../../components/tableWrapper/TableWrapper";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 
 export const GatewayDetailTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -32,9 +34,9 @@ export const GatewayDetailTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Gateway Detail")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon}>
+          <Button className={styles.buttonIcon} type="submit">
             <FontAwesomeIcon icon={faArrowsRotate} />
-            {t("Upgrade")}
+            {t(getPlugins.data?.update ? "Upgrade to" : "Upgrade")} {getPlugins.data?.update && getPlugins.data.update}
           </Button>
         </div>
       </section>
@@ -47,8 +49,12 @@ export const GatewayDetailTemplate: React.FC = () => {
             <Heading2>{getPlugins.data?.name}</Heading2>
 
             <div className={styles.type}>
-              <p>{`Type: ${getPlugins.data?.type}`}</p>
-              <p>{`Language: ${getPlugins.data?.language}`}</p>
+              {getPlugins.data?.version && (
+                <p>{`Installed version: ${
+                  getPlugins.data.update ? getPlugins.data?.version : `Latest (${getPlugins.data?.version})`
+                } `}</p>
+              )}
+              <p>{`last update time: ${new Date(getPlugins.data?.time).toLocaleString()}`}</p>
             </div>
 
             <div>
@@ -57,37 +63,26 @@ export const GatewayDetailTemplate: React.FC = () => {
           </div>
 
           <div>
-            <h3>Downloads</h3>
+            <Heading3>Downloads</Heading3>
             <div className={styles.cardsContainer}>
               <div className={styles.card}>
                 <Heading4>Total</Heading4>
                 <div className={styles.cardContent}>
-                  <CircleIndicatorTemplate
-                    layoutClassName={styles.downloadIndicatorContainer}
-                    value={getPlugins.data?.downloads.total}
-                  />
+                  <Heading3>{getPlugins.data?.downloads?.total}</Heading3>
                 </div>
               </div>
 
               <div className={styles.card}>
                 <Heading4>Monthly</Heading4>
                 <div className={styles.cardContent}>
-                  <CircleIndicatorTemplate
-                    layoutClassName={styles.downloadIndicatorContainer}
-                    maxValue={getPlugins.data?.downloads.total}
-                    value={getPlugins.data?.downloads.monthly}
-                  />
+                  <Heading3>{getPlugins.data?.downloads?.monthly}</Heading3>
                 </div>
               </div>
 
               <div className={styles.card}>
-                <Heading4>Daily</Heading4>
+                <Heading3>Daily</Heading3>
                 <div className={styles.cardContent}>
-                  <CircleIndicatorTemplate
-                    layoutClassName={styles.downloadIndicatorContainer}
-                    maxValue={getPlugins.data?.downloads.total}
-                    value={getPlugins.data?.downloads.daily}
-                  />
+                  <Heading3>{getPlugins.data?.downloads?.daily}</Heading3>
                 </div>
               </div>
             </div>
@@ -96,60 +91,38 @@ export const GatewayDetailTemplate: React.FC = () => {
           <Divider />
 
           <div>
-            <h3 onClick={() => open(getPlugins.data.repository)}>
-              <Link icon={<ExternalLinkIcon />}>Github</Link>
+            <h3>
+              <span onClick={() => open(getPlugins.data.repository)}>
+                <Link icon={<ExternalLinkIcon />}>Github</Link>
+              </span>
             </h3>
-            <div className={styles.cardsContainer}>
-              <div className={styles.card}>
-                <Heading4>Forks</Heading4>
-                <div className={styles.cardContent}>
-                  <Heading1>{getPlugins.data.github_forks}</Heading1>
-                </div>
-              </div>
-
-              <div className={styles.card}>
-                <Heading4>Stars</Heading4>
-                <div className={styles.cardContent}>
-                  <Heading1>{getPlugins.data.github_stars}</Heading1>
-                </div>
-              </div>
-
-              <div className={styles.card}>
-                <Heading4>Watchers</Heading4>
-                <div className={styles.cardContent}>
-                  <Heading1>{getPlugins.data.github_watchers}</Heading1>
-                </div>
-              </div>
-
-              <div className={styles.card}>
-                <Heading4>Open issues</Heading4>
-                <div className={styles.cardContent}>
-                  <Heading1>{getPlugins.data.github_open_issues}</Heading1>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.cardsContainer}>
-            <div className={styles.card}>
-              <Heading4>Dependents</Heading4>
-              <div className={styles.cardContent}>
-                <Heading1>{getPlugins.data.dependents}</Heading1>
-              </div>
-            </div>
-
-            <div className={styles.card}>
-              <Heading4>Faves</Heading4>
-              <div className={styles.cardContent}>
-                <Heading1>{getPlugins.data.favers}</Heading1>
-              </div>
-            </div>
-
-            <div className={styles.card}>
-              <Heading4>Suggesters</Heading4>
-              <div className={styles.cardContent}>
-                <Heading1>{getPlugins.data.suggesters}</Heading1>
-              </div>
+            <div>
+              <TableWrapper>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableHeader>Forks</TableHeader>
+                      <TableHeader>Stars</TableHeader>
+                      <TableHeader>Watchers</TableHeader>
+                      <TableHeader>Open issues</TableHeader>
+                      <TableHeader>Dependents</TableHeader>
+                      <TableHeader>Faves</TableHeader>
+                      <TableHeader>Suggesters</TableHeader>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>{getPlugins.data.github_forks}</TableCell>
+                      <TableCell>{getPlugins.data.github_stars}</TableCell>
+                      <TableCell>{getPlugins.data.github_watchers}</TableCell>
+                      <TableCell>{getPlugins.data.github_open_issues}</TableCell>
+                      <TableCell>{getPlugins.data.dependents}</TableCell>
+                      <TableCell>{getPlugins.data.favers}</TableCell>
+                      <TableCell>{getPlugins.data.suggesters}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableWrapper>
             </div>
           </div>
         </div>

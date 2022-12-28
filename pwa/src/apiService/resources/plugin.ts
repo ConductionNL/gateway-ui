@@ -1,7 +1,7 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
-export default class Endpoint {
+export default class Plugin {
   private _instance: AxiosInstance;
 
   constructor(_instance: AxiosInstance) {
@@ -40,10 +40,33 @@ export default class Endpoint {
     return data;
   };
 
+  public install = async (variables: { name: string }): Promise<any> => {
+    const { name } = variables;
+
+    const { data } = await Send(this._instance, "POST", `/admin/plugins/install?plugin=${name}`, undefined, {
+      loading: "Installing package...",
+      success: "Package successfully installed.",
+    });
+    return data;
+  };
+
+  public upgrade = async (variables: { name: string }): Promise<any> => {
+    const { name } = variables;
+
+    const { data } = await Send(this._instance, "POST", `/admin/plugins/upgrade?plugin=${name}`, undefined, {
+      loading: "Updating package...",
+      success: "Package successfully updated.",
+    });
+    return data;
+  };
+
   public delete = async (variables: { name: string }): Promise<any> => {
     const { name } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/plugins/remove?plugin=${name}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/plugins/remove?plugin=${name}`, undefined, {
+      loading: "Removing package...",
+      success: "Package successfully removed.",
+    });
     return data;
   };
 }

@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 export interface IMenuItem {
   label: string;
-  icon: JSX.Element;
+  icon?: JSX.Element;
   current: boolean;
   onClick: () => any;
   subItems?: {
@@ -35,7 +35,7 @@ export const VerticalMenu: React.FC<VerticalMenuProps> = ({ items, layoutClassNa
           {items.map(({ onClick, label, icon, current, subItems }, idx) => (
             <SidenavItem className={clsx([subItems && styles.hasSubitems])} key={idx}>
               <SidenavLink href="" onClick={(e) => handleClick(e, onClick)} {...{ current }}>
-                <span className={styles.icon}>{icon}</span>
+                {icon && <span className={styles.icon}>{icon}</span>}
 
                 {label}
               </SidenavLink>
@@ -44,7 +44,7 @@ export const VerticalMenu: React.FC<VerticalMenuProps> = ({ items, layoutClassNa
                   <SidenavList className={styles.subItem} key={idx}>
                     <SidenavItem key={idx}>
                       <SidenavLink href="" onClick={(e) => handleClick(e, onClick)} {...{ current }}>
-                        <span className={styles.icon}>{icon}</span>
+                        {icon && <span className={styles.icon}>{icon}</span>}
 
                         {label}
                       </SidenavLink>
