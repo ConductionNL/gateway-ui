@@ -27,13 +27,18 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
   const queryClient = new QueryClient();
   const _usePlugin = usePlugin(queryClient);
   const getPlugin = _usePlugin.getOne(pluginName.replace("_", "/"));
-  const deletePlugin = _usePlugin.remove();
+  const installPlugin = _usePlugin.install();
   const upgradePlugin = _usePlugin.upgrade();
+  const deletePlugin = _usePlugin.remove();
 
   const installed = getPlugin.isSuccess && getPlugin.data.version ? true : false;
 
   const pluginRepository = getPlugin.isSuccess && getPlugin.data.repository;
   const getReadMe = _usePlugin.getReadMe(pluginRepository);
+
+  const handleInstallPlugin = () => {
+    installPlugin.mutate({ name: getPlugin.data.name });
+  };
 
   const handleUpgradePlugin = () => {
     upgradePlugin.mutate({ name: getPlugin.data.name });
@@ -92,12 +97,12 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
 
               {installed && (
                 <div className={styles.buttons}>
-                  {/* {!!getPlugin.data.update && ( */}
-                  <Button onClick={handleUpgradePlugin} className={styles.buttonIcon} type="submit">
-                    <FontAwesomeIcon icon={faArrowsRotate} />
-                    {t("Upgrade to")} {getPlugin.data.update}
-                  </Button>
-                  {/* )} */}
+                  {!!getPlugin.data.update && (
+                    <Button onClick={handleUpgradePlugin} className={styles.buttonIcon} type="submit">
+                      <FontAwesomeIcon icon={faArrowsRotate} />
+                      {t("Upgrade to")} {getPlugin.data.update}
+                    </Button>
+                  )}
 
                   <Button onClick={handleDeletePlugin} className={clsx(styles.buttonIcon, styles.deleteButton)}>
                     <FontAwesomeIcon icon={faTrash} />
@@ -107,7 +112,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
               )}
               {!installed && (
                 <div className={styles.buttons}>
-                  <Button className={styles.buttonIcon}>
+                  <Button onClick={handleInstallPlugin} className={styles.buttonIcon}>
                     <FontAwesomeIcon icon={faDownload} />
                     {t("Install")}
                   </Button>

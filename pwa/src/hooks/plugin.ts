@@ -3,7 +3,6 @@ import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { deleteItem, updateItem } from "../services/mutateQueries";
-import { navigate } from "gatsby";
 
 export const usePlugin = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
@@ -45,11 +44,20 @@ export const usePlugin = (queryClient: QueryClient) => {
       enabled: !!pluginName,
     });
 
+  const install = () =>
+    useMutation<any, Error, any>(API.Plugin.install, {
+      onSuccess: async (_, variables) => {
+        updateItem(queryClient, "plugin", variables.name);
+      },
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+    });
+
   const upgrade = () =>
     useMutation<any, Error, any>(API.Plugin.upgrade, {
       onSuccess: async (_, variables) => {
         updateItem(queryClient, "plugin", variables.name);
-        navigate("/plugins");
       },
       onError: (error) => {
         throw new Error(error.message);
@@ -60,7 +68,6 @@ export const usePlugin = (queryClient: QueryClient) => {
     useMutation<any, Error, any>(API.Plugin.delete, {
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "plugin", variables.name);
-        navigate("/plugins");
       },
       onError: (error) => {
         throw new Error(error.message);
@@ -75,5 +82,5 @@ export const usePlugin = (queryClient: QueryClient) => {
       enabled: !!pluginRepository,
     });
 
-  return { getAllInstalled, getAllAudit, getAllAvailable, getView, getOne, remove, upgrade, getReadMe };
+  return { getAllInstalled, getAllAudit, getAllAvailable, getView, getOne, install, remove, upgrade, getReadMe };
 };

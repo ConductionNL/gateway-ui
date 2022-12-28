@@ -40,6 +40,16 @@ export default class Plugin {
     return data;
   };
 
+  public install = async (variables: { name: string }): Promise<any> => {
+    const { name } = variables;
+
+    const { data } = await Send(this._instance, "POST", `/admin/plugins/install?plugin=${name}`, undefined, {
+      loading: "Installing package...",
+      success: "Package successfully installed.",
+    });
+    return data;
+  };
+
   public upgrade = async (variables: { name: string }): Promise<any> => {
     const { name } = variables;
 
