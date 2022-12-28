@@ -31,6 +31,9 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
 
   const installed = getPlugin.isSuccess && getPlugin.data.version ? true : false;
 
+  const pluginRepository = getPlugin.isSuccess && getPlugin.data.repository;
+  const getReadMe = _usePlugin.getReadMe(pluginRepository);
+
   const handleDeletePlugin = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this action?");
 
@@ -283,6 +286,16 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 {/* @ts-ignore */}
                 <VerticalMenu layoutClassName={styles.requiredSideNav} items={versionsSideBar} />
               </div>
+            </div>
+            <Divider />
+            <Heading3>README</Heading3>
+            {getReadMe.isLoading && <Skeleton height="200px" />}
+            <div>
+              {getReadMe.data ? (
+                <div dangerouslySetInnerHTML={{ __html: getReadMe.data }} />
+              ) : (
+                <p>This plugin has no README</p>
+              )}
             </div>
           </div>
         )}

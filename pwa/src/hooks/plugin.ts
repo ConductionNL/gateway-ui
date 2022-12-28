@@ -56,5 +56,13 @@ export const usePlugin = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAllInstalled, getAllAudit, getAllAvailable, getView, getOne, remove };
+  const getReadMe = (pluginRepository: string) =>
+    useQuery<any, Error>(["plugin"], () => API?.PluginReadMe.getReadMe(pluginRepository), {
+      onError: (error) => {
+        throw new Error(error.message);
+      },
+      enabled: !!pluginRepository,
+    });
+
+  return { getAllInstalled, getAllAudit, getAllAvailable, getView, getOne, remove, getReadMe };
 };

@@ -19,6 +19,7 @@ import DashboardCards from "./resources/dashboardCards";
 import CallLog from "./resources/callLog";
 import Attribute from "./resources/attribute";
 import Plugin from "./resources/plugin";
+import PluginReadMe from "./resources/pluginReadme";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -80,13 +81,26 @@ export default class APIService {
     });
   }
 
+  public get gitClient(): AxiosInstance {
+    return axios.create({
+      baseURL: window.sessionStorage.getItem("GATSBY_BASE_URL") ?? "",
+      headers: {
+        Accept: "application/vnd.github.html",
+      },
+    });
+  }
+
   // Resources
   public get Action(): Action {
     return new Action(this.BaseClient);
   }
-  
+
   public get Plugin(): Plugin {
     return new Plugin(this.BaseClient);
+  }
+
+  public get PluginReadMe(): PluginReadMe {
+    return new PluginReadMe(this.gitClient);
   }
 
   public get Sources(): Source {
@@ -127,10 +141,6 @@ export default class APIService {
 
   public get Attribute(): Attribute {
     return new Attribute(this.BaseClient);
-  }
-
-  public get Plugin(): Plugin {
-    return new Plugin(this.BaseClient);
   }
 
   // Services

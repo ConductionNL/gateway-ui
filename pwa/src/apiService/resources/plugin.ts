@@ -1,7 +1,7 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
-export default class Endpoint {
+export default class Plugin {
   private _instance: AxiosInstance;
 
   constructor(_instance: AxiosInstance) {
