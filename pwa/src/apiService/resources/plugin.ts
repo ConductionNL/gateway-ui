@@ -44,8 +44,8 @@ export default class Plugin {
     const { name } = variables;
 
     const { data } = await Send(this._instance, "POST", `/admin/plugins/install?plugin=${name}`, undefined, {
-      loading: "Installing package...",
-      success: "Package successfully installed.",
+      loading: "Installing plugin...",
+      success: "plugin successfully installed.",
     });
     return data;
   };
@@ -54,8 +54,8 @@ export default class Plugin {
     const { name } = variables;
 
     const { data } = await Send(this._instance, "POST", `/admin/plugins/upgrade?plugin=${name}`, undefined, {
-      loading: "Updating package...",
-      success: "Package successfully updated.",
+      loading: "Updating plugin...",
+      success: "Plugin successfully updated.",
     });
     return data;
   };
@@ -64,8 +64,8 @@ export default class Plugin {
     const { name } = variables;
 
     const { data } = await Send(this._instance, "DELETE", `/admin/plugins/remove?plugin=${name}`, undefined, {
-      loading: "Removing package...",
-      success: "Package successfully removed.",
+      loading: "Removing plugin...",
+      success: "Plugin successfully removed.",
     });
     return data;
   };
