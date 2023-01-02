@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./UserGroupFormTemplate.module.css";
+import * as styles from "./SecurityGroupFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
@@ -11,12 +11,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 
-interface EditUserGroupFormTemplateProps {
-  userGroup: any;
-  userGroupId: string;
+interface EditSecurityGroupFormTemplateProps {
+  securityGroup: any;
+  securityGroupId: string;
 }
 
-export const EditUserGroupFormTemplate: React.FC<EditUserGroupFormTemplateProps> = ({ userGroup, userGroupId }) => {
+export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTemplateProps> = ({
+  securityGroup,
+  securityGroupId,
+}) => {
   const { t } = useTranslation();
 
   const API: APIService | null = React.useContext(APIContext);
@@ -36,14 +39,14 @@ export const EditUserGroupFormTemplate: React.FC<EditUserGroupFormTemplateProps>
   };
 
   React.useEffect(() => {
-    handleSetFormValues(userGroup);
+    handleSetFormValues(securityGroup);
   }, []);
 
   return (
     <div className={styles.container}>
       <form>
         <section className={styles.section}>
-          <Heading1>{t("Edit User Group")}</Heading1>
+          <Heading1>{t("Edit Security Group")}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
