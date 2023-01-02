@@ -18,6 +18,8 @@ import {
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { PackagistLogo } from "../../assets/svgs/Packagist";
+import { usePlugin } from "../../hooks/plugin";
+import { QueryClient } from "react-query";
 
 export interface PluginCardProps {
   title: {
@@ -49,6 +51,19 @@ export const PluginCard: React.FC<PluginCardProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  const queryClient = new QueryClient();
+  const _usePlugin = usePlugin(queryClient);
+  const installPlugin = _usePlugin.install();
+  const upgradePlugin = _usePlugin.upgrade();
+
+  const handleInstallPlugin = () => {
+    installPlugin.mutate({ name: title.label });
+  };
+
+  const handleUpgradePlugin = () => {
+    upgradePlugin.mutate({ name: title.label });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -58,17 +73,17 @@ export const PluginCard: React.FC<PluginCardProps> = ({
           </Link>
         </div>
         {installed === false && (
-          <div>
+          <div className={styles.buttonOnClick} onClick={handleInstallPlugin}>
             <FontAwesomeIcon icon={faCircleDown} /> <span>Install</span>
           </div>
         )}
         {installed && update && (
-          <div>
+          <div className={styles.buttonOnClick} onClick={handleUpgradePlugin}>
             <FontAwesomeIcon className={styles.updateIcon} icon={faArrowsRotate} /> <span>Update</span>
           </div>
         )}
         {installed && update === false && (
-          <div>
+          <div className={styles.buttonNoOnClick}>
             <FontAwesomeIcon className={styles.upToDateIcon} icon={faCheckCircle} /> <span>Up-to-date</span>
           </div>
         )}
