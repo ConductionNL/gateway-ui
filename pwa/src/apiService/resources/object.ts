@@ -41,7 +41,10 @@ export default class Sources {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/objects/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/objects/${id}`, undefined, {
+      loading: "Removing object...",
+      success: "Object successfully removed.",
+    });
     return data;
   };
 
@@ -49,11 +52,17 @@ export default class Sources {
     const { payload, entityId, objectId } = variables;
 
     if (objectId) {
-      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, payload, {
+        loading: "Updating object...",
+        success: "Object successfully updated.",
+      });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", `/admin/objects/schema/${entityId}`, payload);
+    const { data } = await Send(this._instance, "POST", `/admin/objects/schema/${entityId}`, payload, {
+      loading: "Creating object...",
+      success: "Object successfully created.",
+    });
 
     return data;
   };
