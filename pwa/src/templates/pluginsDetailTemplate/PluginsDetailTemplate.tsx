@@ -64,7 +64,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
   const handleDownloadButton = (data: string) => {
     const confirmDeletion = confirm(
       t(
-        "This file comes from a 3rd party and can potentially be harmfull for your PC. Are you sure you want to download this?",
+        "This file comes from a 3rd party and can potentially be harmful for your PC. Are you sure you want to download this?",
       ),
     );
 
@@ -130,17 +130,15 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
             </section>
 
             <div>
-              <div className={styles.type}>
-                {getPlugin.data?.version && (
-                  <p>{`Installed version: ${
-                    getPlugin.data.update ? getPlugin.data?.version : `Latest (${getPlugin.data?.version})`
-                  } `}</p>
-                )}
-                <p>{`last update time: ${new Date(getPlugin.data?.time).toLocaleString()}`}</p>
-              </div>
-
-              <div className={styles.descriptionAndTags}>
-                <Paragraph className={styles.description}>{getPlugin.data?.description}</Paragraph>
+              <div className={styles.typeAndTags}>
+                <div className={styles.type}>
+                  {getPlugin.data?.version && (
+                    <p>{`Installed version: ${
+                      getPlugin.data.update ? getPlugin.data?.version : `Latest (${getPlugin.data?.version})`
+                    } `}</p>
+                  )}
+                  <p>{`last update time: ${new Date(getPlugin.data?.time).toLocaleString()}`}</p>
+                </div>
 
                 <div className={styles.tags}>
                   {getPlugin.data?.license &&
@@ -170,29 +168,11 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                   )}
                 </div>
               </div>
-            </div>
-            {getPlugin.data.support && (
-              <div className={styles.extraInfoSupport}>
-                <Heading3>Support</Heading3>
-                <div>
-                  {getPlugin.data.support?.source && (
-                    <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
-                      Source
-                    </Button>
-                  )}
-                  {getPlugin.data.support?.issues && (
-                    <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
-                      Issues
-                    </Button>
-                  )}
-                  {getPlugin.data.dist && (
-                    <Button icon={<ExternalLinkIcon />} onClick={() => handleDownloadButton(getPlugin.data.dist.url)}>
-                      Download
-                    </Button>
-                  )}
-                </div>
+
+              <div>
+                <Paragraph>{getPlugin.data?.description}</Paragraph>
               </div>
-            )}
+            </div>
 
             <div className={styles.sectionContainer}>
               <div className={styles.mainSection}>
@@ -271,7 +251,37 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                     ))}
                   </div>
                 </div>
+
                 <Divider />
+
+                {getPlugin.data.support && (
+                  <div className={styles.extraInfoSupport}>
+                    <Heading3>Support</Heading3>
+                    <div>
+                      {getPlugin.data.support?.source && (
+                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
+                          Source
+                        </Button>
+                      )}
+                      {getPlugin.data.support?.issues && (
+                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
+                          Issues
+                        </Button>
+                      )}
+                      {getPlugin.data.dist && (
+                        <Button
+                          icon={<ExternalLinkIcon />}
+                          onClick={() => handleDownloadButton(getPlugin.data.dist.url)}
+                        >
+                          Download
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                <Divider />
+
                 <div className={styles.sideBarTitle}>
                   <Heading3>Downloads</Heading3>
                   <div className={styles.downloadsContent}>
@@ -297,7 +307,9 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                     </div>
                   </div>
                 </div>
+
                 <Divider />
+
                 <div className={styles.sideBarTitle}>
                   <Heading3>Github</Heading3>
                   <div>Forks: {getPlugin.data.github_forks}</div>
