@@ -53,6 +53,10 @@
   margin-inline-end: var(--gateway-ui-size-sm);
 }
 
+.dateText {
+  align-self: center;
+}
+
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);

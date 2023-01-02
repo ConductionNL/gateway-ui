@@ -48,12 +48,12 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
       <div>
         {lastRun && (
           <div className={styles.date}>
-            <span>Last run:</span> {dateTime(t(i18n.language), lastRun) ?? "-"}
+            <span className={styles.dateText}>Last run:</span> {dateTime(t(i18n.language), lastRun) ?? "-"}
           </div>
         )}
         {lastCall && (
           <div className={styles.date}>
-            <span>Last call:</span> {dateTime(t(i18n.language), lastCall) ?? "-"}
+            <span className={styles.dateText}>Last call:</span> {dateTime(t(i18n.language), lastCall) ?? "-"}
           </div>
         )}
       </div>
