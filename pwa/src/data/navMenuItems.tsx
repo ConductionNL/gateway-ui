@@ -81,20 +81,6 @@ export const mainMenuItems = () => {
       icon: <FontAwesomeIcon icon={faPuzzlePiece} />,
       onClick: () => navigate("/plugins"),
       current: pathname.includes("/plugins"),
-      subItems: [
-        {
-          label: "Installed Plugins",
-          icon: <FontAwesomeIcon icon={faDownload} />,
-          onClick: () => navigate("/plugins/installed"),
-          current: pathname.includes("/plugins/installed"),
-        },
-        {
-          label: "Search Plugins",
-          icon: <FontAwesomeIcon icon={faMagnifyingGlass} />,
-          onClick: () => navigate("/plugins/search"),
-          current: pathname.includes("/plugins/search"),
-        },
-      ],
     },
     {
       label: "Collections",

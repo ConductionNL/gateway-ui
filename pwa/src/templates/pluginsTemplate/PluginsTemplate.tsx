@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
 import { Container, InputText } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { PluginCard } from "../../components/pluginCard/PluginCard";
 import _ from "lodash";
 import { QueryClient } from "react-query";
@@ -13,7 +13,7 @@ import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { PluginsSearchBarTemplate } from "./PluginsSearchBarTemplate";
 
-export type TPluginTitle = "Installed" | "Search" | "";
+export type TPluginTitle = "Search" | "";
 
 interface PluginsPageProps {
   title: TPluginTitle;
@@ -28,17 +28,12 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
   let getPlugins;
 
   switch (title) {
-    case "Installed":
-      getPlugins = _usePlugin.getAllInstalled();
-      break;
-
     case "Search":
       getPlugins = _usePlugin.getAllAvailable(searchQuery);
       break;
 
     default:
-      getPlugins = _usePlugin.getAllAvailable(searchQuery);
-    //   getPlugins = _usePlugin.getAllInstalled(); // change to this one once stable
+      getPlugins = _usePlugin.getAllInstalled();
   }
 
   const titleHref = title !== "" ? `${_.lowerCase(title)}/` : "";
@@ -47,6 +42,11 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
         <Heading1>{t(`${title} Plugins`)}</Heading1>
+        {!!title || (
+          <Button icon={<FontAwesomeIcon icon={faSearch} />} onClick={() => navigate("/plugins/search")}>
+            {t("Search")}
+          </Button>
+        )}
       </section>
 
       {title === "Search" && <PluginsSearchBarTemplate {...{ searchQuery, setSearchQuery }} />}
