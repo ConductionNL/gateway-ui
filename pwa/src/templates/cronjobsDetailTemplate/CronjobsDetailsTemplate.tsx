@@ -25,26 +25,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
     <Container layoutClassName={styles.container}>
       {getCronjob.isError && "Error..."}
 
-      {getCronjob.isSuccess && (
-        <>
-          <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>{t("Subscribed Throws")}</TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {getCronjob.data.throws?.length === 0 && <TableCell>-</TableCell>}
-              {getCronjob.data.throws.map((thrown: any, idx: number) => (
-                <TableRow key={idx}>
-                  <TableCell>{thrown}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </>
-      )}
+      {getCronjob.isSuccess && <EditCronjobFormTemplate cronjob={getCronjob.data} {...{ cronjobId }} />}
       {getCronjob.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
@@ -57,11 +38,16 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
             variant="scrollable"
           >
             <Tab className={styles.tab} label={t("Logs")} value={0} />
+            <Tab className={styles.tab} label={t("Actions")} value={1} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
             {getCronjob.isLoading && <Skeleton height="200px" />}
             {getCronjob.isSuccess && <span>Logs</span>}{" "}
+          </TabPanel>
+          <TabPanel className={styles.tabPanel} value="1">
+            {getCronjob.isLoading && <Skeleton height="200px" />}
+            {getCronjob.isSuccess && <span>Actions</span>}{" "}
           </TabPanel>
         </TabContext>
       </div>
