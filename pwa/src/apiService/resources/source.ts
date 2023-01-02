@@ -45,7 +45,10 @@ export default class Source {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/gateways/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/gateways/${id}`, undefined, {
+      loading: "Removing source...",
+      success: "Source successfully removed.",
+    });
     return data;
   };
 
@@ -53,11 +56,17 @@ export default class Source {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/gateways/${id}`, payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/gateways/${id}`, payload, {
+        loading: "Updating source...",
+        success: "Source successfully updated.",
+      });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/gateways", payload);
+    const { data } = await Send(this._instance, "POST", "/admin/gateways", payload, {
+      loading: "Creating source...",
+      success: "Source successfully created.",
+    });
     return data;
   };
 }

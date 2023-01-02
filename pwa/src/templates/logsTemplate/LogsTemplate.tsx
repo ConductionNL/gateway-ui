@@ -42,6 +42,12 @@ export const LogsTemplate: React.FC = () => {
                 </TableCell>
               </TableRow>
             ))}
+            {!getLog.data.length && (
+              <TableRow>
+                <TableCell>{t("No logs found")}</TableCell>
+                <TableCell />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       )}

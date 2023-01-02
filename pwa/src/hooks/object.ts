@@ -1,5 +1,5 @@
 import * as React from "react";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
@@ -7,6 +7,7 @@ import { navigate } from "gatsby";
 
 export const useObject = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const _queryClient = useQueryClient();
 
   const getAll = () =>
     useQuery<any[], Error>("objects", API.Object.getAll, {
@@ -46,6 +47,9 @@ export const useObject = (queryClient: QueryClient) => {
       },
       onError: (error) => {
         throw new Error(error.message);
+      },
+      onSettled: () => {
+        setTimeout(() => _queryClient.invalidateQueries(["objects"]), 100);
       },
     });
 

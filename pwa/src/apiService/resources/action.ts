@@ -29,7 +29,10 @@ export default class Action {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/actions/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/actions/${id}`, undefined, {
+      loading: "Removing action...",
+      success: "Action successfully removed.",
+    });
     return data;
   };
 
@@ -37,11 +40,17 @@ export default class Action {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/actions/${id}`, payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/actions/${id}`, payload, {
+        loading: "Updating action...",
+        success: "Action successfully updated.",
+      });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/actions", payload);
+    const { data } = await Send(this._instance, "POST", "/admin/actions", payload, {
+      loading: "Creating action...",
+      success: "Action successfully created.",
+    });
     return data;
   };
 }

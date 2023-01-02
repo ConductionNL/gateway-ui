@@ -54,7 +54,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
   };
 
   const handleDeletePlugin = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this action?");
+    const confirmDeletion = confirm("Are you sure you want to unInstall this plugin?");
 
     if (confirmDeletion) {
       deletePlugin.mutate({ name: getPlugin.data.name });

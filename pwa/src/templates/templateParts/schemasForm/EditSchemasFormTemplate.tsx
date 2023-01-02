@@ -108,7 +108,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
               href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
               download="schema.json"
             >
-              <Button className={styles.buttonIcon} disabled={!getSchemaSchema.isSuccess}>
+              <Button className={styles.buttonIcon} disabled={!getSchemaSchema.isSuccess || loading}>
                 <FontAwesomeIcon icon={faDownload} />
                 Download
               </Button>

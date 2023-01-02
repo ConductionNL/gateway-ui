@@ -23,7 +23,10 @@ export default class Cronjob {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/cronjobs/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/cronjobs/${id}`, undefined, {
+      loading: "Removing cronjob...",
+      success: "Cronjob successfully removed.",
+    });
     return data;
   };
 
@@ -31,11 +34,17 @@ export default class Cronjob {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/cronjobs/${id}`, payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/cronjobs/${id}`, payload, {
+        loading: "Updating cronjob...",
+        success: "Cronjob successfully updated.",
+      });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/cronjobs", payload);
+    const { data } = await Send(this._instance, "POST", "/admin/cronjobs", payload, {
+      loading: "Creating cronjob...",
+      success: "Cronjob successfully created.",
+    });
     return data;
   };
 }
