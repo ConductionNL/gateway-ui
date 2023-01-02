@@ -1,7 +1,7 @@
 import * as React from "react";
 import { navigate } from "gatsby";
 
-const UserGroupsPage: React.FC = () => {
+const SecurityGroupsPage: React.FC = () => {
   React.useEffect(() => {
     navigate("/settings");
   });
@@ -9,4 +9,4 @@ const UserGroupsPage: React.FC = () => {
   return <></>;
 };
 
-export default UserGroupsPage;
+export default SecurityGroupsPage;
