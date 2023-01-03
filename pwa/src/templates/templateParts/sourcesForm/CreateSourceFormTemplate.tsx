@@ -110,6 +110,10 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
     createOrEditSource.mutate({ payload, id: sourceId });
   };
 
+  React.useEffect(() => {
+    ReactTooltip.rebuild();
+  });
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
