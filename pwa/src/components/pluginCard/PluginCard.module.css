@@ -70,6 +70,14 @@
   color: var(--gateway-ui-color-orange);
 }
 
+.buttonOnClick :hover {
+  cursor: pointer;
+}
+
+.buttonNoOnClick :hover {
+  cursor: default;
+}
+
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);
