@@ -219,6 +219,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 </div>
               </div>
               <div className={styles.sideBarSection}>
+			  <Heading3>Versions</Heading3>
                 <VerticalMenu
                   layoutClassName={styles.requiredSideNav}
                   items={showmoreVersions ? versionsSideBar : versionsSideBar.slice(0, 6)}
