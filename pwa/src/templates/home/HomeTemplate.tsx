@@ -22,6 +22,17 @@ export const HomeTemplate: React.FC = () => {
       <Heading1>{t("Dashboard")}</Heading1>
       {getDashboardCards.isSuccess && (
         <div className={styles.cardsGrid}>
+          <DashboardCard
+            title={{
+              label: "test",
+              href: "/",
+            }}
+            type="test"
+            status={false}
+            isEnabled={true}
+            lastRun="2023-01-03T12:40:19+00:00"
+            lastCall="2023-01-03T12:40:19+00:00"
+          />
           {getDashboardCards.data.map((dashboardCard) => (
             <DashboardCard
               title={{
@@ -30,6 +41,7 @@ export const HomeTemplate: React.FC = () => {
               }}
               type={dashboardCard.type}
               status={dashboardCard?.object?.status}
+              isEnabled={dashboardCard?.object?.isEnabled}
               lastRun={dashboardCard?.object?.lastRun}
               lastCall={dashboardCard?.object?.lastCall}
             />
