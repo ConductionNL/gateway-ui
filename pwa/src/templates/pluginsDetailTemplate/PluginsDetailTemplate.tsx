@@ -73,13 +73,14 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
     }
   };
 
-  const versionsSideBar = getPlugin.isSuccess
-    ? Object.values(getPlugin.data.versions).map((data: any) => ({
-        label: data.version,
-        current: data.version === currentRequire,
-        onClick: () => setCurrentRequire(data.version),
-      }))
-    : [];
+  const versionsSideBar =
+    getPlugin.isSuccess && getPlugin.data.versions
+      ? Object.values(getPlugin.data.versions).map((data: any) => ({
+          label: data.version,
+          current: data.version === currentRequire,
+          onClick: () => setCurrentRequire(data.version),
+        }))
+      : [];
 
   React.useEffect(() => {
     if (!getPlugin.data) return;
@@ -195,11 +196,9 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                           <ul>
                             {currentRequire &&
                               Object.entries(getPlugin.data.versions[currentRequire].require).map(([key, value]) => (
-                                <>
-                                  <li>
-                                    {key}: {value}
-                                  </li>
-                                </>
+                                <li>
+                                  {key}: {value}
+                                </li>
                               ))}
                           </ul>
                         </TableCell>
@@ -236,21 +235,6 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                     )}
                   </div>
                 )}
-
-                <Divider />
-
-                <div className={styles.sideBarTitle}>
-                  <Heading3>Maintainers</Heading3>
-                  <div className={styles.maintainersContainer}>
-                    {getPlugin.data.maintainers.map((maintainer: any) => (
-                      <ToolTip tooltip={maintainer.name}>
-                        <div className={styles.maintainer}>
-                          <img src={maintainer.avatar_url} />
-                        </div>
-                      </ToolTip>
-                    ))}
-                  </div>
-                </div>
 
                 <Divider />
 
@@ -320,6 +304,27 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                   <div>Favers: {getPlugin.data.favers}</div>
                   <div>Suggesters: {getPlugin.data.suggesters}</div>
                 </div>
+
+                <Divider />
+
+                {getPlugin.data.maintainers && (
+                  <>
+                    <div className={styles.sideBarTitle}>
+                      <Heading3>Maintainers</Heading3>
+                      <div className={styles.maintainersContainer}>
+                        {getPlugin.data.maintainers.map((maintainer: any) => (
+                          <ToolTip tooltip={maintainer.name}>
+                            <div className={styles.maintainer}>
+                              <img src={maintainer.avatar_url} />
+                            </div>
+                          </ToolTip>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Divider />
+                  </>
+                )}
               </div>
             </div>
           </div>
