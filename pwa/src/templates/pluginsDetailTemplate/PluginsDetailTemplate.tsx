@@ -219,7 +219,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 </div>
               </div>
               <div className={styles.sideBarSection}>
-			  <Heading3>Versions</Heading3>
+                <Heading3>Versions</Heading3>
                 <VerticalMenu
                   layoutClassName={styles.requiredSideNav}
                   items={showmoreVersions ? versionsSideBar : versionsSideBar.slice(0, 6)}
@@ -240,32 +240,34 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 <Divider />
 
                 {getPlugin.data.support && (
-                  <div className={styles.extraInfoSupport}>
-                    <Heading3>Support</Heading3>
-                    <div>
-                      {getPlugin.data.support?.source && (
-                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
-                          Source
-                        </Button>
-                      )}
-                      {getPlugin.data.support?.issues && (
-                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
-                          Issues
-                        </Button>
-                      )}
-                      {getPlugin.data.dist && (
-                        <Button
-                          icon={<ExternalLinkIcon />}
-                          onClick={() => handleDownloadButton(getPlugin.data.dist.url)}
-                        >
-                          Download
-                        </Button>
-                      )}
+                  <>
+                    <div className={styles.extraInfoSupport}>
+                      <Heading3>Support</Heading3>
+                      <div>
+                        {getPlugin.data.support?.source && (
+                          <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
+                            Source
+                          </Button>
+                        )}
+                        {getPlugin.data.support?.issues && (
+                          <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
+                            Issues
+                          </Button>
+                        )}
+                        {getPlugin.data.dist && (
+                          <Button
+                            icon={<ExternalLinkIcon />}
+                            onClick={() => handleDownloadButton(getPlugin.data.dist.url)}
+                          >
+                            Download
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
 
-                <Divider />
+                    <Divider />
+                  </>
+                )}
 
                 <div className={styles.sideBarTitle}>
                   <Heading3>Downloads</Heading3>

@@ -163,6 +163,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
                 {getSources.isSuccess && (
                   // @ts-ignore
                   <SelectSingle
+                    isClearable
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
                     {...{ register, errors, control }}
