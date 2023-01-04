@@ -30,6 +30,7 @@ export const HomeTemplate: React.FC = () => {
               }}
               type={dashboardCard.type}
               status={dashboardCard?.object?.status}
+              isEnabled={dashboardCard?.object?.isEnabled}
               lastRun={dashboardCard?.object?.lastRun}
               lastCall={dashboardCard?.object?.lastCall}
             />

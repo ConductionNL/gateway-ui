@@ -57,6 +57,15 @@
   align-self: center;
 }
 
+.sectionDivider > *:not(:last-child):has(> *) {
+  margin-block-end: var(--gateway-ui-size-md);
+}
+
+.mainSection {
+  display: flex;
+  gap: var(--gateway-ui-size-md);
+}
+
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);
