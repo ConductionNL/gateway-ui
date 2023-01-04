@@ -3,7 +3,16 @@ import * as styles from "./SourcesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Heading1, Switch, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import {
+  Button,
+  FormControlLabel,
+  Heading1,
+  Switch,
+  Tab,
+  TabContext,
+  TabPanel,
+  Tabs,
+} from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
@@ -28,6 +37,7 @@ import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { IsLoadingContext } from "../../../context/isLoading";
 import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
+import ToggleButton from "../../../components/toggleButton/ToggleButton";
 
 interface SourcesFormTemplateProps {
   source: any;
@@ -45,6 +55,14 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
   const [headers, setHeaders] = React.useState<any[]>([]);
   const [query, setQuery] = React.useState<any[]>([]);
+
+  const [advancedSwitch, setAdvancedSwitch] = React.useState({
+    decodeContent: "string" as "string" | "boolean",
+    delay: "int" as "int" | "float",
+    expect: "int" as "int" | "boolean",
+    verify: "string" as "string" | "boolean",
+    idnConversion: "int" as "int" | "boolean",
+  });
 
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
@@ -80,6 +98,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const watchAuth = watch("auth");
   const watchHeaders = watch("headers");
   const watchQuery = watch("query");
+  const watchDecodeContent = watch("decode_content");
 
   React.useEffect(() => {
     if (!watchAuth) return;
@@ -401,8 +420,13 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     </a>
                   </div>
                   <div className={styles.expectFormField}>
-                    <InputCheckbox name="decode_content" label="True" {...{ register, errors }} />
-                    <InputNumber name="decode_content" {...{ register, errors }} />
+                    <ToggleButton />
+                    {advancedSwitch.decodeContent === "string" && (
+                      <InputText name="decode_content" {...{ register, errors }} />
+                    )}
+                    {advancedSwitch.decodeContent === "boolean" && (
+                      <InputCheckbox name="decode_content" label="True" {...{ register, errors }} />
+                    )}
                   </div>
                 </FormField>
 
