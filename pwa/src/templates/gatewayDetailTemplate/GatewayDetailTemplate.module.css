@@ -44,35 +44,46 @@
   gap: var(--gateway-ui-size-md);
 }
 
-.downloadIndicatorContainer {
-  height: 100%;
-  width: fit-content;
-}
-
-.cardsContainer {
+.sectionContainer {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--gateway-ui-size-lg);
+  gap: 14px;
 }
 
-.card {
-  background-color: var(--gateway-ui-color-lightgrey);
-  padding-block: var(--gateway-ui-size-sm);
-  padding-inline: var(--gateway-ui-size-sm);
-  border-radius: 12px;
-  width: 110px;
+.mainSection {
+  flex: 5;
+}
+
+.mainSection > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.sideBarSection {
+  flex: 1;
+}
+
+.sideBarSection > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-md);
+}
+
+.requiredTable {
+  flex-basis: 100%;
+}
+
+.requiredTableHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.requiredSideNav {
+  --denhaag-sidenav-link-padding-block-end: 2px;
+  --denhaag-sidenav-link-padding-block-start: 2px;
+}
+
+.showmoreVersionsButton :hover {
+  cursor: pointer;
+  color: var(--gateway-ui-color-primary);
+}
+
+.showmoreVersionsButton {
   text-align: center;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--gateway-ui-size-sm);
-}
-
-.card .cardContent {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
