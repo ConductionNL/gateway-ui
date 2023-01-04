@@ -258,7 +258,6 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                   <SelectCreate
                     options={throws}
                     name="throws"
-                    validation={{ required: true }}
                     {...{ register, errors, control }}
                   />
                 )}
@@ -280,6 +279,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                 {getSources.isSuccess && (getSource.isSuccess || !endpoint.proxy) && (
                   // @ts-ignore
                   <SelectSingle
+                    isClearable
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
                     {...{ register, errors, control }}

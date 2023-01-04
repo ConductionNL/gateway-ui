@@ -51,7 +51,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
-      throws: data.throws.split(","),
+      throws: data.throws?.map((_throw: any) => _throw.value),
     };
 
     createOrEditCronjob.mutate({ payload, id: cronjobId });
