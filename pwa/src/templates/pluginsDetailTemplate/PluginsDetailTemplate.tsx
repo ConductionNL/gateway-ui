@@ -73,13 +73,14 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
     }
   };
 
-  const versionsSideBar = getPlugin.isSuccess
-    ? Object.values(getPlugin.data.versions).map((data: any) => ({
-        label: data.version,
-        current: data.version === currentRequire,
-        onClick: () => setCurrentRequire(data.version),
-      }))
-    : [];
+  const versionsSideBar =
+    getPlugin.isSuccess && getPlugin.data.versions
+      ? Object.values(getPlugin.data.versions).map((data: any) => ({
+          label: data.version,
+          current: data.version === currentRequire,
+          onClick: () => setCurrentRequire(data.version),
+        }))
+      : [];
 
   React.useEffect(() => {
     if (!getPlugin.data) return;
@@ -195,11 +196,9 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                           <ul>
                             {currentRequire &&
                               Object.entries(getPlugin.data.versions[currentRequire].require).map(([key, value]) => (
-                                <>
-                                  <li>
-                                    {key}: {value}
-                                  </li>
-                                </>
+                                <li>
+                                  {key}: {value}
+                                </li>
                               ))}
                           </ul>
                         </TableCell>
@@ -220,6 +219,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 </div>
               </div>
               <div className={styles.sideBarSection}>
+                <Heading3>Versions</Heading3>
                 <VerticalMenu
                   layoutClassName={styles.requiredSideNav}
                   items={showmoreVersions ? versionsSideBar : versionsSideBar.slice(0, 6)}
@@ -239,48 +239,35 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
 
                 <Divider />
 
-                <div className={styles.sideBarTitle}>
-                  <Heading3>Maintainers</Heading3>
-                  <div className={styles.maintainersContainer}>
-                    {getPlugin.data.maintainers.map((maintainer: any) => (
-                      <ToolTip tooltip={maintainer.name}>
-                        <div className={styles.maintainer}>
-                          <img src={maintainer.avatar_url} />
-                        </div>
-                      </ToolTip>
-                    ))}
-                  </div>
-                </div>
-
-                <Divider />
-
                 {getPlugin.data.support && (
-                  <div className={styles.extraInfoSupport}>
-                    <Heading3>Support</Heading3>
-                    <div>
-                      {getPlugin.data.support?.source && (
-                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
-                          Source
-                        </Button>
-                      )}
-                      {getPlugin.data.support?.issues && (
-                        <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
-                          Issues
-                        </Button>
-                      )}
-                      {getPlugin.data.dist && (
-                        <Button
-                          icon={<ExternalLinkIcon />}
-                          onClick={() => handleDownloadButton(getPlugin.data.dist.url)}
-                        >
-                          Download
-                        </Button>
-                      )}
+                  <>
+                    <div className={styles.extraInfoSupport}>
+                      <Heading3>Support</Heading3>
+                      <div>
+                        {getPlugin.data.support?.source && (
+                          <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
+                            Source
+                          </Button>
+                        )}
+                        {getPlugin.data.support?.issues && (
+                          <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
+                            Issues
+                          </Button>
+                        )}
+                        {getPlugin.data.dist && (
+                          <Button
+                            icon={<ExternalLinkIcon />}
+                            onClick={() => handleDownloadButton(getPlugin.data.dist.url)}
+                          >
+                            Download
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
 
-                <Divider />
+                    <Divider />
+                  </>
+                )}
 
                 <div className={styles.sideBarTitle}>
                   <Heading3>Downloads</Heading3>
@@ -320,6 +307,27 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                   <div>Favers: {getPlugin.data.favers}</div>
                   <div>Suggesters: {getPlugin.data.suggesters}</div>
                 </div>
+
+                <Divider />
+
+                {getPlugin.data.maintainers && (
+                  <>
+                    <div className={styles.sideBarTitle}>
+                      <Heading3>Maintainers</Heading3>
+                      <div className={styles.maintainersContainer}>
+                        {getPlugin.data.maintainers.map((maintainer: any) => (
+                          <ToolTip tooltip={maintainer.name}>
+                            <div className={styles.maintainer}>
+                              <img src={maintainer.avatar_url} />
+                            </div>
+                          </ToolTip>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Divider />
+                  </>
+                )}
               </div>
             </div>
           </div>
