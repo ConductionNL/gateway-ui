@@ -15,6 +15,7 @@ import { useCronjob } from "../../hooks/cronjob";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useSync } from "../../hooks/synchronization";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import { TabsContext } from "../../context/tabs";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -22,7 +23,7 @@ interface ObjectDetailTemplateProps {
 
 export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ objectId }) => {
   const { t } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
 
   const queryClient = new QueryClient();
   const _useObject = useObject(queryClient);
@@ -54,11 +55,11 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
       {getObject.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
-        <TabContext value={currentTab.toString()}>
+        <TabContext value={currentTab.objectDetailTabs.toString()}>
           <Tabs
-            value={currentTab}
+            value={currentTab.objectDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab(newValue);
+              setCurrentTab({ ...currentTab, objectDetailTabs: newValue });
             }}
             variant="scrollable"
           >
@@ -97,9 +98,9 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
                   {getSynchronizations.data.map((synchronization: any) => (
                     <TableRow onClick={() => navigate(`${synchronization.id}`)} key={synchronization.id}>
                       <TableCell>{synchronization.id}</TableCell>
-                      <TableCell>{synchronization.source ?? "-"}</TableCell>
+                      <TableCell>{synchronization.gateway?.name ?? "-"}</TableCell>
                       <TableCell>{synchronization.action?.name ?? "-"}</TableCell>
-                      <TableCell>{synchronization.externalId ?? "-"}</TableCell>
+                      <TableCell>{synchronization.sourceId ?? "-"}</TableCell>
                       <TableCell>{synchronization.endpoint ?? "-"}</TableCell>
                       <TableCell>
                         <Button

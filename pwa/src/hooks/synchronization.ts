@@ -38,7 +38,9 @@ export const useSync = (queryClient: QueryClient) => {
       onError: (error) => {
         throw new Error(error.message);
       },
-      onSettled: () => {},
+      onSettled: () => {
+        setTimeout(() => _queryClient.invalidateQueries(["synchronizations"]), 500);
+      },
     });
 
   const createOrEdit = (objectId: string, syncId?: string) =>

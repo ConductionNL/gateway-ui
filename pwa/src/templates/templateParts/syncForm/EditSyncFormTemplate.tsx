@@ -35,7 +35,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
   const _useSync = useSync(queryClient);
   const syncObject = _useSync.createOrEdit(objectId, syncId);
 
-  const getSource = _useSource.getOne(sync?.sourceId);
+  const getSource = _useSource.getOne(sync?.gateway?.id);
   const getAction = _useAction.getOne(sync?.action?.id);
 
   const syncActions =
@@ -51,8 +51,6 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
     formState: { errors },
   } = useForm();
 
-  console.log(sync);
-
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
@@ -64,13 +62,16 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
   };
 
   const handleSetFormValues = (sync: any): void => {
-    const basicFields: string[] = ["endpoint", "externalId"];
+    const basicFields: string[] = ["endpoint"];
     basicFields.forEach((field) => setValue(field, sync[field]));
+    setValue("externalId", sync.sourceId);
   };
 
-  const handleSetSelectFormValues = (sync: any): void => {
-    getSource.isSuccess && setValue("source", { label: getSource.data.name, value: getSource.data.id });
+  const handleSetSelectActionFormValues = (): void => {
     getAction && setValue("action", { label: getAction.data?.name, value: getAction.data?.id });
+  };
+  const handleSetSelectSourceFormValues = (): void => {
+    getSource.isSuccess && setValue("source", { label: getSource.data.name, value: getSource.data.id });
   };
 
   React.useEffect(() => {
@@ -78,8 +79,12 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
   }, [sync]);
 
   React.useEffect(() => {
-    handleSetSelectFormValues(sync);
-  }, [getSource.isSuccess, getAction.isSuccess]);
+    handleSetSelectActionFormValues();
+  }, [getAction.isSuccess]);
+
+  React.useEffect(() => {
+    handleSetSelectSourceFormValues();
+  }, [getSource.isSuccess]);
 
   return (
     <div className={styles.container}>
@@ -101,7 +106,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
               <FormFieldInput>
                 <FormFieldLabel>{t("Select a source")}</FormFieldLabel>
 
-                {getSources.isLoading && getSource.isLoading && getSource.isIdle && <Skeleton height="50px" />}
+                {(getSources.isLoading || getSource.isLoading || getSource.isIdle) && <Skeleton height="50px" />}
                 {getSources.isSuccess && getSource.isSuccess && (
                   // @ts-ignore
                   <SelectSingle
@@ -131,7 +136,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                 )}
                 {!sync?.action && (
                   <>
-                    {getActions.isLoading && <Skeleton height="50px" />}
+                    {(getActions.isLoading || !sync) && <Skeleton height="50px" />}
                     {getActions.isSuccess && syncActions && (
                       // @ts-ignore
                       <SelectSingle

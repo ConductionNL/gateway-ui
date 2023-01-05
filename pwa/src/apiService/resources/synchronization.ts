@@ -37,7 +37,7 @@ export default class Synchroniation {
     const { payload, sourceId, objectId, syncId } = variables;
 
     const params = {
-      action: payload.action && `/admin/actions/${payload.action.value}`,
+      action: payload.action && payload.action.value,
       endpoint: payload.endpoint,
       externalId: payload.externalId,
       sourceId: sourceId,
