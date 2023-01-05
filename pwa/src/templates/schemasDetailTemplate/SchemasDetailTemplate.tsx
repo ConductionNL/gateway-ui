@@ -83,6 +83,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                     <TableHeader>{t("Type")}</TableHeader>
                     <TableHeader>{t("Function")}</TableHeader>
                     <TableHeader>{t("Case sensitive")}</TableHeader>
+                    <TableHeader>{t("Immutable")}</TableHeader>
                     <TableHeader>{t("Created")}</TableHeader>
                     <TableHeader>{t("Modified")}</TableHeader>
                     <TableHeader />
@@ -100,6 +101,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                         <TableCell>{property.type ?? "-"}</TableCell>
                         <TableCell>{property.function ?? "-"}</TableCell>
                         <TableCell>{property.caseSensitive.toString() ?? "-"}</TableCell>
+                        <TableCell>{property.immutable.toString() ?? "-"}</TableCell>
                         <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
                         <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
                         <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
