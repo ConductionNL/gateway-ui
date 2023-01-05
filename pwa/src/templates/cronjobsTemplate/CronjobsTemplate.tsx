@@ -63,7 +63,6 @@ export const CronjobsTemplate: React.FC = () => {
                   <div className={clsx(styles[cronjob.status === true ? "statusOk" : "statusFailed"])}>
                     <ToolTip tooltip="Status">
                       <Tag
-                        layoutClassName={styles.tagWidth}
                         icon={<FontAwesomeIcon icon={cronjob.status === true ? faCheck : faXmark} />}
                         label={cronjob.status?.toString() ?? "no status"}
                       />

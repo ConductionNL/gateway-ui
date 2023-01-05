@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
-import { useObject } from "../../../hooks/object";
 import { useSource } from "../../../hooks/source";
 import { useAction } from "../../../hooks/action";
 import Skeleton from "react-loading-skeleton";
