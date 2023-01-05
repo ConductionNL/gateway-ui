@@ -13,6 +13,8 @@ import { useQueryClient } from "react-query";
 import { useAttribute } from "../../../hooks/attribute";
 import { navigate } from "gatsby";
 import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
+import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 
 interface CreatePropertyFormTemplateProps {
   schemaId: string;
@@ -25,10 +27,12 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [selectedType, setSelectedType] = React.useState<any>(null);
 
   const queryClient = useQueryClient();
   const _useAttribute = useAttribute(queryClient);
   const createOrEditAttribute = _useAttribute.createOrEdit(schemaId, propertyId);
+  // const getAttributes = _useAttribute.getAll();
 
   const typeSelectOptions = [
     { label: "String", value: "string" },
@@ -71,7 +75,18 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
     handleSubmit,
     control,
     formState: { errors },
+    watch,
   } = useForm();
+
+  const watchType = watch("type");
+
+  React.useEffect(() => {
+    if (!watchType) return;
+
+    const selectedType = typeSelectOptions.find((typeOption) => typeOption.value === watchType.value);
+
+    setSelectedType(selectedType?.value);
+  }, [watchType]);
 
   const onSubmit = (data: any): void => {
     if (data.minLength > data.maxLength) return setFormError(t("The minLength is bigger than the maxLength"));
@@ -86,6 +101,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
       format: data.format && data.format.value,
       function: data.function && data.function.value,
       entity: `/admin/entities/${schemaId}`,
+      fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
     };
     createOrEditAttribute.mutate({ payload, id: propertyId });
   };
@@ -161,14 +177,14 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("extend")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="extend" />
+                      <InputCheckbox {...{ register, errors }} label="on" name="extend" disabled={loading} />
                     </FormFieldInput>
                   </FormField>
 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("include")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="include" />
+                      <InputCheckbox {...{ register, errors }} label="on" name="include" disabled={loading} />
                     </FormFieldInput>
                   </FormField>
 
@@ -202,393 +218,406 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
               </div>
             </TabPanel>
             <TabPanel className={styles.tabPanel} value="1">
-              <div className={styles.gridContainer}>
-                <div className={styles.grid}>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Function")}</FormFieldLabel>
-                      {/* @ts-ignore */}
-                      <SelectSingle
-                        {...{ register, errors, control }}
-                        name="function"
-                        options={functionSelectOptions}
-                        disabled={loading}
-                      />
-                    </FormFieldInput>
-                  </FormField>
+              <div className={styles.advancedFormContainer}>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                    <Textarea {...{ register, errors }} name="description" disabled={loading} />
+                  </FormFieldInput>
+                </FormField>
+
+                <div className={styles.gridContainer}>
+                  <div className={styles.grid}>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("required")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="required" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
+
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Multiple")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="multiple" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
+
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Function")}</FormFieldLabel>
+                        {/* @ts-ignore */}
+                        <SelectSingle
+                          {...{ register, errors, control }}
+                          name="function"
+                          options={functionSelectOptions}
+                          disabled={loading}
+                        />
+                      </FormFieldInput>
+                    </FormField>
+
+                    {selectedType === "integer" && (
+                      <>
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("multipleOf")}</FormFieldLabel>
+                            <InputNumber {...{ register, errors }} name="multipleOf" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("minimum")}</FormFieldLabel>
+                            <InputNumber {...{ register, errors }} name="minimum" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("maximum")}</FormFieldLabel>
+                            <InputNumber {...{ register, errors }} name="maximum" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("exclusiveMinimum")}</FormFieldLabel>
+                            <InputCheckbox
+                              {...{ register, errors }}
+                              label="on"
+                              name="exclusiveMinimum"
+                              disabled={loading}
+                            />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("exclusiveMaximum")}</FormFieldLabel>
+                            <InputCheckbox
+                              {...{ register, errors }}
+                              label="on"
+                              name="exclusiveMaximum"
+                              disabled={loading}
+                            />
+                          </FormFieldInput>
+                        </FormField>
+                      </>
+                    )}
+
+                    {selectedType === "file" && (
+                      <>
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("fileTypes")}</FormFieldLabel>
+                            {/* @ts-ignore */}
+                            <SelectCreate name="fileTypes" {...{ register, errors, control }} disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("minFileSize")}</FormFieldLabel>
+                            <InputNumber {...{ register, errors }} name="minFileSize" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("maxFileSize")}</FormFieldLabel>
+                            <InputNumber {...{ register, errors }} name="maxFileSize" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+                      </>
+                    )}
+
+                    {selectedType === "object" && (
+                      <>
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("triggerParentEvents")}</FormFieldLabel>
+                            <InputCheckbox
+                              {...{ register, errors }}
+                              label="on"
+                              name="triggerParentEvents"
+                              disabled={loading}
+                            />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("cascadeDelete")}</FormFieldLabel>
+                            <InputCheckbox
+                              {...{ register, errors }}
+                              label="on"
+                              name="cascadeDelete"
+                              disabled={loading}
+                            />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("cascade")}</FormFieldLabel>
+                            <InputCheckbox {...{ register, errors }} label="on" name="cascade" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("minProperties")}</FormFieldLabel>
+                            <InputNumber {...{ register, errors }} name="minProperties" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("maxProperties")}</FormFieldLabel>
+                            <InputNumber {...{ register, errors }} name="maxProperties" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+                      </>
+                    )}
+
+                    {selectedType === "array" && (
+                      <>
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("uniqueItems")}</FormFieldLabel>
+                            <InputCheckbox {...{ register, errors }} label="on" name="uniqueItems" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("minItems")}</FormFieldLabel>
+                            <InputNumber {...{ register, errors }} name="minItems" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+
+                        <FormField>
+                          <FormFieldInput>
+                            <FormFieldLabel>{t("maxItems")}</FormFieldLabel>
+                            <InputNumber {...{ register, errors }} name="maxItems" disabled={loading} />
+                          </FormFieldInput>
+                        </FormField>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.gridContainer}>
-                <div className={styles.grid}>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Multiple")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="multiple" />
-                    </FormFieldInput>
-                  </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("multipleOf")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="multipleOf" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("maximum")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="maximum" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("exclusiveMaximum")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="exclusiveMaximum" />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("minimum")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="minimum" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("exclusiveMinimum")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="exclusiveMinimum" />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("maxItems")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="maxItems" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("minItems")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="minItems" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
-                </div>
-              </div>
-              <div className={styles.gridContainer}>
-                <div className={styles.grid}>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("uniqueItems")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="uniqueItems" />
-                    </FormFieldInput>
-                  </FormField>
-                </div>
-              </div>
-              <div className={styles.gridContainer}>
-                <div className={styles.grid}>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("maxProperties")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="maxProperties" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("minProperties")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="minProperties" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
-
-                  {/* <FormField>
+                {/* <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("inversedBy")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="inversedBy" />
+                      {getAttributes.isLoading && <Skeleton height="50px" />}
+                      {getAttributes.isSuccess && (
+                        //@ts-ignore
+                        <SelectSingle
+                          {...{ register, errors, control }}
+                          name="inversedBy"
+                          options={getAttributes.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
+                          disabled={loading}
+                        />
+                      )}
                     </FormFieldInput>
                   </FormField> */}
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("required")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="required" />
-                    </FormFieldInput>
-                  </FormField>
+                <div className={styles.gridContainer}>
+                  <div className={styles.grid}>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("defaultValue")}</FormFieldLabel>
+                        <InputText {...{ register, errors }} name="defaultValue" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  {/* Keyvalue Inputs need to be correctly implemented */}
-                  {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("requiredIf")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="requiredIf" />
-                    </FormFieldInput>
-                  </FormField>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("requiredIf")}</FormFieldLabel>
-                      <CreateKeyValue name="requiredIf" data={getValues("requiredIf")} {...{ control, errors }} />
-                    </FormFieldInput>
-                  </FormField> */}
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("schema")}</FormFieldLabel>
+                        <InputText {...{ register, errors }} name="schema" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("forbiddenIf")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="requiredIf" />
-                    </FormFieldInput>
-                  </FormField>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("forbiddenIf")}</FormFieldLabel>
-                      <CreateKeyValue name="forbiddenIf" data={getValues("forbiddenIf")} {...{ control, errors }} />
-                    </FormFieldInput>
-                  </FormField> */}
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("nullable")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="nullable" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Enum")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="enum" />
-                    </FormFieldInput>
-                  </FormField>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("enum")}</FormFieldLabel>
-                      <CreateKeyValue name="enum" data={getValues("enum")} {...{ control, errors }} />
-                    </FormFieldInput>
-                  </FormField> */}
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("mustBeUnique")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="mustBeUnique" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("allOf")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="allOf" />
-                    </FormFieldInput>
-                  </FormField>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("allOf")}</FormFieldLabel>
-                      <CreateKeyValue name="allOf" data={getValues("allOf")} {...{ control, errors }} />
-                    </FormFieldInput>
-                  </FormField> */}
+                    {/* readOnly and writeOnly must be dependend on eachother */}
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("readOnly")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="readOnly" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("anyOf")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="anyOf" />
-                    </FormFieldInput>
-                  </FormField>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("anyOf")}</FormFieldLabel>
-                      <CreateKeyValue name="anyOf" data={getValues("anyOf")} {...{ control, errors }} />
-                    </FormFieldInput>
-                  </FormField> */}
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("writeOnly")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="writeOnly" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("oneOf")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="oneOf" />
-                    </FormFieldInput>
-                  </FormField>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("oneOf")}</FormFieldLabel>
-                      <CreateKeyValue name="oneOf" data={getValues("oneOf")} {...{ control, errors }} />
-                    </FormFieldInput>
-                  </FormField> */}
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("caseSensitive")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="caseSensitive" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
+
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("deprecated")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="deprecated" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
+
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("example")}</FormFieldLabel>
+                        <InputText {...{ register, errors }} name="example" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
+
+                    {/* Needs to be checked if its in line with (Ecma-262 Edition 5.1 regular expression dialect) */}
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("pattern")}</FormFieldLabel>
+                        <InputText {...{ register, errors }} name="pattern" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
+                  </div>
                 </div>
-              </div>
+                <div className={styles.gridContainer}>
+                  <div className={styles.grid}>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("minDate")}</FormFieldLabel>
+                        <InputDate {...{ register, errors }} name="minDate" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-              <FormField>
-                <FormFieldInput>
-                  <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                  <Textarea {...{ register, errors }} name="description" disabled={loading} />
-                </FormFieldInput>
-              </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("maxDate")}</FormFieldLabel>
+                        <InputDate {...{ register, errors }} name="maxDate" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-              <div className={styles.gridContainer}>
-                <div className={styles.grid}>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("defaultValue")}</FormFieldLabel>
-                      <InputText {...{ register, errors }} name="defaultValue" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
+                    {/* maxFileSize and minFileSize can only be used in combination with type file* The type of the file  */}
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("nullable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="nullable" />
-                    </FormFieldInput>
-                  </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("persistToGateway")}</FormFieldLabel>
+                        <InputCheckbox
+                          {...{ register, errors }}
+                          label="on"
+                          name="persistToGateway"
+                          disabled={loading}
+                        />
+                      </FormFieldInput>
+                    </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("mustBeUnique")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="mustBeUnique" />
-                    </FormFieldInput>
-                  </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("searchable")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="searchable" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("caseSentitive")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="caseSentitive" />
-                    </FormFieldInput>
-                  </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("sortable")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="sortable" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  {/* readOnly and writeOnly must be dependend on eachother */}
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("readOnly")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="readOnly" />
-                    </FormFieldInput>
-                  </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("immutable")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="immutable" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("writeOnly")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="writeOnly" />
-                    </FormFieldInput>
-                  </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("unsetable")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="unsetable" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("example")}</FormFieldLabel>
-                      <InputText {...{ register, errors }} name="example" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
-
-                  {/* Needs to be checked if its in line with (Ecma-262 Edition 5.1 regular expression dialect) */}
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("pattern")}</FormFieldLabel>
-                      <InputText {...{ register, errors }} name="pattern" disabled={loading} />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("deprecated")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="deprecated" />
-                    </FormFieldInput>
-                  </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("mayBeOrphaned")}</FormFieldLabel>
+                        <InputCheckbox {...{ register, errors }} label="on" name="mayBeOrphaned" disabled={loading} />
+                      </FormFieldInput>
+                    </FormField>
+                  </div>
                 </div>
-              </div>
-              <div className={styles.gridContainer}>
-                <div className={styles.grid}>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("minDate")}</FormFieldLabel>
-                      <InputDate {...{ register, errors }} name="minDate" />
-                    </FormFieldInput>
-                  </FormField>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("requiredIf")}</FormFieldLabel>
+                    {/* @ts-ignore */}
+                    <CreateKeyValue name="requiredIf" {...{ control, errors }} disabled={loading} />
+                  </FormFieldInput>
+                </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("maxDate")}</FormFieldLabel>
-                      <InputDate {...{ register, errors }} name="maxDate" />
-                    </FormFieldInput>
-                  </FormField>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("forbiddenIf")}</FormFieldLabel>
+                    {/* @ts-ignore */}
+                    <CreateKeyValue name="forbiddenIf" {...{ control, errors }} disabled={loading} />
+                  </FormFieldInput>
+                </FormField>
 
-                  {/* maxFileSize and minFileSize can only be used in combination with type file* The type of the file  */}
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("maxFileSize")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="maxFileSize" />
-                    </FormFieldInput>
-                  </FormField>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("enum")}</FormFieldLabel>
+                    {/* @ts-ignore */}
+                    <CreateKeyValue name="enum" {...{ control, errors }} disabled={loading} />
+                  </FormFieldInput>
+                </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("minFileSize")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="minFileSize" />
-                    </FormFieldInput>
-                  </FormField>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("allOf")}</FormFieldLabel>
+                    {/* @ts-ignore */}
+                    <CreateKeyValue name="allOf" {...{ control, errors }} disabled={loading} />
+                  </FormFieldInput>
+                </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("persistToGateway")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="persistToGateway" />
-                    </FormFieldInput>
-                  </FormField>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("anyOf")}</FormFieldLabel>
+                    {/* @ts-ignore */}
+                    <CreateKeyValue name="anyOf" {...{ control, errors }} disabled={loading} />
+                  </FormFieldInput>
+                </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("searchable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="searchable" />
-                    </FormFieldInput>
-                  </FormField>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("oneOf")}</FormFieldLabel>
+                    {/* @ts-ignore */}
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("sortable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="sortable" />
-                    </FormFieldInput>
-                  </FormField>
+                    <CreateKeyValue name="oneOf" {...{ control, errors }} disabled={loading} />
+                  </FormFieldInput>
+                </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("triggerParentEvents")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="triggerParentEvents" />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("cascadeDelete")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="cascadeDelete" />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("cascade")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="cascade" />
-                    </FormFieldInput>
-                  </FormField>
-
-                  {/* Keyvalue Inputs need to be correctly implemented */}
-                  {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("objectConfig")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="objectConfig" />
-                    </FormFieldInput>
-                  </FormField>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("objectConfig")}</FormFieldLabel>
-
-                      <CreateKeyValue name="objectConfig" {...{ control, errors }} />
-                    </FormFieldInput>
-                  </FormField> */}
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("immutable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="immutable" />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("unsetable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="unsetable" />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("mayBeOrphaned")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="mayBeOrphaned" />
-                    </FormFieldInput>
-                  </FormField>
-
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("schema")}</FormFieldLabel>
-                      <InputText {...{ register, errors }} name="schema" />
-                    </FormFieldInput>
-                  </FormField>
-                </div>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("objectConfig")}</FormFieldLabel>
+                    {/* @ts-ignore */}
+                    <CreateKeyValue name="objectConfig" {...{ control, errors }} disabled={loading} />
+                  </FormFieldInput>
+                </FormField>
               </div>
             </TabPanel>
           </TabContext>

@@ -66,6 +66,6 @@
   );
 }
 
-.test {
-  pointer-events: none;
+.advancedFormContainer > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
 }
