@@ -95,15 +95,35 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
       return setFormError(t("The minProperties is bigger than the maxProperties"));
     if (data.minDate > data.maxDate) return setFormError(t("The minDate is bigger than the maxDate"));
     if (data.minFileSize > data.maxFileSize) return setFormError(t("The minFileSize is bigger than the maxFileSize"));
-    const payload = {
-      ...data,
-      type: data.type && data.type.value,
-      format: data.format && data.format.value,
-      function: data.function && data.function.value,
-      entity: `/admin/entities/${schemaId}`,
-      fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
-    };
-    createOrEditAttribute.mutate({ payload, id: propertyId });
+    if (data.immutable) {
+      const confirmDeletion = confirm(
+        "Are you sure you want to save this property as immutable?\nIf you do this property can not be changed in the future",
+      );
+
+      if (confirmDeletion) {
+        const payload = {
+          ...data,
+          type: data.type && data.type.value,
+          format: data.format && data.format.value,
+          function: data.function && data.function.value,
+          entity: `/admin/entities/${schemaId}`,
+          fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
+        };
+        createOrEditAttribute.mutate({ payload, id: propertyId });
+      }
+    } else {
+      const payload = {
+        ...data,
+        type: data.type && data.type.value,
+        format: data.format && data.format.value,
+        function: data.function && data.function.value,
+        entity: `/admin/entities/${schemaId}`,
+        fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
+      };
+      createOrEditAttribute.mutate({ payload, id: propertyId });
+    }
+
+    return setFormError(t("The minFileSize is bigger than the maxFileSize"));
   };
 
   return (

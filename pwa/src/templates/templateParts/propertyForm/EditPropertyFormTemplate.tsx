@@ -112,19 +112,41 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
     if (data.minDate > data.maxDate) return setFormError(t("The minDate is bigger than the maxDate"));
     if (data.minFileSize > data.maxFileSize) return setFormError(t("The minFileSize is bigger than the maxFileSize"));
 
-    const payload = {
-      ...data,
-      type: data.type && data.type.value,
-      format: data.format && data.format.value,
-      function: data.function && data.function.value,
-      fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
+    if (data.immutable) {
+      const confirmDeletion = confirm(
+        "Are you sure you want to save this property as immutable?\nIf you do this property can not be changed in the future",
+      );
 
-      // inversedBy: data.inversedBy && data.inversedBy,
-      // inversedBy: data.inversedBy && `App\\Entity\\${data.inversedBy.label}`,
-    };
+      if (confirmDeletion) {
+        const payload = {
+          ...data,
+          type: data.type && data.type.value,
+          format: data.format && data.format.value,
+          function: data.function && data.function.value,
+          fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
 
-    createOrEditProperty.mutate({ payload, id: propertyId });
-    queryClient.setQueryData(["attributes", propertyId], payload);
+          // inversedBy: data.inversedBy && data.inversedBy,
+          // inversedBy: data.inversedBy && `App\\Entity\\${data.inversedBy.label}`,
+        };
+
+        createOrEditProperty.mutate({ payload, id: propertyId });
+        queryClient.setQueryData(["attributes", propertyId], payload);
+      }
+    } else {
+      const payload = {
+        ...data,
+        type: data.type && data.type.value,
+        format: data.format && data.format.value,
+        function: data.function && data.function.value,
+        fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
+
+        // inversedBy: data.inversedBy && data.inversedBy,
+        // inversedBy: data.inversedBy && `App\\Entity\\${data.inversedBy.label}`,
+      };
+
+      createOrEditProperty.mutate({ payload, id: propertyId });
+      queryClient.setQueryData(["attributes", propertyId], payload);
+    }
   };
 
   const handleDeleteProperty = () => {
