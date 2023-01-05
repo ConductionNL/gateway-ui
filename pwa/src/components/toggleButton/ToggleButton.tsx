@@ -7,8 +7,6 @@ interface ToggleButtonProps {
   endLabel?: string;
   defaultState?: boolean;
   onChange?: () => any;
-  onEnabled?: () => any;
-  onDisabled?: () => any;
   layoutClassName?: any;
 }
 
@@ -17,8 +15,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   endLabel,
   defaultState,
   onChange,
-  onEnabled,
-  onDisabled,
   layoutClassName,
 }) => {
   const [isEnabled, setIsEnabled] = React.useState<boolean>(defaultState ?? false);
@@ -30,11 +26,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
 
     setIsEnabled(!isEnabled);
   };
-
-  React.useEffect(() => {
-    if (!!onEnabled && isEnabled) return onEnabled();
-    if (!!onDisabled && !isEnabled) return onDisabled();
-  }, [isEnabled]);
 
   return (
     <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>

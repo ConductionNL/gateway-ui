@@ -105,7 +105,10 @@
   cursor: pointer;
 }
 
-.toggleButton,
+.toggleButton {
+  margin-block: var(--gateway-ui-size-xs);
+}
+
 .checkboxInput {
   margin-block-start: var(--gateway-ui-size-xs);
 }

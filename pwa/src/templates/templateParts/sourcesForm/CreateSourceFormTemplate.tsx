@@ -290,20 +290,20 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="string"
+                    endLabel="boolean"
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        decodeContent: advancedSwitch.decodeContent === "string" ? "boolean" : "string",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="string"
-                      endLabel="boolean"
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          decodeContent: advancedSwitch.decodeContent === "string" ? "boolean" : "string",
-                        })
-                      }
-                    />
                     {advancedSwitch.decodeContent === "string" && (
-                      <InputText name="decode_content_str" {...{ register, errors }} />
+                      <Textarea name="decode_content_str" {...{ register, errors }} />
                     )}
                     {advancedSwitch.decodeContent === "boolean" && (
                       <span className={styles.checkboxInput}>
@@ -329,18 +329,18 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="int"
+                    endLabel="float"
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        delay: advancedSwitch.delay === "int" ? "float" : "int",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="int"
-                      endLabel="float"
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          delay: advancedSwitch.delay === "int" ? "float" : "int",
-                        })
-                      }
-                    />
                     {advancedSwitch.delay === "int" && <InputNumber name="delay" {...{ register, errors }} />}
                     {advancedSwitch.delay === "float" && <InputFloat name="delay" {...{ register, errors }} />}
                   </div>
@@ -362,18 +362,18 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="int"
+                    endLabel="boolean"
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        expect: advancedSwitch.expect === "int" ? "boolean" : "int",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="int"
-                      endLabel="boolean"
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          expect: advancedSwitch.expect === "int" ? "boolean" : "int",
-                        })
-                      }
-                    />
                     {advancedSwitch.expect === "boolean" && (
                       <span className={styles.checkboxInput}>
                         <InputCheckbox name="expect_bool" label="True" {...{ register, errors }} />
@@ -424,18 +424,18 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="string"
+                    endLabel="boolean"
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        verify: advancedSwitch.verify === "string" ? "boolean" : "string",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="string"
-                      endLabel="boolean"
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          verify: advancedSwitch.verify === "string" ? "boolean" : "string",
-                        })
-                      }
-                    />
                     {advancedSwitch.verify === "boolean" && (
                       <span className={styles.checkboxInput}>
                         <InputCheckbox name="verify_bool" label="True" {...{ register, errors }} />
@@ -531,18 +531,18 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="int"
+                    endLabel="boolean"
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        idnConversion: advancedSwitch.idnConversion === "int" ? "boolean" : "int",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="int"
-                      endLabel="boolean"
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          idnConversion: advancedSwitch.idnConversion === "int" ? "boolean" : "int",
-                        })
-                      }
-                    />
                     {advancedSwitch.idnConversion === "boolean" && (
                       <span className={styles.checkboxInput}>
                         <InputCheckbox name="idn_conversion_bool" label="True" {...{ register, errors }} />

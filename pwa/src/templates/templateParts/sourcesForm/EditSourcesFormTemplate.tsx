@@ -22,6 +22,7 @@ import { IsLoadingContext } from "../../../context/isLoading";
 import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
+import TextArea from "@gemeente-denhaag/textarea";
 
 interface SourcesFormTemplateProps {
   source: any;
@@ -446,21 +447,21 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="string"
+                    endLabel="boolean"
+                    defaultState={advancedSwitch.decodeContent === "boolean"}
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        decodeContent: advancedSwitch.decodeContent === "string" ? "boolean" : "string",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="string"
-                      endLabel="boolean"
-                      defaultState={advancedSwitch.decodeContent === "boolean"}
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          decodeContent: advancedSwitch.decodeContent === "string" ? "boolean" : "string",
-                        })
-                      }
-                    />
                     {advancedSwitch.decodeContent === "string" && (
-                      <InputText name="decode_content_str" {...{ register, errors }} />
+                      <TextArea name="decode_content_str" {...{ register, errors }} />
                     )}
                     {advancedSwitch.decodeContent === "boolean" && (
                       <span className={styles.checkboxInput}>
@@ -486,19 +487,19 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="int"
+                    endLabel="float"
+                    defaultState={advancedSwitch.delay === "float"}
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        delay: advancedSwitch.delay === "int" ? "float" : "int",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="int"
-                      endLabel="float"
-                      defaultState={advancedSwitch.delay === "float"}
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          delay: advancedSwitch.delay === "int" ? "float" : "int",
-                        })
-                      }
-                    />
                     {advancedSwitch.delay === "int" && <InputNumber name="delay" {...{ register, errors }} />}
                     {advancedSwitch.delay === "float" && <InputFloat name="delay" {...{ register, errors }} />}
                   </div>
@@ -520,19 +521,19 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="int"
+                    endLabel="boolean"
+                    defaultState={advancedSwitch.expect === "boolean"}
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        expect: advancedSwitch.expect === "int" ? "boolean" : "int",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="int"
-                      endLabel="boolean"
-                      defaultState={advancedSwitch.expect === "boolean"}
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          expect: advancedSwitch.expect === "int" ? "boolean" : "int",
-                        })
-                      }
-                    />
                     {advancedSwitch.expect === "boolean" && (
                       <span className={styles.checkboxInput}>
                         <InputCheckbox name="expect_bool" label="True" {...{ register, errors }} />
@@ -583,19 +584,19 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="string"
+                    endLabel="boolean"
+                    defaultState={advancedSwitch.verify === "boolean"}
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        verify: advancedSwitch.verify === "string" ? "boolean" : "string",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="string"
-                      endLabel="boolean"
-                      defaultState={advancedSwitch.verify === "boolean"}
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          verify: advancedSwitch.verify === "string" ? "boolean" : "string",
-                        })
-                      }
-                    />
                     {advancedSwitch.verify === "boolean" && (
                       <span className={styles.checkboxInput}>
                         <InputCheckbox name="verify_bool" label="True" {...{ register, errors }} />
@@ -691,19 +692,19 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       />
                     </a>
                   </div>
+                  <ToggleButton
+                    layoutClassName={styles.toggleButton}
+                    startLabel="int"
+                    endLabel="boolean"
+                    defaultState={advancedSwitch.idnConversion === "boolean"}
+                    onChange={() =>
+                      setAdvancedSwitch({
+                        ...advancedSwitch,
+                        idnConversion: advancedSwitch.idnConversion === "int" ? "boolean" : "int",
+                      })
+                    }
+                  />
                   <div className={styles.expectFormField}>
-                    <ToggleButton
-                      layoutClassName={styles.toggleButton}
-                      startLabel="int"
-                      endLabel="boolean"
-                      defaultState={advancedSwitch.idnConversion === "boolean"}
-                      onChange={() =>
-                        setAdvancedSwitch({
-                          ...advancedSwitch,
-                          idnConversion: advancedSwitch.idnConversion === "int" ? "boolean" : "int",
-                        })
-                      }
-                    />
                     {advancedSwitch.idnConversion === "boolean" && (
                       <span className={styles.checkboxInput}>
                         <InputCheckbox name="idn_conversion_bool" label="True" {...{ register, errors }} />
