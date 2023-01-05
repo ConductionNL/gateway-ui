@@ -6,7 +6,6 @@ interface ToggleButtonProps {
   startLabel?: string;
   endLabel?: string;
   defaultState?: boolean;
-  checked?: boolean;
   onChange?: () => any;
   onEnabled?: () => any;
   onDisabled?: () => any;
@@ -17,7 +16,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   startLabel,
   endLabel,
   defaultState,
-  checked,
   onChange,
   onEnabled,
   onDisabled,
@@ -33,8 +31,6 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
     setIsEnabled(!isEnabled);
   };
 
-  !!checked && checked !== isEnabled && setIsEnabled(checked);
-
   React.useEffect(() => {
     if (!!onEnabled && isEnabled) return onEnabled();
     if (!!onDisabled && !isEnabled) return onDisabled();
@@ -44,7 +40,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
     <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>
       {startLabel}
       <div className={styles.switchContainer}>
-        <input id={uuid} type="checkbox" checked={checked ?? isEnabled} onChange={handleChange} />
+        <input id={uuid} type="checkbox" checked={isEnabled} onChange={handleChange} />
         <label htmlFor={uuid}></label>
       </div>
       {endLabel}

@@ -40,8 +40,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const [headers, setHeaders] = React.useState<any[]>([]);
   const [query, setQuery] = React.useState<any[]>([]);
 
-  const [testState, setTestState] = React.useState(true);
-
   const [advancedSwitch, setAdvancedSwitch] = React.useState({
     decodeContent: "string" as "string" | "boolean",
     delay: "int" as "int" | "float",
@@ -454,8 +452,12 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       startLabel="string"
                       endLabel="bool"
                       defaultState={advancedSwitch.decodeContent === "boolean"}
-                      onDisabled={() => setAdvancedSwitch({ ...advancedSwitch, decodeContent: "string" })}
-                      onEnabled={() => setAdvancedSwitch({ ...advancedSwitch, decodeContent: "boolean" })}
+                      onChange={() =>
+                        setAdvancedSwitch({
+                          ...advancedSwitch,
+                          decodeContent: advancedSwitch.decodeContent === "string" ? "boolean" : "string",
+                        })
+                      }
                     />
                     {advancedSwitch.decodeContent === "string" && (
                       <InputText name="decode_content_str" {...{ register, errors }} />
@@ -488,8 +490,12 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       startLabel="int"
                       endLabel="float"
                       defaultState={advancedSwitch.delay === "float"}
-                      onDisabled={() => setAdvancedSwitch({ ...advancedSwitch, delay: "int" })}
-                      onEnabled={() => setAdvancedSwitch({ ...advancedSwitch, delay: "float" })}
+                      onChange={() =>
+                        setAdvancedSwitch({
+                          ...advancedSwitch,
+                          delay: advancedSwitch.delay === "int" ? "float" : "int",
+                        })
+                      }
                     />
                     {advancedSwitch.delay === "int" && <InputNumber name="delay" {...{ register, errors }} />}
                     {advancedSwitch.delay === "float" && <InputFloat name="delay" {...{ register, errors }} />}
@@ -518,8 +524,12 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       startLabel="int"
                       endLabel="bool"
                       defaultState={advancedSwitch.expect === "boolean"}
-                      onDisabled={() => setAdvancedSwitch({ ...advancedSwitch, expect: "int" })}
-                      onEnabled={() => setAdvancedSwitch({ ...advancedSwitch, expect: "boolean" })}
+                      onChange={() =>
+                        setAdvancedSwitch({
+                          ...advancedSwitch,
+                          expect: advancedSwitch.expect === "int" ? "boolean" : "int",
+                        })
+                      }
                     />
                     {advancedSwitch.expect === "boolean" && (
                       <InputCheckbox name="expect_bool" label="True" {...{ register, errors }} />
@@ -575,8 +585,12 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       startLabel="string"
                       endLabel="bool"
                       defaultState={advancedSwitch.verify === "boolean"}
-                      onDisabled={() => setAdvancedSwitch({ ...advancedSwitch, verify: "string" })}
-                      onEnabled={() => setAdvancedSwitch({ ...advancedSwitch, verify: "boolean" })}
+                      onChange={() =>
+                        setAdvancedSwitch({
+                          ...advancedSwitch,
+                          verify: advancedSwitch.verify === "string" ? "boolean" : "string",
+                        })
+                      }
                     />
                     {advancedSwitch.verify === "boolean" && (
                       <InputCheckbox name="verify_bool" label="True" {...{ register, errors }} />
@@ -677,18 +691,13 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       startLabel="int"
                       endLabel="bool"
                       defaultState={advancedSwitch.idnConversion === "boolean"}
-                      checked={testState}
-                      onDisabled={() => setAdvancedSwitch({ ...advancedSwitch, idnConversion: "int" })}
-                      onEnabled={() => setAdvancedSwitch({ ...advancedSwitch, idnConversion: "boolean" })}
+                      onChange={() =>
+                        setAdvancedSwitch({
+                          ...advancedSwitch,
+                          idnConversion: advancedSwitch.idnConversion === "int" ? "boolean" : "int",
+                        })
+                      }
                     />
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setTestState(false);
-                      }}
-                    >
-                      set false
-                    </button>
                     {advancedSwitch.idnConversion === "boolean" && (
                       <InputCheckbox name="idn_conversion_bool" label="True" {...{ register, errors }} />
                     )}
