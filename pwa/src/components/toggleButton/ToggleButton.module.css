@@ -1,3 +1,8 @@
+.container {
+  display: flex;
+  gap: var(--gateway-ui-size-xs);
+}
+
 .switchContainer input {
   -webkit-appearance: none;
   display: none;
