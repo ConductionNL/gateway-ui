@@ -2,18 +2,10 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.content > *:not(:last-child) {
-  margin-block-end: var(--gateway-ui-size-2xl);
-}
-
-.data > *:not(:last-child) {
-  margin-block-end: var(--gateway-ui-size-lg);
-}
-
 .section {
   display: flex;
   justify-content: space-between;
-  margin-block-end: var(--gateway-ui-size-2xl);
+  margin-block-end: var(--gateway-ui-size-xl);
 }
 
 .title {
@@ -39,8 +31,26 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.gatewayDetailContainer > *:not(:last-child) {
+.gatewayDetailContainer > *:has(> *):not(:last-child) {
   margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.gatewayDetailContainer > * > h3 {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.typeAndTags {
+  display: flex;
+  gap: var(--gateway-ui-size-lg);
+}
+
+.typeAndTags > .tags {
+  margin-block-start: var(--gateway-ui-size-xs);
+}
+
+.typeAndTags > .tags > * {
+  margin-inline-end: var(--gateway-ui-size-xs);
+  margin-block-end: var(--gateway-ui-size-xs);
 }
 
 .type {
@@ -50,45 +60,44 @@
   gap: var(--gateway-ui-size-xl);
 }
 
-.descriptionAndTags {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--gateway-ui-size-md);
-}
-
-.descriptionAndTags > .description {
-  flex: 3;
-}
-
-.descriptionAndTags > .tags {
-  flex: 1;
-}
-
-.descriptionAndTags > .tags > * {
-  margin-inline-end: var(--gateway-ui-size-xs);
-  margin-block-end: var(--gateway-ui-size-xs);
-}
-
-.extraInfo {
-  width: 100%;
-  display: flex;
-  gap: var(--gateway-ui-size-md);
-}
-
-.extraInfo > * {
-  flex: 1;
-}
-
-.extraInfoTable {
-  flex: 3;
-}
-
 .extraInfoSupport > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-md);
 }
 
 .extraInfoSupport > div > *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-md);
+  margin-block-end: var(--gateway-ui-size-xs);
+}
+
+.downloadIndicatorContainer {
+  height: 100%;
+  width: fit-content;
+}
+
+.downloadsContent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gateway-ui-size-lg);
+}
+
+.sideBarTitle > h3 {
+  margin-block-end: var(--gateway-ui-size-md);
+}
+
+.downloadsDownloadButton {
+  cursor: pointer;
+}
+
+.maintainersContainer {
+  display: flex;
+  gap: var(--gateway-ui-size-xl);
+  flex-wrap: wrap;
+}
+
+.maintainer > img {
+  max-width: 100px;
+  display: block;
+  margin-inline: auto;
 }
 
 .deleteButton {
@@ -99,4 +108,48 @@
   --denhaag-button-primary-action-hover-background-color: var(
     --gateway-ui-color-dark-red
   );
+}
+
+.sectionContainer {
+  display: flex;
+  gap: 14px;
+}
+
+.requiredTable {
+  flex-basis: 100%;
+}
+
+.requiredTableHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.requiredSideNav {
+  --denhaag-sidenav-link-padding-block-end: 2px;
+  --denhaag-sidenav-link-padding-block-start: 2px;
+}
+
+.mainSection {
+  flex: 5;
+}
+
+.mainSection > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.sideBarSection {
+  flex: 1;
+}
+
+.sideBarSection > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-md);
+}
+
+.showmoreVersionsButton :hover {
+  cursor: pointer;
+  color: var(--gateway-ui-color-primary);
+}
+
+.showmoreVersionsButton {
+  text-align: center;
 }

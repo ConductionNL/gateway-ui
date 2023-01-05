@@ -94,12 +94,12 @@ module.exports = {
             crumbLabel: "collection",
           },
           {
-            pathname: "/settings/usergroups",
-            crumbLabel: "User Groups",
+            pathname: "/settings/securitygroups",
+            crumbLabel: "Security Groups",
           },
           {
-            pathname: "/settings/usergroups/[usergroupId]",
-            crumbLabel: "User Group",
+            pathname: "/settings/securitygroups/[securitygroupId]",
+            crumbLabel: "Security Group",
           },
           {
             pathname: "/settings/gatewayDetail/[gatewayDetailId]",

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
 import { Container, InputText } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { PluginCard } from "../../components/pluginCard/PluginCard";
 import _ from "lodash";
 import { QueryClient } from "react-query";
@@ -13,7 +13,7 @@ import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { PluginsSearchBarTemplate } from "./PluginsSearchBarTemplate";
 
-export type TPluginTitle = "Installed" | "Search" | "";
+export type TPluginTitle = "Search" | "";
 
 interface PluginsPageProps {
   title: TPluginTitle;
@@ -28,17 +28,12 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
   let getPlugins;
 
   switch (title) {
-    case "Installed":
-      getPlugins = _usePlugin.getAllInstalled();
-      break;
-
     case "Search":
       getPlugins = _usePlugin.getAllAvailable(searchQuery);
       break;
 
     default:
-      getPlugins = _usePlugin.getAllAvailable(searchQuery);
-    //   getPlugins = _usePlugin.getAllInstalled(); // change to this one once stable
+      getPlugins = _usePlugin.getAllInstalled();
   }
 
   const titleHref = title !== "" ? `${_.lowerCase(title)}/` : "";
@@ -47,12 +42,11 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
         <Heading1>{t(`${title} Plugins`)}</Heading1>
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/plugins/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add")}
+        {!!title || (
+          <Button icon={<FontAwesomeIcon icon={faSearch} />} onClick={() => navigate("/plugins/search")}>
+            {t("Search")}
           </Button>
-        </div>
+        )}
       </section>
 
       {title === "Search" && <PluginsSearchBarTemplate {...{ searchQuery, setSearchQuery }} />}
@@ -60,7 +54,7 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
       {getPlugins.isSuccess && (
         <>
           <div className={styles.cardsGrid}>
-            {!getPlugins.data[0] && <span>{("No plugins found")}</span>}
+            {!getPlugins.data[0] && <span>{"No plugins found"}</span>}
             {getPlugins.data.map((plugin: any, idx: number) => (
               <PluginCard
                 key={idx}
@@ -70,9 +64,13 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
                 }}
                 description={plugin.description}
                 packagistUrl={plugin.url}
-                repositoryUrl={plugin.Repository}
-                downloads={plugin.downloads}
+                repositoryUrl={plugin.repository}
+                downloads={plugin.downloads.total}
                 favers={plugin.favers}
+                license={plugin.license}
+                homepageUrl={plugin.homepage}
+                installed={plugin.version ? true : false}
+                update={plugin.update}
               />
             ))}
           </div>

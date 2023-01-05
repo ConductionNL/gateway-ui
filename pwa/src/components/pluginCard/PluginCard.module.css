@@ -20,6 +20,11 @@
   margin-block-end: var(--gateway-ui-size-md);
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
 .titleLink {
   font-size: var(--gateway-ui-font-size-lg);
   --denhaag-link-icon-gap: var(--gateway-ui-size-xs);
@@ -55,6 +60,22 @@
 
 .svgLogo :not(:last-child) {
   vertical-align: middle;
+}
+
+.upToDateIcon {
+  color: var(--gateway-ui-color-green);
+}
+
+.updateIcon {
+  color: var(--gateway-ui-color-orange);
+}
+
+.buttonOnClick :hover {
+  cursor: pointer;
+}
+
+.buttonNoOnClick :hover {
+  cursor: default;
 }
 
 /* Status colors */

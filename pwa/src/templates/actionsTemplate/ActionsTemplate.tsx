@@ -43,7 +43,7 @@ export const ActionsTemplate: React.FC = () => {
                 <TableHeader>Name</TableHeader>
                 <TableHeader>Priority</TableHeader>
                 <TableHeader>Status</TableHeader>
-                <TableHeader>Active</TableHeader>
+                <TableHeader>Enabled</TableHeader>
                 <TableHeader>Last run</TableHeader>
                 <TableHeader>Last run time</TableHeader>
                 <TableHeader>Date Created</TableHeader>
@@ -67,7 +67,7 @@ export const ActionsTemplate: React.FC = () => {
                       </ToolTip>
                     </div>
                   </TableCell>
-                  <TableCell>{action.isActive ? "On" : "Off"}</TableCell>
+                  <TableCell>{action.isEnabled ? "On" : "Off"}</TableCell>
                   <TableCell>{action.lastRun ?? "-"}</TableCell>
                   <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
                   <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>

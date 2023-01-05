@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./UserGroupFormTemplate.module.css";
+import * as styles from "./SecurityGroupFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
@@ -10,11 +10,13 @@ import { InputCheckbox, InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 
-interface CreateUserGroupFormTemplateProps {
-  userGroupId?: string;
+interface CreateSecurityGroupFormTemplateProps {
+  securityGroupId?: string;
 }
 
-export const CreateUserGroupFormTemplate: React.FC<CreateUserGroupFormTemplateProps> = ({ userGroupId }) => {
+export const CreateSecurityGroupFormTemplate: React.FC<CreateSecurityGroupFormTemplateProps> = ({
+  securityGroupId,
+}) => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(true);
@@ -30,7 +32,7 @@ export const CreateUserGroupFormTemplate: React.FC<CreateUserGroupFormTemplatePr
     <div className={styles.container}>
       <form>
         <section className={styles.section}>
-          <Heading1>{t("Create User Group")}</Heading1>
+          <Heading1>{t("Create Security Group")}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

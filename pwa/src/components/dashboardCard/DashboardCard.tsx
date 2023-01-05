@@ -18,11 +18,12 @@ export interface DashboardCardProps {
   };
   type: string;
   status?: string | boolean;
+  isEnabled?: boolean | undefined;
   lastRun?: string;
   lastCall?: string;
 }
 
-export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, status, lastRun, lastCall }) => {
+export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, status, isEnabled, lastRun, lastCall }) => {
   const { t, i18n } = useTranslation();
 
   return (
@@ -36,26 +37,31 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
       <Paragraph className={styles.statusTypeContainer}>
         <div>{type}</div>
 
-        {status && (
-          <div className={clsx(styles[getStatusColor(status)])}>
-            <ToolTip tooltip="Status">
-              <Tag icon={<FontAwesomeIcon icon={getStatusIcon(status)} />} label={status?.toString() ?? "-"} />
-            </ToolTip>
-          </div>
-        )}
+        <div className={clsx(styles[getStatusColor(status ?? "no known status")])}>
+          <ToolTip tooltip="Status">
+            <Tag
+              icon={<FontAwesomeIcon icon={getStatusIcon(status ?? "no known status")} />}
+              label={status?.toString() ?? "no known status"}
+            />
+          </ToolTip>
+        </div>
       </Paragraph>
 
-      <div>
-        {lastRun && (
-          <div className={styles.date}>
-            <span>Last run:</span> {dateTime(t(i18n.language), lastRun) ?? "-"}
-          </div>
-        )}
-        {lastCall && (
-          <div className={styles.date}>
-            <span>Last call:</span> {dateTime(t(i18n.language), lastCall) ?? "-"}
-          </div>
-        )}
+      <div className={styles.sectionDivider}>
+        <div className={styles.mainSection}>
+          {lastRun && (
+            <div className={styles.date}>
+              <span className={styles.dateText}>Last run:</span> {dateTime(t(i18n.language), lastRun) ?? "-"}
+            </div>
+          )}
+          {lastCall && (
+            <div className={styles.date}>
+              <span className={styles.dateText}>Last call:</span> {dateTime(t(i18n.language), lastCall) ?? "-"}
+            </div>
+          )}
+        </div>
+
+        <div>{isEnabled !== undefined && <span>Enabled: {isEnabled ? "On" : "Off"}</span>}</div>
       </div>
     </div>
   );

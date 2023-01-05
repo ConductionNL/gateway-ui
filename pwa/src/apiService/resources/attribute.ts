@@ -23,7 +23,10 @@ export default class Attribute {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/attributes/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/attributes/${id}`, undefined, {
+      loading: "Removing property...",
+      success: "Property successfully removed.",
+    });
     return data;
   };
 
@@ -31,11 +34,17 @@ export default class Attribute {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/attributes/${id}`, payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/attributes/${id}`, payload, {
+        loading: "Updating property...",
+        success: "Property successfully updated.",
+      });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/attributes", payload);
+    const { data } = await Send(this._instance, "POST", "/admin/attributes", payload, {
+      loading: "Creating property...",
+      success: "Property successfully created.",
+    });
     return data;
   };
 }

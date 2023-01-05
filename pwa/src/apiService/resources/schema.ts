@@ -35,7 +35,10 @@ export default class Schema {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/entities/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/entities/${id}`, undefined, {
+      loading: "Removing schema...",
+      success: "Schema successfully removed.",
+    });
     return data;
   };
 
@@ -43,11 +46,17 @@ export default class Schema {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/entities/${id}`, payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/entities/${id}`, payload, {
+        loading: "Updating schema...",
+        success: "Schema successfully updated.",
+      });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/entities", payload);
+    const { data } = await Send(this._instance, "POST", "/admin/entities", payload, {
+      loading: "Creating schema...",
+      success: "Schema successfully created.",
+    });
     return data;
   };
 }

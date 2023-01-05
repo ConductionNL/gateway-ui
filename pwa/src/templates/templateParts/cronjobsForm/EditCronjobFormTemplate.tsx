@@ -6,7 +6,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputText, Textarea } from "@conduction/components";
+import { InputCheckbox, InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -15,6 +15,9 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { validateStringAsCronTab } from "../../../services/stringValidations";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
+import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
+import Skeleton from "react-loading-skeleton";
+import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 
 interface EditCronjobFormTemplateProps {
   cronjob: any;
@@ -28,6 +31,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
+  const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
   const _useCronjobs = useCronjob(queryClient);
@@ -47,7 +51,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
-      throws: data.throws.split(","),
+      throws: data.throws?.map((_throw: any) => _throw.value),
     };
 
     createOrEditCronjob.mutate({ payload, id: cronjobId });
@@ -63,11 +67,18 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   };
 
   const handleSetFormValues = (cronjob: any): void => {
-    const basicFields: string[] = ["name", "description", "crontab"];
+    const basicFields: string[] = ["name", "description", "crontab", "isEnabled"];
     basicFields.forEach((field) => setValue(field, cronjob[field]));
 
-    setValue("throws", cronjob.throws.toString());
+    setValue(
+      "throws",
+      cronjob["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
+    );
   };
+
+  React.useEffect(() => {
+    setListensAndThrows([...predefinedSubscriberEvents]);
+  }, []);
 
   React.useEffect(() => {
     handleSetFormValues(cronjob);
@@ -138,14 +149,32 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
                 {errors["crontab"] && <ErrorMessage message={errors["crontab"].message} />}
               </FormFieldInput>
             </FormField>
-          </div>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Throws")}</FormFieldLabel>
-              <Textarea name="throws" {...{ register, errors, control }} />
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Throws")}</FormFieldLabel>
+                {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
+
+                {listensAndThrows.length > 0 && (
+                  /* @ts-ignore */
+                  <SelectCreate
+                    options={listensAndThrows}
+                    disabled={loading}
+                    name="throws"
+                    {...{ register, errors, control }}
+                  />
+                )}
+              </FormFieldInput>
               {errors["throws"] && <ErrorMessage message={errors["throws"].message} />}
-            </FormFieldInput>
-          </FormField>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                <InputCheckbox {...{ register, errors }} label="true" name="isEnabled" />
+              </FormFieldInput>
+            </FormField>
+          </div>
         </div>
       </form>
     </div>

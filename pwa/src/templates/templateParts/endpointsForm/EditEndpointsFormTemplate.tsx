@@ -104,7 +104,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     setValue("path", endpoint.path && endpoint.path.join("/"));
     setValue(
       "throws",
-      endpoint["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
+      endpoint["throws"]?.map((_throw: any) => ({ label: _throw, value: _throw })),
     );
 
     setValue(
@@ -133,12 +133,16 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   React.useEffect(() => {
     handleSetFormValues(endpoint);
 
-    const newThrowsFilter = endpoint.throws.filter(
+    const newThrowsFilter = endpoint.throws?.filter(
       (_throw: any) => !predefinedSubscriberEvents.some((event) => event.value === _throw),
     );
-    const newThrows = newThrowsFilter.map((_throw: any) => ({ label: _throw, value: _throw }));
+    const newThrows = newThrowsFilter?.map((_throw: any) => ({ label: _throw, value: _throw }));
 
-    setThrows([...newThrows, ...predefinedSubscriberEvents]);
+    if (endpoint.throws) {
+      setThrows([...predefinedSubscriberEvents, ...newThrows]);
+    } else {
+      setThrows([...predefinedSubscriberEvents]);
+    }
   }, []);
 
   return (
@@ -254,7 +258,6 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                   <SelectCreate
                     options={throws}
                     name="throws"
-                    validation={{ required: true }}
                     {...{ register, errors, control }}
                   />
                 )}
@@ -276,6 +279,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                 {getSources.isSuccess && (getSource.isSuccess || !endpoint.proxy) && (
                   // @ts-ignore
                   <SelectSingle
+                    isClearable
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
                     {...{ register, errors, control }}

@@ -60,7 +60,6 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
     const payload = {
       ...data,
       priority: parseInt(data.priority, 10),
-      isActive: true,
       listens: data.listens?.map((listener: any) => listener.value),
       throws: data.throws?.map((_throw: any) => _throw.value),
       class: data.class.value,
@@ -91,7 +90,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   };
 
   const handleSetFormValues = (action: any): void => {
-    const basicFields: string[] = ["name", "description", "priority", "async", "isLockable"];
+    const basicFields: string[] = ["name", "description", "priority", "async", "isLockable", "isEnabled"];
     basicFields.forEach((field) => setValue(field, action[field]));
 
     setValue("conditions", JSON.stringify(action["conditions"]));
@@ -272,7 +271,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="isactive" />
+                      <InputCheckbox {...{ register, errors }} label="true" name="isEnabled" />
                     </FormFieldInput>
                   </FormField>
 
