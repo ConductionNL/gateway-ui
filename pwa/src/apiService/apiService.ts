@@ -20,6 +20,7 @@ import CallLog from "./resources/callLog";
 import Attribute from "./resources/attribute";
 import Plugin from "./resources/plugin";
 import PluginReadMe from "./resources/pluginReadme";
+import Synchroniation from "./resources/synchronization";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -141,6 +142,10 @@ export default class APIService {
 
   public get Attribute(): Attribute {
     return new Attribute(this.BaseClient);
+  }
+
+  public get Synchroniation(): Synchroniation {
+    return new Synchroniation(this.BaseClient);
   }
 
   // Services
