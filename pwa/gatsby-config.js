@@ -54,6 +54,10 @@ module.exports = {
             crumbLabel: "Object",
           },
           {
+            pathname: "/objects/[objectId]/[syncId]",
+            crumbLabel: "Synchronization",
+          },
+          {
             pathname: "/schemas/[schemaId]",
             crumbLabel: "Schema",
           },
