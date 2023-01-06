@@ -105,6 +105,14 @@
   cursor: pointer;
 }
 
+.toggleButton {
+  margin-block: var(--gateway-ui-size-xs);
+}
+
+.checkboxInput {
+  margin-block-start: var(--gateway-ui-size-xs);
+}
+
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);
