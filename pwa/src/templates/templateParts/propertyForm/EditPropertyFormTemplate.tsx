@@ -526,7 +526,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         </FormField>
                         <FormField>
                           <FormFieldInput>
-                            <FormFieldLabel>{t("minFileSize")}</FormFieldLabel>
+                            <FormFieldLabel>{t("minFileSize (Bytes)")}</FormFieldLabel>
                             <InputNumber
                               {...{ register, errors }}
                               name="minFileSize"
@@ -537,7 +537,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
 
                         <FormField>
                           <FormFieldInput>
-                            <FormFieldLabel>{t("maxFileSize")}</FormFieldLabel>
+                            <FormFieldLabel>{t("maxFileSize (Bytes)")}</FormFieldLabel>
                             <InputNumber
                               {...{ register, errors }}
                               name="maxFileSize"

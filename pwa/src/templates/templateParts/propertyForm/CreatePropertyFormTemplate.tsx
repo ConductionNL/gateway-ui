@@ -335,14 +335,14 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         </FormField>
                         <FormField>
                           <FormFieldInput>
-                            <FormFieldLabel>{t("minFileSize")}</FormFieldLabel>
+                            <FormFieldLabel>{t("minFileSize (Bytes)")}</FormFieldLabel>
                             <InputNumber {...{ register, errors }} name="minFileSize" disabled={loading} />
                           </FormFieldInput>
                         </FormField>
 
                         <FormField>
                           <FormFieldInput>
-                            <FormFieldLabel>{t("maxFileSize")}</FormFieldLabel>
+                            <FormFieldLabel>{t("maxFileSize (Bytes)")}</FormFieldLabel>
                             <InputNumber {...{ register, errors }} name="maxFileSize" disabled={loading} />
                           </FormFieldInput>
                         </FormField>
