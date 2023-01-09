@@ -42,7 +42,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
 
-  const dashboardCard = getDashboardCard(action.name);
+  const dashboardCard = getDashboardCard(action.id);
 
   const addOrRemoveFromDashboard = () => {
     addOrRemoveDashboardCard(action.name, "Action", "Action", actionId, dashboardCard?.id);

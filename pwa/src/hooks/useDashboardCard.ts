@@ -17,12 +17,11 @@ export const useDashboardCard = () => {
   const _useDashboardCards = useDashboardCards(queryClient);
   const mutateDashboardCard = _useDashboardCards.createOrDelete();
 
-  const getDashboardCard = (name: string) => {
+  const getDashboardCard = (id: string) => {
     const getDashboardCards = _useDashboardCards.getAll();
 
     const dashboardCard =
-      getDashboardCards &&
-      getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.name === `dashboardCard-${name}`);
+      getDashboardCards && getDashboardCards.data?.find((dashboardCards: any) => dashboardCards.entityId === id);
 
     return dashboardCard;
   };
