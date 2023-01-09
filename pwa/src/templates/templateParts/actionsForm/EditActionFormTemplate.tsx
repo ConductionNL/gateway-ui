@@ -278,7 +278,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="islockable" />
+                      <InputCheckbox {...{ register, errors }} label="on" name="isLockable" />
                     </FormFieldInput>
                   </FormField>
                 </div>
