@@ -356,14 +356,26 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 }) => {
   const queryClient = new QueryClient();
   const _useObject = useObject(queryClient);
-  const getAllFromList = _useObject.getAllFromList(schema.properties[name]._list);
+  const getAllFromList = _useObject.getAllFromList(schema?.properties[name]?._list);
 
   if (getAllFromList.isLoading) return <Skeleton height="50px" />;
   if (getAllFromList.isError) return <>Something went wrong...</>;
 
+  if (multiple) {
+    return (
+      <SelectMultiple
+        // defaultValue={{}} <== TODO
+        options={getAllFromList.data?.map((object) => ({ label: object.name, value: object.id })) ?? []}
+        disabled={disabled || readOnly}
+        {...{ register, errors, placeholder, name, control }}
+        validation={{ required }}
+      />
+    );
+  }
+
   return (
     <SelectSingle
-      defaultValue={{}}
+      // defaultValue={{}} <== TODO
       options={getAllFromList.data?.map((object) => ({ label: object.name, value: object.id })) ?? []}
       disabled={disabled || readOnly}
       {...{ register, errors, placeholder, name, control }}
