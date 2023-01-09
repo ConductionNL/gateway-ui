@@ -107,7 +107,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
       function: data.function && data.function.value,
       entity: `/admin/entities/${schemaId}`,
       fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
-      object: data.object.value,
+      object: data?.object?.value,
     };
 
     createOrEditAttribute.mutate({ payload, id: propertyId });

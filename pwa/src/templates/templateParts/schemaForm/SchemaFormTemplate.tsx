@@ -17,8 +17,9 @@ import {
   SelectMultiple,
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
-import { validateStringAsJSON } from "../../../services/validateJSON";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
+import { useObject } from "../../../hooks/object";
+import { QueryClient } from "react-query";
+import Skeleton from "react-loading-skeleton";
 
 export type SchemaInputType =
   | "string"
@@ -125,6 +126,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
                 multiple,
                 maxLength,
                 minLength,
+                schema,
               }}
             />
           ),
@@ -151,6 +153,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
                 readOnly,
                 maxLength,
                 minLength,
+                schema,
               }}
             />
           ),
@@ -176,6 +179,7 @@ interface FormFieldGroupProps {
   multiple?: boolean;
   maxLength?: number;
   minLength?: number;
+  schema: any;
 }
 
 const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
@@ -195,6 +199,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   multiple,
   maxLength,
   minLength,
+  schema,
 }) => {
   return (
     <FormField>
@@ -313,15 +318,56 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         )}
 
         {type === "object" && (
-          <>
-            <Textarea
-              {...{ register, errors, control, placeholder, name }}
-              validation={{ validate: validateStringAsJSON, maxLength, minLength }}
-            />
-            {errors[name] && <ErrorMessage message={errors[name].message} />}
-          </>
+          <SchemaTypeObject
+            {...{
+              name,
+              placeholder,
+              register,
+              errors,
+              control,
+              disabled,
+              required,
+              readOnly,
+              defaultValue,
+              _enum,
+              multiple,
+              type,
+              schema,
+            }}
+          />
         )}
       </FormFieldInput>
     </FormField>
+  );
+};
+
+const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
+  name,
+  placeholder,
+  register,
+  errors,
+  control,
+  disabled,
+  required,
+  readOnly,
+  _enum,
+  multiple,
+  schema,
+}) => {
+  const queryClient = new QueryClient();
+  const _useObject = useObject(queryClient);
+  const getAllFromList = _useObject.getAllFromList(schema.properties[name]._list);
+
+  if (getAllFromList.isLoading) return <Skeleton height="50px" />;
+  if (getAllFromList.isError) return <>Something went wrong...</>;
+
+  return (
+    <SelectSingle
+      defaultValue={{}}
+      options={getAllFromList.data?.map((object) => ({ label: object.name, value: object.id })) ?? []}
+      disabled={disabled || readOnly}
+      {...{ register, errors, placeholder, name, control }}
+      validation={{ required }}
+    />
   );
 };

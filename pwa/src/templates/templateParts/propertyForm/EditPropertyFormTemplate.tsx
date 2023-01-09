@@ -132,7 +132,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
       format: data.format && data.format.value,
       function: data.function && data.function.value,
       fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
-      object: data.object.value,
+      object: data?.object?.value,
 
       // inversedBy: data.inversedBy && data.inversedBy,
       // inversedBy: data.inversedBy && `App\\Entity\\${data.inversedBy.label}`,
