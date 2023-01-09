@@ -26,6 +26,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
+  const getObjects = _useObjects.getAll();
   const createOrEditObject = _useObjects.createOrEdit(objectId);
   const deleteObject = _useObjects.remove();
 
@@ -101,7 +102,12 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
         <Divider />
 
         {getSchema.isSuccess && getSchema.data && (
-          <SchemaFormTemplate {...{ register, errors, control }} schema={getSchema.data} disabled={loading} />
+          <SchemaFormTemplate
+            {...{ register, errors, control }}
+            schema={getSchema.data}
+            disabled={loading}
+            objectData={getObjects.data}
+          />
         )}
       </form>
     </div>

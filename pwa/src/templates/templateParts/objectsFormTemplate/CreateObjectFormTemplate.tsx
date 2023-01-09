@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Divider, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, SelectSingle } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +13,8 @@ import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
+import { navigate } from "gatsby";
+import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 
 interface CreateObjectFormTemplateProps {
   predefinedSchema?: string;
@@ -25,6 +27,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
+  const getObjects = _useObjects.getAll();
   const createOrEditObject = _useObjects.createOrEdit();
 
   const _useSchema = useSchema(queryClient);
@@ -53,14 +56,14 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
     setSelectedSchema(watchSchema.value);
   }, [watchSchema]);
 
-  React.useEffect(() => {
-    if ((getSchemas.isLoading && !predefinedSchema) || getSchemaSchema.isLoading || createOrEditObject.isLoading) {
-      setLoading(true);
-      return;
-    }
+  // React.useEffect(() => {
+  //   if ((getSchemas.isLoading && !predefinedSchema) || getSchemaSchema.isLoading || createOrEditObject.isLoading) {
+  //     setLoading(true);
+  //     return;
+  //   }
 
-    setLoading(false);
-  }, [getSchemas.isLoading, getSchemaSchema.isLoading, createOrEditObject.isLoading]);
+  //   setLoading(false);
+  // }, [getSchemas.isLoading, getSchemaSchema.isLoading, createOrEditObject.isLoading]);
 
   const onSubmit = (data: any): void => {
     if (!selectedSchema) return;
@@ -68,6 +71,9 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
     const payload = data;
 
     delete payload.schema;
+    // const test = mapSelectInputFormDataObject(payload);
+
+    // console.log(test);
 
     createOrEditObject.mutate({ payload: mapSelectInputFormData(payload), entityId: selectedSchema });
   };
@@ -128,9 +134,14 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
         <Divider />
 
         <div>
-          {getSchemaSchema.isLoading && <Skeleton height="200px" />}
-          {getSchemaSchema.isSuccess && (
-            <SchemaFormTemplate {...{ register, errors, control }} schema={getSchemaSchema.data} disabled={loading} />
+          {getSchemaSchema.isLoading && getObjects.isLoading && <Skeleton height="200px" />}
+          {getSchemaSchema.isSuccess && getObjects.isSuccess && (
+            <SchemaFormTemplate
+              {...{ register, errors, control }}
+              schema={getSchemaSchema.data}
+              disabled={loading}
+              objectData={getObjects.data}
+            />
           )}
         </div>
       </form>

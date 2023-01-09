@@ -245,7 +245,12 @@ export const CreateActionFormTemplate: React.FC = () => {
         {selectedHanlderSchema && (
           <>
             <Divider />
-            <SchemaFormTemplate {...{ register, errors, control }} schema={selectedHanlderSchema} disabled={loading} />
+            <SchemaFormTemplate
+              {...{ register, errors, control }}
+              schema={selectedHanlderSchema}
+              disabled={loading}
+              objectData={"getObjects"}
+            />
           </>
         )}
       </form>

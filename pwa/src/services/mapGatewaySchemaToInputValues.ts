@@ -42,5 +42,14 @@ export const mapGatewaySchemaToInputValues = (value: any): any => {
       }
 
       return value.value;
+
+    case "object":
+      if (value.enum && value.multiple) {
+        const options = value.enum.map((e: any) => ({ label: e, value: e }));
+
+        const defaultValue = value.value?.map((v: any) => ({ label: v, value: v }));
+
+        return { options, defaultValue };
+      }
   }
 };

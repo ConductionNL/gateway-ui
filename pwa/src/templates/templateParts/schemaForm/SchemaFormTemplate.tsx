@@ -41,6 +41,7 @@ interface ReactHookFormProps {
 interface SchemaFormTemplateProps {
   schema: any;
   disabled: boolean;
+  objectData: any;
 }
 
 export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFormProps> = ({
@@ -49,6 +50,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
   errors,
   control,
   disabled,
+  objectData,
 }) => {
   const [simpleProperties, setSimpleProperties] = React.useState<any[]>([]);
   const [complexProperties, setComplexProperties] = React.useState<any[]>([]);
@@ -60,6 +62,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
     for (const [key, _value] of Object.entries(schema.properties)) {
       const value = _value as any; // todo: type this
 
+      console.log(value);
       const property = {
         type: value.type as SchemaInputType,
         _enum: value.enum,
@@ -73,6 +76,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
         defaultValue: mapGatewaySchemaToInputValues(value),
         minLength: value.minLength,
         maxLength: value.maxLength,
+        properties: value.properties,
       };
 
       property.type !== "array" && setSimpleProperties((p) => [...p, property]);
@@ -103,6 +107,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
               readOnly,
               maxLength,
               minLength,
+              properties,
             },
             idx,
           ) => (
@@ -125,6 +130,8 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
                 multiple,
                 maxLength,
                 minLength,
+                properties,
+                objectData,
               }}
             />
           ),
@@ -151,6 +158,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
                 readOnly,
                 maxLength,
                 minLength,
+                objectData,
               }}
             />
           ),
@@ -176,6 +184,8 @@ interface FormFieldGroupProps {
   multiple?: boolean;
   maxLength?: number;
   minLength?: number;
+  properties?: any;
+  objectData?: any;
 }
 
 const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
@@ -195,9 +205,12 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   multiple,
   maxLength,
   minLength,
+  properties,
+  objectData,
 }) => {
   return (
     <FormField>
+      {console.log(properties)}
       <FormFieldInput>
         <div className={styles.formFieldHeader}>
           <FormFieldLabel>
@@ -312,12 +325,55 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "object" && (
+        {type === "object" && !_enum && !multiple && !properties && (
+          <SelectSingle
+            isClearable
+            defaultValue={defaultValue?.defaultValue}
+            options={objectData.map((object: any) => ({ label: object.name ?? object.id, value: object.id }))}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, control }}
+          />
+        )}
+
+        {type === "object" && !_enum && multiple && (
+          <SelectMultiple
+            defaultValue={defaultValue?.defaultValue}
+            options={objectData.map((object: any) => ({ label: object.name ?? object.id, value: object.id }))}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, control }}
+          />
+        )}
+
+        {type === "object" && _enum && !multiple && (
+          <SelectSingle
+            isClearable
+            defaultValue={defaultValue?.defaultValue}
+            options={_enum.map((enum_: any) => ({ label: enum_.key, value: enum_.value }))}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, control }}
+          />
+        )}
+
+        {type === "object" && _enum && multiple && (
+          <SelectMultiple
+            defaultValue={defaultValue?.defaultValue}
+            options={_enum.map((enum_: any) => ({ label: enum_.key, value: enum_.value }))}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, control }}
+          />
+        )}
+
+        {type === "object" && properties && (
           <>
-            <Textarea
-              {...{ register, errors, control, placeholder, name }}
-              validation={{ validate: validateStringAsJSON, maxLength, minLength }}
+            {properties.map}
+            <span>hi</span>
+
+            <InputDate
+              validation={{ required }}
+              disabled={disabled || readOnly}
+              {...{ register, errors, placeholder, name, defaultValue }}
             />
+
             {errors[name] && <ErrorMessage message={errors[name].message} />}
           </>
         )}
