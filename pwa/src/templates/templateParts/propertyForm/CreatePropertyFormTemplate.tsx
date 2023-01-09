@@ -15,6 +15,8 @@ import { navigate } from "gatsby";
 import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import { useSchema } from "../../../hooks/schema";
+import Skeleton from "react-loading-skeleton";
 
 interface CreatePropertyFormTemplateProps {
   schemaId: string;
@@ -32,7 +34,9 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
   const queryClient = useQueryClient();
   const _useAttribute = useAttribute(queryClient);
   const createOrEditAttribute = _useAttribute.createOrEdit(schemaId, propertyId);
-  // const getAttributes = _useAttribute.getAll();
+
+  const _useSchema = useSchema(queryClient);
+  const getSchemas = _useSchema.getAll();
 
   const typeSelectOptions = [
     { label: "String", value: "string" },
@@ -95,6 +99,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
       return setFormError(t("The minProperties is bigger than the maxProperties"));
     if (data.minDate > data.maxDate) return setFormError(t("The minDate is bigger than the maxDate"));
     if (data.minFileSize > data.maxFileSize) return setFormError(t("The minFileSize is bigger than the maxFileSize"));
+
     const payload = {
       ...data,
       type: data.type && data.type.value,
@@ -102,7 +107,9 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
       function: data.function && data.function.value,
       entity: `/admin/entities/${schemaId}`,
       fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
+      object: data?.object?.value,
     };
+
     createOrEditAttribute.mutate({ payload, id: propertyId });
   };
 
@@ -214,6 +221,27 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                       />
                     </FormFieldInput>
                   </FormField>
+
+                  {selectedType === "object" && getSchemas.isLoading && <Skeleton height="50px" />}
+
+                  {selectedType === "object" && getSchemas.isSuccess && (
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Schema")}</FormFieldLabel>
+                        {/* @ts-ignore */}
+                        <SelectSingle
+                          {...{ register, errors, control }}
+                          name="object"
+                          options={getSchemas.data.map((schema: any) => ({
+                            label: schema.name,
+                            value: `/admin/entities/${schema.id}`,
+                          }))}
+                          disabled={loading}
+                          validation={{ required: true }}
+                        />
+                      </FormFieldInput>
+                    </FormField>
+                  )}
                 </div>
               </div>
             </TabPanel>
@@ -404,22 +432,6 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     )}
                   </div>
                 </div>
-
-                {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("inversedBy")}</FormFieldLabel>
-                      {getAttributes.isLoading && <Skeleton height="50px" />}
-                      {getAttributes.isSuccess && (
-                        //@ts-ignore
-                        <SelectSingle
-                          {...{ register, errors, control }}
-                          name="inversedBy"
-                          options={getAttributes.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
-                          disabled={loading}
-                        />
-                      )}
-                    </FormFieldInput>
-                  </FormField> */}
 
                 <div className={styles.gridContainer}>
                   <div className={styles.grid}>
