@@ -30,7 +30,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   const deleteSchema = _useSchema.remove();
   const getSchemaSchema = _useSchema.getSchema(schemaId);
 
-  const dashboardCard = getDashboardCard(schema.name);
+  const dashboardCard = getDashboardCard(schema.id);
 
   const functionSelectOptions = [
     { label: "No Function", value: "noFunction" },
