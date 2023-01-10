@@ -12,10 +12,11 @@ import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAttribute } from "../../../hooks/attribute";
-import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, InputURL } from "@conduction/components/lib/components/formFields";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface EditPropertyFormTemplateProps {
   property: any;
@@ -700,14 +701,22 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("defaultValue")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="defaultValue" disabled={loading || isImmutable} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="defaultValue"
+                          disabled={loading || isImmutable}
+                          validation={{ maxLength: 255 }}
+                        />
+                        {errors["defaultValue"] && (
+                          <ErrorMessage message="Value cannot contain more than 255 characters" />
+                        )}
                       </FormFieldInput>
                     </FormField>
 
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("schema")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="schema" disabled={loading || isImmutable} />
+                        <InputURL {...{ register, errors }} name="schema" disabled={loading || isImmutable} />
                       </FormFieldInput>
                     </FormField>
 
@@ -735,7 +744,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                       </FormFieldInput>
                     </FormField>
 
-                    {/* readOnly and writeOnly must be dependend on eachother */}
+                    {/* readOnly and writeOnly must be mutually exclusive */}
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("readOnly")}</FormFieldLabel>
@@ -787,7 +796,15 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("example")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="example" disabled={loading || isImmutable} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="example"
+                          disabled={loading || isImmutable}
+                          validation={{ maxLength: 255 }}
+                        />
+                         {errors["example"] && (
+                          <ErrorMessage message="Value cannot contain more than 255 characters" />
+                        )}
                       </FormFieldInput>
                     </FormField>
 
@@ -815,8 +832,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         <InputDate {...{ register, errors }} name="maxDate" disabled={loading || isImmutable} />
                       </FormFieldInput>
                     </FormField>
-
-                    {/* maxFileSize and minFileSize can only be used in combination with type file* The type of the file  */}
 
                     <FormField>
                       <FormFieldInput>
