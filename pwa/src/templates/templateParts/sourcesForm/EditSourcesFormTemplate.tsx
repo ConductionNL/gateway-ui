@@ -252,7 +252,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Source")}</Heading1>
+          <Heading1>{`Edit ${source.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

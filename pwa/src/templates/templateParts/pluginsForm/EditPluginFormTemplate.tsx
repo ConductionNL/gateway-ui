@@ -42,7 +42,7 @@ export const EditPluginFormTemplate: React.FC<EditPluginFormTemplateProps> = ({ 
     <div className={styles.container}>
       <form>
         <section className={styles.section}>
-          <Heading1>{t("Edit Plugin")}</Heading1>
+          <Heading1>{`Edit ${plugin.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
