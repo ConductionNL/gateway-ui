@@ -14,6 +14,8 @@ import clsx from "clsx";
 import { useAttribute } from "../../../hooks/attribute";
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import { useSchema } from "../../../hooks/schema";
+import Skeleton from "react-loading-skeleton";
 
 interface EditPropertyFormTemplateProps {
   property: any;
@@ -47,7 +49,9 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   const _useAttribute = useAttribute(queryClient);
   const createOrEditProperty = _useAttribute.createOrEdit(schemaId, propertyId);
   const deleteProperty = _useAttribute.remove(schemaId);
-  // const getAttributes = _useAttribute.getAll();
+
+  const _useSchema = useSchema(queryClient);
+  const getSchemas = _useSchema.getAll();
 
   const typeSelectOptions = [
     { label: "String", value: "string" },
@@ -97,6 +101,16 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   const watchType = watch("type");
 
   React.useEffect(() => {
+    if (!getSchemas.isSuccess) return;
+
+    setValue("object", () => {
+      const schema = getSchemas.data?.find((schema) => schema.id === property.object.id);
+
+      return { label: schema.name, value: `/admin/entities/${schema.id}` };
+    });
+  }, [getSchemas.isSuccess]);
+
+  React.useEffect(() => {
     if (!watchType) return;
 
     const selectedType = typeSelectOptions.find((typeOption) => typeOption.value === watchType.value);
@@ -124,6 +138,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
           format: data.format && data.format.value,
           function: data.function && data.function.value,
           fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
+          object: data?.object?.value,
 
           // inversedBy: data.inversedBy && data.inversedBy,
           // inversedBy: data.inversedBy && `App\\Entity\\${data.inversedBy.label}`,
@@ -139,6 +154,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
         format: data.format && data.format.value,
         function: data.function && data.function.value,
         fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
+        object: data?.object?.value,
 
         // inversedBy: data.inversedBy && data.inversedBy,
         // inversedBy: data.inversedBy && `App\\Entity\\${data.inversedBy.label}`,
@@ -406,6 +422,27 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                       />
                     </FormFieldInput>
                   </FormField>
+
+                  {selectedType === "object" && getSchemas.isLoading && <Skeleton height="50px" />}
+
+                  {selectedType === "object" && getSchemas.isSuccess && (
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Schema")}</FormFieldLabel>
+                        {/* @ts-ignore */}
+                        <SelectSingle
+                          {...{ register, errors, control }}
+                          name="object"
+                          options={getSchemas.data.map((schema: any) => ({
+                            label: schema.name,
+                            value: `/admin/entities/${schema.id}`,
+                          }))}
+                          disabled={loading}
+                          validation={{ required: true }}
+                        />
+                      </FormFieldInput>
+                    </FormField>
+                  )}
                 </div>
               </div>
             </TabPanel>

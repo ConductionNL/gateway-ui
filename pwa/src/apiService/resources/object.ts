@@ -26,6 +26,12 @@ export default class Sources {
     return data;
   };
 
+  public getAllFromList = async (list: string): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", list);
+
+    return data;
+  };
+
   public getSchema = async (id: string): Promise<any> => {
     const instance = this._instance;
 
