@@ -12,6 +12,7 @@ import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
+import { FormFromSchema } from "../../../formGeneration/FormFromSchema";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -101,7 +102,10 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
         <Divider />
 
         {getSchema.isSuccess && getSchema.data && (
-          <SchemaFormTemplate {...{ register, errors, control }} schema={getSchema.data} disabled={loading} />
+          <>
+            <SchemaFormTemplate {...{ register, errors, control }} schema={getSchema.data} disabled={loading} />
+            <FormFromSchema {...{ register, errors, control }} schema={getSchema.data} disabled={loading} />
+          </>
         )}
       </form>
     </div>
