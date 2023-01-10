@@ -34,11 +34,6 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
   return (
     <Container layoutClassName={styles.container}>
-      {getSchema.isError && "Error..."}
-
-      {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
-      {getSchema.isLoading && <Skeleton height="200px" />}
-
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.schemaDetailTabs.toString()}>
           <Tabs
@@ -48,12 +43,20 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             }}
             variant="scrollable"
           >
-            <Tab className={styles.tab} label={t("Objects")} value={0} />
-            <Tab className={styles.tab} label={t("Properties")} value={1} />
-            <Tab className={styles.tab} label={t("Logs")} value={2} />
+            <Tab className={styles.tab} label={t("General")} value={0} />
+            <Tab className={styles.tab} label={t("Objects")} value={1} />
+            <Tab className={styles.tab} label={t("Properties")} value={2} />
+            <Tab className={styles.tab} label={t("Logs")} value={3} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
+            {getSchema.isError && "Error..."}
+
+            {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
+            {getSchema.isLoading && <Skeleton height="200px" />}
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="1">
             <Button
               className={styles.addObjectButton}
               disabled={getSchema.isLoading}
@@ -66,7 +69,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
           </TabPanel>
 
-          <TabPanel className={styles.tabPanel} value="1">
+          <TabPanel className={styles.tabPanel} value="2">
             <Button
               className={styles.addPropertyButton}
               disabled={getSchema.isLoading}
@@ -125,7 +128,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             )}
           </TabPanel>
 
-          <TabPanel className={styles.tabPanel} value="2">
+          <TabPanel className={styles.tabPanel} value="3">
             Logs are not yet supported.
           </TabPanel>
         </TabContext>
