@@ -46,7 +46,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   const createOrEditEndpoint = _useEndpoints.createOrEdit(endpointId);
   const deleteEndpoint = _useEndpoints.remove();
 
-  const dashboardCard = getDashboardCard(endpoint.name);
+  const dashboardCard = getDashboardCard(endpoint.id);
 
   const _useSource = useSource(queryClient);
   const getSources = _useSource.getAll();
@@ -255,11 +255,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
                 {throws.length > 0 && (
                   // @ts-ignore
-                  <SelectCreate
-                    options={throws}
-                    name="throws"
-                    {...{ register, errors, control }}
-                  />
+                  <SelectCreate options={throws} name="throws" {...{ register, errors, control }} />
                 )}
               </FormFieldInput>
             </FormField>

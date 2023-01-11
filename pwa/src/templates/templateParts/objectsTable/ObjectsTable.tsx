@@ -47,27 +47,29 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
       </TableHead>
 
       <TableBody>
-        {objects.map((object) => (
-          <TableRow onClick={() => navigate(`/objects/${object._self.id}`)} key={object._self.id}>
-            <TableCell>{object._self.id ?? "-"}</TableCell>
-            <TableCell>{object._self.name ?? "NVT"}</TableCell>
-            <TableCell>{object._self.sources ?? "-"}</TableCell>
-            <TableCell>
-              <Button
-                onClick={(e) => handleDeleteObject(e, object._self.id)}
-                className={clsx(styles.buttonIcon, styles.deleteButton)}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Delete")}
-              </Button>
-            </TableCell>
-            <TableCell onClick={() => navigate(`/objects/${object._self.id}`)}>
-              <Link icon={<ArrowRightIcon />} iconAlign="start">
-                {t("Details")}
-              </Link>
-            </TableCell>
-          </TableRow>
-        ))}
+        {!!objects.length &&
+          objects.map((object) => (
+            <TableRow onClick={() => navigate(`/objects/${object._self.id}`)} key={object._self.id}>
+              <TableCell>{object._self.id ?? "-"}</TableCell>
+              <TableCell>{object._self.name ?? "NVT"}</TableCell>
+              <TableCell>{object._self.type?.name ?? "-"}</TableCell>
+              <TableCell>{object._self.sources ?? "-"}</TableCell>
+              <TableCell>
+                <Button
+                  onClick={(e) => handleDeleteObject(e, object._self.id)}
+                  className={clsx(styles.buttonIcon, styles.deleteButton)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                  {t("Delete")}
+                </Button>
+              </TableCell>
+              <TableCell onClick={() => navigate(`/objects/${object._self.id}`)}>
+                <Link icon={<ArrowRightIcon />} iconAlign="start">
+                  {t("Details")}
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
 
         {!objects.length && (
           <TableRow>
