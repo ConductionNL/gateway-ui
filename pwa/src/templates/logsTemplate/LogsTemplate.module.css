@@ -1,0 +1,7 @@
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.tableRow {
+  cursor: pointer;
+}

@@ -4,6 +4,7 @@
 /* Design Tokens */
 @import "@gemeente-denhaag/design-tokens-components/dist/index.css";
 @import "./design-tokens/gateway-ui-design-tokens.css";
+@import "./design-tokens/skeleton-design-tokens.css";
 
 /* Package includes */
 @import "react-loading-skeleton/dist/skeleton.css";

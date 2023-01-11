@@ -8,6 +8,7 @@ import Me from "./services/me";
 
 // Resources
 import Action from "./resources/action";
+import Log from "./resources/log";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -72,6 +73,10 @@ export default class APIService {
   // Resources
   public get Action(): Action {
     return new Action(this.BaseClient);
+  }
+  
+  public get Log(): Log {
+    return new Log(this.BaseClient);
   }
 
   // Services
