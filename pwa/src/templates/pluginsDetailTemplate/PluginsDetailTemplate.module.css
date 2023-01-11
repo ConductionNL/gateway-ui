@@ -164,9 +164,11 @@
 .readme code {
   background-color: var(--gateway-ui-color-lightgrey);
   outline: 1px solid var(--gateway-ui-color-grey);
-  padding-block: var(--gateway-ui-size-xs);
   padding-inline: var(--gateway-ui-size-xs);
   border-radius: var(--gateway-ui-size-2xs);
+}
+.readme pre code {
+  padding-block: var(--gateway-ui-size-xs);
 }
 
 .readme h1 {
