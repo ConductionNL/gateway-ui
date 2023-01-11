@@ -11,7 +11,6 @@ import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { navigate } from "gatsby";
-import { useCronjob } from "../../hooks/cronjob";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useSync } from "../../hooks/synchronization";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
@@ -33,6 +32,8 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
   const getSynchronizations = _useSync.getAll();
   const deleteSync = _useSync.remove();
 
+  const getSchema = _useObject.getSchema(objectId);
+
   const handleDeleteObject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
     syncId: string,
@@ -50,7 +51,9 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
     <Container layoutClassName={styles.container}>
       {getObject.isError && "Error..."}
 
-      {getObject.isSuccess && <EditObjectFormTemplate object={getObject.data} {...{ objectId }} />}
+      {getObject.isSuccess && getSchema.isSuccess && (
+        <EditObjectFormTemplate object={getObject.data} {...{ getSchema }} {...{ objectId }} />
+      )}
 
       {getObject.isLoading && <Skeleton height="200px" />}
 

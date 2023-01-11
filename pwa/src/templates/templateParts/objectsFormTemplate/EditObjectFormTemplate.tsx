@@ -15,10 +15,11 @@ import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData
 
 interface EditObjectFormTemplateProps {
   object: any;
+  getSchema: any;
   objectId: string;
 }
 
-export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, objectId }) => {
+export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, getSchema, objectId }) => {
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
@@ -28,8 +29,6 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   const _useObjects = useObject(queryClient);
   const createOrEditObject = _useObjects.createOrEdit(objectId);
   const deleteObject = _useObjects.remove();
-
-  const getSchema = _useObjects.getSchema(objectId);
 
   const dashboardCard = getDashboardCard(object.id);
 
@@ -100,7 +99,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
         <Divider />
 
-        {getSchema.isSuccess && getSchema.data && (
+        {getSchema.data && (
           <SchemaFormTemplate {...{ register, errors, control }} schema={getSchema.data} disabled={loading} />
         )}
       </form>
