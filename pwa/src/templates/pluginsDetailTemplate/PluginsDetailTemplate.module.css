@@ -164,10 +164,11 @@
 .readme code {
   background-color: var(--gateway-ui-color-lightgrey);
   outline: 1px solid var(--gateway-ui-color-grey);
-  padding-inline: var(--gateway-ui-size-xs);
+  padding-inline: var(--gateway-ui-size-2xs);
   border-radius: var(--gateway-ui-size-2xs);
 }
 .readme pre code {
+  padding-inline: var(--gateway-ui-size-xs);
   padding-block: var(--gateway-ui-size-xs);
 }
 
