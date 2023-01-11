@@ -20,7 +20,6 @@ interface EditSchemaFormTemplateProps {
 
 export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({ schema, schemaId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -28,9 +27,6 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   const _useSchema = useSchema(queryClient);
   const createOrEditSchema = _useSchema.createOrEdit(schemaId);
   const deleteSchema = _useSchema.remove();
-  const getSchemaSchema = _useSchema.getSchema(schemaId);
-
-  const dashboardCard = getDashboardCard(schema.name);
 
   const functionSelectOptions = [
     { label: "No Function", value: "noFunction" },
@@ -54,18 +50,6 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
 
     createOrEditSchema.mutate({ payload: data, id: schemaId });
     queryClient.setQueryData(["entities", schemaId], data);
-  };
-
-  const handleDeleteSchema = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this action?");
-
-    if (confirmDeletion) {
-      deleteSchema.mutate({ id: schemaId });
-    }
-  };
-
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(schema.name, "Schema", "Entity", schemaId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (schema: any): void => {
@@ -95,37 +79,10 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Schema")}</Heading1>
-
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
-            </Button>
-
-            <a
-              className={styles.downloadSchemaButton}
-              href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
-              download="schema.json"
-            >
-              <Button className={styles.buttonIcon} disabled={!getSchemaSchema.isSuccess || loading}>
-                <FontAwesomeIcon icon={faDownload} />
-                Download
-              </Button>
-            </a>
-
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard} disabled={loading}>
-              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-            </Button>
-
-            <Button
-              onClick={handleDeleteSchema}
-              className={clsx(styles.buttonIcon, styles.deleteButton)}
-              disabled={loading}
-            >
-              <FontAwesomeIcon icon={faTrash} />
-              {t("Delete")}
             </Button>
           </div>
         </section>
