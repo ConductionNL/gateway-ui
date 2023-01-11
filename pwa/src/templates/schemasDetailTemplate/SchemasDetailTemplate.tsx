@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./SchemasDetailTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { QueryClient } from "react-query";
-import { Container, Tag } from "@conduction/components";
+import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../hooks/schema";
 import { EditSchemasFormTemplate } from "../templateParts/schemasForm/EditSchemasFormTemplate";
@@ -36,7 +36,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
   const getSchemaSchema = _useSchema.getSchema(schemaId);
 
-  const dashboardCard = getDashboardCard(getSchema.data?.name);
+  const dashboardCard = getDashboardCard(getSchema.data?.id);
 
   const _useObject = useObject(queryClient);
   const getObjectsFromEntity = _useObject.getAllFromEntity(schemaId);

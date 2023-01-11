@@ -2,15 +2,13 @@ import * as React from "react";
 import * as styles from "./SchemasFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDownload, faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
-import clsx from "clsx";
 import { useSchema } from "../../../hooks/schema";
-import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface EditSchemaFormTemplateProps {
