@@ -40,7 +40,6 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
         <TableRow>
           <TableHeader>{t("Id")}</TableHeader>
           <TableHeader>{t("Name")}</TableHeader>
-          <TableHeader>{t("Type")}</TableHeader>
           <TableHeader>{t("Sources")}</TableHeader>
           <TableHeader></TableHeader>
           <TableHeader></TableHeader>
@@ -52,7 +51,6 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
           <TableRow onClick={() => navigate(`/objects/${object._self.id}`)} key={object._self.id}>
             <TableCell>{object._self.id ?? "-"}</TableCell>
             <TableCell>{object._self.name ?? "NVT"}</TableCell>
-            <TableCell>{object._self.type?.name ?? "-"}</TableCell>
             <TableCell>{object._self.sources ?? "-"}</TableCell>
             <TableCell>
               <Button
@@ -74,7 +72,6 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
         {!objects.length && (
           <TableRow>
             <TableCell>{t("No objects found")}</TableCell>
-            <TableCell />
             <TableCell />
             <TableCell />
             <TableCell />
