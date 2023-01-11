@@ -33,6 +33,8 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
   const getSynchronizations = _useSync.getAll();
   const deleteSync = _useSync.remove();
 
+  const getSchema = _useObject.getSchema(objectId);
+
   const handleDeleteObject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
     syncId: string,
@@ -50,7 +52,9 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
     <Container layoutClassName={styles.container}>
       {getObject.isError && "Error..."}
 
-      {getObject.isSuccess && <EditObjectFormTemplate object={getObject.data} {...{ objectId }} />}
+      {getObject.isSuccess && getSchema.isSuccess && (
+        <EditObjectFormTemplate object={getObject.data} {...{ getSchema }} {...{ objectId }} />
+      )}
 
       {getObject.isLoading && <Skeleton height="200px" />}
 
