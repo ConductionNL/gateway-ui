@@ -67,7 +67,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
       <Container layoutClassName={styles.container}>
         <div className={styles.contentContainer}>
           <div className={styles.section}>
-            <Heading1>{t("Edit Schema")}</Heading1>
+            <Heading1>{`Edit ${getSchema.data?.name}`}</Heading1>
 
             <div className={styles.buttons}>
               <a
