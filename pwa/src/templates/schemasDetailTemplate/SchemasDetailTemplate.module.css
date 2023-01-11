@@ -39,9 +39,13 @@
   cursor: pointer;
 }
 
-.tabContainer {
+.contentContainer {
   background: var(--gateway-ui-color-white);
   margin-block-start: var(--gateway-ui-size-2xl);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
 }
 
 .tabPanel {
@@ -53,4 +57,43 @@
 
 .tab {
   max-width: unset !important;
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttons > * {
+  display: flex;
+  align-items: center;
+}
+
+.buttons *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.deleteButton {
+  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
+}
+
+.deleteButton:hover {
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-red
+  );
+}
+
+.downloadSchemaButton {
+  text-decoration: none;
 }
