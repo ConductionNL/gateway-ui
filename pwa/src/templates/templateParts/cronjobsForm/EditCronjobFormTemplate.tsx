@@ -38,7 +38,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   const createOrEditCronjob = _useCronjobs.createOrEdit(cronjobId);
   const deleteCronjob = _useCronjobs.remove();
 
-  const dashboardCard = getDashboardCard(cronjob.name);
+  const dashboardCard = getDashboardCard(cronjob.id);
 
   const {
     register,

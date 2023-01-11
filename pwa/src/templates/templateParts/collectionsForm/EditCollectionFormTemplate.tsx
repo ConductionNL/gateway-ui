@@ -32,7 +32,7 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
   const createOrEditCollection = _useCollection.createOrEdit(collectionId);
   const deleteCollection = _useCollection.remove();
 
-  const dashboardCard = getDashboardCard(collection.name);
+  const dashboardCard = getDashboardCard(collection.id);
 
   const {
     register,

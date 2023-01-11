@@ -87,7 +87,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const createOrEditSource = _useSources.createOrEdit(sourceId);
   const deleteSource = _useSources.remove();
 
-  const dashboardCard = getDashboardCard(source.name);
+  const dashboardCard = getDashboardCard(source.id);
 
   const typeSelectOptions = [
     { label: "JSON", value: "json" },

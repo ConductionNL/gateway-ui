@@ -42,7 +42,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
 
-  const dashboardCard = getDashboardCard(action.name);
+  const dashboardCard = getDashboardCard(action.id);
 
   const addOrRemoveFromDashboard = () => {
     addOrRemoveDashboardCard(action.name, "Action", "Action", actionId, dashboardCard?.id);
@@ -278,7 +278,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="islockable" />
+                      <InputCheckbox {...{ register, errors }} label="on" name="isLockable" />
                     </FormFieldInput>
                   </FormField>
                 </div>

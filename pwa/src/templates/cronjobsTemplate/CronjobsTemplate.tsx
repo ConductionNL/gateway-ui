@@ -95,7 +95,6 @@ export const CronjobsTemplate: React.FC = () => {
                 <TableCell />
                 <TableCell />
                 <TableCell />
-                <TableCell />
               </TableRow>
             )}
           </TableBody>
