@@ -9,7 +9,7 @@ export default class Sources {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/object_entities");
+    const { data } = await Send(this._instance, "GET", "/admin/object_entities?limit=100");
 
     return data;
   };
