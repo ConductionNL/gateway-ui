@@ -64,7 +64,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             variant="scrollable"
           >
             <Tab className={styles.tab} label={t("Logs")} value={0} />
-            <Tab className={styles.tab} label={t("sync")} value={1} />
+            <Tab className={styles.tab} label={t("Sync")} value={1} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
