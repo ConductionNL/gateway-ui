@@ -1,0 +1,50 @@
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.title {
+  font-size: var(--gateway-ui-font-size-lg) !important;
+}
+
+.simpleFormContainer {
+  display: grid;
+  gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}
+
+.complexFormContainer {
+  display: grid;
+  gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr;
+}
+
+.formContainer > * > * {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.formFieldHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--gateway-ui-size-xs);
+  margin-block-end: var(--gateway-ui-size-xs);
+}
+
+.formFieldHeader p {
+  margin-block: 0;
+}
+
+.description {
+  display: block;
+  color: var(--gateway-ui-color-darkgrey);
+}
+
+.tooltip {
+  max-width: 250px;
+}
+
+.unsupported {
+  font-size: var(--gateway-ui-font-size-md);
+}

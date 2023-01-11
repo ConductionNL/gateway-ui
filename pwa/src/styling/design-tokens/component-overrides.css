@@ -1,6 +1,7 @@
 :root {
   --denhaag-breadcrumb-background-color: var(--gateway-ui-color-white);
-  --denhaag-breacrumb-link-color: var(--gateway-ui-color-primary);
+  --denhaag-breadcrumb-link-color: var(--gateway-ui-color-primary);
+  --denhaag-breadcrumb-link-hover-color: var(--gateway-ui-color-primary-hover);
   --denhaag-breadcrumb-list-max-width: 100%;
 
   --denhaag-sidenav-link-hover-color: var(--gateway-ui-color-primary);
@@ -13,5 +14,26 @@
     --gateway-ui-color-primary-hover
   );
 
+  --denhaag-link-color: var(--gateway-ui-color-primary);
+
   --conduction-container-max-width: var(--gateway-ui-container-max-width);
+
+  --utrecht-form-input-placeholder-color: var(--denhaag-color-grey-2);
+
+  --utrecht-textbox-padding-block-start: var(--gateway-ui-size-xs);
+  --utrecht-textbox-padding-block-end: var(--gateway-ui-size-xs);
+  --utrecht-textbox-padding-inline-start: var(--gateway-ui-size-xs);
+  --utrecht-textbox-padding-inline-end: var(--gateway-ui-size-xs);
+  --utrecht-form-input-padding-block-start: var(--gateway-ui-size-xs);
+  --utrecht-form-input-padding-block-end: var(--gateway-ui-size-xs);
+  --utrecht-form-input-padding-inline-start: var(--gateway-ui-size-xs);
+  --utrecht-form-input-padding-inline-end: var(--gateway-ui-size-xs);
+
+  --utrecht-form-input-font-size: var(--gateway-ui-font-size-md);
+  --utrecht-form-label-font-size: var(--gateway-ui-font-size-md);
+}
+
+.select-module--select--63d48 > div {
+  padding: 0;
+  font-size: var(--gateway-ui-font-size-md);
 }
