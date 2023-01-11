@@ -215,13 +215,14 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                   {getReadMe.isLoading && <Skeleton height="200px" />}
                   <div>
                     {getReadMe.data ? (
-                      <div dangerouslySetInnerHTML={{ __html: getReadMe.data }} />
+                      <div className={styles.readme} dangerouslySetInnerHTML={{ __html: getReadMe.data }} />
                     ) : (
                       <p>This plugin has no README</p>
                     )}
                   </div>
                 </div>
               </div>
+
               <div className={styles.sideBarSection}>
                 <Heading3>Versions</Heading3>
                 <VerticalMenu
