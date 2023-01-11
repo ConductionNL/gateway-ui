@@ -153,3 +153,62 @@
 .showmoreVersionsButton {
   text-align: center;
 }
+
+/* readme styling */
+.readme {
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.readme code {
+  background-color: var(--gateway-ui-color-lightgrey);
+  outline: 1px solid var(--gateway-ui-color-grey);
+  padding-block: var(--gateway-ui-size-xs);
+  padding-inline: var(--gateway-ui-size-xs);
+  border-radius: 6px;
+}
+
+.readme h1 {
+  font-size: 2em;
+}
+.readme h2 {
+  font-size: 1.5em;
+}
+
+.readme h1,
+.readme h2 {
+  position: relative;
+  padding-bottom: 0.3em;
+}
+.readme h1:after,
+.readme h2:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--gateway-ui-color-lightgrey);
+}
+
+.readme a[class="anchor"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translatex(-100%);
+  opacity: 0;
+}
+
+.readme h1:hover > a[class="anchor"],
+.readme h2:hover > a[class="anchor"],
+.readme a[class="anchor"]:hover {
+  opacity: 1;
+}
+
+.readme a[class="anchor"] > svg {
+  display: inline-block;
+  vertical-align: middle;
+  height: 18px;
+  width: 18px;
+}
