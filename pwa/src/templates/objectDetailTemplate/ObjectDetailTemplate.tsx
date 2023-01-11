@@ -11,7 +11,6 @@ import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { navigate } from "gatsby";
-import { useCronjob } from "../../hooks/cronjob";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useSync } from "../../hooks/synchronization";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";

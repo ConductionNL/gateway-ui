@@ -12,7 +12,6 @@ import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
-import Skeleton from "react-loading-skeleton";
 
 interface EditObjectFormTemplateProps {
   object: any;
