@@ -295,7 +295,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <section className={styles.section}>
-            <Heading1>{t("Edit Property")}</Heading1>
+            <Heading1>{`Edit ${property.name}`}</Heading1>
 
             <div className={styles.buttons}>
               <Button className={styles.buttonIcon} type="submit" disabled={loading || isImmutable}>

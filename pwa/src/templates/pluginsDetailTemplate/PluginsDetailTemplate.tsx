@@ -85,14 +85,18 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
   React.useEffect(() => {
     if (!getPlugin.data) return;
 
-    if (!getPlugin.data.version) {
+    const versionExists: boolean = getPlugin.data.version
+      ? !!versionsSideBar.filter((version) => version.label === getPlugin.data.version).length
+      : false;
+
+    if (!versionExists) {
       versionsSideBar &&
         versionsSideBar.map((version: any) => {
           version.label.includes("main" || "master") && setCurrentRequire(version.label);
         });
     }
 
-    getPlugin.data.version && setCurrentRequire(getPlugin.data.version);
+    versionExists && setCurrentRequire(getPlugin.data.version);
   }, [getPlugin.isSuccess]);
 
   return (
@@ -184,7 +188,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                         <TableHeader className={styles.requiredTableHeader}>
                           <span>{currentRequire}</span>
                           <span>
-                            {currentRequire && new Date(getPlugin.data.versions[currentRequire].time).toLocaleString()}
+                            {currentRequire && new Date(getPlugin.data.versions[currentRequire]?.time).toLocaleString()}
                           </span>
                         </TableHeader>
                       </TableRow>
@@ -195,7 +199,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                           requires: <br />
                           <ul>
                             {currentRequire &&
-                              Object.entries(getPlugin.data.versions[currentRequire].require).map(([key, value]) => (
+                              Object.entries(getPlugin.data.versions[currentRequire]?.require).map(([key, value]) => (
                                 <li>
                                   {key}: {value}
                                 </li>

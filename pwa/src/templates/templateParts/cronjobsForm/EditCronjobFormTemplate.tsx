@@ -88,7 +88,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Cronjob")}</Heading1>
+          <Heading1>{`Edit ${cronjob.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

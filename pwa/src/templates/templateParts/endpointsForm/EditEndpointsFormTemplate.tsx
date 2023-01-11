@@ -149,7 +149,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Endpoint")}</Heading1>
+          <Heading1>{`Edit ${endpoint.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
