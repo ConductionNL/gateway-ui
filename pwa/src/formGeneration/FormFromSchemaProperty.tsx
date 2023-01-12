@@ -1,7 +1,4 @@
 import * as React from "react";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { PropertyString } from "./properties/PropertyString";
 import { TFormFromSchemaPropertyProps, TPropertyType, TReactHookFormProps } from "./types";
 
