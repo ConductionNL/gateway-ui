@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PropertyString } from "./properties/PropertyString";
+import { PropertyDate, PropertyString } from "./properties";
 import { TFormFromSchemaPropertyProps, TPropertyType, TReactHookFormProps } from "./types";
 
 export const FormFromSchemaProperty: React.FC<TFormFromSchemaPropertyProps & TReactHookFormProps> = ({
@@ -11,7 +11,9 @@ export const FormFromSchemaProperty: React.FC<TFormFromSchemaPropertyProps & TRe
   switch (propertyType) {
     case "string":
       return <PropertyString {...{ property, ...rest }} />;
+    case "date":
+      return <PropertyDate {...{ property, ...rest }} />;
   }
 
-  return <></>; // IDE claims this will never be reached, that's not true
+  return <></>; // IDE claims this will never be reached, Gatsby disagrees
 };

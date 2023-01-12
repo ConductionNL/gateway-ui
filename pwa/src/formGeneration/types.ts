@@ -28,7 +28,7 @@ export type TInputTypeVariables = {
   multiple: boolean;
 };
 
-export type TPropertyType = "string";
+export type TPropertyType = "string" | "date";
 
 export type TPropertyFormat = "countryCode" | "bsn" | "url" | "uri" | "uuid" | "email" | "phone" | "json" | "ducth_pc4";
 
