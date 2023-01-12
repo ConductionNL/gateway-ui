@@ -21,6 +21,7 @@ import Attribute from "./resources/attribute";
 import Plugin from "./resources/plugin";
 import PluginReadMe from "./resources/pluginReadme";
 import Synchroniation from "./resources/synchronization";
+import Application from "./resources/application";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -146,6 +147,10 @@ export default class APIService {
 
   public get Synchroniation(): Synchroniation {
     return new Synchroniation(this.BaseClient);
+  }
+
+  public get Application(): Application {
+    return new Application(this.BaseClient);
   }
 
   // Services
