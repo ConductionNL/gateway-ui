@@ -14,6 +14,7 @@ export type SelectOption = {
 export type TInputType = {
   isText?: boolean;
   isTextUrl?: boolean;
+  isTextUUID?: boolean;
   isSelectCreate?: boolean;
   isSelectSingle?: boolean;
   isSelectMultiple?: boolean;

@@ -9,10 +9,12 @@ import {
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
 import { FormFromSchemaPropertyWrapper } from "../FormFromSchemaPropertyWrapper";
+import { validateUUID } from "../../services/validateUUID";
 
 export const PropertyString: React.FC<TFormFromSchemaPropertyProps & TReactHookFormProps> = ({
   property,
   disabled,
+  errors,
   ...rest
 }) => {
   const inputType = getInputType(property);
@@ -27,15 +29,21 @@ export const PropertyString: React.FC<TFormFromSchemaPropertyProps & TReactHookF
     _propertyName: name,
   } = property;
 
-  console.log({ inputType });
-
   return (
-    <FormFromSchemaPropertyWrapper {...{ name, readOnly, description }}>
+    <FormFromSchemaPropertyWrapper {...{ name, readOnly, errors, description }}>
       {inputType.isText && (
         <InputText
           validation={{ required, maxLength, minLength }}
           disabled={disabled || readOnly}
-          {...{ name, placeholder, defaultValue, ...rest }}
+          {...{ name, placeholder, defaultValue, errors, ...rest }}
+        />
+      )}
+
+      {inputType.isTextUUID && (
+        <InputText
+          validation={{ required, maxLength, minLength, validate: validateUUID }}
+          disabled={disabled || readOnly}
+          {...{ name, placeholder, defaultValue, errors, ...rest }}
         />
       )}
 
@@ -43,7 +51,7 @@ export const PropertyString: React.FC<TFormFromSchemaPropertyProps & TReactHookF
         <InputURL
           validation={{ required, maxLength, minLength }}
           disabled={disabled || readOnly}
-          {...{ placeholder, name, defaultValue, ...rest }}
+          {...{ placeholder, name, defaultValue, errors, ...rest }}
         />
       )}
 
@@ -52,7 +60,7 @@ export const PropertyString: React.FC<TFormFromSchemaPropertyProps & TReactHookF
           defaultValue={getSelectedOptions(property)}
           options={getSelectOptions(property)}
           disabled={disabled || readOnly}
-          {...{ placeholder, name, ...rest }}
+          {...{ placeholder, name, errors, ...rest }}
         />
       )}
 
@@ -61,7 +69,7 @@ export const PropertyString: React.FC<TFormFromSchemaPropertyProps & TReactHookF
           defaultValue={getSelectedOptions(property)}
           options={getSelectOptions(property)}
           disabled={disabled || readOnly}
-          {...{ placeholder, name, ...rest }}
+          {...{ placeholder, name, errors, ...rest }}
         />
       )}
 
@@ -70,7 +78,7 @@ export const PropertyString: React.FC<TFormFromSchemaPropertyProps & TReactHookF
           defaultValue={getSelectedOptions(property)}
           options={getSelectOptions(property)}
           disabled={disabled || readOnly}
-          {...{ placeholder, name, ...rest }}
+          {...{ placeholder, name, errors, ...rest }}
         />
       )}
     </FormFromSchemaPropertyWrapper>

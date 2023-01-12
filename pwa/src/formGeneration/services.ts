@@ -20,8 +20,9 @@ export const getInputType = (property: any): TInputType => {
 const setStringTypes = (vars: TInputTypeVariables, inputType: TInputType): TInputType => {
   return {
     ...inputType,
-    isText: !vars.enumOptions && !vars.multiple && !(vars.format === "url"),
+    isText: !vars.enumOptions && !vars.multiple && !vars.format,
     isTextUrl: !vars.enumOptions && !vars.multiple && vars.format === "url",
+    isTextUUID: !vars.enumOptions && !vars.multiple && vars.format === "uuid",
     isSelectCreate: !vars.enumOptions && vars.multiple,
     isSelectSingle: vars.enumOptions && !vars.multiple,
     isSelectMultiple: vars.enumOptions && vars.multiple,

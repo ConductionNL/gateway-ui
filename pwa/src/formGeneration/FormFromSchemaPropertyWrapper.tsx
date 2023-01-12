@@ -2,10 +2,12 @@ import * as React from "react";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
+import { ErrorMessage } from "../components/errorMessage/ErrorMessage";
 
 interface FormFromSchemaPropertyWrapperProps {
   children: React.ReactNode;
   name: string;
+  errors: { [x: string]: any };
   readOnly?: boolean;
   description?: string;
 }
@@ -13,6 +15,7 @@ interface FormFromSchemaPropertyWrapperProps {
 export const FormFromSchemaPropertyWrapper: React.FC<FormFromSchemaPropertyWrapperProps> = ({
   children,
   name,
+  errors,
   readOnly,
   description,
 }) => {
@@ -33,6 +36,8 @@ export const FormFromSchemaPropertyWrapper: React.FC<FormFromSchemaPropertyWrapp
 
         {children}
       </FormFieldInput>
+
+      {errors[name] && <ErrorMessage message={errors[name].message} />}
     </FormField>
   );
 };
