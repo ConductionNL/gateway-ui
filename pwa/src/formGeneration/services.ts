@@ -29,19 +29,28 @@ const setStringTypes = (vars: TInputTypeVariables, inputType: TInputType): TInpu
 };
 
 export const getSelectOptions = (property: any): SelectOption[] => {
-  const value = property.value;
-  const multiple = property.multiple;
-  const enumOptions = property.enum;
+  if (!property.value && !property.enum) return [];
 
-  const mappedEnumOptions = enumOptions?.map((e: any) => ({ label: e.key, value: e.value })) ?? [];
+  let mappedEnumOptions = [];
+  let mappedValueOptions = [];
 
-  // dit gaat nog fout! http://localhost:8000/objects/175c2d37-444f-47a3-a78e-4a70d9cc860c
-  let mappedValueOptions;
+  if (property.enum && property.enum !== "undefined") {
+    mappedEnumOptions = property.enum.map((e: any) => ({ label: e, value: e }));
+  }
 
-  if (multiple) mappedValueOptions = value?.map((v: any) => ({ label: v, value: v })) ?? [];
-  if (!multiple) mappedValueOptions = { label: value, value: value };
+  if (property.value) {
+    if (Array.isArray(property.value)) {
+      mappedValueOptions = property.value.map((v: any) => ({ label: v, value: v }));
+    } else {
+      mappedValueOptions.push({ label: property.value, value: property.value });
+    }
+  }
 
-  return [...mappedEnumOptions, ...mappedValueOptions];
+  const uniqueOptions = [
+    ...new Map([...mappedEnumOptions, ...mappedValueOptions].map((option: any) => [option.value, option])).values(),
+  ];
+
+  return uniqueOptions;
 };
 
 export const getSelectedOptions = (property: any): SelectOption | SelectOption[] | null => {
