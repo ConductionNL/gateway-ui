@@ -107,7 +107,7 @@ module.exports = {
           },
           {
             pathname: "/settings/organizations/[organizationsId]",
-            crumbLabel: "Organization detail",
+            crumbLabel: "Organization Detail",
           },
         ],
       },
