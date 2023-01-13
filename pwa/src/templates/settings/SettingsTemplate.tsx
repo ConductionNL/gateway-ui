@@ -8,6 +8,7 @@ import { GatewayDetailTemplate } from "../gatewayDetailTemplate/GatewayDetailTem
 import { TabsContext } from "../../context/tabs";
 import { ApplicationsTemplate } from "../applicationsTemplate/ApplicationsTemplate";
 import { OrganizationsTemplate } from "../organizationsTemplate/OrganizationsTemplate";
+import { UsersTemplate } from "../usersTemplate/UsersTemplate";
 
 export const SettingsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -43,7 +44,7 @@ export const SettingsTemplate: React.FC = () => {
             <ApplicationsTemplate />
           </TabPanel>
           <TabPanel className={styles.tabPanel} value="3">
-            <Heading1>{t("Users")}</Heading1>
+            <UsersTemplate />
           </TabPanel>
           <TabPanel className={styles.tabPanel} value="4">
             <OrganizationsTemplate />
