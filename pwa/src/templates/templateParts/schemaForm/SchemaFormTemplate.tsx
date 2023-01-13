@@ -360,12 +360,16 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
   if (getAllFromList.isLoading) return <Skeleton height="50px" />;
   if (getAllFromList.isError) return <>Something went wrong...</>;
-
   if (multiple) {
     return (
       <SelectMultiple
         // defaultValue={{}} <== TODO
-        options={getAllFromList.data?.map((object) => ({ label: object.name, value: object.id })) ?? []}
+        options={
+          getAllFromList.data?.results?.map((object) => ({
+            label: object.name ?? `${object.firstName} ${object.lastName}`,
+            value: object.id,
+          })) ?? []
+        }
         disabled={disabled || readOnly}
         {...{ register, errors, placeholder, name, control }}
         validation={{ required }}
@@ -376,7 +380,12 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   return (
     <SelectSingle
       // defaultValue={{}} <== TODO
-      options={getAllFromList.data?.map((object) => ({ label: object.name, value: object.id })) ?? []}
+      options={
+        getAllFromList.data?.results.map((object) => ({
+          label: object.name ?? `${object.firstName} ${object.lastName}`,
+          value: object.id,
+        })) ?? []
+      }
       disabled={disabled || readOnly}
       {...{ register, errors, placeholder, name, control }}
       validation={{ required }}
