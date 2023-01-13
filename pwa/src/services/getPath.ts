@@ -26,5 +26,8 @@ export const getPath = (value: any): any => {
 
     case "App\\Entity\\CollectionEntity":
       return "collections";
+
+    case "App\\Entity\\Organization":
+      return "settings/organizations";
   }
 };

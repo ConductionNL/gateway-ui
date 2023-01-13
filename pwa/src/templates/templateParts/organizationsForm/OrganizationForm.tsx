@@ -36,7 +36,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   } = useForm();
 
   const addOrRemoveFromDashboard = () => {
-    // addOrRemoveDashboardCard(organization.name, "Organization", "Organization", organization.id, dashboardCard?.id);
+    addOrRemoveDashboardCard(organization.name, "Organization", "Organization", organization.id, dashboardCard?.id);
   };
 
   const handleSetFormValues = (organization: any): void => {
@@ -58,9 +58,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>
-            {organization?.id ? `Edit ${organization.name}` : "Create Organization"}
-          </Heading1>
+          <Heading1>{organization?.id ? `Edit ${organization.name}` : "Create Organization"}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
