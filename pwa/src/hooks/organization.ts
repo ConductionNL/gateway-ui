@@ -9,32 +9,32 @@ export const useOrganization = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
 
   const getAll = () =>
-    useQuery<any[], Error>("actions", API.Action.getAll, {
+    useQuery<any[], Error>("organizations", API.Organization.getAll, {
       onError: (error) => {
         throw new Error(error.message);
       },
     });
 
-  const getOne = (actionId: string) =>
-    useQuery<any, Error>(["actions", actionId], () => API?.Action.getOne(actionId), {
-      initialData: () => queryClient.getQueryData<any[]>("actions")?.find((_action) => _action.id === actionId),
+  const getOne = (organizationId: string) =>
+    useQuery<any, Error>(["organizations", organizationId], () => API?.Organization.getOne(organizationId), {
+      initialData: () => queryClient.getQueryData<any[]>("organizations")?.find((_organization) => _organization.id === organizationId),
       onError: (error) => {
         throw new Error(error.message);
       },
-      enabled: !!actionId,
+      enabled: !!organizationId,
     });
 
-  const createOrEdit = (actionId?: string) =>
-    useMutation<any, Error, any>(API.Action.createOrUpdate, {
-      onSuccess: async (newAction) => {
-        if (actionId) {
-          updateItem(queryClient, "actions", newAction);
-          navigate("/actions");
+  const createOrEdit = (organizationId?: string) =>
+    useMutation<any, Error, any>(API.Organization.createOrUpdate, {
+      onSuccess: async (newOrganization) => {
+        if (organizationId) {
+          updateItem(queryClient, "organizations", newOrganization);
+          navigate("/settings");
         }
 
-        if (!actionId) {
-          addItem(queryClient, "actions", newAction);
-          navigate(`/actions/${newAction.id}`);
+        if (!organizationId) {
+          addItem(queryClient, "organizations", newOrganization);
+          navigate(`/settings/organizations/${newOrganization.id}`);
         }
       },
       onError: (error) => {
