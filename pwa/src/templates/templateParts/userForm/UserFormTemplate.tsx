@@ -49,7 +49,14 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   }, [user]);
 
   const onSubmit = (data: any): void => {
-    createOrEditUser.mutate({ payload: data, id: user?.id });
+    const payload = {
+      ...data,
+      organisation: {
+        id: data.organisation?.id ?? "0c64fb23-c486-488e-a9c9-f0602dc5372e",
+      },
+    };
+
+    createOrEditUser.mutate({ payload, id: user?.id });
 
     user?.id && queryClient.setQueryData(["users", user.id], data);
   };
