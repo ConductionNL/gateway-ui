@@ -105,6 +105,10 @@ module.exports = {
             pathname: "/settings/gatewayDetail/[gatewayDetailId]",
             crumbLabel: "Gateway Detail",
           },
+          {
+            pathname: "/settings/organizations/[organizationsId]",
+            crumbLabel: "Organization detail",
+          },
         ],
       },
     },
