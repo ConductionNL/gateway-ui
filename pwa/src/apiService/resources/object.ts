@@ -9,19 +9,19 @@ export default class Sources {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/object_entities?limit=100");
+    const { data } = await Send(this._instance, "GET", "/admin/objects?limit=100");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/object_entities/${id}`);
+    const { data } = await Send(this._instance, "GET", `/admin/objects/${id}`);
 
     return data;
   };
 
   public getAllFromEntity = async (entityId: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/objects/schema/${entityId}`);
+    const { data } = await Send(this._instance, "GET", `/admin/objects?_self.schema.id=${entityId}`);
 
     return data;
   };
@@ -57,15 +57,21 @@ export default class Sources {
   public createOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
     const { payload, entityId, objectId } = variables;
 
+    const _payload = {
+      ...payload,
+
+      _self: { schema: { id: entityId } },
+    };
+
     if (objectId) {
-      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, payload, {
+      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, _payload, {
         loading: "Updating object...",
         success: "Object successfully updated.",
       });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", `/admin/objects/schema/${entityId}`, payload, {
+    const { data } = await Send(this._instance, "POST", `/admin/objects`, _payload, {
       loading: "Creating object...",
       success: "Object successfully created.",
     });

@@ -6,6 +6,7 @@ import { Container } from "@conduction/components";
 import { SecurityGroupsTemplate } from "../securityGroupsTemplate/SecurityGroupsTemplate";
 import { GatewayDetailTemplate } from "../gatewayDetailTemplate/GatewayDetailTemplate";
 import { TabsContext } from "../../context/tabs";
+import { ApplicationsTemplate } from "../applicationsTemplate/ApplicationsTemplate";
 import { OrganizationsTemplate } from "../organizationsTemplate/OrganizationsTemplate";
 
 export const SettingsTemplate: React.FC = () => {
@@ -39,7 +40,7 @@ export const SettingsTemplate: React.FC = () => {
             <SecurityGroupsTemplate />
           </TabPanel>
           <TabPanel className={styles.tabPanel} value="2">
-            <Heading1>{t("Applications")}</Heading1>
+            <ApplicationsTemplate />
           </TabPanel>
           <TabPanel className={styles.tabPanel} value="3">
             <Heading1>{t("Users")}</Heading1>
