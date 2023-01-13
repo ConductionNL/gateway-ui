@@ -25,9 +25,9 @@ export const UsersTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Users")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/organizations/new`)}>
+          <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/users/new`)}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add Organization")}
+            {t("Add User")}
           </Button>
         </div>
       </section>
