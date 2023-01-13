@@ -40,7 +40,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   };
 
   const handleSetFormValues = (organization: any): void => {
-    const basicFields: string[] = ["name", "description"];
+    const basicFields: string[] = ["name", "description", "email", "password", "locale", "person"];
     basicFields.forEach((field) => setValue(field, organization[field]));
   };
 
@@ -95,12 +95,35 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                <Textarea
-                  {...{ register, errors }}
-                  name="description"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
+                <Textarea {...{ register, errors }} name="description" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Email")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="email" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Password")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="password" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Locale")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="locale" disabled={loading} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Person")}</FormFieldLabel>
+                <InputText {...{ register, errors }} name="person" disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>
