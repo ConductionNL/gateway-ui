@@ -3,20 +3,22 @@ import * as styles from "./UserFormTemplate.module.css";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputText, Textarea } from "@conduction/components";
+import { InputPassword, InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { QueryClient } from "react-query";
+import { QueryClient, UseQueryResult } from "react-query";
 import clsx from "clsx";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { useUser } from "../../../hooks/user";
+import Skeleton from "react-loading-skeleton";
 
 interface UserFormTemplateProps {
   user?: any;
+  getOrganization: UseQueryResult<any[], Error>;
 }
 
-export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
+export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrganization }) => {
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
   const [formError, setFormError] = React.useState<string>("");
@@ -26,6 +28,18 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const _useUsers = useUser(queryClient);
   const createOrEditUser = _useUsers.createOrEdit(user?.id);
 
+  const organisationOptions = getOrganization.data?.map((_organisation: any) => ({
+    label: _organisation.name,
+    value: _organisation.id,
+  }));
+
+  React.useEffect(() => {
+    setValue(
+      "organization",
+      organisationOptions?.find((_organisation) => _organisation.value === user?.organisation.id),
+    );
+  }, [getOrganization.isSuccess]);
+
   const dashboardCard = getDashboardCard(user?.id);
 
   const {
@@ -33,15 +47,20 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
     handleSubmit,
     setValue,
     formState: { errors },
+    control,
+    watch,
   } = useForm();
+
+  const pwd = watch("password");
+  const pwd_verify = watch("password_verify");
 
   const addOrRemoveFromDashboard = () => {
     addOrRemoveDashboardCard(user.name, "User", "User", user.id, dashboardCard?.id);
   };
 
-  const handleSetFormValues = (organization: any): void => {
+  const handleSetFormValues = (user: any): void => {
     const basicFields: string[] = ["name", "description", "email", "password", "locale", "person"];
-    basicFields.forEach((field) => setValue(field, organization[field]));
+    basicFields.forEach((field) => setValue(field, user[field]));
   };
 
   React.useEffect(() => {
@@ -52,12 +71,14 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
     const payload = {
       ...data,
       organisation: {
-        id: data.organisation?.id ?? "0c64fb23-c486-488e-a9c9-f0602dc5372e",
+        ...user?.organisation,
+        id: data.organization.value,
       },
     };
 
-    createOrEditUser.mutate({ payload, id: user?.id });
+    delete payload.organization;
 
+    createOrEditUser.mutate({ payload, id: user?.id });
     user?.id && queryClient.setQueryData(["users", user.id], data);
   };
 
@@ -114,13 +135,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
 
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("Password")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="password" disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-
-          <FormField>
-            <FormFieldInput>
               <FormFieldLabel>{t("Locale")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="locale" disabled={loading} />
             </FormFieldInput>
@@ -130,6 +144,49 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
             <FormFieldInput>
               <FormFieldLabel>{t("Person")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="person" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Organization")}</FormFieldLabel>
+              {getOrganization.isSuccess && (
+                <SelectSingle
+                  // @ts-ignore
+                  options={organisationOptions}
+                  {...{ register, errors, control }}
+                  name="organization"
+                  disabled={loading}
+                  validation={{ required: true }}
+                />
+              )}
+              {getOrganization.isLoading && <Skeleton height={50} />}
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Password")}</FormFieldLabel>
+              <InputPassword
+                {...{ register, errors }}
+                name="password"
+                disabled={loading}
+                // @ts-ignore
+                validation={{ validate: (value) => value === pwd_verify }}
+              />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Retype Password")}</FormFieldLabel>
+              <InputPassword
+                {...{ register, errors }}
+                name="password_verify"
+                disabled={loading}
+                // @ts-ignore
+                validation={{ validate: (value) => value === pwd }}
+              />
             </FormFieldInput>
           </FormField>
         </div>
