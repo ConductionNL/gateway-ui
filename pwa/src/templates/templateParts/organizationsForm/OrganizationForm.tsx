@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
-import clsx from "clsx";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 
 interface OrganizationFormProps {
@@ -55,57 +54,55 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className={styles.section}>
-          <Heading1>{organization?.id ? `Edit ${organization.name}` : "Create Organization"}</Heading1>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <section className={styles.section}>
+        <Heading1>{organization?.id ? `Edit ${organization.name}` : "Create Organization"}</Heading1>
 
-          <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save")}
-            </Button>
+        <div className={styles.buttons}>
+          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <FontAwesomeIcon icon={faFloppyDisk} />
+            {t("Save")}
+          </Button>
 
-            {organization?.id && (
-              <>
-                <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
-                  <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                  {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-                </Button>
+          {organization?.id && (
+            <>
+              <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+              </Button>
 
-                {/* <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+              {/* <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
                   <FontAwesomeIcon icon={faTrash} />
                   {t("Delete")}
                 </Button> */}
-              </>
-            )}
-          </div>
-        </section>
-
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.gridContainer}>
-          <div className={styles.grid}>
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                <Textarea
-                  {...{ register, errors }}
-                  name="description"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
-              </FormFieldInput>
-            </FormField>
-          </div>
+            </>
+          )}
         </div>
-      </form>
-    </>
+      </section>
+
+      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+      <div className={styles.gridContainer}>
+        <div className={styles.grid}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Name")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Description")}</FormFieldLabel>
+              <Textarea
+                {...{ register, errors }}
+                name="description"
+                validation={{ required: true }}
+                disabled={loading}
+              />
+            </FormFieldInput>
+          </FormField>
+        </div>
+      </div>
+    </form>
   );
 };
