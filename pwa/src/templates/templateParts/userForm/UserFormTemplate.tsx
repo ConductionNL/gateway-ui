@@ -62,80 +62,78 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className={styles.section}>
-          <Heading1>{user?.id ? `Edit ${user.name}` : "Create User"}</Heading1>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <section className={styles.section}>
+        <Heading1>{user?.id ? `Edit ${user.name}` : "Create User"}</Heading1>
 
-          <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save")}
-            </Button>
+        <div className={styles.buttons}>
+          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <FontAwesomeIcon icon={faFloppyDisk} />
+            {t("Save")}
+          </Button>
 
-            {user?.id && (
-              <>
-                <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
-                  <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                  {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-                </Button>
+          {user?.id && (
+            <>
+              <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+              </Button>
 
-                {/* <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+              {/* <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
                   <FontAwesomeIcon icon={faTrash} />
                   {t("Delete")}
                 </Button> */}
-              </>
-            )}
-          </div>
-        </section>
-
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-        <div className={styles.gridContainer}>
-          <div className={styles.grid}>
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                <Textarea {...{ register, errors }} name="description" disabled={loading} />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Email")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="email" disabled={loading} />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Password")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="password" disabled={loading} />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Locale")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="locale" disabled={loading} />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Person")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="person" disabled={loading} />
-              </FormFieldInput>
-            </FormField>
-          </div>
+            </>
+          )}
         </div>
-      </form>
-    </>
+      </section>
+
+      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+      <div className={styles.gridContainer}>
+        <div className={styles.grid}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Name")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Description")}</FormFieldLabel>
+              <Textarea {...{ register, errors }} name="description" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Email")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="email" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Password")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="password" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Locale")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="locale" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Person")}</FormFieldLabel>
+              <InputText {...{ register, errors }} name="person" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+        </div>
+      </div>
+    </form>
   );
 };
