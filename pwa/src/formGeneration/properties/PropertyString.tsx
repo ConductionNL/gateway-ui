@@ -30,7 +30,7 @@ export const PropertyString: React.FC<TFormFromSchemaPropertyProps & TReactHookF
   } = property;
 
   return (
-    <FormFromSchemaPropertyWrapper {...{ name, readOnly, errors, description }}>
+    <>
       {inputType.isText && (
         <InputText
           validation={{ required, maxLength, minLength }}
@@ -81,6 +81,6 @@ export const PropertyString: React.FC<TFormFromSchemaPropertyProps & TReactHookF
           {...{ placeholder, name, errors, ...rest }}
         />
       )}
-    </FormFromSchemaPropertyWrapper>
+    </>
   );
 };
