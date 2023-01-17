@@ -46,7 +46,7 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
     <div className={styles.container}>
       <form>
         <section className={styles.section}>
-          <Heading1>{t("Edit Security Group")}</Heading1>
+          <Heading1>{`Edit ${securityGroup.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

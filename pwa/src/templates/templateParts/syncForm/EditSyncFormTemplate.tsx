@@ -90,7 +90,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Synchronization")}</Heading1>
+          <Heading1>{`Edit ${sync?.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

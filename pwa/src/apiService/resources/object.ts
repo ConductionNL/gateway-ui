@@ -9,7 +9,7 @@ export default class Sources {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/objects");
+    const { data } = await Send(this._instance, "GET", "/admin/objects?limit=100");
 
     return data.results;
   };
@@ -57,8 +57,14 @@ export default class Sources {
   public createOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
     const { payload, entityId, objectId } = variables;
 
+    const _payload = {
+      ...payload,
+
+      _self: { schema: { id: entityId } },
+    };
+
     if (objectId) {
-      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, payload, {
+      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, _payload, {
         loading: "Updating object...",
         success: "Object successfully updated.",
       });

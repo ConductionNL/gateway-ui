@@ -360,7 +360,6 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
   if (getAllFromList.isLoading) return <Skeleton height="50px" />;
   if (getAllFromList.isError) return <>Something went wrong...</>;
-
   if (multiple) {
     return (
       <SelectMultiple

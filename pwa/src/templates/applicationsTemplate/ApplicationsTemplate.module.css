@@ -1,19 +1,11 @@
-.container {
-  background-color: var(--gateway-ui-color-white);
-  padding-inline-start: var(--gateway-ui-size-md);
-  padding-inline-end: var(--gateway-ui-size-md);
-  padding-block-start: var(--gateway-ui-size-md);
-  padding-block-end: var(--gateway-ui-size-md);
-}
-
-.gridContainer > *:not(:first-child) {
-  margin-block-start: var(--gateway-ui-size-sm);
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
 }
 
 .section {
   display: flex;
   justify-content: space-between;
-  margin-block-end: var(--gateway-ui-size-2xl);
+  margin-block-end: var(--gateway-ui-size-xl);
 }
 
 .buttons {
@@ -35,10 +27,8 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.grid {
-  display: grid;
-  grid-gap: var(--gateway-ui-size-lg);
-  grid-template-columns: 1fr 1fr;
+.tableRow {
+  cursor: pointer;
 }
 
 .deleteButton {
@@ -49,4 +39,15 @@
   --denhaag-button-primary-action-hover-background-color: var(
     --gateway-ui-color-dark-red
   );
+}
+
+/* Status colors */
+.statusOk {
+  --conduction-tag-background-color: var(--gateway-ui-color-green);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.statusFailed {
+  --conduction-tag-background-color: var(--gateway-ui-color-red);
+  --conduction-tag-color: var(--gateway-ui-color-white);
 }

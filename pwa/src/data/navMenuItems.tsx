@@ -59,7 +59,7 @@ export const mainMenuItems = () => {
       current: pathname.includes("/endpoints"),
     },
     {
-      label: "Data layer",
+      label: "Objects",
       icon: <FontAwesomeIcon icon={faDatabase} />,
       onClick: () => navigate("/objects"),
       current: pathname.includes("/objects"),
