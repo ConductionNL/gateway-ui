@@ -16,10 +16,11 @@ import { FormFromSchema } from "../../../formGeneration/FormFromSchema";
 
 interface EditObjectFormTemplateProps {
   object: any;
+  getSchema: any;
   objectId: string;
 }
 
-export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, objectId }) => {
+export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, getSchema, objectId }) => {
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
@@ -29,8 +30,6 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   const _useObjects = useObject(queryClient);
   const createOrEditObject = _useObjects.createOrEdit(objectId);
   const deleteObject = _useObjects.remove();
-
-  const getSchema = _useObjects.getSchema(objectId);
 
   const dashboardCard = getDashboardCard(object.id);
 
@@ -75,7 +74,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Object")}</Heading1>
+          <Heading1>{`Edit ${object.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

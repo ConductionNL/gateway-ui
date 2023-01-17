@@ -30,7 +30,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   const deleteSchema = _useSchema.remove();
   const getSchemaSchema = _useSchema.getSchema(schemaId);
 
-  const dashboardCard = getDashboardCard(schema.name);
+  const dashboardCard = getDashboardCard(schema.id);
 
   const functionSelectOptions = [
     { label: "No Function", value: "noFunction" },
@@ -95,7 +95,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Schema")}</Heading1>
+          <Heading1>{`Edit ${schema.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

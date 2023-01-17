@@ -32,7 +32,7 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
   const createOrEditCollection = _useCollection.createOrEdit(collectionId);
   const deleteCollection = _useCollection.remove();
 
-  const dashboardCard = getDashboardCard(collection.name);
+  const dashboardCard = getDashboardCard(collection.id);
 
   const {
     register,
@@ -67,7 +67,7 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Collection")}</Heading1>
+          <Heading1>{`Edit ${collection.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>

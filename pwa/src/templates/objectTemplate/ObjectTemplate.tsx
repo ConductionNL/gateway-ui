@@ -55,7 +55,7 @@ export const ObjectTemplate: React.FC = () => {
             <TableRow>
               <TableHeader>{t("Id")}</TableHeader>
               <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Type")}</TableHeader>
+              <TableHeader>{t("Schema")}</TableHeader>
               <TableHeader>{t("Sources")}</TableHeader>
               <TableHeader></TableHeader>
               <TableHeader></TableHeader>
@@ -67,7 +67,7 @@ export const ObjectTemplate: React.FC = () => {
               <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
                 <TableCell>{object.id ?? "-"}</TableCell>
                 <TableCell>{object.name ?? "NVT"}</TableCell>
-                <TableCell>{object.type?.name ?? "-"}</TableCell>
+                <TableCell>{object.entity?.name ?? "-"}</TableCell>
                 <TableCell>{object.sources ?? "-"}</TableCell>
                 <TableCell>
                   <Button

@@ -42,7 +42,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
 
-  const dashboardCard = getDashboardCard(action.name);
+  const dashboardCard = getDashboardCard(action.id);
 
   const addOrRemoveFromDashboard = () => {
     addOrRemoveDashboardCard(action.name, "Action", "Action", actionId, dashboardCard?.id);
@@ -141,7 +141,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{t("Edit Action")}</Heading1>
+          <Heading1>{`Edit ${action.name}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button className={styles.buttonIcon} type="submit" disabled={loading}>
@@ -278,7 +278,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="islockable" />
+                      <InputCheckbox {...{ register, errors }} label="on" name="isLockable" />
                     </FormFieldInput>
                   </FormField>
                 </div>
