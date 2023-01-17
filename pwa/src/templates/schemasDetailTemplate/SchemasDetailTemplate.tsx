@@ -63,47 +63,44 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   }, [deleteSchema.isLoading, getSchema.isLoading]);
 
   return (
-    <>
-      <Container layoutClassName={styles.container}>
-        <div className={styles.contentContainer}>
-          <div className={styles.section}>
-            <Heading1>{`Edit ${getSchema.data?.name}`}</Heading1>
+    <Container layoutClassName={styles.container}>
+      {getSchema.isError && "Error..."}
 
-            <div className={styles.buttons}>
-              <a
-                className={styles.downloadSchemaButton}
-                href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
-                download="schema.json"
-              >
-                <Button className={styles.buttonIcon} disabled={!getSchemaSchema.isSuccess || loading}>
-                  <FontAwesomeIcon icon={faDownload} />
-                  Download
-                </Button>
-              </a>
+      {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
+      {getSchema.isLoading && <Skeleton height="200px" />}
 
-              <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard} disabled={loading}>
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
+      <div className={styles.tabContainer}>
+        <TabContext value={currentTab.schemaDetailTabs.toString()}>
+          <Tabs
+            value={currentTab.schemaDetailTabs}
+            onChange={(_, newValue: number) => {
+              setCurrentTab({ ...currentTab, schemaDetailTabs: newValue });
+            }}
+            variant="scrollable"
+          >
+            <Tab className={styles.tab} label={t("Objects")} value={0} />
+            <Tab className={styles.tab} label={t("Properties")} value={1} />
+            <Tab className={styles.tab} label={t("Logs")} value={2} />
+          </Tabs>
 
-              <Button
-                onClick={handleDeleteSchema}
-                className={clsx(styles.buttonIcon, styles.deleteButton)}
-                disabled={loading}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Delete")}
-              </Button>
-            </div>
-          </div>
+          <TabPanel className={styles.tabPanel} value="0">
+            <Button
+              className={styles.addObjectButton}
+              disabled={getSchema.isLoading}
+              onClick={() => navigate(`/objects/new?schema=${getSchema.data.id}`)}
+            >
+              <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
+            </Button>
 
-          <TabContext value={currentTab.schemaDetailTabs.toString()}>
-            <Tabs
-              value={currentTab.schemaDetailTabs}
-              onChange={(_, newValue: number) => {
-                setCurrentTab({ ...currentTab, schemaDetailTabs: newValue });
-              }}
-              variant="scrollable"
+            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data.results} />}
+            {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="1">
+            <Button
+              className={styles.addPropertyButton}
+              disabled={getSchema.isLoading}
+              onClick={() => navigate(`/schemas/${schemaId}/new`)}
             >
               <Tab className={styles.tab} label={t("General")} value={0} />
               <Tab className={styles.tab} label={t("Objects")} value={1} />
