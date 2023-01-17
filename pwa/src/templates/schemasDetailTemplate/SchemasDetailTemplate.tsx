@@ -64,11 +64,6 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
   return (
     <Container layoutClassName={styles.container}>
-      {getSchema.isError && "Error..."}
-
-      {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
-      {getSchema.isLoading && <Skeleton height="200px" />}
-
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.schemaDetailTabs.toString()}>
           <Tabs
@@ -78,12 +73,20 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             }}
             variant="scrollable"
           >
-            <Tab className={styles.tab} label={t("Objects")} value={0} />
-            <Tab className={styles.tab} label={t("Properties")} value={1} />
-            <Tab className={styles.tab} label={t("Logs")} value={2} />
+            <Tab className={styles.tab} label={t("General")} value={0} />
+            <Tab className={styles.tab} label={t("Objects")} value={1} />
+            <Tab className={styles.tab} label={t("Properties")} value={2} />
+            <Tab className={styles.tab} label={t("Logs")} value={3} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
+            {getSchema.isError && "Error..."}
+
+            {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
+            {getSchema.isLoading && <Skeleton height="200px" />}
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="1">
             <Button
               className={styles.addObjectButton}
               disabled={getSchema.isLoading}
@@ -92,107 +95,74 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
-            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data.results} />}
+            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
             {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
           </TabPanel>
 
-          <TabPanel className={styles.tabPanel} value="1">
+          <TabPanel className={styles.tabPanel} value="2">
             <Button
               className={styles.addPropertyButton}
               disabled={getSchema.isLoading}
               onClick={() => navigate(`/schemas/${schemaId}/new`)}
             >
-              <Tab className={styles.tab} label={t("General")} value={0} />
-              <Tab className={styles.tab} label={t("Objects")} value={1} />
-              <Tab className={styles.tab} label={t("Properties")} value={2} />
-              <Tab className={styles.tab} label={t("Logs")} value={3} />
-            </Tabs>
-
-            <TabPanel className={styles.tabPanel} value="0">
-              {getSchema.isError && "Error..."}
-
-              {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
-              {getSchema.isLoading && <Skeleton height="200px" />}
-            </TabPanel>
-
-            <TabPanel className={styles.tabPanel} value="1">
-              <Button
-                className={styles.addObjectButton}
-                disabled={getSchema.isLoading}
-                onClick={() => navigate(`/objects/new?schema=${getSchema.data.id}`)}
-              >
-                <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
-              </Button>
-
-              {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
-              {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
-            </TabPanel>
-
-            <TabPanel className={styles.tabPanel} value="2">
-              <Button
-                className={styles.addPropertyButton}
-                disabled={getSchema.isLoading}
-                onClick={() => navigate(`/schemas/${schemaId}/new`)}
-              >
-                <FontAwesomeIcon icon={faPlus} /> {t("Add Property")}
-              </Button>
-              {getSchema.isLoading && <Skeleton height="100px" />}
-              {getSchema.isSuccess && (
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableHeader>{t("Name")}</TableHeader>
-                      <TableHeader>{t("Type")}</TableHeader>
-                      <TableHeader>{t("Function")}</TableHeader>
-                      <TableHeader>{t("Case sensitive")}</TableHeader>
-                      <TableHeader>{t("Created")}</TableHeader>
-                      <TableHeader>{t("Modified")}</TableHeader>
-                      <TableHeader />
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {getSchema.data.attributes &&
-                      getSchema.data.attributes.map((property: any) => (
-                        <TableRow
-                          className={styles.tableRow}
-                          onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
-                          key={property.id}
-                        >
-                          <TableCell>{property.name ?? "-"}</TableCell>
-                          <TableCell>{property.type ?? "-"}</TableCell>
-                          <TableCell>{property.function ?? "-"}</TableCell>
-                          <TableCell>{property.caseSensitive.toString() ?? "-"}</TableCell>
-                          <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
-                          <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
-                          <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
-                            <Link icon={<ArrowRightIcon />} iconAlign="start">
-                              {t("Details")}
-                            </Link>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    {!getSchema.data.attributes?.length && (
-                      <TableRow>
-                        <TableCell>{t("No properties found")}</TableCell>
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
+              <FontAwesomeIcon icon={faPlus} /> {t("Add Property")}
+            </Button>
+            {getSchema.isLoading && <Skeleton height="100px" />}
+            {getSchema.isSuccess && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeader>{t("Name")}</TableHeader>
+                    <TableHeader>{t("Type")}</TableHeader>
+                    <TableHeader>{t("Function")}</TableHeader>
+                    <TableHeader>{t("Case sensitive")}</TableHeader>
+                    <TableHeader>{t("Created")}</TableHeader>
+                    <TableHeader>{t("Modified")}</TableHeader>
+                    <TableHeader />
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {getSchema.data.attributes &&
+                    getSchema.data.attributes.map((property: any) => (
+                      <TableRow
+                        className={styles.tableRow}
+                        onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
+                        key={property.id}
+                      >
+                        <TableCell>{property.name ?? "-"}</TableCell>
+                        <TableCell>{property.type ?? "-"}</TableCell>
+                        <TableCell>{property.function ?? "-"}</TableCell>
+                        <TableCell>{property.caseSensitive.toString() ?? "-"}</TableCell>
+                        <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
+                        <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
+                        <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
+                          <Link icon={<ArrowRightIcon />} iconAlign="start">
+                            {t("Details")}
+                          </Link>
+                        </TableCell>
                       </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              )}
-            </TabPanel>
+                    ))}
+                  {!getSchema.data.attributes?.length && (
+                    <TableRow>
+                      <TableCell>{t("No properties found")}</TableCell>
+                      <TableCell />
+                      <TableCell />
+                      <TableCell />
+                      <TableCell />
+                      <TableCell />
+                      <TableCell />
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            )}
+          </TabPanel>
 
-            <TabPanel className={styles.tabPanel} value="3">
-              Logs are not yet supported.
-            </TabPanel>
-          </TabContext>
-        </div>
-      </Container>
-    </>
+          <TabPanel className={styles.tabPanel} value="3">
+            Logs are not yet supported.
+          </TabPanel>
+        </TabContext>
+      </div>
+    </Container>
   );
 };
