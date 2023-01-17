@@ -7,6 +7,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useApplication } from "../../hooks/application";
+import { ApplicationsFormTemplate } from "../templateParts/applicationsForm/ApplicationsFormTemplate";
 
 interface EditApplicationTemplateProps {
   applicationId: string;
@@ -48,6 +49,7 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
               </Button>
             </div>
           </section>
+          <ApplicationsFormTemplate application={getApplication.data} />
         </>
       )}
     </div>
