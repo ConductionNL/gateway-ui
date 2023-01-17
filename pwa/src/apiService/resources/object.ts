@@ -57,14 +57,8 @@ export default class Sources {
   public createOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
     const { payload, entityId, objectId } = variables;
 
-    const _payload = {
-      ...payload,
-
-      _self: { schema: { id: entityId } },
-    };
-
     if (objectId) {
-      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, _payload, {
+      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, payload, {
         loading: "Updating object...",
         success: "Object successfully updated.",
       });
