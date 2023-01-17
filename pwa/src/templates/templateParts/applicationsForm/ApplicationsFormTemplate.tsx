@@ -17,9 +17,10 @@ import { InputURL } from "@conduction/components/lib/components/formFields";
 
 interface ApplicationFormTemplateProps {
   application?: any;
+  getSave: Function;
 }
 
-export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = ({ application }) => {
+export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = ({ application, getSave }) => {
   const { t } = useTranslation();
 
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -30,15 +31,6 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
   const createOrEditApplication = _useApplication.createOrEdit(application?.id);
   const deleteApplication = _useApplication.remove();
 
-  const functionSelectOptions = [
-    { label: "No Function", value: "noFunction" },
-    { label: "Organization", value: "organization" },
-    { label: "Person", value: "person" },
-    { label: "User", value: "user" },
-    { label: "User Group", value: "userGroup" },
-    { label: "Processing Log", value: "processingLog" },
-  ];
-
   const {
     register,
     handleSubmit,
@@ -48,11 +40,11 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    data = { ...data, function: data.function.value };
-
     createOrEditApplication.mutate({ payload: data, id: application.id });
     application && queryClient.setQueryData(["entities", application.id], data);
   };
+
+  getSave(handleSubmit(onSubmit));
 
   const handleSetFormValues = (application: any): void => {
     const basicFields: string[] = [
@@ -66,11 +58,6 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
       "ednpoints",
     ];
     basicFields.forEach((field) => setValue(field, application[field]));
-
-    setValue(
-      "function",
-      functionSelectOptions.find((option) => application.function === option.value),
-    );
 
     setValue(
       "domains",
@@ -94,16 +81,7 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className={styles.section}>
-          <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save")}
-            </Button>
-          </div>
-        </section>
-
+      <form>
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>

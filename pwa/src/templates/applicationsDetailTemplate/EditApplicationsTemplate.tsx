@@ -3,11 +3,12 @@ import * as styles from "./ApplicationTemplate.module.css";
 import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useApplication } from "../../hooks/application";
 import { ApplicationsFormTemplate } from "../templateParts/applicationsForm/ApplicationsFormTemplate";
+import Skeleton from "react-loading-skeleton";
 
 interface EditApplicationTemplateProps {
   applicationId: string;
@@ -31,6 +32,10 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
     }
   };
 
+  let saveFunction: Function;
+
+  const getSave = (save: Function) => (saveFunction = save);
+
   return (
     <div className={styles.container}>
       {getApplication.isSuccess && (
@@ -39,6 +44,11 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
             <Heading1>{`Edit ${getApplication.data.name}`}</Heading1>
 
             <div className={styles.buttons}>
+              <Button className={styles.buttonIcon} onClick={() => saveFunction()} type="submit" disabled={loading}>
+                <FontAwesomeIcon icon={faFloppyDisk} />
+                {t("Save")}
+              </Button>
+
               <Button
                 onClick={handleDeleteApplication}
                 className={clsx(styles.buttonIcon, styles.deleteButton)}
@@ -49,9 +59,10 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
               </Button>
             </div>
           </section>
-          <ApplicationsFormTemplate application={getApplication.data} />
+          <ApplicationsFormTemplate application={getApplication.data} getSave={getSave} />
         </>
       )}
+      {getApplication.isLoading && <Skeleton height={200} />}
     </div>
   );
 };
