@@ -156,6 +156,8 @@
 
 /* readme styling */
 .readme {
+  font-size: var(--gateway-ui-font-size-md);
+  line-height: var(--gateway-ui-font-size-xl);
   padding-inline-end: var(--gateway-ui-size-md);
   padding-block-start: var(--gateway-ui-size-md);
   padding-block-end: var(--gateway-ui-size-md);
@@ -173,10 +175,10 @@
 }
 
 .readme h1 {
-  font-size: var(--gateway-ui-font-size-2xl);
+  font-size: var(--gateway-ui-font-size-xl);
 }
 .readme h2 {
-  font-size: var(--gateway-ui-font-size-xl);
+  font-size: var(--gateway-ui-font-size-lg);
 }
 
 .readme h1,
