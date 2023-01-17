@@ -9,19 +9,19 @@ export default class Sources {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/object_entities");
+    const { data } = await Send(this._instance, "GET", "/admin/objects");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/object_entities/${id}`);
+    const { data } = await Send(this._instance, "GET", `/admin/objects/${id}`);
 
     return data;
   };
 
   public getAllFromEntity = async (entityId: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/objects/schema/${entityId}`);
+    const { data } = await Send(this._instance, "GET", `/admin/objects?_self.schema.id=${entityId}`);
 
     return data;
   };
@@ -65,10 +65,16 @@ export default class Sources {
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", `/admin/objects/schema/${entityId}`, payload, {
-      loading: "Creating object...",
-      success: "Object successfully created.",
-    });
+    const { data } = await Send(
+      this._instance,
+      "POST",
+      "/admin/objects",
+      { ...payload, _self: { schema: { id: entityId } } },
+      {
+        loading: "Creating object...",
+        success: "Object successfully created.",
+      },
+    );
 
     return data;
   };
