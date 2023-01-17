@@ -42,7 +42,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const getObjectsFromEntity = _useObject.getAllFromEntity(schemaId);
 
   const handleDeleteSchema = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this action?");
+    const confirmDeletion = confirm("Are you sure you want to delete this schema?");
 
     if (confirmDeletion) {
       deleteSchema.mutate({ id: schemaId });
@@ -124,7 +124,8 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
-            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
+            {/* @ts-ignore */}
+            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data.results} />}
             {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
           </TabPanel>
 
