@@ -74,65 +74,58 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   }, [createOrEditSchema.isLoading, deleteSchema.isLoading]);
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className={styles.section}>
-          <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save")}
-            </Button>
-          </div>
-        </section>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <section className={styles.section}>
+        <div className={styles.buttons}>
+          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <FontAwesomeIcon icon={faFloppyDisk} />
+            {t("Save")}
+          </Button>
+        </div>
+      </section>
 
-        <div className={styles.gridContainer}>
-          <div className={styles.grid}>
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText
-                  {...{ register, errors }}
-                  name="name"
-                  validation={{ required: true, maxLength: 225 }}
-                  disabled={loading}
-                />
-                {errors["name"] && <ErrorMessage message={errors["name"].message} />}
-              </FormFieldInput>
-            </FormField>
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                <Textarea {...{ register, errors }} name="description" disabled={loading} />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Function")}</FormFieldLabel>
-                {/* @ts-ignore */}
-                <SelectSingle
-                  name="function"
-                  options={functionSelectOptions}
-                  {...{ control, errors }}
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
-              </FormFieldInput>
-            </FormField>
-
+      <div className={styles.gridContainer}>
+        <div className={styles.grid}>
+          <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+              <FormFieldLabel>{t("Name")}</FormFieldLabel>
               <InputText
                 {...{ register, errors }}
-                name="reference"
+                name="name"
+                validation={{ required: true, maxLength: 225 }}
                 disabled={loading}
-                validation={{ maxLength: 225 }}
               />
-              {errors["reference"] && <ErrorMessage message={errors["reference"].message} />}
+              {errors["name"] && <ErrorMessage message={errors["name"].message} />}
             </FormFieldInput>
-          </div>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Description")}</FormFieldLabel>
+              <Textarea {...{ register, errors }} name="description" disabled={loading} />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Function")}</FormFieldLabel>
+              {/* @ts-ignore */}
+              <SelectSingle
+                name="function"
+                options={functionSelectOptions}
+                {...{ control, errors }}
+                validation={{ required: true }}
+                disabled={loading}
+              />
+            </FormFieldInput>
+          </FormField>
+
+          <FormFieldInput>
+            <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+            <InputText {...{ register, errors }} name="reference" disabled={loading} validation={{ maxLength: 225 }} />
+            {errors["reference"] && <ErrorMessage message={errors["reference"].message} />}
+          </FormFieldInput>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };

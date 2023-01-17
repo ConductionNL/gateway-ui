@@ -64,7 +64,36 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
   return (
     <Container layoutClassName={styles.container}>
-      <div className={styles.tabContainer}>
+      <div className={styles.contentContainer}>
+        <div className={styles.section}>
+          <Heading1>{`Edit ${getSchema.data?.name || "Schema"}`}</Heading1>
+
+          <div className={styles.buttons}>
+            <a
+              className={styles.downloadSchemaButton}
+              href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
+              download="schema.json"
+            >
+              <Button className={styles.buttonIcon} disabled={!getSchemaSchema.isSuccess || loading}>
+                <FontAwesomeIcon icon={faDownload} />
+                Download
+              </Button>
+            </a>
+            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard} disabled={loading}>
+              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+            </Button>
+            <Button
+              onClick={handleDeleteSchema}
+              className={clsx(styles.buttonIcon, styles.deleteButton)}
+              disabled={loading}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+              {t("Delete")}
+            </Button>
+          </div>
+        </div>
+
         <TabContext value={currentTab.schemaDetailTabs.toString()}>
           <Tabs
             value={currentTab.schemaDetailTabs}
