@@ -11,7 +11,7 @@ export default class Sources {
   public getAll = async (): Promise<any> => {
     const { data } = await Send(this._instance, "GET", "/admin/objects");
 
-    return data;
+    return data.results;
   };
 
   public getOne = async (id: string): Promise<any> => {
@@ -23,13 +23,13 @@ export default class Sources {
   public getAllFromEntity = async (entityId: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/objects?_self.schema.id=${entityId}`);
 
-    return data;
+    return data.results;
   };
 
   public getAllFromList = async (list: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", list);
 
-    return data;
+    return data.results;
   };
 
   public getSchema = async (id: string): Promise<any> => {

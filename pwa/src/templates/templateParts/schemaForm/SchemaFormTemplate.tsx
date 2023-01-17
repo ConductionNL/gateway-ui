@@ -365,7 +365,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     return (
       <SelectMultiple
         // defaultValue={{}} <== TODO
-        options={getAllFromList.data?.map((object) => ({ label: object.name, value: object.id })) ?? []}
+        options={getAllFromList.data?.map((object) => ({ label: object._self.name, value: object._self.id })) ?? []}
         disabled={disabled || readOnly}
         {...{ register, errors, placeholder, name, control }}
         validation={{ required }}
@@ -376,7 +376,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   return (
     <SelectSingle
       // defaultValue={{}} <== TODO
-      options={getAllFromList.data?.map((object) => ({ label: object.name, value: object.id })) ?? []}
+      options={getAllFromList.data?.map((object) => ({ label: object._self.name, value: object._self.id })) ?? []}
       disabled={disabled || readOnly}
       {...{ register, errors, placeholder, name, control }}
       validation={{ required }}
