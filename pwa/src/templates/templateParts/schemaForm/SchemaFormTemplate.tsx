@@ -4,7 +4,7 @@ import * as _ from "lodash";
 import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, Paragraph } from "@gemeente-denhaag/components-react";
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldValues, useForm, UseFormRegister } from "react-hook-form";
 import { CreateKeyValue, InputNumber, Textarea } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
@@ -364,7 +364,12 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     return (
       <SelectMultiple
         // defaultValue={{}} <== TODO
-        options={getAllFromList.data?.map((object) => ({ label: object._self.name, value: object._self.id })) ?? []}
+        options={
+          getAllFromList.data?.map((object) => ({
+            label: object._self.name ?? `${object.firstName} ${object.lastName}`,
+            value: object._self.id,
+          })) ?? []
+        }
         disabled={disabled || readOnly}
         {...{ register, errors, placeholder, name, control }}
         validation={{ required }}
