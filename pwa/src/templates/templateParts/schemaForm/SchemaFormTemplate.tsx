@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, Paragraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { CreateKeyValue, InputNumber, Textarea } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
 import { InputDateTime, InputFloat, InputURL } from "@conduction/components/lib/components/formFields/input";
@@ -365,9 +365,9 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
       <SelectMultiple
         // defaultValue={{}} <== TODO
         options={
-          getAllFromList.data?.results?.map((object) => ({
-            label: object.name ?? `${object.firstName} ${object.lastName}`,
-            value: object.id,
+          getAllFromList.data?.map((object) => ({
+            label: object._self.name ?? `${object.firstName} ${object.lastName}`,
+            value: object._self.id,
           })) ?? []
         }
         disabled={disabled || readOnly}
@@ -380,12 +380,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   return (
     <SelectSingle
       // defaultValue={{}} <== TODO
-      options={
-        getAllFromList.data?.results.map((object) => ({
-          label: object.name ?? `${object.firstName} ${object.lastName}`,
-          value: object.id,
-        })) ?? []
-      }
+      options={getAllFromList.data?.map((object) => ({ label: object._self.name, value: object._self.id })) ?? []}
       disabled={disabled || readOnly}
       {...{ register, errors, placeholder, name, control }}
       validation={{ required }}

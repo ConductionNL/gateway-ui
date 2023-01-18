@@ -68,6 +68,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
           >
             <Tab className={styles.tab} label={t("Logs")} value={0} />
             <Tab className={styles.tab} label={t("Sync")} value={1} />
+            <Tab className={styles.tab} label={t("Object")} value={2} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
@@ -135,6 +136,10 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
                 </TableBody>
               </Table>
             )}
+          </TabPanel>
+          <TabPanel className={styles.tabPanel} value="2">
+            {getObject.isLoading && <Skeleton height="200px" />}
+            {getObject.isSuccess && <pre>{JSON.stringify(getObject.data, null, 2)}</pre>}
           </TabPanel>
         </TabContext>
       </div>

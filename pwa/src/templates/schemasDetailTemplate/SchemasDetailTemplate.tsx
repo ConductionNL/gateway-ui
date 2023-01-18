@@ -124,8 +124,8 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
-            {/* @ts-ignore */}
-            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data.results} />}
+            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
+
             {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
           </TabPanel>
 
