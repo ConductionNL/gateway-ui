@@ -40,7 +40,6 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
         <TableRow>
           <TableHeader>{t("Id")}</TableHeader>
           <TableHeader>{t("Name")}</TableHeader>
-          <TableHeader>{t("Type")}</TableHeader>
           <TableHeader>{t("Sources")}</TableHeader>
           <TableHeader></TableHeader>
           <TableHeader></TableHeader>
@@ -75,7 +74,6 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
         {!objects.length && (
           <TableRow>
             <TableCell>{t("No objects found")}</TableCell>
-            <TableCell />
             <TableCell />
             <TableCell />
             <TableCell />

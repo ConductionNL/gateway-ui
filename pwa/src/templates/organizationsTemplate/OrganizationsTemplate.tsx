@@ -10,6 +10,8 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../hooks/organization";
+import { translateDate } from "../../services/dateFormat";
+import Skeleton from "react-loading-skeleton";
 
 export const OrganizationsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -50,8 +52,8 @@ export const OrganizationsTemplate: React.FC = () => {
               >
                 <TableCell>{organization.name}</TableCell>
                 <TableCell>{organization.users.length ?? "-"}</TableCell>
-                <TableCell>{organization.dateCreated ?? "-"}</TableCell>
-                <TableCell>{organization.dateModified ?? "-"}</TableCell>
+                <TableCell>{translateDate(i18n.language, organization.dateCreated) ?? "-"}</TableCell>
+                <TableCell>{translateDate(i18n.language, organization.dateModified) ?? "-"}</TableCell>
                 <TableCell onClick={() => navigate(`/settings/organizations/${organization.id}`)}>
                   <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
@@ -71,6 +73,8 @@ export const OrganizationsTemplate: React.FC = () => {
           </TableBody>
         </Table>
       )}
+
+      {getOrganizations.isLoading && <Skeleton height={200} />}
     </Container>
   );
 };
