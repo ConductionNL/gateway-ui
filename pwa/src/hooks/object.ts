@@ -75,7 +75,12 @@ export const useObject = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
+        _queryClient.invalidateQueries(["object", objectId]);
+
         throw new Error(error.message);
+      },
+      onSettled: () => {
+        _queryClient.invalidateQueries(["object", objectId]);
       },
     });
 

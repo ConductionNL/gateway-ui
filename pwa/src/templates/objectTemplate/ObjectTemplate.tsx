@@ -9,7 +9,6 @@ import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import clsx from "clsx";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
@@ -63,8 +62,8 @@ export const ObjectTemplate: React.FC = () => {
           </TableHead>
 
           <TableBody>
-            {!!getObject.data.results.length &&
-              getObject.data.results.map((object) => (
+            {!!getObject.data.length &&
+              getObject.data.map((object) => (
                 <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
                   <TableCell>{object._self?.id ?? "-"}</TableCell>
                   <TableCell>{object._self?.name ?? "NVT"}</TableCell>
@@ -87,7 +86,7 @@ export const ObjectTemplate: React.FC = () => {
                 </TableRow>
               ))}
 
-            {!getObject.data.results.length && (
+            {!getObject.data.length && (
               <TableRow>
                 <TableCell>{t("No objects found")}</TableCell>
                 <TableCell />

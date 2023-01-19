@@ -3,9 +3,21 @@ import { useQueryClient } from "react-query";
 import { TEntity } from "../apiService/resources/dashboardCards";
 import { useDashboardCards } from "./dashboardCards";
 
+export type TDashboardCardType =
+  | "Action"
+  | "Source"
+  | "Cronjob"
+  | "Endpoint"
+  | "Object"
+  | "Schema"
+  | "Collection"
+  | "Plugin"
+  | "Log"
+  | "Organization";
+
 export interface useDashboardCardProps {
   name: string;
-  type: string;
+  type: TDashboardCardType;
   entity: string;
   object: string;
   entityId: string;
@@ -28,7 +40,7 @@ export const useDashboardCard = () => {
 
   const addOrRemoveDashboardCard = (
     name: string,
-    type: string,
+    type: TDashboardCardType,
     entity: TEntity,
     entityId: string,
     dashboardCardId: string,
