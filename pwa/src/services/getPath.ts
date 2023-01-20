@@ -1,33 +1,51 @@
 export const getPath = (value: any): any => {
   switch (value) {
-    case "App\\Entity\\Action":
+    case "Action":
+      return "actions";
+    case "action":
       return "actions";
 
-    case "App\\Entity\\Gateway":
+    case "Source":
+      return "sources";
+    case "source":
       return "sources";
 
-    case "App\\Entity\\Cronjob":
+    case "Cronjob":
+      return "cronjobs";
+    case "cronjob":
       return "cronjobs";
 
-    case "App\\Entity\\Endpoint":
+    case "Endpoint":
+      return "endpoints";
+    case "endpoint":
       return "endpoints";
 
-    case "App\\Entity\\ObjectEntity":
+    case "Object":
+      return "objects";
+    case "object":
       return "objects";
 
-    case "App\\Entity\\Entity":
+    case "Schema":
+      return "schemas";
+    case "schema":
       return "schemas";
 
-    case "App\\Entity\\Log":
+    case "Log":
+      return "logs";
+    case "log":
       return "logs";
 
-    case "App\\Entity\\Plugin":
+    case "Plugin":
+      return "plugins";
+    case "plugin":
       return "plugins";
 
-    case "App\\Entity\\CollectionEntity":
+    case "Collection":
+      return "collections";
+    case "collection":
       return "collections";
 
-    case "App\\Entity\\Organization":
+    case "Organization":
       return "settings/organizations";
 
     case "App\\Entity\\User":
