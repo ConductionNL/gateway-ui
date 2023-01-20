@@ -171,7 +171,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   };
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(source.name, "Source", "Gateway", sourceId, dashboardCard?.id);
+    addOrRemoveDashboardCard(source.name, "source", "Gateway", sourceId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (source: any): void => {

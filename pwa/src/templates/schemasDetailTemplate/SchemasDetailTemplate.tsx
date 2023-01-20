@@ -50,7 +50,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   };
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(getSchema.data?.name, "Schema", "Entity", schemaId, dashboardCard?.id);
+    addOrRemoveDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
   };
 
   React.useEffect(() => {
@@ -124,8 +124,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
-            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
-
+            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} {...{ schemaId }} />}
             {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
           </TabPanel>
 

@@ -29,7 +29,7 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
   const addOrRemoveFromDashboard = () => {
     addOrRemoveDashboardCard(
       getAuthentication.data.name,
-      "Authentication",
+      "authentication",
       "Authentication",
       getAuthentication.data.id,
       dashboardCard?.id,

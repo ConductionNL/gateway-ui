@@ -67,7 +67,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   };
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(object.id, "Object", "ObjectEntity", objectId, dashboardCard?.id);
+    addOrRemoveDashboardCard(object.id, "object", "ObjectEntity", objectId, dashboardCard?.id);
   };
 
   return (

@@ -31,7 +31,7 @@ export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ user
   const dashboardCard = getDashboardCard(getUser.data?.id);
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(getUser.data.name, "User", "User", getUser.data.id, dashboardCard?.id);
+    addOrRemoveDashboardCard(getUser.data.name, "user", "User", getUser.data.id, dashboardCard?.id);
   };
 
   return (
