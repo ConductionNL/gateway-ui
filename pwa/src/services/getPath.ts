@@ -50,5 +50,8 @@ export const getPath = (value: any): any => {
 
     case "User":
       return "settings/users";
+
+    case "Authentication":
+      return "settings/authentication";
   }
 };

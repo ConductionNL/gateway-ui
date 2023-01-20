@@ -9,6 +9,7 @@ import { TabsContext } from "../../context/tabs";
 import { ApplicationsTemplate } from "../applicationsTemplate/ApplicationsTemplate";
 import { OrganizationsTemplate } from "../organizationsTemplate/OrganizationsTemplate";
 import { UsersTemplate } from "../usersTemplate/UsersTemplate";
+import { AuthenticationsTemplate } from "../authenticationsTemplate/AuthenticationsTemplate";
 
 export const SettingsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -51,7 +52,7 @@ export const SettingsTemplate: React.FC = () => {
             <OrganizationsTemplate />
           </TabPanel>
           <TabPanel className={styles.tabPanel} value="5">
-            <Heading1>Authentication</Heading1>
+            <AuthenticationsTemplate />
           </TabPanel>
         </TabContext>
       </div>

@@ -117,6 +117,10 @@ module.exports = {
             pathname: "/settings/users/[userId]",
             crumbLabel: "User Detail",
           },
+          {
+            pathname: "/settings/authentication/[authenticationId]",
+            crumbLabel: "Authentication",
+          },
         ],
       },
     },
