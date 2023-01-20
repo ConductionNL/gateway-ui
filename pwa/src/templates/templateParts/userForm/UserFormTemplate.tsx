@@ -1,15 +1,11 @@
 import * as React from "react";
 import * as styles from "./UserFormTemplate.module.css";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Alert } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputPassword, InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
+import { InputPassword, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { QueryClient, UseQueryResult } from "react-query";
-import clsx from "clsx";
-import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { useUser } from "../../../hooks/user";
 import Skeleton from "react-loading-skeleton";
 
@@ -20,7 +16,6 @@ interface UserFormTemplateProps {
 
 export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrganization }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
   const [formError, setFormError] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -40,8 +35,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
     );
   }, [getOrganization.isSuccess]);
 
-  const dashboardCard = getDashboardCard(user?.id);
-
   const {
     register,
     handleSubmit,
@@ -53,10 +46,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
 
   const pwd = watch("password");
   const pwd_verify = watch("password_verify");
-
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(user.name, "User", "User", user.id, dashboardCard?.id);
-  };
 
   const handleSetFormValues = (user: any): void => {
     const basicFields: string[] = ["name", "description", "email", "password", "locale", "person"];
@@ -80,32 +69,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <section className={styles.section}>
-        <Heading1>{user?.id ? `Edit ${user.name}` : "Create User"}</Heading1>
-
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-            <FontAwesomeIcon icon={faFloppyDisk} />
-            {t("Save")}
-          </Button>
-
-          {user?.id && (
-            <>
-              <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
-
-              {/* <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
-                  <FontAwesomeIcon icon={faTrash} />
-                  {t("Delete")}
-                </Button> */}
-            </>
-          )}
-        </div>
-      </section>
-
+    <form onSubmit={handleSubmit(onSubmit)} id="UserForm">
       {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
