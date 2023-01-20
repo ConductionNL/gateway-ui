@@ -54,8 +54,11 @@ export const SchemasTemplate: React.FC = () => {
               <TableRow className={styles.tableRow} onClick={() => navigate(`/schemas/${schema.id}`)} key={schema.id}>
                 <TableCell>{schema.name}</TableCell>
                 {getObjects.isSuccess && (
-                  <TableCell>{getObjects.data.filter((object) => object.entity.id === schema.id).length}</TableCell>
+                  <TableCell>
+                    {getObjects.data.filter((object) => object._self.schema.id === schema.id).length}
+                  </TableCell>
                 )}
+
                 {getObjects.isLoading && <TableCell>Loading...</TableCell>}
                 {getObjects.isError && <TableCell>Error</TableCell>}
                 <TableCell>{translateDate(i18n.language, schema.dateCreated)}</TableCell>

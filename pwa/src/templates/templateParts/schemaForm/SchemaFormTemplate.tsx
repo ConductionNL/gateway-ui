@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, Paragraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { CreateKeyValue, InputNumber, Textarea } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
 import { InputDateTime, InputFloat, InputURL } from "@conduction/components/lib/components/formFields/input";
@@ -356,16 +356,53 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 }) => {
   const queryClient = new QueryClient();
   const _useObject = useObject(queryClient);
-  const getAllFromList = _useObject.getAllFromList(schema?.properties[name]?._list);
+  const property = schema?.properties[name];
 
-  if (getAllFromList.isLoading) return <Skeleton height="50px" />;
+  const getAllFromList = _useObject.getAllFromList(property?._list);
+
+  const [defaultValue, setDefaultValue] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    if (!getAllFromList.isSuccess) return;
+
+    let selected;
+
+    if (!multiple) {
+      selected = getAllFromList.data.find((item) => item.id === property.value);
+    }
+
+    if (multiple) {
+      selected = getAllFromList.data.filter((item) => property.value?.includes(item.id));
+    }
+
+    if (!selected) {
+      setDefaultValue({});
+
+      return;
+    }
+
+    if (!multiple) {
+      setDefaultValue({ label: selected.name, value: selected.id });
+    }
+
+    if (multiple) {
+      setDefaultValue(selected.map((item: any) => ({ label: item.name, value: item.id })));
+    }
+  }, [getAllFromList.isSuccess]);
+
+  if (getAllFromList.isLoading || !defaultValue) return <Skeleton height="50px" />;
   if (getAllFromList.isError) return <>Something went wrong...</>;
 
   if (multiple) {
     return (
       <SelectMultiple
-        // defaultValue={{}} <== TODO
-        options={getAllFromList.data?.map((object) => ({ label: object.name, value: object.id })) ?? []}
+        defaultValue={defaultValue[0]?.label && defaultValue}
+        options={
+          getAllFromList.data?.map((object) => ({
+            label: object._self.name ?? `${object.firstName} ${object.lastName}`,
+            value: object._self.id,
+          })) ?? []
+        }
         disabled={disabled || readOnly}
         {...{ register, errors, placeholder, name, control }}
         validation={{ required }}
@@ -375,8 +412,8 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
   return (
     <SelectSingle
-      // defaultValue={{}} <== TODO
-      options={getAllFromList.data?.map((object) => ({ label: object.name, value: object.id })) ?? []}
+      defaultValue={defaultValue.label && defaultValue}
+      options={getAllFromList.data?.map((object) => ({ label: object._self.name, value: object._self.id })) ?? []}
       disabled={disabled || readOnly}
       {...{ register, errors, placeholder, name, control }}
       validation={{ required }}

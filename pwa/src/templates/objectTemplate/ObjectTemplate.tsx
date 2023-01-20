@@ -9,7 +9,6 @@ import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import clsx from "clsx";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
@@ -63,28 +62,29 @@ export const ObjectTemplate: React.FC = () => {
           </TableHead>
 
           <TableBody>
-            {getObject.data.map((object) => (
-              <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
-                <TableCell>{object.id ?? "-"}</TableCell>
-                <TableCell>{object.name ?? "NVT"}</TableCell>
-                <TableCell>{object.entity?.name ?? "-"}</TableCell>
-                <TableCell>{object.sources ?? "-"}</TableCell>
-                <TableCell>
-                  <Button
-                    onClick={(e) => handleDeleteObject(e, object.id)}
-                    className={clsx(styles.buttonIcon, styles.deleteButton)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                    {t("Delete")}
-                  </Button>
-                </TableCell>
-                <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
+            {!!getObject.data.length &&
+              getObject.data.map((object) => (
+                <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
+                  <TableCell>{object._self?.id ?? "-"}</TableCell>
+                  <TableCell>{object._self?.name ?? "NVT"}</TableCell>
+                  <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>
+                  <TableCell>{object._self?.sources ?? "-"}</TableCell>
+                  <TableCell>
+                    <Button
+                      onClick={(e) => handleDeleteObject(e, object.id)}
+                      className={clsx(styles.buttonIcon, styles.deleteButton)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                      {t("Delete")}
+                    </Button>
+                  </TableCell>
+                  <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
+                    <Link icon={<ArrowRightIcon />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
 
             {!getObject.data.length && (
               <TableRow>

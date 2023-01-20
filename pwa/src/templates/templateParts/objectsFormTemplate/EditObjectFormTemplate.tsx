@@ -12,6 +12,7 @@ import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
+import Skeleton from "react-loading-skeleton";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -66,43 +67,47 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   };
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(object.id, "Data layer", "ObjectEntity", objectId, dashboardCard?.id);
+    addOrRemoveDashboardCard(object.id, "Object", "ObjectEntity", objectId, dashboardCard?.id);
   };
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className={styles.section}>
-          <Heading1>{`Edit ${object.name}`}</Heading1>
+    <>
+      {!getSchema.data && <Skeleton height="200px" />}
 
-          <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save")}
-            </Button>
+      <div className={styles.container}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <section className={styles.section}>
+            <Heading1>{`Edit ${object._self.name}`}</Heading1>
 
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
-              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-            </Button>
+            <div className={styles.buttons}>
+              <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+                <FontAwesomeIcon icon={faFloppyDisk} />
+                {t("Save")}
+              </Button>
 
-            <Button
-              onClick={handleDeleteObject}
-              className={clsx(styles.buttonIcon, styles.deleteButton)}
-              disabled={loading}
-            >
-              <FontAwesomeIcon icon={faTrash} />
-              {t("Delete")}
-            </Button>
-          </div>
-        </section>
+              <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+              </Button>
 
-        <Divider />
+              <Button
+                onClick={handleDeleteObject}
+                className={clsx(styles.buttonIcon, styles.deleteButton)}
+                disabled={loading}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+                {t("Delete")}
+              </Button>
+            </div>
+          </section>
 
-        {getSchema.data && (
-          <SchemaFormTemplate {...{ register, errors, control }} schema={getSchema.data} disabled={loading} />
-        )}
-      </form>
-    </div>
+          <Divider />
+
+          {getSchema.data && (
+            <SchemaFormTemplate {...{ register, errors, control }} schema={getSchema.data} disabled={loading} />
+          )}
+        </form>
+      </div>
+    </>
   );
 };
