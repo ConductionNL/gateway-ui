@@ -13,7 +13,8 @@ export type TDashboardCardType =
   | "Collection"
   | "Plugin"
   | "Log"
-  | "Organization";
+  | "Organization"
+  | "Authentication";
 
 export interface useDashboardCardProps {
   name: string;
