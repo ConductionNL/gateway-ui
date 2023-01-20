@@ -27,15 +27,6 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
   const _useSchema = useSchema(queryClient);
   const createOrEditSchema = _useSchema.createOrEdit(schemaId);
 
-  const functionSelectOptions = [
-    { label: "No Function", value: "noFunction" },
-    { label: "Organization", value: "organization" },
-    { label: "Person", value: "person" },
-    { label: "User", value: "user" },
-    { label: "User Group", value: "userGroup" },
-    { label: "Processing Log", value: "processingLog" },
-  ];
-
   const {
     register,
     handleSubmit,
@@ -45,11 +36,7 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    const payload = {
-      ...data,
-      function: data.function.value,
-    };
-    createOrEditSchema.mutate({ payload, id: schemaId });
+    createOrEditSchema.mutate({ payload: data, id: schemaId });
   };
 
   return (
@@ -88,20 +75,6 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
               </FormFieldInput>
             </FormField>
 
-            <FormField>
-              <FormFieldInput>
-                <FormFieldLabel>{t("Function")}</FormFieldLabel>
-
-                {/* @ts-ignore */}
-                <SelectSingle
-                  name="function"
-                  options={functionSelectOptions}
-                  {...{ control, errors }}
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
-              </FormFieldInput>
-            </FormField>
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Reference")}</FormFieldLabel>

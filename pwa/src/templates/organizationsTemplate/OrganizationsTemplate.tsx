@@ -23,7 +23,7 @@ export const OrganizationsTemplate: React.FC = () => {
   return (
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
-        <Heading1>{t("Organizations groups")}</Heading1>
+        <Heading1>{t("Organizations")}</Heading1>
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/organizations/new`)}>
             <FontAwesomeIcon icon={faPlus} />
