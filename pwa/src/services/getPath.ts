@@ -29,13 +29,13 @@ export const getPath = (value: any): any => {
     case "collection":
       return "collections";
 
-    case "Organization":
+    case "organization":
       return "settings/organizations";
 
-    case "User":
+    case "user":
       return "settings/users";
 
-    case "Authentication":
+    case "authentication":
       return "settings/authentication";
   }
 };
