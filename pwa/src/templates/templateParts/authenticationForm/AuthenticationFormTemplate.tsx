@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./OrganizationFormTemplate.module.css";
+import * as styles from "./AuthenticationFormTemplate.module.css";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Alert } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
