@@ -153,3 +153,67 @@
 .showmoreVersionsButton {
   text-align: center;
 }
+
+/* readme styling */
+.readme {
+  font-size: var(--gateway-ui-font-size-md);
+  line-height: var(--gateway-ui-font-size-xl);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.readme code {
+  background-color: var(--gateway-ui-color-lightgrey);
+  outline: 1px solid var(--gateway-ui-color-grey);
+  padding-inline: var(--gateway-ui-size-2xs);
+  border-radius: var(--gateway-ui-size-2xs);
+}
+.readme pre code {
+  padding-inline: var(--gateway-ui-size-xs);
+  padding-block: var(--gateway-ui-size-xs);
+}
+
+.readme h1 {
+  font-size: var(--gateway-ui-font-size-xl);
+}
+.readme h2 {
+  font-size: var(--gateway-ui-font-size-lg);
+}
+
+.readme h1,
+.readme h2 {
+  position: relative;
+  padding-bottom: 0.3em;
+}
+.readme h1:after,
+.readme h2:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--gateway-ui-size-3xs);
+  background-color: var(--gateway-ui-color-lightgrey);
+}
+
+.readme a[class="anchor"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translatex(-100%);
+  opacity: 0;
+}
+
+.readme h1:hover > a[class="anchor"],
+.readme h2:hover > a[class="anchor"],
+.readme a[class="anchor"]:hover {
+  opacity: 1;
+}
+
+.readme a[class="anchor"] > svg {
+  display: inline-block;
+  vertical-align: middle;
+  height: var(--gateway-ui-size-md);
+  width: var(--gateway-ui-size-md);
+}
