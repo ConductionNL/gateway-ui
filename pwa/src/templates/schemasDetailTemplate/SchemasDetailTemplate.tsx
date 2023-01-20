@@ -102,20 +102,13 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             }}
             variant="scrollable"
           >
-            <Tab className={styles.tab} label={t("General")} value={0} />
-            <Tab className={styles.tab} label={t("Objects")} value={1} />
+            <Tab className={styles.tab} label={t("Objects")} value={0} />
+            <Tab className={styles.tab} label={t("General")} value={1} />
             <Tab className={styles.tab} label={t("Properties")} value={2} />
             <Tab className={styles.tab} label={t("Logs")} value={3} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getSchema.isError && "Error..."}
-
-            {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
-            {getSchema.isLoading && <Skeleton height="200px" />}
-          </TabPanel>
-
-          <TabPanel className={styles.tabPanel} value="1">
             <Button
               className={styles.addObjectButton}
               disabled={getSchema.isLoading}
@@ -127,6 +120,13 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} />}
 
             {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="1">
+            {getSchema.isError && "Error..."}
+
+            {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
+            {getSchema.isLoading && <Skeleton height="200px" />}
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="2">
