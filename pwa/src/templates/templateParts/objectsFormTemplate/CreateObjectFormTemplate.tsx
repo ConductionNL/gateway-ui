@@ -13,6 +13,7 @@ import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
+import ObjectSaveButton from "../objectsFormSaveButton/ObjectSaveButton";
 
 interface CreateObjectFormTemplateProps {
   predefinedSchema?: string;
@@ -79,10 +80,12 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
           <Heading1>{t("Create Object")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            {/* <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
-            </Button>
+            </Button> */}
+
+            <ObjectSaveButton />
           </div>
         </section>
 

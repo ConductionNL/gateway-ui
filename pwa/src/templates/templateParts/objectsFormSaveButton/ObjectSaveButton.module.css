@@ -1,0 +1,13 @@
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.primaryButton {
+  border-radius: 3px 0 0 3px !important;
+  margin-inline-end: 0 !important;
+  /* border-right: 1px solid white !important; */
+}
+
+.secondaryButton {
+  border-radius: 0 3px 3px 0 !important;
+}
