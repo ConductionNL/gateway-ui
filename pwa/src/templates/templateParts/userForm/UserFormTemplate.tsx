@@ -59,7 +59,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
-      organisation: data.organization.value,
+      organisation: data.organization && `/admin/organisations/${data.organization.value}`,
     };
 
     delete payload.organization;
