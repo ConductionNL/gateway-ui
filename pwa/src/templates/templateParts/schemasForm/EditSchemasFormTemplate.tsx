@@ -26,15 +26,6 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   const createOrEditSchema = _useSchema.createOrEdit(schemaId);
   const deleteSchema = _useSchema.remove();
 
-  const functionSelectOptions = [
-    { label: "No Function", value: "noFunction" },
-    { label: "Organization", value: "organization" },
-    { label: "Person", value: "person" },
-    { label: "User", value: "user" },
-    { label: "User Group", value: "userGroup" },
-    { label: "Processing Log", value: "processingLog" },
-  ];
-
   const {
     register,
     handleSubmit,
@@ -44,20 +35,13 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    data = { ...data, function: data.function.value };
-
     createOrEditSchema.mutate({ payload: data, id: schemaId });
     queryClient.setQueryData(["entities", schemaId], data);
   };
 
   const handleSetFormValues = (schema: any): void => {
-    const basicFields: string[] = ["name", "description", "function", "reference"];
+    const basicFields: string[] = ["name", "description", "reference"];
     basicFields.forEach((field) => setValue(field, schema[field]));
-
-    setValue(
-      "function",
-      functionSelectOptions.find((option) => schema.function === option.value),
-    );
   };
 
   React.useEffect(() => {
@@ -102,20 +86,6 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
             <FormFieldInput>
               <FormFieldLabel>{t("Description")}</FormFieldLabel>
               <Textarea {...{ register, errors }} name="description" disabled={loading} />
-            </FormFieldInput>
-          </FormField>
-
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Function")}</FormFieldLabel>
-              {/* @ts-ignore */}
-              <SelectSingle
-                name="function"
-                options={functionSelectOptions}
-                {...{ control, errors }}
-                validation={{ required: true }}
-                disabled={loading}
-              />
             </FormFieldInput>
           </FormField>
 
