@@ -25,15 +25,15 @@ export default class User {
 
     if (id) {
       const { data } = await Send(this._instance, "PUT", `/admin/users/${id}`, payload, {
-        loading: "Updating organization...",
-        success: "Organization successfully updated.",
+        loading: "Updating user...",
+        success: "User successfully updated.",
       });
       return data;
     }
 
     const { data } = await Send(this._instance, "POST", "/admin/users", payload, {
-      loading: "Creating organization...",
-      success: "Organization successfully created.",
+      loading: "Creating user...",
+      success: "User successfully created.",
     });
     return data;
   };
