@@ -10,6 +10,7 @@ export type TEntity =
   | "Entity"
   | "CollectionEntity"
   | "Organization"
+  | "User";
   | "Authentication";
 
 export default class DashboardCards {
