@@ -39,6 +39,18 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
     queryClient.setQueryData(["entities", schemaId], data);
   };
 
+  const handleDeleteSchema = () => {
+    const confirmDeletion = confirm("Are you sure you want to delete this action?");
+
+    if (confirmDeletion) {
+      deleteSchema.mutate({ id: schemaId });
+    }
+  };
+
+  const addOrRemoveFromDashboard = () => {
+    addOrRemoveDashboardCard(schema.name, "schema", "Entity", schemaId, dashboardCard?.id);
+  };
+
   const handleSetFormValues = (schema: any): void => {
     const basicFields: string[] = ["name", "description", "reference"];
     basicFields.forEach((field) => setValue(field, schema[field]));

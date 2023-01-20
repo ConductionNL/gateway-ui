@@ -94,7 +94,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   };
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(endpoint.name, "Endpoint", "Endpoint", endpointId, dashboardCard?.id);
+    addOrRemoveDashboardCard(endpoint.name, "endpoint", "Endpoint", endpointId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (endpoint: any): void => {

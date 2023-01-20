@@ -35,7 +35,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   } = useForm();
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(organization.name, "Organization", "Organization", organization.id, dashboardCard?.id);
+    addOrRemoveDashboardCard(organization.name, "organization", "Organization", organization.id, dashboardCard?.id);
   };
 
   const handleSetFormValues = (organization: any): void => {
