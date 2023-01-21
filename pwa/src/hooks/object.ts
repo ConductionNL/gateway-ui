@@ -10,8 +10,8 @@ export const useObject = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
   const _queryClient = useQueryClient();
 
-  const getAll = (filters: IFilters) =>
-    useQuery<any, Error>(["objects", filters], () => API.Object.getAll(filters), {
+  const getAll = (filters?: IFilters, limit?: number) =>
+    useQuery<any, Error>(["objects", filters], () => API.Object.getAll(filters, limit), {
       onError: (error) => {
         throw new Error(error.message);
       },

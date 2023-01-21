@@ -24,7 +24,7 @@ export const ObjectTemplate: React.FC = () => {
 
   const queryClient = new QueryClient();
   const _useObject = useObject(queryClient);
-  const getObject = _useObject.getAll({ ...filters });
+  const getObject = _useObject.getAll({ ...filters }, 30);
   const deleteSchema = _useObject.remove();
 
   if (getObject.isError) return <>Oops, something went wrong...</>;

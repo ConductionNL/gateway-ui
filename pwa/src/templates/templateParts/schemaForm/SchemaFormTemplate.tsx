@@ -310,10 +310,12 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         )}
 
         {type === "array" && (
-          <CreateKeyValue
-            disabled={disabled || readOnly}
-            {...{ register, errors, control, placeholder, name, defaultValue }}
-          />
+          <>
+            <CreateKeyValue
+              disabled={disabled || readOnly}
+              {...{ register, errors, control, placeholder, name, defaultValue }}
+            />
+          </>
         )}
 
         {type === "object" && (

@@ -9,11 +9,13 @@ export default class Sources {
     this._instance = _instance;
   }
 
-  public getAll = async (filters: IFilters): Promise<any> => {
+  public getAll = async (filters?: IFilters, limit?: number): Promise<any> => {
     const { data } = await Send(
       this._instance,
       "GET",
-      `/admin/objects?page=${filters.objectCurrentPage}&limit=15&extend[]=all`,
+      `/admin/objects?extend[]=all${filters?.objectCurrentPage ? `&page=${filters.objectCurrentPage}` : ""}${
+        limit ? `&limit=${limit}` : ""
+      }`,
     );
 
     return data;
