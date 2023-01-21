@@ -4,13 +4,14 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
+import { IFilters } from "../context/filters";
 
 export const useObject = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
   const _queryClient = useQueryClient();
 
-  const getAll = () =>
-    useQuery<any[], Error>("objects", API.Object.getAll, {
+  const getAll = (filters: IFilters) =>
+    useQuery<any, Error>(["objects", filters], () => API.Object.getAll(filters), {
       onError: (error) => {
         throw new Error(error.message);
       },
