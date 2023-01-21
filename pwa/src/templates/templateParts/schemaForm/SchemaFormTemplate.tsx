@@ -277,14 +277,13 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "integer" ||
-          (type === "int" && (
-            <InputNumber
-              validation={{ required, maxLength, minLength }}
-              disabled={disabled || readOnly}
-              {...{ register, errors, placeholder, name, defaultValue }}
-            />
-          ))}
+        {(type === "integer" || type === "int") && (
+          <InputNumber
+            validation={{ required, maxLength, minLength }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, placeholder, name, defaultValue }}
+          />
+        )}
 
         {type === "number" && (
           <InputFloat
