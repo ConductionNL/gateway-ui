@@ -43,12 +43,12 @@ export const useAuthentication = (queryClient: QueryClient) => {
       onSuccess: async (newAuthentication) => {
         if (authenticationId) {
           updateItem(queryClient, "authentications", newAuthentication);
-          navigate("/schemas/authentication");
+          navigate("/settings/authentication");
         }
 
         if (!authenticationId) {
           addItem(queryClient, "authentications", newAuthentication);
-          navigate(`/schemas/authentication/${newAuthentication.id}`);
+          navigate(`/settings/authentication/${newAuthentication.id}`);
         }
       },
       onError: (error) => {
