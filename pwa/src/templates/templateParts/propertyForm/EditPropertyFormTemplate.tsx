@@ -49,6 +49,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   const _useAttribute = useAttribute(queryClient);
   const createOrEditProperty = _useAttribute.createOrEdit(schemaId, propertyId);
   const deleteProperty = _useAttribute.remove(schemaId);
+  const getProperties = _useAttribute.getAll();
 
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
@@ -111,6 +112,16 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   }, [getSchemas.isSuccess]);
 
   React.useEffect(() => {
+    if (!getProperties.isSuccess) return;
+
+    setValue("inversedBy", () => {
+      const inversedBy = getProperties.data?.find((inversedBy) => inversedBy.id === property.inversedBy.id);
+
+      return { label: inversedBy.name, value: inversedBy.id };
+    });
+  }, [getProperties.isSuccess]);
+
+  React.useEffect(() => {
     if (!watchType) return;
 
     const selectedType = typeSelectOptions.find((typeOption) => typeOption.value === watchType.value);
@@ -133,9 +144,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
       function: data.function && data.function.value,
       fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
       object: data?.object?.value,
-
-      // inversedBy: data.inversedBy && data.inversedBy,
-      // inversedBy: data.inversedBy && `App\\Entity\\${data.inversedBy.label}`,
+      inversedBy: data.inversedBy && `/admin/attributes/${data.inversedBy.value}`,
     };
 
     createOrEditProperty.mutate({ payload, id: propertyId });
@@ -656,21 +665,21 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                   </div>
                 </div>
 
-                {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("inversedBy")}</FormFieldLabel>
-                      {getAttributes.isLoading && <Skeleton height="50px" />}
-                      {getAttributes.isSuccess && (
-                        //@ts-ignore
-                        <SelectSingle
-                          {...{ register, errors, control }}
-                          name="inversedBy"
-                          options={getAttributes.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
-                          disabled={loading || isImmutable}
-                        />
-                      )}
-                    </FormFieldInput>
-                  </FormField> */}
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("inversedBy")}</FormFieldLabel>
+                    {getProperties.isLoading && <Skeleton height="50px" />}
+                    {getProperties.isSuccess && (
+                      //@ts-ignore
+                      <SelectSingle
+                        {...{ register, errors, control }}
+                        name="inversedBy"
+                        options={getProperties.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
+                        disabled={loading || isImmutable}
+                      />
+                    )}
+                  </FormFieldInput>
+                </FormField>
 
                 <div className={styles.gridContainer}>
                   <div className={styles.grid}>
