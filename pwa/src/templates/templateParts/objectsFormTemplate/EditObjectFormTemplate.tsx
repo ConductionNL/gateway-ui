@@ -13,6 +13,7 @@ import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 import Skeleton from "react-loading-skeleton";
+import ObjectSaveButton from "../objectsFormSaveButton/ObjectSaveButton";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -49,12 +50,19 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
     setLoading(false);
   }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading]);
 
-  const onSubmit = (data: any): void => {
-    const payload = data;
+  const onSave = (data: any): void => {
+    delete data.schema;
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), objectId });
+  };
 
-    delete payload.schema;
+  const onSaveAndClose = (data: any): void => {
+    delete data.schema;
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), objectId, closeForm: true });
+  };
 
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(payload), entityId: null, objectId });
+  const onSaveAndCreate = (data: any): void => {
+    delete data.schema;
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data) });
   };
 
   const handleDeleteObject = () => {
@@ -75,15 +83,16 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
       {!getSchema.data && <Skeleton height="200px" />}
 
       <div className={styles.container}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <section className={styles.section}>
             <Heading1>{`Edit ${object._self.name}`}</Heading1>
 
             <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-                <FontAwesomeIcon icon={faFloppyDisk} />
-                {t("Save")}
-              </Button>
+              <ObjectSaveButton
+                onSave={handleSubmit(onSave)}
+                onSaveClose={handleSubmit(onSaveAndClose)}
+                onSaveCreateNew={handleSubmit(onSaveAndCreate)}
+              />
 
               <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />

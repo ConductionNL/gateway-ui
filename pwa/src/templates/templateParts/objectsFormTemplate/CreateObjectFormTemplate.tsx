@@ -63,19 +63,27 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
     setLoading(false);
   }, [getSchemas.isLoading, getSchemaSchema.isLoading, createOrEditObject.isLoading]);
 
-  const onSubmit = (data: any): void => {
+  const onSave = (data: any): void => {
     if (!selectedSchema) return;
+    delete data.schema;
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema });
+  };
 
-    const payload = data;
+  const onSaveAndClose = (data: any): void => {
+    if (!selectedSchema) return;
+    delete data.schema;
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema, closeForm: true });
+  };
 
-    delete payload.schema;
-
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(payload), entityId: selectedSchema });
+  const onSaveAndCreate = (data: any): void => {
+    if (!selectedSchema) return;
+    delete data.schema;
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data) });
   };
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <section className={styles.section}>
           <Heading1>{t("Create Object")}</Heading1>
 
@@ -85,7 +93,11 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
               {t("Save")}
             </Button> */}
 
-            <ObjectSaveButton />
+            <ObjectSaveButton
+              onSave={handleSubmit(onSave)}
+              onSaveClose={handleSubmit(onSaveAndClose)}
+              onSaveCreateNew={handleSubmit(onSaveAndCreate)}
+            />
           </div>
         </section>
 
