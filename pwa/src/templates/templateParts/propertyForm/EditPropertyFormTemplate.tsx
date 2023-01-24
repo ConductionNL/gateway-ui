@@ -115,7 +115,9 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
     if (!getProperties.isSuccess) return;
 
     setValue("inversedBy", () => {
-      const inversedBy = getProperties.data?.find((inversedBy) => inversedBy.id === property.inversedBy.id);
+      if (!getProperties.data.inversedBy) return;
+
+      const inversedBy = getProperties.data?.find((inversedBy: any) => inversedBy.id === property.inversedBy?.id);
 
       return { label: inversedBy.name, value: inversedBy.id };
     });

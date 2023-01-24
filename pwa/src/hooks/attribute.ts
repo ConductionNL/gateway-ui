@@ -9,7 +9,7 @@ export const useAttribute = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
 
   const getAll = () =>
-    useQuery<any[], Error>("attributes", API.Attribute.getAll, {
+    useQuery<any, Error>("attributes", API.Attribute.getAll, {
       onError: (error) => {
         throw new Error(error.message);
       },
