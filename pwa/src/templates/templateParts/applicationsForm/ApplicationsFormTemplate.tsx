@@ -116,7 +116,6 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
                 <FormFieldLabel>{t("Domains")}</FormFieldLabel>
                 {domains.length < 0 && <Skeleton height="50px" />}
                 {domains.length >= 0 && (
-                  // @ts-ignore
                   <SelectCreate
                     options={domains.map((domain: any) => ({
                       label: domain,
@@ -163,7 +162,6 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
 
                 {getOrganizations.isLoading && <Skeleton height="50px" />}
                 {getOrganizations.isSuccess && (
-                  // @ts-ignore
                   <SelectSingle
                     options={getOrganizations.data.map((organization: any) => ({
                       label: organization.name,

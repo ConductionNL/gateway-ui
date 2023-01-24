@@ -103,7 +103,6 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
               {scopes.length < 0 && <Skeleton height="50px" />}
 
               {scopes.length >= 0 && (
-                /* @ts-ignore */
                 <SelectCreate
                   options={scopes.map((scope: any) => ({
                     label: scope,
