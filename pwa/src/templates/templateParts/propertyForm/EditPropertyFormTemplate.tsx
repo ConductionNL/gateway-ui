@@ -887,35 +887,60 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("requiredIf")}</FormFieldLabel>
-                    <CreateKeyValue name="requiredIf" defaultValue={requiredIf} {...{ register, control, errors }} />
+                    <CreateKeyValue
+                      name="requiredIf"
+                      defaultValue={requiredIf}
+                      {...{ register, control, errors }}
+                      disabled={loading || isImmutable}
+                    />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("forbiddenIf")}</FormFieldLabel>
-                    <CreateKeyValue name="forbiddenIf" defaultValue={forbiddenIf} {...{ register, control, errors }} />
+                    <CreateKeyValue
+                      name="forbiddenIf"
+                      defaultValue={forbiddenIf}
+                      {...{ register, control, errors }}
+                      disabled={loading || isImmutable}
+                    />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("enum")}</FormFieldLabel>
-                    <CreateKeyValue name="enum" defaultValue={enumArray} {...{ register, control, errors }} />
+                    <CreateKeyValue
+                      name="enum"
+                      defaultValue={enumArray}
+                      {...{ register, control, errors }}
+                      disabled={loading || isImmutable}
+                    />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("allOf")}</FormFieldLabel>
-                    <CreateKeyValue name="allOf" defaultValue={allOf} {...{ register, control, errors }} />
+                    <CreateKeyValue
+                      name="allOf"
+                      defaultValue={allOf}
+                      {...{ register, control, errors }}
+                      disabled={loading || isImmutable}
+                    />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("anyOf")}</FormFieldLabel>
-                    <CreateKeyValue name="anyOf" defaultValue={anyOf} {...{ register, control, errors }} />
+                    <CreateKeyValue
+                      name="anyOf"
+                      defaultValue={anyOf}
+                      {...{ register, control, errors }}
+                      disabled={loading || isImmutable}
+                    />
                   </FormFieldInput>
                 </FormField>
 
@@ -923,7 +948,12 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                   <FormFieldInput>
                     <FormFieldLabel>{t("oneOf")}</FormFieldLabel>
 
-                    <CreateKeyValue name="oneOf" defaultValue={oneOf} {...{ register, control, errors }} />
+                    <CreateKeyValue
+                      name="oneOf"
+                      defaultValue={oneOf}
+                      {...{ register, control, errors }}
+                      disabled={loading || isImmutable}
+                    />
                   </FormFieldInput>
                 </FormField>
 
@@ -934,6 +964,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                       name="objectConfig"
                       defaultValue={objectConfig}
                       {...{ register, control, errors }}
+                      disabled={loading || isImmutable}
                     />
                   </FormFieldInput>
                 </FormField>
