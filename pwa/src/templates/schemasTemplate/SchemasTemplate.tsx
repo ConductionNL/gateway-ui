@@ -81,7 +81,7 @@ export const SchemasTemplate: React.FC = () => {
                 <TableCell>
                   <Button onClick={(e) => goToCreateObject(e, schema.id)} className={styles.buttonIcon}>
                     <FontAwesomeIcon icon={faPlus} />
-                    {t("Create Object")}
+                    {t("Add Object")}
                   </Button>
                 </TableCell>
               </TableRow>
