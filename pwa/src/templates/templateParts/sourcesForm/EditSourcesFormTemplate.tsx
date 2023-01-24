@@ -350,7 +350,6 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("authType")}</FormFieldLabel>
-                    {/* @ts-ignore */}
                     <SelectSingle
                       {...{ register, errors, control }}
                       name="auth"

@@ -254,7 +254,6 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                 {throws.length <= 0 && <Skeleton height="50px" />}
 
                 {throws.length > 0 && (
-                  // @ts-ignore
                   <SelectCreate options={throws} name="throws" {...{ register, errors, control }} />
                 )}
               </FormFieldInput>
@@ -273,7 +272,6 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
                 {getSources.isLoading && getSource.isLoading && <Skeleton height="50px" />}
                 {getSources.isSuccess && (getSource.isSuccess || !endpoint.proxy) && (
-                  // @ts-ignore
                   <SelectSingle
                     isClearable
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
@@ -289,7 +287,6 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
 
                 {getSchemas.isLoading && <Skeleton height="50px" />}
                 {getSchemas.isSuccess && (
-                  // @ts-ignore
                   <SelectMultiple
                     options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                     name="schemas"

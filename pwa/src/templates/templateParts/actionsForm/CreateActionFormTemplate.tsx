@@ -134,7 +134,6 @@ export const CreateActionFormTemplate: React.FC = () => {
                       {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
 
                       {listensAndThrows.length > 0 && (
-                        /* @ts-ignore */
                         <SelectCreate
                           options={listensAndThrows}
                           disabled={loading}
@@ -152,7 +151,6 @@ export const CreateActionFormTemplate: React.FC = () => {
                       {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
 
                       {listensAndThrows.length > 0 && (
-                        /* @ts-ignore */
                         <SelectCreate
                           options={listensAndThrows}
                           disabled={loading}
@@ -170,7 +168,6 @@ export const CreateActionFormTemplate: React.FC = () => {
                       {getAllHandlers.isLoading && <Skeleton height="50px" />}
 
                       {getAllHandlers.isSuccess && (
-                        // @ts-ignore
                         <SelectSingle
                           options={getAllHandlers.data.map((handler: any) => ({
                             label: handler.class,

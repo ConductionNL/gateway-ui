@@ -350,7 +350,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Type")}</FormFieldLabel>
-                      {/* @ts-ignore */}
                       <SelectSingle
                         {...{ register, errors, control }}
                         name="type"
@@ -401,7 +400,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Format")}</FormFieldLabel>
-                      {/* @ts-ignore */}
                       <SelectSingle
                         {...{ register, errors, control }}
                         name="format"
@@ -417,7 +415,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Schema")}</FormFieldLabel>
-                        {/* @ts-ignore */}
                         <SelectSingle
                           {...{ register, errors, control }}
                           name="object"
@@ -472,7 +469,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Function")}</FormFieldLabel>
-                        {/* @ts-ignore */}
                         <SelectSingle
                           {...{ register, errors, control }}
                           name="function"
@@ -540,7 +536,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("fileTypes")}</FormFieldLabel>
-                            {/* @ts-ignore */}
                             <SelectCreate
                               options={fileTypes}
                               name="fileTypes"
@@ -672,7 +667,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormFieldLabel>{t("inversedBy")}</FormFieldLabel>
                     {getProperties.isLoading && <Skeleton height="50px" />}
                     {getProperties.isSuccess && (
-                      //@ts-ignore
                       <SelectSingle
                         {...{ register, errors, control }}
                         name="inversedBy"

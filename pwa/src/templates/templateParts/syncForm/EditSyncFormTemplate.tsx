@@ -107,7 +107,6 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
 
                 {(getSources.isLoading || getSource.isLoading || getSource.isIdle) && <Skeleton height="50px" />}
                 {getSources.isSuccess && getSource.isSuccess && (
-                  // @ts-ignore
                   <SelectSingle
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
@@ -124,7 +123,6 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                   <>
                     {getAction.isLoading && <Skeleton height="50px" />}
                     {getActions.isSuccess && syncActions && getAction.isSuccess && (
-                      // @ts-ignore
                       <SelectSingle
                         options={syncActions.map((action: any) => ({ label: action.name, value: action.id }))}
                         name="action"
@@ -137,7 +135,6 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                   <>
                     {(getActions.isLoading || !sync) && <Skeleton height="50px" />}
                     {getActions.isSuccess && syncActions && (
-                      // @ts-ignore
                       <SelectSingle
                         options={syncActions.map((action: any) => ({ label: action.name, value: action.id }))}
                         name="action"

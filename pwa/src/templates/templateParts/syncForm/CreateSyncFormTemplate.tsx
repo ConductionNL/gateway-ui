@@ -76,7 +76,6 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
 
                 {getSources.isLoading && <Skeleton height="50px" />}
                 {getSources.isSuccess && (
-                  // @ts-ignore
                   <SelectSingle
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
@@ -92,7 +91,6 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
 
                 {getActions.isLoading && <Skeleton height="50px" />}
                 {getActions.isSuccess && syncActions && (
-                  // @ts-ignore
                   <SelectSingle
                     options={syncActions.map((action: any) => ({ label: action.name, value: action.id }))}
                     name="action"
