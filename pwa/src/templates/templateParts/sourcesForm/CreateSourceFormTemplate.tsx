@@ -12,7 +12,7 @@ import { faFloppyDisk, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
 import { InputFloat, InputNumber } from "@conduction/components/lib/components/formFields/input";
-import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
 import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
@@ -29,8 +29,8 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
   const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
-  const [headers, setHeaders] = React.useState<any[]>([]);
-  const [query, setQuery] = React.useState<any[]>([]);
+  const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
+  const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
   const [advancedSwitch, setAdvancedSwitch] = React.useState({
     decodeContent: "string" as "string" | "boolean",
@@ -208,12 +208,10 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            {/* @ts-ignore */}
             <CreateKeyValue name="query" defaultValue={query} {...{ register, errors, control }} />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="2">
-            {/* @ts-ignore */}
             <CreateKeyValue name="headers" defaultValue={headers} {...{ register, errors, control }} />
           </TabPanel>
 

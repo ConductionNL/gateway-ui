@@ -23,6 +23,7 @@ import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorA
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
 import TextArea from "@gemeente-denhaag/textarea";
+import { IKeyValue } from "@conduction/components/lib/components/formFields";
 
 interface SourcesFormTemplateProps {
   source: any;
@@ -38,8 +39,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
-  const [headers, setHeaders] = React.useState<any[]>([]);
-  const [query, setQuery] = React.useState<any[]>([]);
+  const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
+  const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
   const [advancedSwitch, setAdvancedSwitch] = React.useState({
     decodeContent: "string" as "string" | "boolean",
@@ -228,14 +229,14 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     if (Array.isArray(source.headers) || source.headers === undefined) {
       setHeaders(source.headers);
     } else {
-      const newHeaders = Object.entries(source.headers).map(([key, value]) => ({ key, value: value }));
+      const newHeaders = Object.entries(source.headers).map(([key, value]) => ({ key, value: value as string }));
       setHeaders(newHeaders);
     }
 
     if (Array.isArray(source.query) || source.query === undefined) {
       setQuery(source.query);
     } else {
-      const newQuery = Object.entries(source.query).map(([key, value]) => ({ key, value: value }));
+      const newQuery = Object.entries(source.query).map(([key, value]) => ({ key, value: value as string }));
       setQuery(newQuery);
     }
   };
@@ -366,12 +367,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            {/* @ts-ignore */}
             <CreateKeyValue name="query" defaultValue={query} {...{ register, errors, control }} />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="2">
-            {/* @ts-ignore */}
             <CreateKeyValue name="headers" defaultValue={headers} {...{ register, errors, control }} />
           </TabPanel>
 
