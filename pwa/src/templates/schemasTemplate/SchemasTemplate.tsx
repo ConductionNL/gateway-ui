@@ -24,6 +24,14 @@ export const SchemasTemplate: React.FC = () => {
   const _useObject = useObject(queryClient);
   const getObjects = _useObject.getAll();
 
+  const goToCreateObject = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
+    id: string,
+  ) => {
+    e.stopPropagation();
+    navigate(`/objects/new?schema=${id}`);
+  };
+
   return (
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
@@ -47,6 +55,7 @@ export const SchemasTemplate: React.FC = () => {
               <TableHeader>{t("Date Created")}</TableHeader>
               <TableHeader>{t("Date Modified")}</TableHeader>
               <TableHeader></TableHeader>
+              <TableHeader></TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -69,11 +78,18 @@ export const SchemasTemplate: React.FC = () => {
                     {t("Details")}
                   </Link>
                 </TableCell>
+                <TableCell>
+                  <Button onClick={(e) => goToCreateObject(e, schema.id)} className={styles.buttonIcon}>
+                    <FontAwesomeIcon icon={faPlus} />
+                    {t("Add Object")}
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
             {!getSchemas.data.length && (
               <TableRow>
                 <TableCell>{t("No schemas found")}</TableCell>
+                <TableCell />
                 <TableCell />
                 <TableCell />
                 <TableCell />
