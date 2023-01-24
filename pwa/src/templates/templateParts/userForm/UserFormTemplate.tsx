@@ -113,8 +113,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
               <FormFieldLabel>{t("Organization")}</FormFieldLabel>
               {getOrganization.isSuccess && (
                 <SelectSingle
-                  // @ts-ignore
-                  options={organisationOptions}
+                  options={organisationOptions ?? []}
                   {...{ register, errors, control }}
                   name="organization"
                   disabled={loading}
@@ -132,7 +131,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
                 {...{ register, errors }}
                 name="password"
                 disabled={loading}
-                // @ts-ignore
                 validation={{ validate: (value) => value === pwd_verify }}
               />
             </FormFieldInput>
@@ -145,7 +143,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
                 {...{ register, errors }}
                 name="password_verify"
                 disabled={loading}
-                // @ts-ignore
                 validation={{ validate: (value) => value === pwd }}
               />
             </FormFieldInput>

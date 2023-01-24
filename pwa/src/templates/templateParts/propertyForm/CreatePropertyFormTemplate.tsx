@@ -173,7 +173,6 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Type")}</FormFieldLabel>
-                      {/* @ts-ignore */}
                       <SelectSingle
                         {...{ register, errors, control }}
                         name="type"
@@ -214,7 +213,6 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Format")}</FormFieldLabel>
-                      {/* @ts-ignore */}
                       <SelectSingle
                         {...{ register, errors, control }}
                         name="format"
@@ -230,7 +228,6 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Schema")}</FormFieldLabel>
-                        {/* @ts-ignore */}
                         <SelectSingle
                           {...{ register, errors, control }}
                           name="object"
@@ -275,7 +272,6 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Function")}</FormFieldLabel>
-                        {/* @ts-ignore */}
                         <SelectSingle
                           {...{ register, errors, control }}
                           name="function"
@@ -339,8 +335,12 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("fileTypes")}</FormFieldLabel>
-                            {/* @ts-ignore */}
-                            <SelectCreate name="fileTypes" {...{ register, errors, control }} disabled={loading} />
+                            <SelectCreate
+                              options={[]}
+                              name="fileTypes"
+                              {...{ register, errors, control }}
+                              disabled={loading}
+                            />
                           </FormFieldInput>
                         </FormField>
                         <FormField>
@@ -440,7 +440,6 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     <FormFieldLabel>{t("inversedBy")}</FormFieldLabel>
                     {getProperties.isLoading && <Skeleton height="50px" />}
                     {getProperties.isSuccess && (
-                      //@ts-ignore
                       <SelectSingle
                         {...{ register, errors, control }}
                         name="inversedBy"
@@ -595,57 +594,49 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("requiredIf")}</FormFieldLabel>
-                    {/* @ts-ignore */}
-                    <CreateKeyValue name="requiredIf" {...{ control, errors }} disabled={loading} />
+                    <CreateKeyValue name="requiredIf" {...{ register, control, errors }} disabled={loading} />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("forbiddenIf")}</FormFieldLabel>
-                    {/* @ts-ignore */}
-                    <CreateKeyValue name="forbiddenIf" {...{ control, errors }} disabled={loading} />
+                    <CreateKeyValue name="forbiddenIf" {...{ register, control, errors }} disabled={loading} />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("enum")}</FormFieldLabel>
-                    {/* @ts-ignore */}
-                    <CreateKeyValue name="enum" {...{ control, errors }} disabled={loading} />
+                    <CreateKeyValue name="enum" {...{ register, control, errors }} disabled={loading} />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("allOf")}</FormFieldLabel>
-                    {/* @ts-ignore */}
-                    <CreateKeyValue name="allOf" {...{ control, errors }} disabled={loading} />
+                    <CreateKeyValue name="allOf" {...{ register, control, errors }} disabled={loading} />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("anyOf")}</FormFieldLabel>
-                    {/* @ts-ignore */}
-                    <CreateKeyValue name="anyOf" {...{ control, errors }} disabled={loading} />
+                    <CreateKeyValue name="anyOf" {...{ register, control, errors }} disabled={loading} />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("oneOf")}</FormFieldLabel>
-                    {/* @ts-ignore */}
-
-                    <CreateKeyValue name="oneOf" {...{ control, errors }} disabled={loading} />
+                    <CreateKeyValue name="oneOf" {...{ register, control, errors }} disabled={loading} />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("objectConfig")}</FormFieldLabel>
-                    {/* @ts-ignore */}
-                    <CreateKeyValue name="objectConfig" {...{ control, errors }} disabled={loading} />
+                    <CreateKeyValue name="objectConfig" {...{ register, control, errors }} disabled={loading} />
                   </FormFieldInput>
                 </FormField>
               </div>

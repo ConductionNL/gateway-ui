@@ -156,7 +156,6 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
                 {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
 
                 {listensAndThrows.length > 0 && (
-                  /* @ts-ignore */
                   <SelectCreate
                     options={listensAndThrows}
                     disabled={loading}

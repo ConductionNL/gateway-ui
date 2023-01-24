@@ -112,7 +112,6 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Method")}</FormFieldLabel>
-                        {/* @ts-ignore */}
                         <SelectSingle
                           validation={{ required: true }}
                           {...{ register, errors, control }}
