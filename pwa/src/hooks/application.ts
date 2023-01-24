@@ -29,7 +29,7 @@ export const useApplication = (queryClient: QueryClient) => {
     useMutation<any, Error, any>(API.Application.delete, {
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "applications", variables.id);
-        navigate("/applications");
+        navigate("/settings/applications");
       },
       onError: (error) => {
         throw new Error(error.message);
@@ -41,12 +41,12 @@ export const useApplication = (queryClient: QueryClient) => {
       onSuccess: async (newApplication) => {
         if (applicationId) {
           updateItem(queryClient, "applications", newApplication);
-          navigate("/applications");
+          navigate("/settings/applications");
         }
 
         if (!applicationId) {
           addItem(queryClient, "applications", newApplication);
-          navigate(`/applications/${newApplication.id}`);
+          navigate(`/settings/applications/${newApplication.id}`);
         }
       },
       onError: (error) => {

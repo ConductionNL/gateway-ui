@@ -51,7 +51,7 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
   };
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(collection.name, "Collection", "CollectionEntity", collectionId, dashboardCard?.id);
+    addOrRemoveDashboardCard(collection.name, "collection", "CollectionEntity", collectionId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (collection: any): void => {

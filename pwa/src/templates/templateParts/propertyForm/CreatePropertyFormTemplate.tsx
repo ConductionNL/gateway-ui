@@ -34,6 +34,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
   const queryClient = useQueryClient();
   const _useAttribute = useAttribute(queryClient);
   const createOrEditAttribute = _useAttribute.createOrEdit(schemaId, propertyId);
+  const getProperties = _useAttribute.getAll();
 
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
@@ -108,6 +109,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
       entity: `/admin/entities/${schemaId}`,
       fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
       object: data?.object?.value,
+      inversedBy: data.inversedBy && `/admin/attributes/${data.inversedBy.value}`,
     };
 
     createOrEditAttribute.mutate({ payload, id: propertyId });
@@ -432,6 +434,22 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     )}
                   </div>
                 </div>
+
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("inversedBy")}</FormFieldLabel>
+                    {getProperties.isLoading && <Skeleton height="50px" />}
+                    {getProperties.isSuccess && (
+                      //@ts-ignore
+                      <SelectSingle
+                        {...{ register, errors, control }}
+                        name="inversedBy"
+                        options={getProperties.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
+                        disabled={loading}
+                      />
+                    )}
+                  </FormFieldInput>
+                </FormField>
 
                 <div className={styles.gridContainer}>
                   <div className={styles.grid}>

@@ -45,7 +45,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const dashboardCard = getDashboardCard(action.id);
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(action.name, "Action", "Action", actionId, dashboardCard?.id);
+    addOrRemoveDashboardCard(action.name, "action", "Action", actionId, dashboardCard?.id);
   };
 
   const {

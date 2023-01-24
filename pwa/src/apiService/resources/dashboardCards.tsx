@@ -1,7 +1,17 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
-export type TEntity = "Action" | "Gateway" | "Cronjob" | "Endpoint" | "ObjectEntity" | "Entity" | "CollectionEntity" | "Organization";
+export type TEntity =
+  | "Action"
+  | "Gateway"
+  | "Cronjob"
+  | "Endpoint"
+  | "ObjectEntity"
+  | "Entity"
+  | "CollectionEntity"
+  | "Organization"
+  | "User"
+  | "Authentication";
 
 export default class DashboardCards {
   private _instance: AxiosInstance;

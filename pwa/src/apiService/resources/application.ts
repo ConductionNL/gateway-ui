@@ -23,7 +23,10 @@ export default class Application {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/applications/${id}`);
+    const { data } = await Send(this._instance, "DELETE", `/admin/applications/${id}`, undefined, {
+      loading: "Removing application...",
+      success: "Application successfully removed.",
+    });
     return data;
   };
 
@@ -31,11 +34,17 @@ export default class Application {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/applications/${id}`, payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/applications/${id}`, payload, {
+        loading: "Updating application...",
+        success: "Application successfully updated.",
+      });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/applications", payload);
+    const { data } = await Send(this._instance, "POST", "/admin/applications", payload, {
+      loading: "Creating application...",
+      success: "Application successfully created.",
+    });
     return data;
   };
 }
