@@ -6,10 +6,13 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputCheckbox, InputText, Textarea } from "@conduction/components";
+import { InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
+import { SelectCreate } from "@conduction/components/lib/components/formFields";
+import { useQueryClient } from "react-query";
+import { useSecurityGroup } from "../../../hooks/securityGroup";
 
 interface EditSecurityGroupFormTemplateProps {
   securityGroup: any;
@@ -26,25 +29,48 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
 
+  const queryClient = useQueryClient();
+  const _useSecurityGroups = useSecurityGroup(queryClient);
+  const createOrEditSecurityGroup = _useSecurityGroups.createOrEdit(securityGroupId);
+  const deleteSecurityGroup = _useSecurityGroups.remove();
+
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     setValue,
   } = useForm();
 
-  const handleSetFormValues = (userGroup: any): void => {
+  const handleSetFormValues = (securityGroup: any): void => {
     const basicFields: string[] = ["name", "description", "config"];
-    basicFields.forEach((field) => setValue(field, userGroup[field]));
+    basicFields.forEach((field) => setValue(field, securityGroup[field]));
+
+    setValue(
+      "scopes",
+      securityGroup["scopes"]?.map((scope: any) => ({ label: scope, value: scope })),
+    );
   };
 
   React.useEffect(() => {
     handleSetFormValues(securityGroup);
   }, []);
 
+  const onSubmit = (data: any): void => {
+    const payload = {
+      ...data,
+      scopes: data.scopes?.map((scope: any) => scope.value),
+    };
+    createOrEditSecurityGroup.mutate({ payload, id: securityGroupId });
+  };
+
+  const handleDelete = () => {
+    deleteSecurityGroup.mutate({ id: securityGroupId });
+  };
+
   return (
     <div className={styles.container}>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{`Edit ${securityGroup.name}`}</Heading1>
 
@@ -54,7 +80,7 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
               {t("Save")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
@@ -73,7 +99,7 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Config")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="config" validation={{ required: true }} disabled={loading} />
+                <InputText {...{ register, errors }} name="config" disabled={loading} />
               </FormFieldInput>
             </FormField>
 
@@ -89,53 +115,10 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
               </FormFieldInput>
             </FormField>
 
-            <FormField></FormField>
-
             <FormField>
               <FormFieldInput>
-                <InputCheckbox
-                  {...{ register, errors }}
-                  label={t("Scope 1")}
-                  name="scope1"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <InputCheckbox
-                  {...{ register, errors }}
-                  label={t("Scope 2")}
-                  name="scope2"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <InputCheckbox
-                  {...{ register, errors }}
-                  label={t("Scope 3")}
-                  name="scope3"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
-              </FormFieldInput>
-            </FormField>
-
-            <FormField>
-              <FormFieldInput>
-                <InputCheckbox
-                  {...{ register, errors }}
-                  label={t("Scope 4")}
-                  name="scope4"
-                  validation={{ required: true }}
-                  disabled={loading}
-                />
+                <FormFieldLabel>{t("Scopes")}</FormFieldLabel>
+                <SelectCreate options={[]} name="scopes" {...{ register, errors, control }} />
               </FormFieldInput>
             </FormField>
           </div>
