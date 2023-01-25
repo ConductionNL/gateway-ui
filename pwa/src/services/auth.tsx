@@ -49,9 +49,9 @@ export const validateSession = () => {
 
   if (!token) return false;
 
-  const decoded = token && jwtDecode<JwtPayload>(token);
-  // @ts-ignore
-  const expired = Date.now() >= decoded.exp * 1000;
+  const decoded = jwtDecode<JwtPayload>(token);
+
+  const expired = decoded?.exp && Date.now() >= decoded.exp * 1000;
 
   return !expired;
 };

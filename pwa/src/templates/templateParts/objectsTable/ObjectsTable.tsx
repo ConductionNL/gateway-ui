@@ -13,9 +13,10 @@ import { useQueryClient } from "react-query";
 
 interface ObjectsTableProps {
   objects: any[];
+  schemaId?: string;
 }
 
-export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
+export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, schemaId }) => {
   const queryClient = useQueryClient();
 
   const _useObject = useObject(queryClient);
@@ -49,10 +50,9 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects }) => {
       <TableBody>
         {!!objects.length &&
           objects.map((object) => (
-            <TableRow onClick={() => navigate(`/objects/${object._self.id}`)} key={object._self.id}>
+            <TableRow onClick={() => navigate(`/objects/${object._self.id}?schema=${schemaId}`)} key={object._self.id}>
               <TableCell>{object._self.id ?? "-"}</TableCell>
               <TableCell>{object._self.name ?? "NVT"}</TableCell>
-              <TableCell>{object._self.type?.name ?? "-"}</TableCell>
               <TableCell>{object._self.sources ?? "-"}</TableCell>
               <TableCell>
                 <Button

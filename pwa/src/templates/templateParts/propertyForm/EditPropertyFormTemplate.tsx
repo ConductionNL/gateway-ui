@@ -12,7 +12,7 @@ import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useAttribute } from "../../../hooks/attribute";
-import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
@@ -35,13 +35,15 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   const [isImmutable, setIsImmutable] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
-  const [requiredIf, setRequiredIf] = React.useState<any[]>([]);
-  const [forbiddenIf, setForbiddenIf] = React.useState<any[]>([]);
-  const [enumArray, setEnumArray] = React.useState<any[]>([]);
-  const [allOf, setAllOf] = React.useState<any[]>([]);
-  const [anyOf, setAnyOf] = React.useState<any[]>([]);
-  const [oneOf, setOneOf] = React.useState<any[]>([]);
-  const [objectConfig, setObjectConfig] = React.useState<any[]>([]);
+
+  const [requiredIf, setRequiredIf] = React.useState<IKeyValue[]>([]);
+  const [forbiddenIf, setForbiddenIf] = React.useState<IKeyValue[]>([]);
+  const [enumArray, setEnumArray] = React.useState<IKeyValue[]>([]);
+  const [allOf, setAllOf] = React.useState<IKeyValue[]>([]);
+  const [anyOf, setAnyOf] = React.useState<IKeyValue[]>([]);
+  const [oneOf, setOneOf] = React.useState<IKeyValue[]>([]);
+  const [objectConfig, setObjectConfig] = React.useState<IKeyValue[]>([]);
+
   const [selectedType, setSelectedType] = React.useState<any>(null);
   const [fileTypes, setFileTypes] = React.useState<any[]>([]);
 
@@ -49,6 +51,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   const _useAttribute = useAttribute(queryClient);
   const createOrEditProperty = _useAttribute.createOrEdit(schemaId, propertyId);
   const deleteProperty = _useAttribute.remove(schemaId);
+  const getProperties = _useAttribute.getAll();
 
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
@@ -111,6 +114,18 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   }, [getSchemas.isSuccess]);
 
   React.useEffect(() => {
+    if (!getProperties.isSuccess) return;
+
+    setValue("inversedBy", () => {
+      const inversedBy = getProperties.data?.find((inversedBy) => inversedBy.id === property.inversedBy?.id);
+
+      if (!inversedBy) return "";
+
+      return { label: inversedBy.name, value: inversedBy.id };
+    });
+  }, [getProperties.isSuccess]);
+
+  React.useEffect(() => {
     if (!watchType) return;
 
     const selectedType = typeSelectOptions.find((typeOption) => typeOption.value === watchType.value);
@@ -133,9 +148,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
       function: data.function && data.function.value,
       fileTypes: data.fileTypes?.map((fileType: any) => fileType.value),
       object: data?.object?.value,
-
-      // inversedBy: data.inversedBy && data.inversedBy,
-      // inversedBy: data.inversedBy && `App\\Entity\\${data.inversedBy.label}`,
+      inversedBy: data.inversedBy && `/admin/attributes/${data.inversedBy.value}`,
     };
 
     createOrEditProperty.mutate({ payload, id: propertyId });
@@ -230,49 +243,58 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
     if (Array.isArray(property.requiredIf) || property.requiredIf === undefined) {
       setRequiredIf(property.requiredIf);
     } else {
-      const newRequiredIf = Object.entries(property.requiredIf).map(([key, value]) => ({ key, value: value }));
+      const newRequiredIf = Object.entries(property.requiredIf).map(([key, value]) => ({
+        key,
+        value: value as string,
+      }));
       setRequiredIf(newRequiredIf);
     }
 
     if (Array.isArray(property.forbiddenIf) || property.forbiddenIf === undefined) {
       setForbiddenIf(property.forbiddenIf);
     } else {
-      const newForbiddenIf = Object.entries(property.forbiddenIf).map(([key, value]) => ({ key, value: value }));
+      const newForbiddenIf = Object.entries(property.forbiddenIf).map(([key, value]) => ({
+        key,
+        value: value as string,
+      }));
       setForbiddenIf(newForbiddenIf);
     }
 
     if (Array.isArray(property.enum) || property.enum === undefined) {
       setEnumArray(property.enum);
     } else {
-      const newEnumArray = Object.entries(property.enum).map(([key, value]) => ({ key, value: value }));
+      const newEnumArray = Object.entries(property.enum).map(([key, value]) => ({ key, value: value as string }));
       setEnumArray(newEnumArray);
     }
 
     if (Array.isArray(property.allOf) || property.allOf === undefined) {
       setAllOf(property.allOf);
     } else {
-      const newAllOf = Object.entries(property.allOf).map(([key, value]) => ({ key, value: value }));
+      const newAllOf = Object.entries(property.allOf).map(([key, value]) => ({ key, value: value as string }));
       setAllOf(newAllOf);
     }
 
     if (Array.isArray(property.anyOf) || property.anyOf === undefined) {
       setAnyOf(property.anyOf);
     } else {
-      const newAnyOf = Object.entries(property.anyOf).map(([key, value]) => ({ key, value: value }));
+      const newAnyOf = Object.entries(property.anyOf).map(([key, value]) => ({ key, value: value as string }));
       setAnyOf(newAnyOf);
     }
 
     if (Array.isArray(property.oneOf) || property.oneOf === undefined) {
       setOneOf(property.oneOf);
     } else {
-      const newOneOf = Object.entries(property.oneOf).map(([key, value]) => ({ key, value: value }));
+      const newOneOf = Object.entries(property.oneOf).map(([key, value]) => ({ key, value: value as string }));
       setOneOf(newOneOf);
     }
 
     if (Array.isArray(property.objectConfig) || property.objectConfig === undefined) {
       setObjectConfig(property.objectConfig);
     } else {
-      const newObjectConfig = Object.entries(property.objectConfig).map(([key, value]) => ({ key, value: value }));
+      const newObjectConfig = Object.entries(property.objectConfig).map(([key, value]) => ({
+        key,
+        value: value as string,
+      }));
       setObjectConfig(newObjectConfig);
     }
   };
@@ -339,7 +361,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Type")}</FormFieldLabel>
-                      {/* @ts-ignore */}
                       <SelectSingle
                         {...{ register, errors, control }}
                         name="type"
@@ -390,7 +411,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Format")}</FormFieldLabel>
-                      {/* @ts-ignore */}
                       <SelectSingle
                         {...{ register, errors, control }}
                         name="format"
@@ -406,7 +426,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Schema")}</FormFieldLabel>
-                        {/* @ts-ignore */}
                         <SelectSingle
                           {...{ register, errors, control }}
                           name="object"
@@ -461,7 +480,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Function")}</FormFieldLabel>
-                        {/* @ts-ignore */}
                         <SelectSingle
                           {...{ register, errors, control }}
                           name="function"
@@ -529,7 +547,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("fileTypes")}</FormFieldLabel>
-                            {/* @ts-ignore */}
                             <SelectCreate
                               options={fileTypes}
                               name="fileTypes"
@@ -656,21 +673,20 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                   </div>
                 </div>
 
-                {/* <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("inversedBy")}</FormFieldLabel>
-                      {getAttributes.isLoading && <Skeleton height="50px" />}
-                      {getAttributes.isSuccess && (
-                        //@ts-ignore
-                        <SelectSingle
-                          {...{ register, errors, control }}
-                          name="inversedBy"
-                          options={getAttributes.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
-                          disabled={loading || isImmutable}
-                        />
-                      )}
-                    </FormFieldInput>
-                  </FormField> */}
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("inversedBy")}</FormFieldLabel>
+                    {getProperties.isLoading && <Skeleton height="50px" />}
+                    {getProperties.isSuccess && (
+                      <SelectSingle
+                        {...{ register, errors, control }}
+                        name="inversedBy"
+                        options={getProperties.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
+                        disabled={loading || isImmutable}
+                      />
+                    )}
+                  </FormFieldInput>
+                </FormField>
 
                 <div className={styles.gridContainer}>
                   <div className={styles.grid}>
@@ -873,9 +889,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormFieldLabel>{t("requiredIf")}</FormFieldLabel>
                     <CreateKeyValue
                       name="requiredIf"
-                      //@ts-ignore
                       defaultValue={requiredIf}
-                      {...{ control, errors }}
+                      {...{ register, control, errors }}
                       disabled={loading || isImmutable}
                     />
                   </FormFieldInput>
@@ -886,9 +901,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormFieldLabel>{t("forbiddenIf")}</FormFieldLabel>
                     <CreateKeyValue
                       name="forbiddenIf"
-                      //@ts-ignore
                       defaultValue={forbiddenIf}
-                      {...{ control, errors }}
+                      {...{ register, control, errors }}
                       disabled={loading || isImmutable}
                     />
                   </FormFieldInput>
@@ -899,9 +913,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormFieldLabel>{t("enum")}</FormFieldLabel>
                     <CreateKeyValue
                       name="enum"
-                      //@ts-ignore
                       defaultValue={enumArray}
-                      {...{ control, errors }}
+                      {...{ register, control, errors }}
                       disabled={loading || isImmutable}
                     />
                   </FormFieldInput>
@@ -912,9 +925,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormFieldLabel>{t("allOf")}</FormFieldLabel>
                     <CreateKeyValue
                       name="allOf"
-                      //@ts-ignore
                       defaultValue={allOf}
-                      {...{ control, errors }}
+                      {...{ register, control, errors }}
                       disabled={loading || isImmutable}
                     />
                   </FormFieldInput>
@@ -925,9 +937,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormFieldLabel>{t("anyOf")}</FormFieldLabel>
                     <CreateKeyValue
                       name="anyOf"
-                      //@ts-ignore
                       defaultValue={anyOf}
-                      {...{ control, errors }}
+                      {...{ register, control, errors }}
                       disabled={loading || isImmutable}
                     />
                   </FormFieldInput>
@@ -939,9 +950,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
 
                     <CreateKeyValue
                       name="oneOf"
-                      //@ts-ignore
                       defaultValue={oneOf}
-                      {...{ control, errors }}
+                      {...{ register, control, errors }}
                       disabled={loading || isImmutable}
                     />
                   </FormFieldInput>
@@ -952,9 +962,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormFieldLabel>{t("objectConfig")}</FormFieldLabel>
                     <CreateKeyValue
                       name="objectConfig"
-                      //@ts-ignore
                       defaultValue={objectConfig}
-                      {...{ control, errors }}
+                      {...{ register, control, errors }}
                       disabled={loading || isImmutable}
                     />
                   </FormFieldInput>

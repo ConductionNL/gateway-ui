@@ -123,7 +123,6 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
 
                   {getSchemas.isLoading && <Skeleton height="50px" />}
                   {getSchemas.isSuccess && (
-                    // @ts-ignore
                     <SelectSingle
                       options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                       name="schema"

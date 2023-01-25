@@ -35,7 +35,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
       </div>
 
       <Paragraph className={styles.statusTypeContainer}>
-        <div>{type}</div>
+        <div>{_.upperFirst(type)}</div>
 
         <div className={clsx(styles[getStatusColor(status ?? "no known status")])}>
           <ToolTip tooltip="Status">

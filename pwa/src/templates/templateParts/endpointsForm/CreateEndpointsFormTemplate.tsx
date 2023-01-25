@@ -142,7 +142,6 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
               <FormFieldInput>
                 <FormFieldLabel>{t("Throws")}</FormFieldLabel>
                 {throws.length > 0 && (
-                  // @ts-ignore
                   <SelectCreate options={throws} name="throws" {...{ register, errors, control }} />
                 )}
               </FormFieldInput>
@@ -161,7 +160,6 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
 
                 {getSources.isLoading && <Skeleton height="50px" />}
                 {getSources.isSuccess && (
-                  // @ts-ignore
                   <SelectSingle
                     isClearable
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
@@ -177,7 +175,6 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
 
                 {getSchemas.isLoading && <Skeleton height="50px" />}
                 {getSchemas.isSuccess && (
-                  //@ts-ignore
                   <SelectMultiple
                     options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                     name="schemas"
@@ -202,8 +199,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>
-              {/* @ts-ignore */}
-              <CreateKeyValue name="pathArray" defaultValue={pathParts} {...{ register, errors, control }} />{" "}
+              <CreateKeyValue name="pathArray" {...{ register, errors, control }} />
             </FormFieldInput>
           </FormField>
         </section>

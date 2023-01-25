@@ -4,16 +4,18 @@ import { TEntity } from "../apiService/resources/dashboardCards";
 import { useDashboardCards } from "./dashboardCards";
 
 export type TDashboardCardType =
-  | "Action"
-  | "Source"
-  | "Cronjob"
-  | "Endpoint"
-  | "Object"
-  | "Schema"
-  | "Collection"
-  | "Plugin"
-  | "Log"
-  | "Organization";
+  | "action"
+  | "source"
+  | "cronjob"
+  | "endpoint"
+  | "object"
+  | "schema"
+  | "collection"
+  | "plugin"
+  | "log"
+  | "organization"
+  | "user"
+  | "authentication";
 
 export interface useDashboardCardProps {
   name: string;

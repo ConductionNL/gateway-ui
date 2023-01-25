@@ -63,7 +63,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   };
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(cronjob.name, "Cronjob", "Cronjob", cronjobId, dashboardCard?.id);
+    addOrRemoveDashboardCard(cronjob.name, "cronjob", "Cronjob", cronjobId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (cronjob: any): void => {
@@ -156,7 +156,6 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
                 {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
 
                 {listensAndThrows.length > 0 && (
-                  /* @ts-ignore */
                   <SelectCreate
                     options={listensAndThrows}
                     disabled={loading}

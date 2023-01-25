@@ -45,7 +45,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   const dashboardCard = getDashboardCard(action.id);
 
   const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(action.name, "Action", "Action", actionId, dashboardCard?.id);
+    addOrRemoveDashboardCard(action.name, "action", "Action", actionId, dashboardCard?.id);
   };
 
   const {
@@ -207,7 +207,6 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                       {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
 
                       {listensAndThrows.length > 0 && (
-                        /* @ts-ignore */
                         <SelectCreate
                           options={listensAndThrows}
                           disabled={loading}
@@ -224,7 +223,6 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                       {listensAndThrows.length <= 0 && <Skeleton height="50px" />}
 
                       {listensAndThrows.length > 0 && (
-                        /* @ts-ignore */
                         <SelectCreate
                           options={listensAndThrows}
                           disabled={loading}
@@ -239,8 +237,8 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                     <FormFieldInput>
                       <FormFieldLabel>{t("Action handler")}</FormFieldLabel>
 
-                      {/* @ts-ignore */}
                       <SelectSingle
+                        options={[]}
                         name="class"
                         validation={{ required: true }}
                         {...{ register, errors, control }}
