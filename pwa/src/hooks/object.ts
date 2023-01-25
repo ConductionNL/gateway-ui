@@ -61,7 +61,7 @@ export const useObject = (queryClient: QueryClient) => {
       },
     });
 
-  const createOrEdit = (objectId?: string) =>
+  const createOrEdit = (objectId?: string, closeForm?: boolean) =>
     useMutation<any, Error, any>(API.Object.createOrUpdate, {
       onSuccess: async (newObject) => {
         if (objectId) {
@@ -73,7 +73,7 @@ export const useObject = (queryClient: QueryClient) => {
           addItem(queryClient, "object", newObject);
         }
 
-        !!newObject.closeForm && navigate("/objects/");
+        !!closeForm && navigate("/objects/");
       },
       onError: (error) => {
         _queryClient.invalidateQueries(["object", objectId]);

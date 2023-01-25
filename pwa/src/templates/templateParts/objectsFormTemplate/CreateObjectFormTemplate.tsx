@@ -21,10 +21,11 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [selectedSchema, setSelectedSchema] = React.useState<any>(null);
+  const [closeForm, setCloseForm] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
-  const createOrEditObject = _useObjects.createOrEdit();
+  const createOrEditObject = _useObjects.createOrEdit(undefined, closeForm);
 
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
@@ -64,18 +65,24 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
 
   const onSave = (data: any): void => {
     if (!selectedSchema) return;
+    setCloseForm(false);
+
     delete data.schema;
     createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema });
   };
 
   const onSaveAndClose = (data: any): void => {
     if (!selectedSchema) return;
+    setCloseForm(true);
+
     delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema, closeForm: true });
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema });
   };
 
   const onSaveAndCreate = (data: any): void => {
     if (!selectedSchema) return;
+    setCloseForm(false);
+
     delete data.schema;
     createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema });
 

@@ -24,12 +24,13 @@ interface EditObjectFormTemplateProps {
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, getSchema, objectId }) => {
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const [closeForm, setCloseForm] = React.useState<boolean>(false);
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
-  const createOrEditObject = _useObjects.createOrEdit(objectId);
+  const createOrEditObject = _useObjects.createOrEdit(objectId, closeForm);
   const deleteObject = _useObjects.remove();
 
   const dashboardCard = getDashboardCard(object.id);
@@ -51,13 +52,17 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading]);
 
   const onSave = (data: any): void => {
+    setCloseForm(false);
+
     delete data.schema;
     createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: null, objectId });
   };
 
   const onSaveAndClose = (data: any): void => {
+    setCloseForm(true);
+
     delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: null, objectId, closeForm: true });
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: null, objectId });
   };
 
   const handleDeleteObject = () => {

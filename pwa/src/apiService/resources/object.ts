@@ -54,21 +54,14 @@ export default class Sources {
     return data;
   };
 
-  public createOrUpdate = async (variables: {
-    payload: any;
-    entityId: string;
-    objectId?: string;
-    closeForm: boolean;
-  }): Promise<any> => {
-    const { payload, entityId, objectId, closeForm } = variables;
+  public createOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
+    const { payload, entityId, objectId } = variables;
 
     if (objectId) {
       const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, payload, {
         loading: "Updating object...",
         success: "Object successfully updated.",
       });
-
-      data.closeForm = closeForm;
       return data;
     }
 
@@ -83,7 +76,6 @@ export default class Sources {
       },
     );
 
-    data.closeForm = closeForm;
     return data;
   };
 }
