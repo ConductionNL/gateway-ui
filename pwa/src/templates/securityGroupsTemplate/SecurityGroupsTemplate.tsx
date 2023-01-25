@@ -8,12 +8,16 @@ import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { TEMPORARY_USERGROUPS } from "../../data/userGroup";
+import { useSecurityGroup } from "../../hooks/securityGroup";
+import { QueryClient } from "react-query";
+import Skeleton from "react-loading-skeleton";
 
 export const SecurityGroupsTemplate: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  const userGroups = TEMPORARY_USERGROUPS;
+  const queryClient = new QueryClient();
+  const _useSecurityGroups = useSecurityGroup(queryClient);
+  const getSecurityGroups = _useSecurityGroups.getAll();
 
   return (
     <Container layoutClassName={styles.container}>
@@ -27,34 +31,37 @@ export const SecurityGroupsTemplate: React.FC = () => {
         </div>
       </section>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeader>{t("Name")}</TableHeader>
-            <TableHeader>{t("Description")}</TableHeader>
-            <TableHeader>{t("Config")}</TableHeader>
-            <TableHeader></TableHeader>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {userGroups.map((userGroup) => (
-            <TableRow
-              className={styles.tableRow}
-              onClick={() => navigate(`/settings/securitygroups/${userGroup.id}`)}
-              key={userGroup.id}
-            >
-              <TableCell>{userGroup.name}</TableCell>
-              <TableCell>{userGroup.description ?? "-"}</TableCell>
-              <TableCell>{userGroup.config ?? "-"}</TableCell>
-              <TableCell onClick={() => navigate(`/settings/securitygroups/${userGroup.id}`)}>
-                <Link icon={<ArrowRightIcon />} iconAlign="start">
-                  {t("Details")}
-                </Link>
-              </TableCell>
+      {getSecurityGroups.isSuccess && (
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader>{t("Description")}</TableHeader>
+              <TableHeader>{t("Config")}</TableHeader>
+              <TableHeader></TableHeader>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {getSecurityGroups.data.map((securityGroup) => (
+              <TableRow
+                className={styles.tableRow}
+                onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)}
+                key={securityGroup.id}
+              >
+                <TableCell>{securityGroup.name}</TableCell>
+                <TableCell>{securityGroup.description ?? "-"}</TableCell>
+                <TableCell>{securityGroup.config ?? "-"}</TableCell>
+                <TableCell onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)}>
+                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+      {getSecurityGroups.isLoading && <Skeleton height={"200px"} />}
     </Container>
   );
 };

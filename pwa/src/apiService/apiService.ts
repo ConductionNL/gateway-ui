@@ -25,6 +25,7 @@ import Application from "./resources/application";
 import Organization from "./resources/organization";
 import User from "./resources/user";
 import Authentication from "./resources/authentication";
+import SecurityGroup from "./resources/securityGroup";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -163,8 +164,13 @@ export default class APIService {
   public get User(): User {
     return new User(this.BaseClient);
   }
+
   public get Authentication(): Authentication {
     return new Authentication(this.BaseClient);
+  }
+
+  public get SecurityGroup(): SecurityGroup {
+    return new SecurityGroup(this.BaseClient);
   }
 
   // Services
