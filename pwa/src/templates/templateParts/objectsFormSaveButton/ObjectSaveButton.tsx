@@ -9,7 +9,7 @@ import clsx from "clsx";
 interface ObjectSaveButtonProps {
   onSave: () => null | any;
   onSaveClose: () => null | any;
-  onSaveCreateNew: () => null | any;
+  onSaveCreateNew?: () => null | any;
 }
 
 const ObjectSaveButton: React.FC<ObjectSaveButtonProps> = ({ onSave, onSaveClose, onSaveCreateNew }) => {
@@ -52,13 +52,15 @@ const ObjectSaveButton: React.FC<ObjectSaveButtonProps> = ({ onSave, onSaveClose
             {t("Save and Close")}
           </button>
 
-          <button
-            onMouseDown={() => handleSaveOptions(onSaveCreateNew)}
-            className={clsx(styles.buttonIcon, styles.optionsButton)}
-          >
-            <FontAwesomeIcon icon={faFloppyDisk} />
-            {t("Save and Create New")}
-          </button>
+          {onSaveCreateNew && (
+            <button
+              onMouseDown={() => handleSaveOptions(onSaveCreateNew)}
+              className={clsx(styles.buttonIcon, styles.optionsButton)}
+            >
+              <FontAwesomeIcon icon={faFloppyDisk} />
+              {t("Save and Create New")}
+            </button>
+          )}
         </div>
       </div>
     </div>

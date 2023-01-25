@@ -2,11 +2,9 @@ import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
+import { Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, SelectSingle } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useObject } from "../../../hooks/object";
 import { useSchema } from "../../../hooks/schema";
@@ -37,6 +35,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -78,7 +77,14 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   const onSaveAndCreate = (data: any): void => {
     if (!selectedSchema) return;
     delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data) });
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema });
+
+    const resetFields: any = {};
+    // @ts-ignore
+    Object.keys(getSchemaSchema.data?.properties).forEach((key) => {
+      resetFields[key] = null;
+    });
+    reset(resetFields);
   };
 
   return (

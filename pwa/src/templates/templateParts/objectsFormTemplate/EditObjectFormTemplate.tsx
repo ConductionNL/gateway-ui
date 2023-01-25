@@ -52,17 +52,12 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
   const onSave = (data: any): void => {
     delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), objectId });
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: null, objectId });
   };
 
   const onSaveAndClose = (data: any): void => {
     delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), objectId, closeForm: true });
-  };
-
-  const onSaveAndCreate = (data: any): void => {
-    delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data) });
+    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: null, objectId, closeForm: true });
   };
 
   const handleDeleteObject = () => {
@@ -88,11 +83,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
             <Heading1>{`Edit ${object._self.name}`}</Heading1>
 
             <div className={styles.buttons}>
-              <ObjectSaveButton
-                onSave={handleSubmit(onSave)}
-                onSaveClose={handleSubmit(onSaveAndClose)}
-                onSaveCreateNew={handleSubmit(onSaveAndCreate)}
-              />
+              <ObjectSaveButton onSave={handleSubmit(onSave)} onSaveClose={handleSubmit(onSaveAndClose)} />
 
               <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />

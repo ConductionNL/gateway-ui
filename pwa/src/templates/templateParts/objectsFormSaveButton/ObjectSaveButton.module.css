@@ -27,6 +27,7 @@
 
 .optionsContainerEnabled {
   display: block;
+  background-color: white;
 }
 
 .triangle {
