@@ -16,8 +16,6 @@ interface UserFormTemplateProps {
 
 export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrganization }) => {
   const { t } = useTranslation();
-  const [formError, setFormError] = React.useState<string>("");
-  const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = new QueryClient();
   const _useUsers = useUser(queryClient);
@@ -69,42 +67,41 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} id="UserForm">
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+    <form onSubmit={handleSubmit(onSubmit)} id="UserForm" className={styles.formContainer}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              <InputText {...{ register, errors }} name="name" validation={{ required: true }} />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Description")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="description" disabled={loading} />
+              <Textarea {...{ register, errors }} name="description" />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Email")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="email" disabled={loading} />
+              <InputText {...{ register, errors }} name="email" />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Locale")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="locale" disabled={loading} />
+              <InputText {...{ register, errors }} name="locale" />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Person")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="person" disabled={loading} />
+              <InputText {...{ register, errors }} name="person" />
             </FormFieldInput>
           </FormField>
 
@@ -116,7 +113,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
                   options={organisationOptions ?? []}
                   {...{ register, errors, control }}
                   name="organization"
-                  disabled={loading}
                   validation={{ required: true }}
                 />
               )}
@@ -130,7 +126,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
               <InputPassword
                 {...{ register, errors }}
                 name="password"
-                disabled={loading}
                 validation={{ validate: (value) => value === pwd_verify }}
               />
             </FormFieldInput>
@@ -142,7 +137,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
               <InputPassword
                 {...{ register, errors }}
                 name="password_verify"
-                disabled={loading}
                 validation={{ validate: (value) => value === pwd }}
               />
             </FormFieldInput>
