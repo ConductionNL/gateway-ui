@@ -101,11 +101,6 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
           <Heading1>{t("Create Object")}</Heading1>
 
           <div className={styles.buttons}>
-            {/* <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save")}
-            </Button> */}
-
             <ObjectSaveButton
               onSave={handleSubmit(onSave)}
               onSaveClose={handleSubmit(onSaveAndClose)}
