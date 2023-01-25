@@ -16,6 +16,14 @@
   position: relative;
 }
 
+.saveButtonContainer {
+  width: max-content;
+}
+
+.saveButtonContainer > button:focus {
+  z-index: 100;
+}
+
 .optionsContainer {
   display: none;
   position: absolute;

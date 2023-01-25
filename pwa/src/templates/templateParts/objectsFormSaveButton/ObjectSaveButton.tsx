@@ -30,7 +30,7 @@ const ObjectSaveButton: React.FC<ObjectSaveButtonProps> = ({ onSave, onSaveClose
 
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.saveButtonContainer}>
         <Button onClick={onSave} className={clsx(styles.buttonIcon, styles.primaryButton)}>
           <FontAwesomeIcon icon={faFloppyDisk} />
           {t("Save")}
