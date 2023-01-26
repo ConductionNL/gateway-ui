@@ -22,12 +22,11 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [selectedSchema, setSelectedSchema] = React.useState<any>(null);
-  const [closeForm, setCloseForm] = React.useState<boolean>(false);
   const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
-  const createOrEditObject = _useObjects.createOrEdit(undefined, closeForm);
+  const createOrEditObject = _useObjects.createOrEdit();
 
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();

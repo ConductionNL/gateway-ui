@@ -24,14 +24,13 @@ interface EditObjectFormTemplateProps {
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, getSchema, objectId }) => {
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
-  const [closeForm, setCloseForm] = React.useState<boolean>(false);
   const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
-  const createOrEditObject = _useObjects.createOrEdit(objectId, closeForm);
+  const createOrEditObject = _useObjects.createOrEdit(objectId);
   const deleteObject = _useObjects.remove();
 
   const dashboardCard = getDashboardCard(object.id);
@@ -53,8 +52,6 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading]);
 
   const onSubmit = (data: any): void => {
-    setCloseForm(false);
-
     delete data.schema;
     createOrEditObject.mutate(
       { payload: mapSelectInputFormData(data), entityId: null, objectId },
