@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./FormSaveButton.module.css";
+import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
@@ -56,7 +56,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
     createOrEditObject.mutate(
       { payload: mapSelectInputFormData(data), entityId: null, objectId },
       {
-        onSuccess: (newUser) => {
+        onSuccess: () => {
           switch (afterSuccessfulFormSubmit) {
             case "saveAndClose":
               navigate("/objects/");

@@ -72,10 +72,10 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
     createOrEditObject.mutate(
       { payload: mapSelectInputFormData(data), entityId: selectedSchema },
       {
-        onSuccess: (newUser) => {
+        onSuccess: (newObject) => {
           switch (afterSuccessfulFormSubmit) {
             case "save":
-              navigate(`/objects/${newUser.id}`);
+              navigate(`/objects/${newObject.id}`);
               break;
 
             case "saveAndClose":
