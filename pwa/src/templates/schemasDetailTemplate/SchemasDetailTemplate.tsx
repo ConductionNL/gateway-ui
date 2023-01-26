@@ -109,11 +109,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            <Button
-              className={styles.addObjectButton}
-              disabled={getSchema.isLoading}
-              onClick={() => navigate(`/objects/new?schema=${getSchema.data.id}`)}
-            >
+            <Button className={styles.addObjectButton} onClick={() => navigate(`/objects/new?schema=${schemaId}`)}>
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
@@ -129,11 +125,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="2">
-            <Button
-              className={styles.addPropertyButton}
-              disabled={getSchema.isLoading}
-              onClick={() => navigate(`/schemas/${schemaId}/new`)}
-            >
+            <Button className={styles.addPropertyButton} onClick={() => navigate(`/schemas/${schemaId}/new`)}>
               <FontAwesomeIcon icon={faPlus} /> {t("Add Property")}
             </Button>
             {getSchema.isLoading && <Skeleton height="100px" />}
