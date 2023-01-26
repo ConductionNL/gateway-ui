@@ -23,10 +23,10 @@ export const CreateUserFormTemplate: React.FC = () => {
         <Heading1>Create User</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" form="UserForm" disabled={loading}>
+          {/* <Button className={styles.buttonIcon} type="submit" form="UserForm" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
-          </Button>
+          </Button> */}
         </div>
       </section>
 

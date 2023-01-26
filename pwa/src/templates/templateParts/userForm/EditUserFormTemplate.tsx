@@ -40,10 +40,10 @@ export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ user
         <Heading1>{getUser.data?.id ? `Edit ${getUser.data.name}` : "Edit User"}</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" form="UserForm" disabled={loading}>
+          {/* <Button className={styles.buttonIcon} type="submit" form="UserForm" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
-          </Button>
+          </Button> */}
 
           <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
             <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />

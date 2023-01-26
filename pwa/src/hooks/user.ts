@@ -29,12 +29,10 @@ export const useUser = (queryClient: QueryClient) => {
       onSuccess: async (newUser) => {
         if (userId) {
           updateItem(queryClient, "users", newUser);
-          navigate("/settings");
         }
 
         if (!userId) {
           addItem(queryClient, "users", newUser);
-          navigate(`/settings/users/${newUser.id}`);
         }
       },
       onError: (error) => {

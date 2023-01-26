@@ -8,6 +8,8 @@ import { useForm } from "react-hook-form";
 import { QueryClient, UseQueryResult } from "react-query";
 import { useUser } from "../../../hooks/user";
 import Skeleton from "react-loading-skeleton";
+import { SaveButtonTemplate, TAfterSuccessfulFormSubmit } from "../saveButton/SaveButtonTemplate";
+import { navigate } from "gatsby";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -18,6 +20,8 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
   const { t } = useTranslation();
   const [formError, setFormError] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
+
+  const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const queryClient = new QueryClient();
   const _useUsers = useUser(queryClient);
@@ -42,6 +46,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
     formState: { errors },
     control,
     watch,
+    reset,
   } = useForm();
 
   const pwd = watch("password");
@@ -64,13 +69,35 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
 
     delete payload.organization;
 
-    createOrEditUser.mutate({ payload, id: user?.id });
     user?.id && queryClient.setQueryData(["users", user.id], data);
+
+    createOrEditUser.mutate(
+      { payload, id: user?.id },
+      {
+        onSuccess: (newUser) => {
+          switch (afterSuccessfulFormSubmit) {
+            case "save":
+              !user && navigate(`/settings/users/${newUser.id}`);
+              break;
+
+            case "saveAndClose":
+              navigate("/settings");
+              break;
+
+            case "saveAndCreateNew":
+              user && navigate("/settings/users/new");
+              !user && reset();
+              break;
+          }
+        },
+      },
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} id="UserForm">
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <SaveButtonTemplate {...{ setAfterSuccessfulFormSubmit }} />
+
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
           <FormField>
