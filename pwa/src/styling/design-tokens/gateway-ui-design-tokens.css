@@ -82,7 +82,7 @@
   --gateway-ui-objects-save-button-right-border-radius: 0 3px 3px 0;
   --gateway-ui-objects-save-button-color: black;
   --gateway-ui-objects-save-button-background-color: white;
-  --gateway-ui-objects-save-button-border-color: rgb(204, 204, 204);
+  --gateway-ui-objects-save-button-border-color: 1px solid rgb(204, 204, 204);
   --gateway-ui-objects-save-button-triangle-size: 14px;
   --gateway-ui-objects-save-button-triangle-position-from-right: 16px;
   --gateway-ui-objects-save-button-options-border-radius: 4px;

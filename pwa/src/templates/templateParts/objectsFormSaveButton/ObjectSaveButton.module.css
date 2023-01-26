@@ -45,7 +45,7 @@
   height: var(--gateway-ui-objects-save-button-triangle-size);
   width: var(--gateway-ui-objects-save-button-triangle-size);
   background-color: var(--gateway-ui-objects-save-button-background-color);
-  border: 1px solid var(--gateway-ui-objects-save-button-border-color);
+  border: var(--gateway-ui-objects-save-button-border-color);
   position: absolute;
   top: -8px;
   right: var(--gateway-ui-objects-save-button-triangle-position-from-right);
@@ -59,7 +59,7 @@
   flex-direction: column;
   padding-inline: var(--gateway-ui-size-xs);
   padding-block: var(--gateway-ui-size-xs);
-  outline: 1px solid var(--gateway-ui-objects-save-button-border-color);
+  outline: var(--gateway-ui-objects-save-button-border-color);
   border-radius: var(--gateway-ui-objects-save-button-options-border-radius);
 }
 
