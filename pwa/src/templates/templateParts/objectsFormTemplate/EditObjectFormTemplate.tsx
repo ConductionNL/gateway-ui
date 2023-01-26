@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
@@ -13,7 +13,7 @@ import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 import Skeleton from "react-loading-skeleton";
-import ObjectSaveButton from "../objectsFormSaveButton/ObjectSaveButton";
+import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../objectsFormSaveButton/ObjectSaveButton";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -25,6 +25,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
   const [closeForm, setCloseForm] = React.useState<boolean>(false);
+  const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -51,18 +52,26 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
     setLoading(false);
   }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading]);
 
-  const onSave = (data: any): void => {
+  const onSubmit = (data: any): void => {
     setCloseForm(false);
 
     delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: null, objectId });
-  };
+    createOrEditObject.mutate(
+      { payload: mapSelectInputFormData(data), entityId: null, objectId },
+      {
+        onSuccess: (newUser) => {
+          switch (afterSuccessfulFormSubmit) {
+            case "saveAndClose":
+              navigate("/objects/");
+              break;
 
-  const onSaveAndClose = (data: any): void => {
-    setCloseForm(true);
-
-    delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: null, objectId });
+            case "saveAndCreateNew":
+              navigate("/objects/new");
+              break;
+          }
+        },
+      },
+    );
   };
 
   const handleDeleteObject = () => {
@@ -83,12 +92,12 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
       {!getSchema.data && <Skeleton height="200px" />}
 
       <div className={styles.container}>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <section className={styles.section}>
             <Heading1>{`Edit ${object._self.name}`}</Heading1>
 
             <div className={styles.buttons}>
-              <ObjectSaveButton onSave={handleSubmit(onSave)} onSaveClose={handleSubmit(onSaveAndClose)} />
+              <ObjectSaveButton {...{ setAfterSuccessfulFormSubmit }} />
 
               <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />

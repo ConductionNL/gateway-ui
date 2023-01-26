@@ -11,7 +11,8 @@ import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
-import ObjectSaveButton from "../objectsFormSaveButton/ObjectSaveButton";
+import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../objectsFormSaveButton/ObjectSaveButton";
+import { navigate } from "gatsby";
 
 interface CreateObjectFormTemplateProps {
   predefinedSchema?: string;
@@ -22,6 +23,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   const [loading, setLoading] = React.useState<boolean>(false);
   const [selectedSchema, setSelectedSchema] = React.useState<any>(null);
   const [closeForm, setCloseForm] = React.useState<boolean>(false);
+  const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
@@ -37,6 +39,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
     handleSubmit,
     control,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -63,49 +66,47 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
     setLoading(false);
   }, [getSchemas.isLoading, getSchemaSchema.isLoading, createOrEditObject.isLoading]);
 
-  const onSave = (data: any): void => {
+  const onSubmit = (data: any): void => {
     if (!selectedSchema) return;
-    setCloseForm(false);
 
     delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema });
-  };
+    createOrEditObject.mutate(
+      { payload: mapSelectInputFormData(data), entityId: selectedSchema },
+      {
+        onSuccess: (newUser) => {
+          switch (afterSuccessfulFormSubmit) {
+            case "save":
+              navigate(`/objects/${newUser.id}`);
+              break;
 
-  const onSaveAndClose = (data: any): void => {
-    if (!selectedSchema) return;
-    setCloseForm(true);
+            case "saveAndClose":
+              navigate("/objects/");
+              break;
 
-    delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema });
-  };
-
-  const onSaveAndCreate = (data: any): void => {
-    if (!selectedSchema) return;
-    setCloseForm(false);
-
-    delete data.schema;
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(data), entityId: selectedSchema });
-
-    const resetFields: any = {};
-    // @ts-ignore
-    Object.keys(getSchemaSchema.data?.properties).forEach((key) => {
-      resetFields[key] = null;
-    });
-    reset(resetFields);
+            case "saveAndCreateNew":
+              const resetFields: any = {};
+              Object.keys(getSchemaSchema.data.properties).forEach((key) => {
+                resetFields[key] = null;
+              });
+              reset(resetFields);
+              const selectedSchemaValue =
+                getSchemas.isSuccess && getSchemas.data.find((option) => selectedSchema === option.id);
+              setValue("schema", { label: selectedSchemaValue.name, value: selectedSchemaValue.id });
+              break;
+          }
+        },
+      },
+    );
   };
 
   return (
     <div className={styles.container}>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
           <Heading1>{t("Create Object")}</Heading1>
 
           <div className={styles.buttons}>
-            <ObjectSaveButton
-              onSave={handleSubmit(onSave)}
-              onSaveClose={handleSubmit(onSaveAndClose)}
-              onSaveCreateNew={handleSubmit(onSaveAndCreate)}
-            />
+            <ObjectSaveButton {...{ setAfterSuccessfulFormSubmit }} />
           </div>
         </section>
 

@@ -6,36 +6,41 @@ import { useTranslation } from "react-i18next";
 import Button from "@gemeente-denhaag/button";
 import clsx from "clsx";
 
+export type TAfterSuccessfulFormSubmit = "save" | "saveAndClose" | "saveAndCreateNew";
+
 interface ObjectSaveButtonProps {
-  onSave: () => null | any;
-  onSaveClose: () => null | any;
-  onSaveCreateNew?: () => null | any;
+  setAfterSuccessfulFormSubmit: React.Dispatch<React.SetStateAction<TAfterSuccessfulFormSubmit>>;
 }
 
-const ObjectSaveButton: React.FC<ObjectSaveButtonProps> = ({ onSave, onSaveClose, onSaveCreateNew }) => {
+const ObjectSaveButton: React.FC<ObjectSaveButtonProps> = ({ setAfterSuccessfulFormSubmit }) => {
   const { t } = useTranslation();
   const [menuEnabled, setMenuEnabled] = React.useState<boolean>(false);
 
   function handleBlur() {
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       setMenuEnabled(false);
-    });
-  }
-
-  function handleSaveOptions(fn: Function) {
-    fn();
-
-    return false;
+    }, 100);
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.saveButtonContainer}>
-        <Button onClick={onSave} className={clsx(styles.buttonIcon, styles.primaryButton)}>
+        <Button
+          type="submit"
+          onClick={() => setAfterSuccessfulFormSubmit("save")}
+          className={clsx(styles.buttonIcon, styles.primaryButton)}
+        >
           <FontAwesomeIcon icon={faFloppyDisk} />
           {t("Save")}
         </Button>
-        <Button onClick={() => setMenuEnabled(!menuEnabled)} onBlur={handleBlur} className={styles.secondaryButton}>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            setMenuEnabled(!menuEnabled);
+          }}
+          onBlur={handleBlur}
+          className={styles.secondaryButton}
+        >
           <FontAwesomeIcon icon={faEllipsis} />
         </Button>
       </div>
@@ -45,22 +50,22 @@ const ObjectSaveButton: React.FC<ObjectSaveButtonProps> = ({ onSave, onSaveClose
 
         <div className={styles.options}>
           <button
-            onMouseDown={() => handleSaveOptions(onSaveClose)}
+            type="submit"
+            onMouseDown={() => setAfterSuccessfulFormSubmit("saveAndClose")}
             className={clsx(styles.buttonIcon, styles.optionsButton)}
           >
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save and Close")}
           </button>
 
-          {onSaveCreateNew && (
-            <button
-              onMouseDown={() => handleSaveOptions(onSaveCreateNew)}
-              className={clsx(styles.buttonIcon, styles.optionsButton)}
-            >
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save and Create New")}
-            </button>
-          )}
+          <button
+            type="submit"
+            onMouseDown={() => setAfterSuccessfulFormSubmit("saveAndCreateNew")}
+            className={clsx(styles.buttonIcon, styles.optionsButton)}
+          >
+            <FontAwesomeIcon icon={faFloppyDisk} />
+            {t("Save and Create New")}
+          </button>
         </div>
       </div>
     </div>
