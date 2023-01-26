@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
@@ -13,6 +13,7 @@ import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 import Skeleton from "react-loading-skeleton";
+import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -23,6 +24,7 @@ interface EditObjectFormTemplateProps {
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, getSchema, objectId }) => {
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -50,11 +52,23 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading]);
 
   const onSubmit = (data: any): void => {
-    const payload = data;
+    delete data.schema;
+    createOrEditObject.mutate(
+      { payload: mapSelectInputFormData(data), entityId: null, objectId },
+      {
+        onSuccess: () => {
+          switch (afterSuccessfulFormSubmit) {
+            case "saveAndClose":
+              navigate("/objects/");
+              break;
 
-    delete payload.schema;
-
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(payload), entityId: null, objectId });
+            case "saveAndCreateNew":
+              navigate("/objects/new");
+              break;
+          }
+        },
+      },
+    );
   };
 
   const handleDeleteObject = () => {
@@ -80,10 +94,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
             <Heading1>{`Edit ${object._self.name}`}</Heading1>
 
             <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-                <FontAwesomeIcon icon={faFloppyDisk} />
-                {t("Save")}
-              </Button>
+              <ObjectSaveButton {...{ setAfterSuccessfulFormSubmit }} />
 
               <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />

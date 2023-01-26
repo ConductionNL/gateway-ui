@@ -2,17 +2,17 @@ import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
+import { Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, SelectSingle } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useObject } from "../../../hooks/object";
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
+import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
+import { navigate } from "gatsby";
 
 interface CreateObjectFormTemplateProps {
   predefinedSchema?: string;
@@ -22,6 +22,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
   const [selectedSchema, setSelectedSchema] = React.useState<any>(null);
+  const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const queryClient = useQueryClient();
   const _useObjects = useObject(queryClient);
@@ -36,6 +37,8 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
     register,
     handleSubmit,
     control,
+    reset,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -65,11 +68,34 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   const onSubmit = (data: any): void => {
     if (!selectedSchema) return;
 
-    const payload = data;
+    delete data.schema;
+    createOrEditObject.mutate(
+      { payload: mapSelectInputFormData(data), entityId: selectedSchema },
+      {
+        onSuccess: (newObject) => {
+          switch (afterSuccessfulFormSubmit) {
+            case "save":
+              navigate(`/objects/${newObject.id}`);
+              break;
 
-    delete payload.schema;
+            case "saveAndClose":
+              navigate("/objects/");
+              break;
 
-    createOrEditObject.mutate({ payload: mapSelectInputFormData(payload), entityId: selectedSchema });
+            case "saveAndCreateNew":
+              const resetFields: any = {};
+              Object.keys(getSchemaSchema.data.properties).forEach((key) => {
+                resetFields[key] = null;
+              });
+              reset(resetFields);
+              const selectedSchemaValue =
+                getSchemas.isSuccess && getSchemas.data.find((option) => selectedSchema === option.id);
+              setValue("schema", { label: selectedSchemaValue.name, value: selectedSchemaValue.id });
+              break;
+          }
+        },
+      },
+    );
   };
 
   return (
@@ -79,10 +105,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
           <Heading1>{t("Create Object")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save")}
-            </Button>
+            <ObjectSaveButton {...{ setAfterSuccessfulFormSubmit }} />
           </div>
         </section>
 

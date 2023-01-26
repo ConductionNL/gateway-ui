@@ -72,7 +72,6 @@ export const useObject = (queryClient: QueryClient) => {
 
         if (!objectId) {
           addItem(queryClient, "object", newObject);
-          navigate(`/objects/${newObject.id}`);
         }
       },
       onError: (error) => {

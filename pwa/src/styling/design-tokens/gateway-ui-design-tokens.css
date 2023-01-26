@@ -74,7 +74,17 @@
   --gateway-ui-background-color: #fafafa;
   --gateway-ui-side-bar-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
   --gateway-ui-color-disabled: #c2c8cb;
+
   /* Components */
   --gateway-ui-container-max-width: 2440px;
   --gateway-ui-card-border-color: 1px solid var(--gateway-ui-color-primary);
+  --gateway-ui-objects-save-button-left-border-radius: 3px 0 0 3px;
+  --gateway-ui-objects-save-button-right-border-radius: 0 3px 3px 0;
+  --gateway-ui-objects-save-button-color: black;
+  --gateway-ui-objects-save-button-background-color: white;
+  --gateway-ui-objects-save-button-border-color: 1px solid rgb(204, 204, 204);
+  --gateway-ui-objects-save-button-triangle-size: 14px;
+  --gateway-ui-objects-save-button-triangle-position-from-right: 16px;
+  --gateway-ui-objects-save-button-options-border-radius: 4px;
+  --gateway-ui-objects-save-button-options-button-border-radius: 4px;
 }

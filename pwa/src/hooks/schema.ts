@@ -25,7 +25,7 @@ export const useSchema = (queryClient: QueryClient) => {
     });
 
   const getSchema = (schemaId: string) =>
-    useQuery<any[], Error>(["schema_schema", schemaId], () => API.Schema.getSchema(schemaId), {
+    useQuery<any, Error>(["schema_schema", schemaId], () => API.Schema.getSchema(schemaId), {
       onError: (error) => {
         throw new Error(error.message);
       },
