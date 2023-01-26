@@ -1,13 +1,14 @@
 import * as React from "react";
 import * as styles from "./UserFormTemplate.module.css";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputPassword, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { QueryClient, UseQueryResult } from "react-query";
 import { useUser } from "../../../hooks/user";
 import Skeleton from "react-loading-skeleton";
+import { validatePassword } from "../../../services/stringValidations";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -61,6 +62,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
     };
 
     delete payload.organization;
+    data.password === "" && delete payload.password;
 
     createOrEditUser.mutate({ payload, id: user?.id });
     user?.id && queryClient.setQueryData(["users", user.id], data);
@@ -126,8 +128,10 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
               <InputPassword
                 {...{ register, errors }}
                 name="password"
-                validation={{ validate: (value) => value === pwd_verify }}
+                validation={{ validate: () => validatePassword(pwd, pwd_verify) }}
               />
+
+              {errors["password"] && <ErrorMessage message={errors["password"].message} />}
             </FormFieldInput>
           </FormField>
 
@@ -137,8 +141,10 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
               <InputPassword
                 {...{ register, errors }}
                 name="password_verify"
-                validation={{ validate: (value) => value === pwd }}
+                validation={{ validate: () => validatePassword(pwd_verify, pwd) }}
               />
+
+              {errors["password_verify"] && <ErrorMessage message={errors["password_verify"].message} />}
             </FormFieldInput>
           </FormField>
         </div>

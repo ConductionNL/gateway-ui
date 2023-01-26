@@ -19,3 +19,13 @@ export const validateThrowsArray = (rawString: string): boolean | string => {
     return "This is not valid JSON";
   }
 };
+
+export const validatePassword = (value: string, validationValue: string): string | boolean => {
+  if (!value && !validationValue) return true;
+  if (!value || !validationValue) return "Password does not match";
+  if (value === validationValue) {
+    return true;
+  } else {
+    return "Password does not match";
+  }
+};

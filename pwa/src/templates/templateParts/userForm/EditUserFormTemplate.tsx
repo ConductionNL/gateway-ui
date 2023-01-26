@@ -109,7 +109,6 @@ export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ user
                       <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell></TableCell>
-                      <TableCell></TableCell>
                     </TableRow>
                   )}
                 </TableBody>
