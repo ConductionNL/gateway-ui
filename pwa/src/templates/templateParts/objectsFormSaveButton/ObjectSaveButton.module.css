@@ -4,12 +4,12 @@
 }
 
 .primaryButton {
-  border-radius: 3px 0 0 3px !important;
+  border-radius: var(--gateway-ui-objects-save-button-left-border-radius) !important;
   margin-inline-end: 0 !important;
 }
 
 .secondaryButton {
-  border-radius: 0 3px 3px 0 !important;
+  border-radius: var(--gateway-ui-objects-save-button-right-border-radius) !important;
 }
 
 .container {
@@ -35,19 +35,20 @@
 
 .optionsContainerEnabled {
   display: block;
-  background-color: white;
+  background-color: var(--gateway-ui-objects-save-button-background-color);
+  color: var(--gateway-ui-objects-save-button-color);
 }
 
 .triangle {
   /* dont ask me how this works, it just does */
   display: block;
-  height: 14px;
-  width: 14px;
-  background-color: white;
-  border: 1px solid var(--gateway-ui-color-darkgrey);
+  height: var(--gateway-ui-objects-save-button-triangle-size);
+  width: var(--gateway-ui-objects-save-button-triangle-size);
+  background-color: var(--gateway-ui-objects-save-button-background-color);
+  border: 1px solid var(--gateway-ui-objects-save-button-border-color);
   position: absolute;
   top: -8px;
-  right: 16px;
+  right: var(--gateway-ui-objects-save-button-triangle-position-from-right);
   clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
   transform: rotate(135deg);
   border-radius: 0 0 0 0.25em;
@@ -58,8 +59,8 @@
   flex-direction: column;
   padding-inline: var(--gateway-ui-size-xs);
   padding-block: var(--gateway-ui-size-xs);
-  outline: 1px solid var(--gateway-ui-color-darkgrey);
-  border-radius: 4px;
+  outline: 1px solid var(--gateway-ui-objects-save-button-border-color);
+  border-radius: var(--gateway-ui-objects-save-button-options-border-radius);
 }
 
 .optionsButton {
@@ -74,5 +75,5 @@
 }
 .optionsButton:hover {
   background-color: var(--gateway-ui-color-lightgrey);
-  border-radius: 4px;
+  border-radius: var(--gateway-ui-objects-save-button-options-button-border-radius);
 }
