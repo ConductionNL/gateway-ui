@@ -52,3 +52,11 @@
   padding: 0;
   font-size: var(--gateway-ui-font-size-md);
 }
+
+.denhaag-button:hover {
+  cursor: pointer;
+}
+
+.denhaag-button:disabled {
+  cursor: not-allowed;
+}
