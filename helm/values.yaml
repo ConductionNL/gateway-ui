@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 pwa:
   image:
-    image: "ghcr.io/conductionnl/skeleton-app"
+    image: "ghcr.io/conductionnl/gateway-ui"
     pullPolicy: Always
     tag: "dev"
     # Overrides the image tag whose default is the chart appVersion.
