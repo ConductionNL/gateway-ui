@@ -27,6 +27,11 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.tableRow {
-  cursor: pointer;
+.callsToAction {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.callsToAction > *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-sm);
 }

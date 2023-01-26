@@ -7,9 +7,8 @@ import { QueryClient } from "react-query";
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faGear } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { useSchema } from "../../hooks/schema";
 import { translateDate } from "../../services/dateFormat";
 import { useObject } from "../../hooks/object";
@@ -55,13 +54,13 @@ export const SchemasTemplate: React.FC = () => {
               <TableHeader>{t("Date Created")}</TableHeader>
               <TableHeader>{t("Date Modified")}</TableHeader>
               <TableHeader></TableHeader>
-              <TableHeader></TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
             {getSchemas.data.map((schema) => (
-              <TableRow className={styles.tableRow} onClick={() => navigate(`/schemas/${schema.id}`)} key={schema.id}>
+              <TableRow key={schema.id}>
                 <TableCell>{schema.name}</TableCell>
+
                 {getObjects.isSuccess && (
                   <TableCell>
                     {getObjects.data.results.filter((object: any) => object._self.schema.id === schema.id).length}
@@ -71,17 +70,18 @@ export const SchemasTemplate: React.FC = () => {
                 {getObjects.isLoading && <TableCell>Loading...</TableCell>}
                 {getObjects.isError && <TableCell>Error</TableCell>}
                 <TableCell>{translateDate(i18n.language, schema.dateCreated)}</TableCell>
+
                 <TableCell>{translateDate(i18n.language, schema.dateModified)}</TableCell>
 
-                <TableCell onClick={() => navigate(`/schemas/${schema.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
-                <TableCell>
+                <TableCell className={styles.callsToAction}>
                   <Button onClick={(e) => goToCreateObject(e, schema.id)} className={styles.buttonIcon}>
                     <FontAwesomeIcon icon={faPlus} />
                     {t("Add Object")}
+                  </Button>
+
+                  <Button onClick={() => navigate(`/schemas/${schema.id}`)} className={styles.buttonIcon}>
+                    <FontAwesomeIcon icon={faGear} />
+                    {t("Edit Schema")}
                   </Button>
                 </TableCell>
               </TableRow>
