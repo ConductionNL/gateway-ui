@@ -1,13 +1,14 @@
 import * as React from "react";
 import * as styles from "./UserFormTemplate.module.css";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputPassword, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { QueryClient, UseQueryResult } from "react-query";
 import { useUser } from "../../../hooks/user";
 import Skeleton from "react-loading-skeleton";
+import { validatePassword } from "../../../services/stringValidations";
+import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -16,8 +17,6 @@ interface UserFormTemplateProps {
 
 export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrganization }) => {
   const { t } = useTranslation();
-  const [formError, setFormError] = React.useState<string>("");
-  const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = new QueryClient();
   const _useUsers = useUser(queryClient);
@@ -63,48 +62,48 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
     };
 
     delete payload.organization;
+    data.password === "" && delete payload.password;
 
     createOrEditUser.mutate({ payload, id: user?.id });
     user?.id && queryClient.setQueryData(["users", user.id], data);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} id="UserForm">
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+    <form onSubmit={handleSubmit(onSubmit)} id="UserForm" className={styles.formContainer}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              <InputText {...{ register, errors }} name="name" validation={{ required: true }} />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Description")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="description" disabled={loading} />
+              <Textarea {...{ register, errors }} name="description" />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Email")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="email" disabled={loading} />
+              <InputText {...{ register, errors }} name="email" />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Locale")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="locale" disabled={loading} />
+              <InputText {...{ register, errors }} name="locale" />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Person")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="person" disabled={loading} />
+              <InputText {...{ register, errors }} name="person" />
             </FormFieldInput>
           </FormField>
 
@@ -116,7 +115,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
                   options={organisationOptions ?? []}
                   {...{ register, errors, control }}
                   name="organization"
-                  disabled={loading}
                   validation={{ required: true }}
                 />
               )}
@@ -130,9 +128,10 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
               <InputPassword
                 {...{ register, errors }}
                 name="password"
-                disabled={loading}
-                validation={{ validate: (value) => value === pwd_verify }}
+                validation={{ validate: () => validatePassword(pwd, pwd_verify) }}
               />
+
+              {errors["password"] && <ErrorMessage message={errors["password"].message} />}
             </FormFieldInput>
           </FormField>
 
@@ -142,9 +141,10 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user, getOrg
               <InputPassword
                 {...{ register, errors }}
                 name="password_verify"
-                disabled={loading}
-                validation={{ validate: (value) => value === pwd }}
+                validation={{ validate: () => validatePassword(pwd_verify, pwd) }}
               />
+
+              {errors["password_verify"] && <ErrorMessage message={errors["password_verify"].message} />}
             </FormFieldInput>
           </FormField>
         </div>

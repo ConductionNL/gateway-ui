@@ -8,6 +8,7 @@ import Button from "@gemeente-denhaag/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import { Container } from "@conduction/components";
 
 export const CreateUserFormTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ export const CreateUserFormTemplate: React.FC = () => {
   const getOrganization = _useOrganizations.getAll();
 
   return (
-    <div className={styles.container}>
+    <Container layoutClassName={styles.container}>
       <section className={styles.section}>
         <Heading1>Create User</Heading1>
 
@@ -31,6 +32,6 @@ export const CreateUserFormTemplate: React.FC = () => {
       </section>
 
       <UserFormTemplate {...{ getOrganization }} />
-    </div>
+    </Container>
   );
 };

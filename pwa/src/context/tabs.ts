@@ -5,6 +5,7 @@ export interface ITabs {
   sourceDetailTabs: number;
   settingsDetailTabs: number;
   objectDetailTabs: number;
+  userDetailTabs: number;
 }
 
 export const tabs = {
@@ -12,6 +13,7 @@ export const tabs = {
   sourceDetailTabs: 0,
   settingsDetailTabs: 0,
   objectDetailTabs: 0,
+  userDetailTabs: 0,
 } as ITabs;
 
 export const TabsContext = React.createContext<[ITabs, (data: ITabs) => void]>([tabs, () => null]);
