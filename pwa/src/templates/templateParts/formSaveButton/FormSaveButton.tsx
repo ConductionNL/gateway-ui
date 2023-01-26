@@ -8,11 +8,11 @@ import clsx from "clsx";
 
 export type TAfterSuccessfulFormSubmit = "save" | "saveAndClose" | "saveAndCreateNew";
 
-interface ObjectSaveButtonProps {
+interface FormSaveButtonProps {
   setAfterSuccessfulFormSubmit: React.Dispatch<React.SetStateAction<TAfterSuccessfulFormSubmit>>;
 }
 
-const ObjectSaveButton: React.FC<ObjectSaveButtonProps> = ({ setAfterSuccessfulFormSubmit }) => {
+const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormSubmit }) => {
   const { t } = useTranslation();
   const [menuEnabled, setMenuEnabled] = React.useState<boolean>(false);
 
@@ -72,4 +72,4 @@ const ObjectSaveButton: React.FC<ObjectSaveButtonProps> = ({ setAfterSuccessfulF
   );
 };
 
-export default ObjectSaveButton;
+export default FormSaveButton;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./ObjectFormTemplate.module.css";
+import * as styles from "./FormSaveButton.module.css";
 import { useForm } from "react-hook-form";
 import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 import Skeleton from "react-loading-skeleton";
-import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../objectsFormSaveButton/ObjectSaveButton";
+import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
 
 interface EditObjectFormTemplateProps {
   object: any;

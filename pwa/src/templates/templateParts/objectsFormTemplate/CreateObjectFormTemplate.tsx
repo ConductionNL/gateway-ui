@@ -11,7 +11,7 @@ import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
-import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../objectsFormSaveButton/ObjectSaveButton";
+import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
 import { navigate } from "gatsby";
 
 interface CreateObjectFormTemplateProps {
