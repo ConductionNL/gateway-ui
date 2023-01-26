@@ -30,6 +30,10 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
+          - name: tmpfs
+            emptyDir: {}
+          - name: tmpfs2
+            emptyDir: {}
           - name: env
             configMap:
                 name: {{ include "api-platform.fullname" . }}
@@ -43,9 +47,13 @@ spec:
           image: "{{ .Values.pwa.image.image }}:{{ .Values.pwa.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pwa.image.pullPolicy }}
           volumeMounts:
-              -   name: env
-                  mountPath: "/usr/share/nginx/html/env.js"
-                  subPath: "env.js"
+            -   mountPath: /var/cache/nginx/client_temp
+                name: tmpfs
+            -   mountPath: /var/run
+                name: tmpfs2
+            -   name: env
+                mountPath: "/usr/share/nginx/html/env.js"
+                subPath: "env.js"
           ports:
             - name: http
               containerPort: 80
