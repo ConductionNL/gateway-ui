@@ -120,18 +120,24 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
             <FormFieldGroup>
               <FormFieldGroupLabel>Methods</FormFieldGroupLabel>
               <FormFieldInput className={styles.grid}>
-                <FormControlLabel input={<Checkbox name="checkbox" onChange={() => addToArray("GET")} />} label="GET" />
                 <FormControlLabel
-                  input={<Checkbox name="checkbox" onChange={() => addToArray("POST")} />}
+                  input={<Checkbox name="checkbox" onChange={() => addToArray("GET")} disabled={loading} />}
+                  label="GET"
+                />
+                <FormControlLabel
+                  input={<Checkbox name="checkbox" onChange={() => addToArray("POST")} disabled={loading} />}
                   label="POST"
                 />
-                <FormControlLabel input={<Checkbox name="checkbox" onChange={() => addToArray("PUT")} />} label="PUT" />
                 <FormControlLabel
-                  input={<Checkbox name="checkbox" onChange={() => addToArray("PATCH")} />}
+                  input={<Checkbox name="checkbox" onChange={() => addToArray("PUT")} disabled={loading} />}
+                  label="PUT"
+                />
+                <FormControlLabel
+                  input={<Checkbox name="checkbox" onChange={() => addToArray("PATCH")} disabled={loading} />}
                   label="PATCH"
                 />
                 <FormControlLabel
-                  input={<Checkbox name="checkbox" onChange={() => addToArray("DELETE")} />}
+                  input={<Checkbox name="checkbox" onChange={() => addToArray("DELETE")} disabled={loading} />}
                   label="DELETE"
                 />
               </FormFieldInput>
@@ -141,7 +147,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
               <FormFieldInput>
                 <FormFieldLabel>{t("Throws")}</FormFieldLabel>
                 {throws.length > 0 && (
-                  <SelectCreate options={throws} name="throws" {...{ register, errors, control }} />
+                  <SelectCreate options={throws} name="throws" {...{ register, errors, control }} disabled={loading} />
                 )}
               </FormFieldInput>
             </FormField>
@@ -164,6 +170,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
                     {...{ register, errors, control }}
+                    disabled={loading}
                   />
                 )}
               </FormFieldInput>
@@ -178,6 +185,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
                     options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                     name="schemas"
                     {...{ register, errors, control }}
+                    disabled={loading}
                   />
                 )}
               </FormFieldInput>
@@ -198,7 +206,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>
-              <CreateKeyValue name="pathArray" {...{ register, errors, control }} />
+              <CreateKeyValue name="pathArray" {...{ register, errors, control }} disabled={loading} />
             </FormFieldInput>
           </FormField>
         </section>

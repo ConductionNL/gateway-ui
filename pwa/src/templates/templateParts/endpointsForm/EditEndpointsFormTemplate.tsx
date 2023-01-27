@@ -201,6 +201,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("GET")}
                       onChange={() => addToArray("GET")}
+                      disabled={loading}
                     />
                   }
                   label="GET"
@@ -211,6 +212,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("POST")}
                       onChange={() => addToArray("POST")}
+                      disabled={loading}
                     />
                   }
                   label="POST"
@@ -221,6 +223,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("PUT")}
                       onChange={() => addToArray("PUT")}
+                      disabled={loading}
                     />
                   }
                   label="PUT"
@@ -231,6 +234,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("PATCH")}
                       onChange={() => addToArray("PATCH")}
+                      disabled={loading}
                     />
                   }
                   label="PATCH"
@@ -241,6 +245,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("DELETE")}
                       onChange={() => addToArray("DELETE")}
+                      disabled={loading}
                     />
                   }
                   label="DELETE"
@@ -254,7 +259,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                 {throws.length <= 0 && <Skeleton height="50px" />}
 
                 {throws.length > 0 && (
-                  <SelectCreate options={throws} name="throws" {...{ register, errors, control }} />
+                  <SelectCreate options={throws} name="throws" {...{ register, errors, control }} disabled={loading} />
                 )}
               </FormFieldInput>
             </FormField>
@@ -277,6 +282,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
                     {...{ register, errors, control }}
+                    disabled={loading}
                   />
                 )}
               </FormFieldInput>
@@ -291,6 +297,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                     options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                     name="schemas"
                     {...{ register, errors, control }}
+                    disabled={loading}
                   />
                 )}
               </FormFieldInput>
@@ -311,8 +318,12 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>
-              {/* @ts-ignore */}
-              <CreateKeyValue name="pathArray" defaultValue={pathParts} {...{ register, errors, control }} />{" "}
+              <CreateKeyValue
+                name="pathArray"
+                defaultValue={pathParts}
+                {...{ register, errors, control }}
+                disabled={loading}
+              />
             </FormFieldInput>
           </FormField>
         </section>
