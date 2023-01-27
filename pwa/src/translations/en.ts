@@ -53,5 +53,5 @@ export const en = {
   "No conjobs found": "No conjobs found",
   "No endpoints found": "No endpoints found",
   "Search on name": "Search on name",
-"Update to": "Update to",
+  "Update to": "Update to",
 };

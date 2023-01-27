@@ -49,3 +49,11 @@
     --gateway-ui-color-dark-red
   );
 }
+
+.flex {
+  flex: 1;
+}
+
+.flex > *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-md);
+}

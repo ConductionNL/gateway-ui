@@ -6,7 +6,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
-import { InputCheckbox, InputText, Textarea } from "@conduction/components";
+import { InputCheckbox, InputText, Tag, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -18,6 +18,7 @@ import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import Skeleton from "react-loading-skeleton";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import { dateTimeTag } from "../../../services/dateTime";
 
 interface EditCronjobFormTemplateProps {
   cronjob: any;
@@ -25,7 +26,7 @@ interface EditCronjobFormTemplateProps {
 }
 
 export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = ({ cronjob, cronjobId }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
   const API: APIService | null = React.useContext(APIContext);
@@ -165,6 +166,20 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
                 )}
               </FormFieldInput>
               {errors["throws"] && <ErrorMessage message={errors["throws"].message} />}
+            </FormField>
+
+            <FormField>
+              <FormFieldInput className={styles.flex}>
+                <FormFieldLabel>{t("Last run")}</FormFieldLabel>
+                <Tag label={dateTimeTag(t(i18n.language), cronjob.lastRun) ?? "-"} />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput className={styles.flex}>
+                <FormFieldLabel>{t("Next run")}</FormFieldLabel>
+                <Tag label={dateTimeTag(t(i18n.language), cronjob.nextRun) ?? "-"} />
+              </FormFieldInput>
             </FormField>
 
             <FormField>
