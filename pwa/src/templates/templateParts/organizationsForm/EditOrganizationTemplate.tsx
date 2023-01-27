@@ -5,11 +5,11 @@ import { QueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
 import Skeleton from "react-loading-skeleton";
 
-interface CreateOrganizationFormTemplateProps {
+interface CreateOrganizationTemplateProps {
   organizationId: string;
 }
 
-export const EditOrganizationFormTemplate: React.FC<CreateOrganizationFormTemplateProps> = ({ organizationId }) => {
+export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps> = ({ organizationId }) => {
   const queryClient = new QueryClient();
   const _useOrganizations = useOrganization(queryClient);
   const getOrganization = _useOrganizations.getOne(organizationId);
