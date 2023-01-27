@@ -14,6 +14,7 @@ import { VerticalMenu } from "../templateParts/verticalMenu/VerticalMenu";
 
 export const GatewayDetailTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [currentRequire, setCurrentRequire] = React.useState<string>("");
   const [showmoreVersions, setShowmoreVersions] = React.useState<boolean>(false);
 
@@ -36,6 +37,10 @@ export const GatewayDetailTemplate: React.FC = () => {
         onClick: () => setCurrentRequire(data.version),
       }))
     : [];
+
+  React.useEffect(() => {
+    setLoading(upgradePlugin.isLoading);
+  }, [upgradePlugin.isLoading]);
 
   React.useEffect(() => {
     if (!getPlugins.data) return;
@@ -73,7 +78,7 @@ export const GatewayDetailTemplate: React.FC = () => {
             </div>
 
             <div className={styles.buttons}>
-              <Button onClick={handleUpgradePlugin} className={styles.buttonIcon} type="submit">
+              <Button onClick={handleUpgradePlugin} className={styles.buttonIcon} type="submit" disabled={loading}>
                 <FontAwesomeIcon icon={faArrowsRotate} />
                 {t(getPlugins.data?.update ? "Upgrade to" : "Upgrade")}{" "}
                 {getPlugins.data?.update && getPlugins.data.update}

@@ -10,9 +10,10 @@ export type TAfterSuccessfulFormSubmit = "save" | "saveAndClose" | "saveAndCreat
 
 interface FormSaveButtonProps {
   setAfterSuccessfulFormSubmit: React.Dispatch<React.SetStateAction<TAfterSuccessfulFormSubmit>>;
+  disabled?: boolean;
 }
 
-const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormSubmit }) => {
+export const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormSubmit, disabled }) => {
   const { t } = useTranslation();
   const [menuEnabled, setMenuEnabled] = React.useState<boolean>(false);
 
@@ -29,6 +30,7 @@ const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormS
           type="submit"
           onClick={() => setAfterSuccessfulFormSubmit("save")}
           className={clsx(styles.buttonIcon, styles.button, styles.primaryButton)}
+          {...{ disabled }}
         >
           <FontAwesomeIcon icon={faFloppyDisk} />
           {t("Save")}
@@ -40,6 +42,7 @@ const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormS
           }}
           onBlur={handleBlur}
           className={styles.secondaryButton}
+          {...{ disabled }}
         >
           <FontAwesomeIcon icon={faEllipsis} />
         </Button>
@@ -71,5 +74,3 @@ const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormS
     </div>
   );
 };
-
-export default FormSaveButton;

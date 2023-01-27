@@ -46,6 +46,10 @@ export const CreateActionFormTemplate: React.FC = () => {
   const watchClass = watch("class");
 
   React.useEffect(() => {
+    setLoading(createOrEditAction.isLoading);
+  }, [createOrEditAction.isLoading]);
+
+  React.useEffect(() => {
     if (!watchClass || !getAllHandlers.data) return;
 
     const selectedHandler = getAllHandlers.data.find((handler) => handler.class === watchClass.value);
@@ -205,7 +209,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="isEnabled" />
+                      <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="isEnabled" />
                     </FormFieldInput>
                   </FormField>
 
@@ -225,12 +229,14 @@ export const CreateActionFormTemplate: React.FC = () => {
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
+
                       <Textarea
                         {...{ register, errors }}
                         name="conditions"
                         disabled={loading}
                         validation={{ validate: validateStringAsJSON }}
                       />
+
                       {errors["conditions"] && <ErrorMessage message={errors["conditions"].message} />}
                     </FormFieldInput>
                   </FormField>

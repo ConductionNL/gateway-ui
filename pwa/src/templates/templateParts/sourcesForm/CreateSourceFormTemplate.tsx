@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./SourcesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -25,9 +23,7 @@ interface CreateSourceFormTemplateProps {
 
 export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> = ({ sourceId }) => {
   const { t } = useTranslation();
-  const API: APIService = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
@@ -44,14 +40,6 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
   const createOrEditSource = _useSources.createOrEdit(sourceId);
-
-  const typeSelectOptions = [
-    { label: "JSON", value: "json" },
-    { label: "SML", value: "xml" },
-    { label: "SOAP", value: "soap" },
-    { label: "FTP", value: "ftp" },
-    { label: "SFTP", value: "sftp" },
-  ];
 
   const authSelectOptions = [
     { label: "No Auth", value: "none" },
@@ -71,6 +59,10 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
   const watchAuth = watch("auth");
   const watchHeaders = watch("headers");
   const watchQuery = watch("query");
+
+  React.useEffect(() => {
+    setLoading(createOrEditSource.isLoading);
+  }, [createOrEditSource.isLoading]);
 
   React.useEffect(() => {
     if (!watchAuth) return;
@@ -153,7 +145,6 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
             <div className={styles.gridContainer}>
               <div className={styles.grid}>
                 <FormField>
@@ -209,15 +200,19 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            <CreateKeyValue name="query" defaultValue={query} {...{ register, errors, control }} />
+            <CreateKeyValue name="query" disabled={loading} defaultValue={query} {...{ register, errors, control }} />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="2">
-            <CreateKeyValue name="headers" defaultValue={headers} {...{ register, errors, control }} />
+            <CreateKeyValue
+              disabled={loading}
+              name="headers"
+              defaultValue={headers}
+              {...{ register, errors, control }}
+            />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="3">
-            {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
             <div className={styles.gridContainer}>
               <div className={styles.grid}>
                 <FormField>
@@ -241,7 +236,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                         />
                       </a>
                     </div>
-                    <InputFloat {...{ register, errors }} name="connect_timeout" disabled={loading} />
+                    <InputFloat disabled={loading} {...{ register, errors }} name="connect_timeout" />
                   </FormFieldInput>
                 </FormField>
 
@@ -265,7 +260,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                       />
                     </a>
                   </div>
-                  <InputCheckbox name="debug" label="True" {...{ register, errors }} />
+                  <InputCheckbox name="debug" disabled={loading} label="True" {...{ register, errors }} />
                 </FormField>
 
                 <FormField>
@@ -289,6 +284,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                     </a>
                   </div>
                   <ToggleButton
+                    disabled={loading}
                     layoutClassName={styles.toggleButton}
                     startLabel="string"
                     endLabel="boolean"
@@ -301,7 +297,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                   />
                   <div className={styles.expectFormField}>
                     {advancedSwitch.decodeContent === "string" && (
-                      <Textarea name="decode_content_str" {...{ register, errors }} />
+                      <Textarea disabled={loading} name="decode_content_str" {...{ register, errors }} />
                     )}
                     {advancedSwitch.decodeContent === "boolean" && (
                       <span className={styles.checkboxInput}>
@@ -328,6 +324,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                     </a>
                   </div>
                   <ToggleButton
+                    disabled={loading}
                     layoutClassName={styles.toggleButton}
                     startLabel="int"
                     endLabel="float"
@@ -339,8 +336,12 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                     }
                   />
                   <div className={styles.expectFormField}>
-                    {advancedSwitch.delay === "int" && <InputNumber name="delay" {...{ register, errors }} />}
-                    {advancedSwitch.delay === "float" && <InputFloat name="delay" {...{ register, errors }} />}
+                    {advancedSwitch.delay === "int" && (
+                      <InputNumber disabled={loading} name="delay" {...{ register, errors }} />
+                    )}
+                    {advancedSwitch.delay === "float" && (
+                      <InputFloat disabled={loading} name="delay" {...{ register, errors }} />
+                    )}
                   </div>
                 </FormField>
 
@@ -361,6 +362,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                     </a>
                   </div>
                   <ToggleButton
+                    disabled={loading}
                     layoutClassName={styles.toggleButton}
                     startLabel="int"
                     endLabel="boolean"
@@ -377,7 +379,9 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                         <InputCheckbox name="expect_bool" label="True" {...{ register, errors }} />
                       </span>
                     )}
-                    {advancedSwitch.expect === "int" && <InputNumber name="expect_int" {...{ register, errors }} />}
+                    {advancedSwitch.expect === "int" && (
+                      <InputNumber disabled={loading} name="expect_int" {...{ register, errors }} />
+                    )}
                   </div>
                 </FormField>
 
@@ -398,7 +402,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                         />
                       </a>
                     </div>
-                    <InputText {...{ register, errors }} name="force_ip_resolve" />
+                    <InputText disabled={loading} {...{ register, errors }} name="force_ip_resolve" />
                   </FormFieldInput>
                 </FormField>
 
@@ -423,6 +427,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                     </a>
                   </div>
                   <ToggleButton
+                    disabled={loading}
                     layoutClassName={styles.toggleButton}
                     startLabel="string"
                     endLabel="boolean"
@@ -436,10 +441,12 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                   <div className={styles.expectFormField}>
                     {advancedSwitch.verify === "boolean" && (
                       <span className={styles.checkboxInput}>
-                        <InputCheckbox name="verify_bool" label="True" {...{ register, errors }} />
+                        <InputCheckbox disabled={loading} name="verify_bool" label="True" {...{ register, errors }} />
                       </span>
                     )}
-                    {advancedSwitch.verify === "string" && <InputText name="verify_str" {...{ register, errors }} />}
+                    {advancedSwitch.verify === "string" && (
+                      <InputText disabled={loading} name="verify_str" {...{ register, errors }} />
+                    )}
                   </div>
                 </FormField>
 
@@ -457,7 +464,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                         <FontAwesomeIcon data-tip={"Protocol version to use with the request."} icon={faInfoCircle} />
                       </a>
                     </div>
-                    <InputText {...{ register, errors }} name="version" />
+                    <InputText disabled={loading} {...{ register, errors }} name="version" />
                   </FormFieldInput>
                 </FormField>
 
@@ -478,7 +485,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                         />
                       </a>
                     </div>
-                    <InputFloat {...{ register, errors }} name="read_timeout" />
+                    <InputFloat disabled={loading} {...{ register, errors }} name="read_timeout" />
                   </FormFieldInput>
                 </FormField>
               </div>
@@ -504,7 +511,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                       />
                     </a>
                   </div>
-                  <Textarea {...{ register, errors }} name="proxy" />
+                  <Textarea disabled={loading} {...{ register, errors }} name="proxy" />
                 </FormFieldInput>
               </FormField>
 
@@ -530,6 +537,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                     </a>
                   </div>
                   <ToggleButton
+                    disabled={loading}
                     layoutClassName={styles.toggleButton}
                     startLabel="int"
                     endLabel="boolean"
@@ -543,11 +551,16 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                   <div className={styles.expectFormField}>
                     {advancedSwitch.idnConversion === "boolean" && (
                       <span className={styles.checkboxInput}>
-                        <InputCheckbox name="idn_conversion_bool" label="True" {...{ register, errors }} />
+                        <InputCheckbox
+                          disabled={loading}
+                          name="idn_conversion_bool"
+                          label="True"
+                          {...{ register, errors }}
+                        />
                       </span>
                     )}
                     {advancedSwitch.idnConversion === "int" && (
-                      <InputNumber name="idn_conversion_int" {...{ register, errors }} />
+                      <InputNumber disabled={loading} name="idn_conversion_int" {...{ register, errors }} />
                     )}
                   </div>
                 </FormField>
@@ -572,7 +585,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
                       />
                     </a>
                   </div>
-                  <InputCheckbox name="https_errors" label="True" {...{ register, errors }} />
+                  <InputCheckbox disabled={loading} name="https_errors" label="True" {...{ register, errors }} />
                 </FormField>
               </div>
             </div>

@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./PropertyFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Alert, Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, Textarea, InputDate } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
@@ -26,7 +24,6 @@ interface CreatePropertyFormTemplateProps {
 
 export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProps> = ({ schemaId, propertyId }) => {
   const { t } = useTranslation();
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
@@ -85,6 +82,10 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
   } = useForm();
 
   const watchType = watch("type");
+
+  React.useEffect(() => {
+    setLoading(createOrEditAttribute.isLoading);
+  }, [createOrEditAttribute.isLoading]);
 
   React.useEffect(() => {
     if (!watchType) return;

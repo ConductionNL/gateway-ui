@@ -11,7 +11,7 @@ import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
-import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
+import { FormSaveButton, TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
 import { navigate } from "gatsby";
 
 interface CreateObjectFormTemplateProps {
@@ -105,7 +105,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
           <Heading1>{t("Create Object")}</Heading1>
 
           <div className={styles.buttons}>
-            <ObjectSaveButton {...{ setAfterSuccessfulFormSubmit }} />
+            <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
           </div>
         </section>
 

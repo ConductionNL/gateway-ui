@@ -1,16 +1,14 @@
 import * as React from "react";
 import * as styles from "./EndpointsFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, {
   FormFieldGroup,
   FormFieldGroupLabel,
   FormFieldInput,
   FormFieldLabel,
 } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Checkbox, FormControlLabel, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Checkbox, FormControlLabel, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -34,9 +32,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
   const [methods, setMethods] = React.useState<any[]>([]);
   const [pathParts, setPathParts] = React.useState<any[]>([]);
   const [throws, setThrows] = React.useState<any[]>([]);
@@ -127,6 +123,10 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   };
 
   React.useEffect(() => {
+    setLoading(createOrEditEndpoint.isLoading);
+  }, [createOrEditEndpoint.isLoading]);
+
+  React.useEffect(() => {
     handleSetSelectFormValues(endpoint);
   }, [getSource.isSuccess]);
 
@@ -157,18 +157,18 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
               {t("Save")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete}>
+            <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete} disabled={loading}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
           </div>
         </section>
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
@@ -201,6 +201,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("GET")}
                       onChange={() => addToArray("GET")}
+                      disabled={loading}
                     />
                   }
                   label="GET"
@@ -211,6 +212,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("POST")}
                       onChange={() => addToArray("POST")}
+                      disabled={loading}
                     />
                   }
                   label="POST"
@@ -221,6 +223,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("PUT")}
                       onChange={() => addToArray("PUT")}
+                      disabled={loading}
                     />
                   }
                   label="PUT"
@@ -231,6 +234,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("PATCH")}
                       onChange={() => addToArray("PATCH")}
+                      disabled={loading}
                     />
                   }
                   label="PATCH"
@@ -241,6 +245,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                       name="checkbox"
                       checked={endpoint.methods && endpoint.methods.includes("DELETE")}
                       onChange={() => addToArray("DELETE")}
+                      disabled={loading}
                     />
                   }
                   label="DELETE"
@@ -254,7 +259,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                 {throws.length <= 0 && <Skeleton height="50px" />}
 
                 {throws.length > 0 && (
-                  <SelectCreate options={throws} name="throws" {...{ register, errors, control }} />
+                  <SelectCreate options={throws} name="throws" {...{ register, errors, control }} disabled={loading} />
                 )}
               </FormFieldInput>
             </FormField>
@@ -277,6 +282,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
                     {...{ register, errors, control }}
+                    disabled={loading}
                   />
                 )}
               </FormFieldInput>
@@ -291,6 +297,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
                     options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                     name="schemas"
                     {...{ register, errors, control }}
+                    disabled={loading}
                   />
                 )}
               </FormFieldInput>
@@ -311,8 +318,12 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>
-              {/* @ts-ignore */}
-              <CreateKeyValue name="pathArray" defaultValue={pathParts} {...{ register, errors, control }} />{" "}
+              <CreateKeyValue
+                name="pathArray"
+                defaultValue={pathParts}
+                {...{ register, errors, control }}
+                disabled={loading}
+              />
             </FormFieldInput>
           </FormField>
         </section>

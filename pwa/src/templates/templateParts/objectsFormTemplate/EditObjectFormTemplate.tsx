@@ -13,7 +13,7 @@ import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 import Skeleton from "react-loading-skeleton";
-import ObjectSaveButton, { TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
+import { FormSaveButton, TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -94,9 +94,9 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
             <Heading1>{`Edit ${object._self.name}`}</Heading1>
 
             <div className={styles.buttons}>
-              <ObjectSaveButton {...{ setAfterSuccessfulFormSubmit }} />
+              <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
 
-              <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard}>
+              <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard} disabled={loading}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
                 {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
               </Button>
