@@ -31,6 +31,8 @@ export const useDashboardCard = () => {
   const _useDashboardCards = useDashboardCards(queryClient);
   const mutateDashboardCard = _useDashboardCards.createOrDelete();
 
+  const [loading, setLoading] = React.useState<boolean>(false);
+
   const getDashboardCard = (id: string) => {
     const getDashboardCards = _useDashboardCards.getAll();
 
@@ -47,6 +49,8 @@ export const useDashboardCard = () => {
     entityId: string,
     dashboardCardId: string,
   ) => {
+    setLoading(true);
+
     const data = {
       name: `dashboardCard-${name}`,
       type,
@@ -56,8 +60,8 @@ export const useDashboardCard = () => {
       ordering: 1,
     };
 
-    mutateDashboardCard.mutate({ payload: data, id: dashboardCardId });
+    mutateDashboardCard.mutate({ payload: data, id: dashboardCardId }, { onSettled: () => setLoading(false) });
   };
 
-  return { addOrRemoveDashboardCard, getDashboardCard };
+  return { addOrRemoveDashboardCard, getDashboardCard, loading };
 };
