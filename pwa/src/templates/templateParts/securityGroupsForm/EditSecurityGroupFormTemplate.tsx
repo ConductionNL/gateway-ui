@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./SecurityGroupFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -24,10 +22,7 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
   securityGroupId,
 }) => {
   const { t } = useTranslation();
-
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const _useSecurityGroups = useSecurityGroup(queryClient);
@@ -53,6 +48,10 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
   };
 
   React.useEffect(() => {
+    setLoading(createOrEditSecurityGroup.isLoading || deleteSecurityGroup.isLoading);
+  }, [createOrEditSecurityGroup.isLoading, deleteSecurityGroup.isLoading]);
+
+  React.useEffect(() => {
     handleSetFormValues(securityGroup);
   }, []);
 
@@ -65,7 +64,9 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
   };
 
   const handleDelete = () => {
-    deleteSecurityGroup.mutate({ id: securityGroupId });
+    const confirmDeletion = confirm("Are you sure you want to delete this security group?");
+
+    confirmDeletion && deleteSecurityGroup.mutate({ id: securityGroupId });
   };
 
   return (
@@ -80,13 +81,13 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
               {t("Save")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete} disabled={loading}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
           </div>
         </section>
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
