@@ -29,6 +29,8 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
+  const [lastRun, setLastRun] = React.useState<string>("");
+  const [nextRun, setNextRun] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const _useCronjobs = useCronjob(queryClient);
@@ -71,6 +73,9 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
       "throws",
       cronjob["throws"]?.map((_throw: any) => ({ label: _throw, value: _throw })),
     );
+
+    setNextRun(cronjob.nextRun);
+    setLastRun(cronjob.lastRun);
   };
 
   React.useEffect(() => {
@@ -171,14 +176,14 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
             <FormField>
               <FormFieldInput className={styles.flex}>
                 <FormFieldLabel>{t("Last run")}</FormFieldLabel>
-                <Tag label={dateTimeTag(t(i18n.language), cronjob.lastRun) ?? "-"} />
+                <Tag label={dateTimeTag(t(i18n.language), lastRun) ?? "-"} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput className={styles.flex}>
                 <FormFieldLabel>{t("Next run")}</FormFieldLabel>
-                <Tag label={dateTimeTag(t(i18n.language), cronjob.nextRun) ?? "-"} />
+                <Tag label={dateTimeTag(t(i18n.language), nextRun) ?? "-"} />
               </FormFieldInput>
             </FormField>
 
