@@ -17,14 +17,16 @@ interface EditAuthenticationFormTemplateProps {
 
 export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemplateProps> = ({ authenticationId }) => {
   const { t } = useTranslation();
-  const { toggleDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
+
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = new QueryClient();
   const _useAuthentications = useAuthentication(queryClient);
   const getAuthentication = _useAuthentications.getOne(authenticationId);
   const deleteAuthentication = _useAuthentications.remove(authenticationId);
 
-  const dashboardCard = getDashboardCard(getAuthentication.data.id);
+  const dashboardCard = getDashboardCard(authenticationId);
 
   const toggleFromDashboard = () => {
     toggleDashboardCard(
@@ -35,6 +37,10 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
       dashboardCard?.id,
     );
   };
+
+  React.useEffect(() => {
+    setLoading(deleteAuthentication.isLoading || dashboardToggleLoading);
+  }, [deleteAuthentication.isLoading, dashboardToggleLoading]);
 
   const handleDelete = (): void => {
     deleteAuthentication.mutateAsync({ id: authenticationId });
@@ -48,7 +54,7 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
         </Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" form="AuthForm">
+          <Button className={styles.buttonIcon} type="submit" form="AuthForm" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
@@ -58,7 +64,7 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>
 
-          <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+          <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete} disabled={loading}>
             <FontAwesomeIcon icon={faTrash} />
             {t("Delete")}
           </Button>
