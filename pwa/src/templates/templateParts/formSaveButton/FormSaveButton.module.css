@@ -1,15 +1,23 @@
+.button {
+  width: max-content;
+}
+
 .buttonIcon > span > svg,
 .buttonIcon > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
 .primaryButton {
-  border-radius: var(--gateway-ui-objects-save-button-left-border-radius) !important;
+  border-radius: var(
+    --gateway-ui-objects-save-button-left-border-radius
+  ) !important;
   margin-inline-end: 0 !important;
 }
 
 .secondaryButton {
-  border-radius: var(--gateway-ui-objects-save-button-right-border-radius) !important;
+  border-radius: var(
+    --gateway-ui-objects-save-button-right-border-radius
+  ) !important;
 }
 
 .container {
@@ -75,5 +83,7 @@
 }
 .optionsButton:hover {
   background-color: var(--gateway-ui-color-lightgrey);
-  border-radius: var(--gateway-ui-objects-save-button-options-button-border-radius);
+  border-radius: var(
+    --gateway-ui-objects-save-button-options-button-border-radius
+  );
 }

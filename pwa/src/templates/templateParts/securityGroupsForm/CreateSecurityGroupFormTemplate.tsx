@@ -10,6 +10,7 @@ import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { SelectCreate } from "@conduction/components/lib/components/formFields";
 import { useQueryClient } from "react-query";
 import { useSecurityGroup } from "../../../hooks/securityGroup";
+import clsx from "clsx";
 
 interface CreateSecurityGroupFormTemplateProps {
   securityGroupId?: string;
@@ -51,7 +52,7 @@ export const CreateSecurityGroupFormTemplate: React.FC<CreateSecurityGroupFormTe
           <Heading1>{t("Create Security Group")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>

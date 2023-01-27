@@ -15,6 +15,7 @@ import { SelectCreate } from "@conduction/components/lib/components/formFields/s
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
+import clsx from "clsx";
 
 interface CreatePropertyFormTemplateProps {
   schemaId: string;
@@ -139,7 +140,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
             <Heading1>{t("Create Property")}</Heading1>
 
             <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+              <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 {t("Save")}
               </Button>

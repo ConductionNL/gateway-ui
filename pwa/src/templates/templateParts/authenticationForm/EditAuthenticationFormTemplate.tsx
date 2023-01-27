@@ -24,7 +24,7 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
   const getAuthentication = _useAuthentications.getOne(authenticationId);
   const deleteAuthentication = _useAuthentications.remove(authenticationId);
 
-  const dashboardCard = getDashboardCard(getAuthentication.data.id);
+  const dashboardCard = getDashboardCard(getAuthentication.data?.id);
 
   const addOrRemoveFromDashboard = () => {
     addOrRemoveDashboardCard(
@@ -48,17 +48,17 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
         </Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" form="AuthForm">
+          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="AuthForm">
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
 
-          <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard}>
             <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>
 
-          <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+          <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete}>
             <FontAwesomeIcon icon={faTrash} />
             {t("Delete")}
           </Button>

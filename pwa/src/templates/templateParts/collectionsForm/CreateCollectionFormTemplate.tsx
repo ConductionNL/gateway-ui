@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useCollection } from "../../../hooks/collection";
+import clsx from "clsx";
 
 interface CreateCollectionFormTemplateProps {
   collectionId?: string;
@@ -43,7 +44,7 @@ export const CreateCollectionFormTemplate: React.FC<CreateCollectionFormTemplate
           <Heading1>{t("Create Collection")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>

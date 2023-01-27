@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { AuthenticationFormTemplate } from "./AuthenticationFormTemplate";
+import clsx from "clsx";
 
 export const CreateAuthenticationFormTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -16,7 +17,7 @@ export const CreateAuthenticationFormTemplate: React.FC = () => {
         <Heading1>Create Authentication</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" form="AuthForm" disabled={loading}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="AuthForm" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
