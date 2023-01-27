@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./ActionFormTemplate.module.css";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Button, Divider, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
@@ -67,7 +67,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
       configuration: {},
     };
 
-    for (const [key, _] of Object.entries(actionHandlerSchema.properties)) {
+    for (const [key, _] of Object.entries(actionHandlerSchema?.properties)) {
       payload.configuration[key] = data[key];
 
       if (actionHandlerSchema.properties[key].type === "object") {
@@ -126,6 +126,10 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   };
 
   React.useEffect(() => {
+    setLoading(createOrEditAction.isLoading);
+  }, [createOrEditAction.isLoading]);
+
+  React.useEffect(() => {
     if (!getCronjobs.data) return;
 
     const cronjobs = getCronjobs.data.map((cronjob) => ({ label: cronjob.name, value: cronjob.name }));
@@ -144,19 +148,23 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
           <Heading1>{`Edit ${action.name}`}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} disabled={loading} onClick={addOrRemoveFromDashboard}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              disabled={loading}
+              onClick={addOrRemoveFromDashboard}
+            >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
             <Button
               onClick={handleDeleteAction}
-              className={clsx(styles.buttonIcon, styles.deleteButton)}
+              className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
               disabled={loading}
             >
               <FontAwesomeIcon icon={faTrash} />
@@ -262,21 +270,21 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("async")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="async" />
+                      <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="async" />
                     </FormFieldInput>
                   </FormField>
 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="true" name="isEnabled" />
+                      <InputCheckbox {...{ register, errors }} disabled={loading} label="true" name="isEnabled" />
                     </FormFieldInput>
                   </FormField>
 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="isLockable" />
+                      <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="isLockable" />
                     </FormFieldInput>
                   </FormField>
                 </div>

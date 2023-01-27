@@ -30,7 +30,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
 }) => {
   const { t } = useTranslation();
 
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [isImmutable, setIsImmutable] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
@@ -102,6 +101,10 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   } = useForm();
 
   const watchType = watch("type");
+
+  React.useEffect(() => {
+    setLoading(createOrEditProperty.isLoading || deleteProperty.isLoading);
+  }, [createOrEditProperty.isLoading, deleteProperty.isLoading]);
 
   React.useEffect(() => {
     if (!getSchemas.isSuccess) return;
@@ -320,12 +323,20 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
             <Heading1>{`Edit ${property.name}`}</Heading1>
 
             <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} type="submit" disabled={loading || isImmutable}>
+              <Button
+                className={clsx(styles.buttonIcon, styles.button)}
+                type="submit"
+                disabled={loading || isImmutable}
+              >
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 {t("Save")}
               </Button>
 
-              <Button onClick={handleDeleteProperty} className={clsx(styles.buttonIcon, styles.deleteButton)}>
+              <Button
+                onClick={handleDeleteProperty}
+                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+                disabled={loading}
+              >
                 <FontAwesomeIcon icon={faTrash} />
                 {t("Delete")}
               </Button>

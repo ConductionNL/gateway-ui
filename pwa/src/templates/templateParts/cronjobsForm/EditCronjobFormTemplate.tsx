@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./CronjobsFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -28,9 +26,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
@@ -72,9 +68,13 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
 
     setValue(
       "throws",
-      cronjob["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
+      cronjob["throws"]?.map((_throw: any) => ({ label: _throw, value: _throw })),
     );
   };
+
+  React.useEffect(() => {
+    setLoading(createOrEditCronjob.isLoading);
+  }, [createOrEditCronjob.isLoading]);
 
   React.useEffect(() => {
     setListensAndThrows([...predefinedSubscriberEvents]);
@@ -91,23 +91,31 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
           <Heading1>{`Edit ${cronjob.name}`}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              onClick={addOrRemoveFromDashboard}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+              onClick={handleDelete}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
           </div>
         </section>
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
@@ -170,7 +178,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="true" name="isEnabled" />
+                <InputCheckbox {...{ register, errors }} label="true" name="isEnabled" disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>

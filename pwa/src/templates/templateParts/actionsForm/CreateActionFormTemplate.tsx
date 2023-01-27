@@ -16,6 +16,7 @@ import Skeleton from "react-loading-skeleton";
 import { validateStringAsJSON } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
+import clsx from "clsx";
 
 export const CreateActionFormTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -43,6 +44,10 @@ export const CreateActionFormTemplate: React.FC = () => {
   } = useForm();
 
   const watchClass = watch("class");
+
+  React.useEffect(() => {
+    setLoading(createOrEditAction.isLoading);
+  }, [createOrEditAction.isLoading]);
 
   React.useEffect(() => {
     if (!watchClass || !getAllHandlers.data) return;
@@ -85,7 +90,7 @@ export const CreateActionFormTemplate: React.FC = () => {
           <Heading1>{t("Create Action")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
@@ -204,7 +209,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="isEnabled" />
+                      <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="isEnabled" />
                     </FormFieldInput>
                   </FormField>
 
@@ -224,12 +229,14 @@ export const CreateActionFormTemplate: React.FC = () => {
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
+
                       <Textarea
                         {...{ register, errors }}
                         name="conditions"
                         disabled={loading}
                         validation={{ validate: validateStringAsJSON }}
                       />
+
                       {errors["conditions"] && <ErrorMessage message={errors["conditions"].message} />}
                     </FormFieldInput>
                   </FormField>

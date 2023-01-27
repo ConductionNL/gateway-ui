@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./PropertyFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Alert, Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, Textarea, InputDate } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
@@ -17,6 +15,7 @@ import { SelectCreate } from "@conduction/components/lib/components/formFields/s
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
+import clsx from "clsx";
 
 interface CreatePropertyFormTemplateProps {
   schemaId: string;
@@ -25,7 +24,6 @@ interface CreatePropertyFormTemplateProps {
 
 export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProps> = ({ schemaId, propertyId }) => {
   const { t } = useTranslation();
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
@@ -86,6 +84,10 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
   const watchType = watch("type");
 
   React.useEffect(() => {
+    setLoading(createOrEditAttribute.isLoading);
+  }, [createOrEditAttribute.isLoading]);
+
+  React.useEffect(() => {
     if (!watchType) return;
 
     const selectedType = typeSelectOptions.find((typeOption) => typeOption.value === watchType.value);
@@ -138,7 +140,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
             <Heading1>{t("Create Property")}</Heading1>
 
             <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+              <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 {t("Save")}
               </Button>

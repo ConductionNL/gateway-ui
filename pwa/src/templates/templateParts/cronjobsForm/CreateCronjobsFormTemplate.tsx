@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./CronjobsFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
@@ -16,6 +14,7 @@ import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import Skeleton from "react-loading-skeleton";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import clsx from "clsx";
 
 interface CreateCronjobFormTemplateProps {
   cronjobId?: string;
@@ -23,9 +22,7 @@ interface CreateCronjobFormTemplateProps {
 
 export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps> = ({ cronjobId }) => {
   const { t } = useTranslation();
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
@@ -38,6 +35,10 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
     control,
     formState: { errors },
   } = useForm();
+
+  React.useEffect(() => {
+    setLoading(createOrEditCronjob.isLoading);
+  }, [createOrEditCronjob.isLoading]);
 
   React.useEffect(() => {
     setListensAndThrows([...predefinedSubscriberEvents]);
@@ -59,13 +60,12 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
           <Heading1>{t("Create Cronjob")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
           </div>
         </section>
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
@@ -127,7 +127,7 @@ export const CreateCronjobFormTemplate: React.FC<CreateCronjobFormTemplateProps>
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="on" name="isEnabled" />
+                <InputCheckbox disabled={loading} {...{ register, errors }} label="on" name="isEnabled" />
               </FormFieldInput>
             </FormField>
           </div>

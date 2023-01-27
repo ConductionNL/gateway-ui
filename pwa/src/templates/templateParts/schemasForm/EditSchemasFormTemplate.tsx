@@ -10,6 +10,7 @@ import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useSchema } from "../../../hooks/schema";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
+import clsx from "clsx";
 
 interface EditSchemaFormTemplateProps {
   schema: any;
@@ -61,7 +62,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <section className={styles.section}>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>

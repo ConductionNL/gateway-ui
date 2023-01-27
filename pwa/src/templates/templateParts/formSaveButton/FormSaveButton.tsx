@@ -10,9 +10,10 @@ export type TAfterSuccessfulFormSubmit = "save" | "saveAndClose" | "saveAndCreat
 
 interface FormSaveButtonProps {
   setAfterSuccessfulFormSubmit: React.Dispatch<React.SetStateAction<TAfterSuccessfulFormSubmit>>;
+  disabled?: boolean;
 }
 
-const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormSubmit }) => {
+export const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormSubmit, disabled }) => {
   const { t } = useTranslation();
   const [menuEnabled, setMenuEnabled] = React.useState<boolean>(false);
 
@@ -28,7 +29,8 @@ const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormS
         <Button
           type="submit"
           onClick={() => setAfterSuccessfulFormSubmit("save")}
-          className={clsx(styles.buttonIcon, styles.primaryButton)}
+          className={clsx(styles.buttonIcon, styles.button, styles.primaryButton)}
+          {...{ disabled }}
         >
           <FontAwesomeIcon icon={faFloppyDisk} />
           {t("Save")}
@@ -40,6 +42,7 @@ const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormS
           }}
           onBlur={handleBlur}
           className={styles.secondaryButton}
+          {...{ disabled }}
         >
           <FontAwesomeIcon icon={faEllipsis} />
         </Button>
@@ -52,7 +55,7 @@ const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormS
           <button
             type="submit"
             onMouseDown={() => setAfterSuccessfulFormSubmit("saveAndClose")}
-            className={clsx(styles.buttonIcon, styles.optionsButton)}
+            className={clsx(styles.buttonIcon, styles.button, styles.optionsButton)}
           >
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save and Close")}
@@ -61,7 +64,7 @@ const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormS
           <button
             type="submit"
             onMouseDown={() => setAfterSuccessfulFormSubmit("saveAndCreateNew")}
-            className={clsx(styles.buttonIcon, styles.optionsButton)}
+            className={clsx(styles.buttonIcon, styles.button, styles.optionsButton)}
           >
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save and Create New")}
@@ -71,5 +74,3 @@ const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessfulFormS
     </div>
   );
 };
-
-export default FormSaveButton;

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./PluginsDetailTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { Container, Tag, ToolTip } from "@conduction/components";
-import { Button, Divider, Heading1, Heading3, Heading4, Link, Paragraph } from "@gemeente-denhaag/components-react";
+import { Button, Divider, Heading1, Heading3, Paragraph } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowsRotate,
@@ -21,7 +21,6 @@ import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { ExternalLinkIcon } from "@gemeente-denhaag/icons";
 import { GitHubLogo } from "../../assets/svgs/GitHub";
-import TableWrapper from "../../components/tableWrapper/TableWrapper";
 import { VerticalMenu } from "../templateParts/verticalMenu/VerticalMenu";
 
 interface PluginsDetailPageProps {
@@ -30,6 +29,7 @@ interface PluginsDetailPageProps {
 
 export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ pluginName }) => {
   const { t } = useTranslation();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [currentRequire, setCurrentRequire] = React.useState<string>("");
   const [showmoreVersions, setShowmoreVersions] = React.useState<boolean>(false);
 
@@ -83,6 +83,10 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
       : [];
 
   React.useEffect(() => {
+    setLoading(installPlugin.isLoading || upgradePlugin.isLoading || deletePlugin.isLoading);
+  }, [installPlugin.isLoading, upgradePlugin.isLoading, deletePlugin.isLoading]);
+
+  React.useEffect(() => {
     if (!getPlugin.data) return;
 
     const versionExists: boolean = getPlugin.data.version
@@ -112,13 +116,22 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
               {installed && (
                 <div className={styles.buttons}>
                   {!!getPlugin.data.update && (
-                    <Button onClick={handleUpgradePlugin} className={styles.buttonIcon} type="submit">
+                    <Button
+                      disabled={loading}
+                      onClick={handleUpgradePlugin}
+                      className={styles.buttonIcon}
+                      type="submit"
+                    >
                       <FontAwesomeIcon icon={faArrowsRotate} />
                       {t("Upgrade to")} {getPlugin.data.update}
                     </Button>
                   )}
 
-                  <Button onClick={handleDeletePlugin} className={clsx(styles.buttonIcon, styles.deleteButton)}>
+                  <Button
+                    disabled={loading}
+                    onClick={handleDeletePlugin}
+                    className={clsx(styles.buttonIcon, styles.deleteButton)}
+                  >
                     <FontAwesomeIcon icon={faTrash} />
                     {t("Remove")}
                   </Button>
@@ -126,7 +139,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
               )}
               {!installed && (
                 <div className={styles.buttons}>
-                  <Button onClick={handleInstallPlugin} className={styles.buttonIcon}>
+                  <Button disabled={loading} onClick={handleInstallPlugin} className={styles.buttonIcon}>
                     <FontAwesomeIcon icon={faDownload} />
                     {t("Install")}
                   </Button>

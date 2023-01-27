@@ -30,6 +30,10 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
+.button {
+  width: max-content;
+}
+
 .buttonIcon > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }

@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./CollectionFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputText } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -23,9 +21,7 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const _useCollection = useCollection(queryClient);
@@ -46,8 +42,10 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
     queryClient.setQueryData(["collections", collectionId], data);
   };
 
-  const handleDelete = (id: string): void => {
-    deleteCollection.mutateAsync({ id: id });
+  const handleDelete = (): void => {
+    const confirmDeletion = confirm("Are you sure you want to delete this collection?");
+
+    confirmDeletion && deleteCollection.mutateAsync({ id: collectionId });
   };
 
   const addOrRemoveFromDashboard = () => {
@@ -60,6 +58,10 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
   };
 
   React.useEffect(() => {
+    setLoading(createOrEditCollection.isLoading || deleteCollection.isLoading);
+  }, [createOrEditCollection.isLoading, deleteCollection.isLoading]);
+
+  React.useEffect(() => {
     handleSetFormValues(collection);
   }, []);
 
@@ -70,23 +72,27 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
           <Heading1>{`Edit ${collection.name}`}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              onClick={addOrRemoveFromDashboard}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)}>
+            <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} disabled={loading}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
           </div>
         </section>
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
         <div className={styles.container}>
           <div className={styles.grid}>
             <FormField>
