@@ -54,17 +54,17 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
         </Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" form="AuthForm" disabled={loading}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="AuthForm" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
 
-          <Button className={styles.buttonIcon} onClick={toggleFromDashboard}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard}>
             <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>
 
-          <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete} disabled={loading}>
+          <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete} disabled={loading}>
             <FontAwesomeIcon icon={faTrash} />
             {t("Delete")}
           </Button>

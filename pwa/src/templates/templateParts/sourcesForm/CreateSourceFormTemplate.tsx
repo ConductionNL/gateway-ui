@@ -15,6 +15,7 @@ import { ReactTooltip } from "@conduction/components/lib/components/toolTip/Tool
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
+import clsx from "clsx";
 
 interface CreateSourceFormTemplateProps {
   sourceId?: string;
@@ -122,7 +123,7 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
           <Heading1>{t("Create Source")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>

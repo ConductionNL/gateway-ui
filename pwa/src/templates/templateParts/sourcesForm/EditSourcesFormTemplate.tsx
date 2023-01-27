@@ -255,20 +255,24 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
           <Heading1>{`Edit ${source.name}`}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} onClick={toggleFromDashboard} disabled={loading}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              onClick={toggleFromDashboard}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
             <Button
-              disabled={loading}
-              className={clsx(styles.buttonIcon, styles.deleteButton)}
+              className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
               onClick={() => handleDelete(source.id)}
+              disabled={loading}
             >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}

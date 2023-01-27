@@ -10,6 +10,7 @@ import { faFloppyDisk, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import clsx from "clsx";
 
 interface OrganizationFormProps {
   organization?: any;
@@ -62,18 +63,20 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
         <Heading1>{organization?.id ? `Edit ${organization.name}` : "Create Organization"}</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
 
           {organization?.id && (
-            <>
-              <Button disabled={loading} className={styles.buttonIcon} onClick={toggleFromDashboard}>
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
-            </>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              onClick={toggleFromDashboard}
+              disabled={loading}
+            >
+              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+            </Button>
           )}
         </div>
       </section>

@@ -17,6 +17,7 @@ import { Container } from "@conduction/components";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { navigate } from "gatsby";
+import clsx from "clsx";
 
 interface EditUserFormTemplateProps {
   userId: string;
@@ -46,12 +47,12 @@ export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ user
         <Heading1>{getUser.data?.id ? `Edit ${getUser.data.name}` : "Edit User"}</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" form="UserForm">
+          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="UserForm">
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
 
-          <Button className={styles.buttonIcon} onClick={toggleFromDashboard}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard}>
             <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>
