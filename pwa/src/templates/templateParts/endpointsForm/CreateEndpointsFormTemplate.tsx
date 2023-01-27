@@ -1,16 +1,14 @@
 import * as React from "react";
 import * as styles from "./EndpointsFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, {
   FormFieldGroup,
   FormFieldGroupLabel,
   FormFieldInput,
   FormFieldLabel,
 } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Checkbox, FormControlLabel, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Checkbox, FormControlLabel, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
@@ -29,10 +27,7 @@ interface CreateEndpointFormTemplateProps {
 
 export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProps> = ({ endpointId }) => {
   const { t } = useTranslation();
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
-  const [pathParts, setPathParts] = React.useState<any[]>([]);
   const [methods, setMethods] = React.useState<any[]>([]);
   const [throws, setThrows] = React.useState<any[]>([]);
 
@@ -79,6 +74,10 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
   };
 
   React.useEffect(() => {
+    setLoading(createOrEditEndpoint.isLoading);
+  }, [createOrEditEndpoint.isLoading]);
+
+  React.useEffect(() => {
     setThrows([...predefinedSubscriberEvents]);
   }, []);
 
@@ -94,7 +93,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
             </Button>
           </div>
         </section>
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>

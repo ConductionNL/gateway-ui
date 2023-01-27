@@ -1,16 +1,14 @@
 import * as React from "react";
 import * as styles from "./EndpointsFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, {
   FormFieldGroup,
   FormFieldGroupLabel,
   FormFieldInput,
   FormFieldLabel,
 } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Checkbox, FormControlLabel, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Checkbox, FormControlLabel, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -34,9 +32,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
   const [methods, setMethods] = React.useState<any[]>([]);
   const [pathParts, setPathParts] = React.useState<any[]>([]);
   const [throws, setThrows] = React.useState<any[]>([]);
@@ -127,6 +123,10 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   };
 
   React.useEffect(() => {
+    setLoading(createOrEditEndpoint.isLoading);
+  }, [createOrEditEndpoint.isLoading]);
+
+  React.useEffect(() => {
     handleSetSelectFormValues(endpoint);
   }, [getSource.isSuccess]);
 
@@ -157,18 +157,18 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+            <Button disabled={loading} className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+            <Button disabled={loading} className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
           </div>
         </section>
-        {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
+
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
             <FormField>
