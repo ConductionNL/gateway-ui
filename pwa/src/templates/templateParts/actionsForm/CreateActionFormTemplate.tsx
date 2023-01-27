@@ -16,6 +16,7 @@ import Skeleton from "react-loading-skeleton";
 import { validateStringAsJSON } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
+import clsx from "clsx";
 
 export const CreateActionFormTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -85,7 +86,7 @@ export const CreateActionFormTemplate: React.FC = () => {
           <Heading1>{t("Create Action")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>

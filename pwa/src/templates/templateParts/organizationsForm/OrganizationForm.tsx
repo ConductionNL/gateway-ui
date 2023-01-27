@@ -10,6 +10,7 @@ import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import clsx from "clsx";
 
 interface OrganizationFormProps {
   organization?: any;
@@ -59,19 +60,19 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
         <Heading1>{organization?.id ? `Edit ${organization.name}` : "Create Organization"}</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
 
           {organization?.id && (
             <>
-              <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+              <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
                 {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
               </Button>
 
-              {/* <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+              {/* <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete}>
                   <FontAwesomeIcon icon={faTrash} />
                   {t("Delete")}
                 </Button> */}

@@ -91,17 +91,17 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
           <Heading1>{`Edit ${cronjob.name}`}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+            <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>

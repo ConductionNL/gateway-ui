@@ -5,6 +5,7 @@ import { ApplicationsFormTemplate } from "../templateParts/applicationsForm/Appl
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import clsx from "clsx";
 
 interface CreateApplicationTemplateProps {}
 
@@ -19,7 +20,7 @@ export const CreateApplicationTemplate: React.FC<CreateApplicationTemplateProps>
       <section className={styles.section}>
         <Heading1>{"Create Application"}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => saveFunction()} type="submit">
+          <Button className={clsx(styles.buttonIcon, styles.button)} onClick={() => saveFunction()} type="submit">
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>

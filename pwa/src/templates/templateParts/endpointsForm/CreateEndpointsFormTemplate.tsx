@@ -22,6 +22,7 @@ import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../../hooks/schema";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
+import clsx from "clsx";
 
 interface CreateEndpointFormTemplateProps {
   endpointId?: string;
@@ -88,7 +89,7 @@ export const CreateEndpointFormTemplate: React.FC<CreateEndpointFormTemplateProp
         <section className={styles.section}>
           <Heading1>{t("Create Endpoint")}</Heading1>
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>

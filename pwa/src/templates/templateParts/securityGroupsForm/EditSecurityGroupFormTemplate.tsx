@@ -75,12 +75,12 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
           <Heading1>{`Edit ${securityGroup.name}`}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
+            <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete}>
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>

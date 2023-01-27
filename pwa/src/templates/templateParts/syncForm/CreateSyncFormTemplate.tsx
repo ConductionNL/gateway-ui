@@ -13,6 +13,7 @@ import { useSource } from "../../../hooks/source";
 import Skeleton from "react-loading-skeleton";
 import { useAction } from "../../../hooks/action";
 import { useSync } from "../../../hooks/synchronization";
+import clsx from "clsx";
 
 interface CreateSyncFormTemplateProps {
   objectId: string;
@@ -60,7 +61,7 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
           <Heading1>{t("Create Synchronization")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
 
               {t("Save")}

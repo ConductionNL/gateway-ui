@@ -93,6 +93,7 @@ export const AuthenticationsTemplate: React.FC = () => {
                 <TableCell />
                 <TableCell />
                 <TableCell />
+                <TableCell />
               </TableRow>
             )}
           </TableBody>

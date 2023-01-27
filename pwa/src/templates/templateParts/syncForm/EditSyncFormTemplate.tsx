@@ -13,6 +13,7 @@ import { useSource } from "../../../hooks/source";
 import { useAction } from "../../../hooks/action";
 import Skeleton from "react-loading-skeleton";
 import { useSync } from "../../../hooks/synchronization";
+import clsx from "clsx";
 
 interface EditSyncFormTemplateProps {
   objectId: string;
@@ -92,7 +93,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
           <Heading1>{`Edit ${sync?.name}`}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
 
               {t("Save")}

@@ -12,6 +12,7 @@ import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useSchema } from "../../../hooks/schema";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
+import clsx from "clsx";
 
 interface CreateSchemasFormTemplateProps {
   schemaId?: string;
@@ -46,9 +47,8 @@ export const CreateSchemasFormTemplate: React.FC<CreateSchemasFormTemplateProps>
           <Heading1>{t("Create Schema")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
-
               {t("Save")}
             </Button>
           </div>
