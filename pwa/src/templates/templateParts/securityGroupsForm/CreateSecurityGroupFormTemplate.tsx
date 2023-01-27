@@ -62,28 +62,33 @@ export const CreateSecurityGroupFormTemplate: React.FC<CreateSecurityGroupFormTe
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="name" validation={{ required: true }} />
+                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Config")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="config" />
+                <InputText {...{ register, errors }} name="config" disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                <Textarea {...{ register, errors }} name="description" validation={{ required: true }} />
+                <Textarea
+                  {...{ register, errors }}
+                  name="description"
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Scopes")}</FormFieldLabel>
-                <SelectCreate options={[]} name="scopes" {...{ register, errors, control }} />
+                <SelectCreate options={[]} name="scopes" {...{ register, errors, control }} disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>

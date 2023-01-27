@@ -119,7 +119,7 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Scopes")}</FormFieldLabel>
-                <SelectCreate options={[]} name="scopes" {...{ register, errors, control }} />
+                <SelectCreate options={[]} name="scopes" {...{ register, errors, control }} disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>
