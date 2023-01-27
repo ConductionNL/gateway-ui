@@ -11,7 +11,7 @@ export const useCollection = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("collections", API.Collection.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -20,7 +20,7 @@ export const useCollection = (queryClient: QueryClient) => {
       initialData: () =>
         queryClient.getQueryData<any[]>("collections")?.find((_collection) => _collection.id === collectionId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!collectionId,
     });
@@ -32,7 +32,7 @@ export const useCollection = (queryClient: QueryClient) => {
         navigate("/collections");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -50,7 +50,7 @@ export const useCollection = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

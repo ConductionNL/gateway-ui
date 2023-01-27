@@ -11,7 +11,7 @@ export const useSecurityGroup = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("securitygroups", API.SecurityGroup.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -22,7 +22,7 @@ export const useSecurityGroup = (queryClient: QueryClient) => {
           .getQueryData<any[]>("securitygroups")
           ?.find((_securityGroup) => _securityGroup.id === securityGroupId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!securityGroupId,
     });
@@ -34,7 +34,7 @@ export const useSecurityGroup = (queryClient: QueryClient) => {
         navigate("/settings/securitygroups");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -52,7 +52,7 @@ export const useSecurityGroup = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

@@ -11,15 +11,16 @@ export const useOrganization = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("organizations", API.Organization.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
   const getOne = (organizationId: string) =>
     useQuery<any, Error>(["organizations", organizationId], () => API?.Organization.getOne(organizationId), {
-      initialData: () => queryClient.getQueryData<any[]>("organizations")?.find((_organization) => _organization.id === organizationId),
+      initialData: () =>
+        queryClient.getQueryData<any[]>("organizations")?.find((_organization) => _organization.id === organizationId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!organizationId,
     });
@@ -38,7 +39,7 @@ export const useOrganization = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

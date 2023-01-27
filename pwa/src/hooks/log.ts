@@ -9,7 +9,7 @@ export const useLog = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("log", API.Log.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -17,7 +17,7 @@ export const useLog = (queryClient: QueryClient) => {
     useQuery<any, Error>(["log", logId], () => API?.Log.getOne(logId), {
       initialData: () => queryClient.getQueryData<any[]>("log")?.find((_log) => _log.id === logId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!logId,
     });

@@ -11,7 +11,7 @@ export const useAttribute = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("attributes", API.Attribute.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -20,7 +20,7 @@ export const useAttribute = (queryClient: QueryClient) => {
       initialData: () =>
         queryClient.getQueryData<any[]>("attributes")?.find((_attribute) => _attribute.id === attributeId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!attributeId,
     });
@@ -32,7 +32,7 @@ export const useAttribute = (queryClient: QueryClient) => {
         navigate(`/schemas/${schemaId}`);
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -50,7 +50,7 @@ export const useAttribute = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
