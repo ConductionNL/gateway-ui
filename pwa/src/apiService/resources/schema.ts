@@ -53,7 +53,7 @@ export default class Schema {
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/entiadfties", payload, {
+    const { data } = await Send(this._instance, "POST", "/admin/entities", payload, {
       loading: "Creating schema...",
       success: "Schema successfully created.",
     });
