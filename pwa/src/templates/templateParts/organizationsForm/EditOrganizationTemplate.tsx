@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { translateDate } from "../../../services/dateFormat";
+import clsx from "clsx";
 
 interface CreateOrganizationTemplateProps {
   organizationId: string;
@@ -52,7 +53,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
             </Heading1>
 
             <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} type="submit">
+              <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="OrganisationForm">
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 {t("Save")}
               </Button>
@@ -80,7 +81,6 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                 <Tab className={styles.tab} label={t("Logs")} value={2} />
               </Tabs>
 
-          
               <TabPanel className={styles.tabPanel} value="0">
                 <Table>
                   <TableHead>

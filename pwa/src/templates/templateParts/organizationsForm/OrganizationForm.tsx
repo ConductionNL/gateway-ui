@@ -46,7 +46,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer} id="OrganisationForm">
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
           <FormField>
