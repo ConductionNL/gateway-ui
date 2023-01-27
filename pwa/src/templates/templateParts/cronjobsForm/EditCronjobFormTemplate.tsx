@@ -170,7 +170,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                <InputCheckbox {...{ register, errors }} label="true" name="isEnabled" />
+                <InputCheckbox {...{ register, errors }} label="true" name="isEnabled" disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>
