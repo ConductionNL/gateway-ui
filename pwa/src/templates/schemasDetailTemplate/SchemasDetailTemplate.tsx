@@ -25,7 +25,7 @@ interface SchemasDetailPageProps {
 
 export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schemaId }) => {
   const { t, i18n } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -54,13 +54,8 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   };
 
   React.useEffect(() => {
-    if (deleteSchema.isLoading || getSchema.isLoading) {
-      setLoading(true);
-      return;
-    }
-
-    setLoading(false);
-  }, [deleteSchema.isLoading, getSchema.isLoading]);
+    setLoading(deleteSchema.isLoading || getSchema.isLoading || dashboardLoading);
+  }, [deleteSchema.isLoading, getSchema.isLoading, dashboardLoading]);
 
   return (
     <Container layoutClassName={styles.container}>

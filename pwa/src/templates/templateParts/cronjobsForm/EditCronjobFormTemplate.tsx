@@ -24,7 +24,7 @@ interface EditCronjobFormTemplateProps {
 
 export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = ({ cronjob, cronjobId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
@@ -73,8 +73,8 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditCronjob.isLoading);
-  }, [createOrEditCronjob.isLoading]);
+    setLoading(createOrEditCronjob.isLoading || dashboardLoading);
+  }, [createOrEditCronjob.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     setListensAndThrows([...predefinedSubscriberEvents]);

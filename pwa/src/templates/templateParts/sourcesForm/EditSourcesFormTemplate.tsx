@@ -16,7 +16,6 @@ import { ReactTooltip } from "@conduction/components/lib/components/toolTip/Tool
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { InputFloat } from "@conduction/components/lib/components/formFields/input";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
-import { IsLoadingContext } from "../../../context/isLoading";
 import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
@@ -30,12 +29,11 @@ interface SourcesFormTemplateProps {
 
 export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source, sourceId }) => {
   const { t, i18n } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
-  const [isLoading] = React.useContext(IsLoadingContext);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
   const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
@@ -116,8 +114,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const watchQuery = watch("query");
 
   React.useEffect(() => {
-    setLoading(createOrEditSource.isLoading);
-  }, [createOrEditSource.isLoading]);
+    setLoading(createOrEditSource.isLoading || dashboardLoading);
+  }, [createOrEditSource.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     if (!watchAuth) return;
@@ -262,11 +260,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               {t("Save")}
             </Button>
 
-            <Button
-              className={styles.buttonIcon}
-              onClick={addOrRemoveFromDashboard}
-              disabled={isLoading.addDashboardCard || loading}
-            >
+            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

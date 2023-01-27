@@ -30,7 +30,7 @@ interface EditEndpointFormTemplateProps {
 
 export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> = ({ endpoint, endpointId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [methods, setMethods] = React.useState<any[]>([]);
@@ -123,8 +123,8 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditEndpoint.isLoading);
-  }, [createOrEditEndpoint.isLoading]);
+    setLoading(createOrEditEndpoint.isLoading || dashboardLoading);
+  }, [createOrEditEndpoint.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     handleSetSelectFormValues(endpoint);

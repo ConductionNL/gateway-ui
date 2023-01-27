@@ -19,7 +19,7 @@ interface EditCollectionFormTemplateProps {
 
 export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProps> = ({ collection, collectionId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -58,8 +58,8 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditCollection.isLoading || deleteCollection.isLoading);
-  }, [createOrEditCollection.isLoading, deleteCollection.isLoading]);
+    setLoading(createOrEditCollection.isLoading || deleteCollection.isLoading || dashboardLoading);
+  }, [createOrEditCollection.isLoading, deleteCollection.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     handleSetFormValues(collection);

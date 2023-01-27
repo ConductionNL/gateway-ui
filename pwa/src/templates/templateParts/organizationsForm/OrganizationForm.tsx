@@ -17,7 +17,7 @@ interface OrganizationFormProps {
 
 export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = new QueryClient();
@@ -43,8 +43,8 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditOrganization.isLoading);
-  }, [createOrEditOrganization.isLoading]);
+    setLoading(createOrEditOrganization.isLoading || dashboardLoading);
+  }, [createOrEditOrganization.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     organization && handleSetFormValues(organization);

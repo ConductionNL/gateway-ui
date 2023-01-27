@@ -26,7 +26,7 @@ interface EditActionFormTemplateProps {
 
 export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ action, actionId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
@@ -126,8 +126,8 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditAction.isLoading);
-  }, [createOrEditAction.isLoading]);
+    setLoading(createOrEditAction.isLoading || dashboardToggleLoading);
+  }, [createOrEditAction.isLoading, dashboardToggleLoading]);
 
   React.useEffect(() => {
     if (!getCronjobs.data) return;
