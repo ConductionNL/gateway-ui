@@ -266,21 +266,21 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("async")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="async" />
+                      <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="async" />
                     </FormFieldInput>
                   </FormField>
 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="true" name="isEnabled" />
+                      <InputCheckbox {...{ register, errors }} disabled={loading} label="true" name="isEnabled" />
                     </FormFieldInput>
                   </FormField>
 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} label="on" name="isLockable" />
+                      <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="isLockable" />
                     </FormFieldInput>
                   </FormField>
                 </div>
