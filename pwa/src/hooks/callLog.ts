@@ -9,7 +9,7 @@ export const useCallLog = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("callLogs", API.CallLog.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -17,7 +17,7 @@ export const useCallLog = (queryClient: QueryClient) => {
     useQuery<any, Error>(["callLogs", callLogId], () => API?.CallLog.getOne(callLogId), {
       initialData: () => queryClient.getQueryData<any[]>("callLogs")?.find((_callLog) => _callLog.id === callLogId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!callLogId,
     });
@@ -26,7 +26,7 @@ export const useCallLog = (queryClient: QueryClient) => {
     useQuery<any, Error>(["callLogs", sourceId], () => API?.CallLog.getSourceLog(sourceId), {
       initialData: () => queryClient.getQueryData<any[]>("callLogs")?.find((_callLog) => _callLog.id === sourceId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!sourceId,
     });

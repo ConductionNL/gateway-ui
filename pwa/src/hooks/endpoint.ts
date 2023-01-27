@@ -11,7 +11,7 @@ export const useEndpoint = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("endpoints", API.Endpoints.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -19,7 +19,7 @@ export const useEndpoint = (queryClient: QueryClient) => {
     useQuery<any, Error>(["endpoint", endpointId], () => API?.Endpoints.getOne(endpointId), {
       initialData: () => queryClient.getQueryData<any[]>("endpoint")?.find((_endpoint) => _endpoint.id === endpointId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!endpointId,
     });
@@ -31,7 +31,7 @@ export const useEndpoint = (queryClient: QueryClient) => {
         navigate("/endpoints");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -49,7 +49,7 @@ export const useEndpoint = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

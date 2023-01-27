@@ -12,7 +12,7 @@ export const useDashboardCards = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("dashboardCards", API.DashboardCards.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -23,7 +23,7 @@ export const useDashboardCards = (queryClient: QueryClient) => {
           .getQueryData<any[]>("dashboardCards")
           ?.find((_dashboardCards) => _dashboardCards.id === dashboardCardsId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!dashboardCardsId,
     });
@@ -45,7 +45,7 @@ export const useDashboardCards = (queryClient: QueryClient) => {
       onError: (error) => {
         setIsLoading({ addDashboardCard: false });
 
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       onSettled: () => {
         setIsLoading({ addDashboardCard: false });

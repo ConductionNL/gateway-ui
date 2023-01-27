@@ -10,28 +10,28 @@ export const usePlugin = (queryClient: QueryClient) => {
   const getAllInstalled = () =>
     useQuery<any[], Error>("plugins_installed", API.Plugin.getAllInstalled, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
   const getAllAudit = () =>
     useQuery<any[], Error>("plugins_audit", API.Plugin.getAllAudit, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
   const getAllAvailable = (searchQuery: string) =>
     useQuery<any[], Error>(["plugins_available", searchQuery], () => API.Plugin.getAllAvailable(searchQuery), {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
   const getView = () =>
     useQuery<any, Error>("plugin_view", API.Plugin.getView, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -39,7 +39,7 @@ export const usePlugin = (queryClient: QueryClient) => {
     useQuery<any, Error>(["plugin", pluginName], () => API?.Plugin.getOne(pluginName), {
       initialData: () => queryClient.getQueryData<any[]>("plugins")?.find((_plugin) => _plugin.name === pluginName),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!pluginName,
     });
@@ -50,7 +50,7 @@ export const usePlugin = (queryClient: QueryClient) => {
         updateItem(queryClient, "plugin", variables.name);
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -60,7 +60,7 @@ export const usePlugin = (queryClient: QueryClient) => {
         updateItem(queryClient, "plugin", variables.name);
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -70,14 +70,14 @@ export const usePlugin = (queryClient: QueryClient) => {
         deleteItem(queryClient, "plugin", variables.name);
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
   const getReadMe = (pluginRepository: string) =>
     useQuery<any, Error>(["plugin"], () => API?.PluginReadMe.getReadMe(pluginRepository), {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!pluginRepository,
     });

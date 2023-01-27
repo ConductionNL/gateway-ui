@@ -15,7 +15,7 @@ export const useSync = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("synchronizations", API.Synchroniation.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -24,7 +24,7 @@ export const useSync = (queryClient: QueryClient) => {
       initialData: () =>
         queryClient.getQueryData<any[]>("synchronizations")?.find((_synchronization) => _synchronization.id === syncId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!syncId,
     });
@@ -36,7 +36,7 @@ export const useSync = (queryClient: QueryClient) => {
         _queryClient.invalidateQueries(["synchronizations"]);
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       onSettled: () => {
         setTimeout(() => _queryClient.invalidateQueries(["synchronizations"]), 500);
@@ -73,7 +73,7 @@ export const useSync = (queryClient: QueryClient) => {
 
         setIsLoading({ alert: false });
 
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       onSettled: () => {
         setIsLoading({ alert: false });

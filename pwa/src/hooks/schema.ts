@@ -11,7 +11,7 @@ export const useSchema = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("entities", API.Schema.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -19,7 +19,7 @@ export const useSchema = (queryClient: QueryClient) => {
     useQuery<any, Error>(["entities", schemaId], () => API?.Schema.getOne(schemaId), {
       initialData: () => queryClient.getQueryData<any[]>("entities")?.find((_schema) => _schema.id === schemaId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!schemaId,
     });
@@ -27,7 +27,7 @@ export const useSchema = (queryClient: QueryClient) => {
   const getSchema = (schemaId: string) =>
     useQuery<any, Error>(["schema_schema", schemaId], () => API.Schema.getSchema(schemaId), {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!schemaId,
     });
@@ -39,7 +39,7 @@ export const useSchema = (queryClient: QueryClient) => {
         navigate("/schemas");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -57,7 +57,7 @@ export const useSchema = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

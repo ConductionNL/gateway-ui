@@ -13,7 +13,7 @@ export const useObject = (queryClient: QueryClient) => {
   const getAll = (filters?: IFilters, limit?: number) =>
     useQuery<any, Error>(["objects", filters], () => API.Object.getAll(filters, limit), {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -21,7 +21,7 @@ export const useObject = (queryClient: QueryClient) => {
     useQuery<any, Error>(["object", objectId], () => API?.Object.getOne(objectId), {
       initialData: () => queryClient.getQueryData<any[]>("objects")?.find((_object) => _object.id === objectId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!objectId,
     });
@@ -29,7 +29,7 @@ export const useObject = (queryClient: QueryClient) => {
   const getAllFromEntity = (entityId: string) =>
     useQuery<any[], Error>(["objects", entityId], () => API.Object.getAllFromEntity(entityId), {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!entityId,
     });
@@ -37,7 +37,7 @@ export const useObject = (queryClient: QueryClient) => {
   const getAllFromList = (list: string) =>
     useQuery<any[], Error>(["objects", list], () => API.Object.getAllFromList(list), {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!list,
     });
@@ -45,7 +45,7 @@ export const useObject = (queryClient: QueryClient) => {
   const getSchema = (objectId: string) =>
     useQuery<any[], Error>(["object_schema", objectId], () => API.Object.getSchema(objectId), {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -55,7 +55,7 @@ export const useObject = (queryClient: QueryClient) => {
         deleteItem(queryClient, "object", variables.id);
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       onSettled: () => {
         setTimeout(() => _queryClient.invalidateQueries(["objects"]), 100);
@@ -77,7 +77,7 @@ export const useObject = (queryClient: QueryClient) => {
       onError: (error) => {
         _queryClient.invalidateQueries(["object", objectId]);
 
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       onSettled: () => {
         _queryClient.invalidateQueries(["object", objectId]);

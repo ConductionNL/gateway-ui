@@ -11,7 +11,7 @@ export const useApplication = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("applications", API.Application.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -20,7 +20,7 @@ export const useApplication = (queryClient: QueryClient) => {
       initialData: () =>
         queryClient.getQueryData<any[]>("applications")?.find((_application) => _application.id === applicationId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!applicationId,
     });
@@ -32,7 +32,7 @@ export const useApplication = (queryClient: QueryClient) => {
         navigate("/settings/applications");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -50,7 +50,7 @@ export const useApplication = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

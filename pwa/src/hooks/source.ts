@@ -15,7 +15,7 @@ export const useSource = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("sources", API.Sources.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -23,7 +23,7 @@ export const useSource = (queryClient: QueryClient) => {
     useQuery<any, Error>(["sources", sourcesId], () => API?.Sources.getOne(sourcesId), {
       initialData: () => queryClient.getQueryData<any[]>("sources")?.find((_sources) => _sources.id === sourcesId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!sourcesId,
     });
@@ -47,7 +47,7 @@ export const useSource = (queryClient: QueryClient) => {
         _queryClient.invalidateQueries(["callLogs", sourceId]);
         _queryClient.invalidateQueries(["sources", sourceId]);
 
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       onSettled: () => {
         _queryClient.invalidateQueries(["callLogs", sourceId]);
@@ -64,7 +64,7 @@ export const useSource = (queryClient: QueryClient) => {
         navigate("/sources");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -81,7 +81,7 @@ export const useSource = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

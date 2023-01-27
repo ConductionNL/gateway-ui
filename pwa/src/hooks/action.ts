@@ -11,14 +11,14 @@ export const useAction = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("actions", API.Action.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
   const getAllHandlers = () =>
     useQuery<any[], Error>("action_handlers", API.Action.getAllHandlers, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -26,7 +26,7 @@ export const useAction = (queryClient: QueryClient) => {
     useQuery<any, Error>(["actions", actionId], () => API?.Action.getOne(actionId), {
       initialData: () => queryClient.getQueryData<any[]>("actions")?.find((_action) => _action.id === actionId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!actionId,
     });
@@ -38,7 +38,7 @@ export const useAction = (queryClient: QueryClient) => {
         navigate("/actions");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -56,7 +56,7 @@ export const useAction = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

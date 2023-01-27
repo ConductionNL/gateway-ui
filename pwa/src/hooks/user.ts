@@ -11,7 +11,7 @@ export const useUser = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("users", API.User.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -19,7 +19,7 @@ export const useUser = (queryClient: QueryClient) => {
     useQuery<any, Error>(["users", userId], () => API?.User.getOne(userId), {
       initialData: () => queryClient.getQueryData<any[]>("users")?.find((_user) => _user.id === userId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!userId,
     });
@@ -38,7 +38,7 @@ export const useUser = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

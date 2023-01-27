@@ -11,7 +11,7 @@ export const useCronjob = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("cronjobs", API.Cronjob.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -19,7 +19,7 @@ export const useCronjob = (queryClient: QueryClient) => {
     useQuery<any, Error>(["cronjobs", cronjobId], () => API?.Cronjob.getOne(cronjobId), {
       initialData: () => queryClient.getQueryData<any[]>("cronjobs")?.find((_cronjob) => _cronjob.id === cronjobId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!cronjobId,
     });
@@ -31,7 +31,7 @@ export const useCronjob = (queryClient: QueryClient) => {
         navigate("/cronjobs");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -49,7 +49,7 @@ export const useCronjob = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 

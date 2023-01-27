@@ -11,7 +11,7 @@ export const useAuthentication = (queryClient: QueryClient) => {
   const getAll = () =>
     useQuery<any[], Error>("authentications", API.Authentication.getAll, {
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -22,7 +22,7 @@ export const useAuthentication = (queryClient: QueryClient) => {
           .getQueryData<any[]>("authentications")
           ?.find((_authentication) => _authentication.id === authenticationId),
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
       enabled: !!authenticationId,
     });
@@ -34,7 +34,7 @@ export const useAuthentication = (queryClient: QueryClient) => {
         navigate("/settings/authentication");
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
@@ -52,7 +52,7 @@ export const useAuthentication = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        throw new Error(error.message);
+        console.warn(error.message);
       },
     });
 
