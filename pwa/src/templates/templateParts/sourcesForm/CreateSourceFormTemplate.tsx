@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./SourcesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -24,9 +22,7 @@ interface CreateSourceFormTemplateProps {
 
 export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> = ({ sourceId }) => {
   const { t } = useTranslation();
-  const API: APIService = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
@@ -43,14 +39,6 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
   const createOrEditSource = _useSources.createOrEdit(sourceId);
-
-  const typeSelectOptions = [
-    { label: "JSON", value: "json" },
-    { label: "SML", value: "xml" },
-    { label: "SOAP", value: "soap" },
-    { label: "FTP", value: "ftp" },
-    { label: "SFTP", value: "sftp" },
-  ];
 
   const authSelectOptions = [
     { label: "No Auth", value: "none" },
@@ -70,6 +58,10 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
   const watchAuth = watch("auth");
   const watchHeaders = watch("headers");
   const watchQuery = watch("query");
+
+  React.useEffect(() => {
+    setLoading(createOrEditSource.isLoading);
+  }, [createOrEditSource.isLoading]);
 
   React.useEffect(() => {
     if (!watchAuth) return;
@@ -152,7 +144,6 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
             <div className={styles.gridContainer}>
               <div className={styles.grid}>
                 <FormField>
@@ -216,7 +207,6 @@ export const CreateSourceFormTemplate: React.FC<CreateSourceFormTemplateProps> =
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="3">
-            {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
             <div className={styles.gridContainer}>
               <div className={styles.grid}>
                 <FormField>

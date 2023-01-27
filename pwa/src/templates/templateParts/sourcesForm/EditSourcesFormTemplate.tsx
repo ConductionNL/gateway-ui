@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./SourcesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faInfoCircle, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -34,11 +32,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const { t, i18n } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
 
-  const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [isLoading] = React.useContext(IsLoadingContext);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
   const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
@@ -117,6 +114,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const watchAuth = watch("auth");
   const watchHeaders = watch("headers");
   const watchQuery = watch("query");
+
+  React.useEffect(() => {
+    setLoading(createOrEditSource.isLoading);
+  }, [createOrEditSource.isLoading]);
 
   React.useEffect(() => {
     if (!watchAuth) return;
@@ -264,13 +265,17 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
             <Button
               className={styles.buttonIcon}
               onClick={addOrRemoveFromDashboard}
-              disabled={isLoading.addDashboardCard}
+              disabled={isLoading.addDashboardCard || loading}
             >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={() => handleDelete(source.id)}>
+            <Button
+              disabled={loading}
+              className={clsx(styles.buttonIcon, styles.deleteButton)}
+              onClick={() => handleDelete(source.id)}
+            >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>
