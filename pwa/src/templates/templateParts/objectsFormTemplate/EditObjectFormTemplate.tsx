@@ -96,7 +96,11 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
             <div className={styles.buttons}>
               <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
 
-              <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard} disabled={loading}>
+              <Button
+                className={clsx(styles.buttonIcon, styles.button)}
+                onClick={addOrRemoveFromDashboard}
+                disabled={loading}
+              >
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
                 {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
               </Button>

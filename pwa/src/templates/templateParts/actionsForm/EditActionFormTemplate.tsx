@@ -153,7 +153,11 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
               {t("Save")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.button)} disabled={loading} onClick={addOrRemoveFromDashboard}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              disabled={loading}
+              onClick={addOrRemoveFromDashboard}
+            >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

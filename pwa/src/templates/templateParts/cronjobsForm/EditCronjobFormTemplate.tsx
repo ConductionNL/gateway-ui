@@ -96,12 +96,20 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
               {t("Save")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard} disabled={loading}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              onClick={addOrRemoveFromDashboard}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete} disabled={loading}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+              onClick={handleDelete}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>

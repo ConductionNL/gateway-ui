@@ -271,7 +271,11 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={() => handleDelete(source.id)} disabled={loading}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+              onClick={() => handleDelete(source.id)}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>

@@ -69,7 +69,11 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
           </Button>
 
           {organization?.id && (
-            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard} disabled={loading}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              onClick={addOrRemoveFromDashboard}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

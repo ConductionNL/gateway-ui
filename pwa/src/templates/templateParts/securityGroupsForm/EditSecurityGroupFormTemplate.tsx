@@ -81,7 +81,11 @@ export const EditSecurityGroupFormTemplate: React.FC<EditSecurityGroupFormTempla
               {t("Save")}
             </Button>
 
-            <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete} disabled={loading}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+              onClick={handleDelete}
+              disabled={loading}
+            >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
             </Button>

@@ -323,12 +323,20 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
             <Heading1>{`Edit ${property.name}`}</Heading1>
 
             <div className={styles.buttons}>
-              <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading || isImmutable}>
+              <Button
+                className={clsx(styles.buttonIcon, styles.button)}
+                type="submit"
+                disabled={loading || isImmutable}
+              >
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 {t("Save")}
               </Button>
 
-              <Button onClick={handleDeleteProperty} className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} disabled={loading}>
+              <Button
+                onClick={handleDeleteProperty}
+                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+                disabled={loading}
+              >
                 <FontAwesomeIcon icon={faTrash} />
                 {t("Delete")}
               </Button>
