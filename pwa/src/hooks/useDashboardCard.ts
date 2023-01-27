@@ -42,7 +42,7 @@ export const useDashboardCard = () => {
     return dashboardCard;
   };
 
-  const addOrRemoveDashboardCard = (
+  const toggleDashboardCard = (
     name: string,
     type: TDashboardCardType,
     entity: TEntity,
@@ -63,5 +63,5 @@ export const useDashboardCard = () => {
     mutateDashboardCard.mutate({ payload: data, id: dashboardCardId }, { onSettled: () => setLoading(false) });
   };
 
-  return { addOrRemoveDashboardCard, getDashboardCard, loading };
+  return { toggleDashboardCard, getDashboardCard, loading };
 };

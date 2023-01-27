@@ -23,7 +23,7 @@ interface EditObjectFormTemplateProps {
 
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, getSchema, objectId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -75,8 +75,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
     }
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(object.id, "object", "ObjectEntity", objectId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(object.id, "object", "ObjectEntity", objectId, dashboardCard?.id);
   };
 
   return (
@@ -91,7 +91,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
             <div className={styles.buttons}>
               <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
 
-              <Button disabled={loading} className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+              <Button disabled={loading} className={styles.buttonIcon} onClick={toggleFromDashboard}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
                 {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
               </Button>

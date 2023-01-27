@@ -17,7 +17,7 @@ interface EditAuthenticationFormTemplateProps {
 
 export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemplateProps> = ({ authenticationId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard } = useDashboardCard();
 
   const queryClient = new QueryClient();
   const _useAuthentications = useAuthentication(queryClient);
@@ -26,8 +26,8 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
 
   const dashboardCard = getDashboardCard(getAuthentication.data.id);
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(
       getAuthentication.data.name,
       "authentication",
       "Authentication",
@@ -53,7 +53,7 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
             {t("Save")}
           </Button>
 
-          <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+          <Button className={styles.buttonIcon} onClick={toggleFromDashboard}>
             <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>

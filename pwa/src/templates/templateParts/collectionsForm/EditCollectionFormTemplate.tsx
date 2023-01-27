@@ -19,7 +19,7 @@ interface EditCollectionFormTemplateProps {
 
 export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProps> = ({ collection, collectionId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -48,8 +48,8 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
     confirmDeletion && deleteCollection.mutateAsync({ id: collectionId });
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(collection.name, "collection", "CollectionEntity", collectionId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(collection.name, "collection", "CollectionEntity", collectionId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (collection: any): void => {
@@ -77,7 +77,7 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
               {t("Save")}
             </Button>
 
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard} disabled={loading}>
+            <Button className={styles.buttonIcon} onClick={toggleFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

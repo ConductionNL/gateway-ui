@@ -24,7 +24,7 @@ interface EditCronjobFormTemplateProps {
 
 export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = ({ cronjob, cronjobId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
@@ -58,8 +58,8 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
     deleteCronjob.mutate({ id: cronjobId });
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(cronjob.name, "cronjob", "Cronjob", cronjobId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(cronjob.name, "cronjob", "Cronjob", cronjobId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (cronjob: any): void => {
@@ -96,7 +96,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
               {t("Save")}
             </Button>
 
-            <Button disabled={loading} className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+            <Button disabled={loading} className={styles.buttonIcon} onClick={toggleFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

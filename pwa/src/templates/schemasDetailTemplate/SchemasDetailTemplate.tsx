@@ -25,7 +25,7 @@ interface SchemasDetailPageProps {
 
 export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schemaId }) => {
   const { t, i18n } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -49,8 +49,8 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
     }
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
   };
 
   React.useEffect(() => {
@@ -74,7 +74,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                 Download
               </Button>
             </a>
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard} disabled={loading}>
+            <Button className={styles.buttonIcon} onClick={toggleFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

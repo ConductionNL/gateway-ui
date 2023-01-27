@@ -30,7 +30,7 @@ interface EditEndpointFormTemplateProps {
 
 export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> = ({ endpoint, endpointId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [methods, setMethods] = React.useState<any[]>([]);
@@ -89,8 +89,8 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
     deleteEndpoint.mutate({ id: endpointId });
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(endpoint.name, "endpoint", "Endpoint", endpointId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(endpoint.name, "endpoint", "Endpoint", endpointId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (endpoint: any): void => {
@@ -157,7 +157,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
               {t("Save")}
             </Button>
 
-            <Button disabled={loading} className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+            <Button disabled={loading} className={styles.buttonIcon} onClick={toggleFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

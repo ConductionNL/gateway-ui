@@ -17,7 +17,7 @@ interface OrganizationFormProps {
 
 export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = new QueryClient();
@@ -33,8 +33,8 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
     formState: { errors },
   } = useForm();
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(organization.name, "organization", "Organization", organization.id, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(organization.name, "organization", "Organization", organization.id, dashboardCard?.id);
   };
 
   const handleSetFormValues = (organization: any): void => {
@@ -69,7 +69,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
 
           {organization?.id && (
             <>
-              <Button disabled={loading} className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+              <Button disabled={loading} className={styles.buttonIcon} onClick={toggleFromDashboard}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
                 {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
               </Button>
