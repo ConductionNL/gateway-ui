@@ -3,7 +3,6 @@ import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query"
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
-import { navigate } from "gatsby";
 import { IFilters } from "../context/filters";
 
 export const useObject = (queryClient: QueryClient) => {

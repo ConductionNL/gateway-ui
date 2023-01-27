@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as styles from "./OrganizationFormTemplate.module.css";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
@@ -18,7 +18,6 @@ interface OrganizationFormProps {
 export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization }) => {
   const { t } = useTranslation();
   const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
-  const [formError, setFormError] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = new QueryClient();
@@ -44,6 +43,10 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   };
 
   React.useEffect(() => {
+    setLoading(createOrEditOrganization.isLoading);
+  }, [createOrEditOrganization.isLoading]);
+
+  React.useEffect(() => {
     organization && handleSetFormValues(organization);
   }, [organization]);
 
@@ -66,21 +69,15 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
 
           {organization?.id && (
             <>
-              <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+              <Button disabled={loading} className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
                 {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
               </Button>
-
-              {/* <Button className={clsx(styles.buttonIcon, styles.deleteButton)} onClick={handleDelete}>
-                  <FontAwesomeIcon icon={faTrash} />
-                  {t("Delete")}
-                </Button> */}
             </>
           )}
         </div>
       </section>
 
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
           <FormField>

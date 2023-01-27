@@ -19,6 +19,7 @@ export const CreateSecurityGroupFormTemplate: React.FC<CreateSecurityGroupFormTe
   securityGroupId,
 }) => {
   const { t } = useTranslation();
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const _useSecurityGroups = useSecurityGroup(queryClient);
@@ -39,6 +40,10 @@ export const CreateSecurityGroupFormTemplate: React.FC<CreateSecurityGroupFormTe
     createOrEditSecurityGroup.mutate({ payload, id: securityGroupId });
   };
 
+  React.useEffect(() => {
+    setLoading(createOrEditSecurityGroup.isLoading);
+  }, [createOrEditSecurityGroup.isLoading]);
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -46,7 +51,7 @@ export const CreateSecurityGroupFormTemplate: React.FC<CreateSecurityGroupFormTe
           <Heading1>{t("Create Security Group")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={styles.buttonIcon} type="submit">
+            <Button className={styles.buttonIcon} type="submit" disabled={loading}>
               <FontAwesomeIcon icon={faFloppyDisk} />
               {t("Save")}
             </Button>
@@ -57,28 +62,33 @@ export const CreateSecurityGroupFormTemplate: React.FC<CreateSecurityGroupFormTe
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="name" validation={{ required: true }} />
+                <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Config")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="config" />
+                <InputText {...{ register, errors }} name="config" disabled={loading} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                <Textarea {...{ register, errors }} name="description" validation={{ required: true }} />
+                <Textarea
+                  {...{ register, errors }}
+                  name="description"
+                  validation={{ required: true }}
+                  disabled={loading}
+                />
               </FormFieldInput>
             </FormField>
 
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Scopes")}</FormFieldLabel>
-                <SelectCreate options={[]} name="scopes" {...{ register, errors, control }} />
+                <SelectCreate options={[]} name="scopes" {...{ register, errors, control }} disabled={loading} />
               </FormFieldInput>
             </FormField>
           </div>
