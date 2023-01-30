@@ -16,7 +16,6 @@ import { ReactTooltip } from "@conduction/components/lib/components/toolTip/Tool
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { InputFloat } from "@conduction/components/lib/components/formFields/input";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
-import { IsLoadingContext } from "../../../context/isLoading";
 import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
@@ -30,12 +29,11 @@ interface SourcesFormTemplateProps {
 
 export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source, sourceId }) => {
   const { t, i18n } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
-  const [isLoading] = React.useContext(IsLoadingContext);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
   const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
@@ -116,8 +114,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const watchQuery = watch("query");
 
   React.useEffect(() => {
-    setLoading(createOrEditSource.isLoading);
-  }, [createOrEditSource.isLoading]);
+    setLoading(createOrEditSource.isLoading || dashboardLoading);
+  }, [createOrEditSource.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     if (!watchAuth) return;
@@ -172,8 +170,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     deleteSource.mutateAsync({ id: id });
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(source.name, "source", "Gateway", sourceId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(source.name, "source", "Gateway", sourceId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (source: any): void => {
@@ -264,8 +262,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
 
             <Button
               className={clsx(styles.buttonIcon, styles.button)}
-              onClick={addOrRemoveFromDashboard}
-              disabled={isLoading.addDashboardCard || loading}
+              onClick={toggleFromDashboard}
+              disabled={loading}
             >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}

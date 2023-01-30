@@ -26,7 +26,7 @@ interface EditActionFormTemplateProps {
 
 export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ action, actionId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
@@ -44,8 +44,8 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
 
   const dashboardCard = getDashboardCard(action.id);
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(action.name, "action", "Action", actionId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(action.name, "action", "Action", actionId, dashboardCard?.id);
   };
 
   const {
@@ -126,8 +126,8 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditAction.isLoading);
-  }, [createOrEditAction.isLoading]);
+    setLoading(createOrEditAction.isLoading || dashboardToggleLoading);
+  }, [createOrEditAction.isLoading, dashboardToggleLoading]);
 
   React.useEffect(() => {
     if (!getCronjobs.data) return;
@@ -156,7 +156,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
             <Button
               className={clsx(styles.buttonIcon, styles.button)}
               disabled={loading}
-              onClick={addOrRemoveFromDashboard}
+              onClick={toggleFromDashboard}
             >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}

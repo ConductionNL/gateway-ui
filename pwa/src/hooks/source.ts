@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 export const useSource = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
-  const [__, setIsLoading] = React.useContext(IsLoadingContext);
+  const [_, setIsLoading] = React.useContext(IsLoadingContext);
   const _queryClient = useQueryClient();
 
   const getAll = () =>

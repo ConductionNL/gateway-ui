@@ -23,7 +23,7 @@ interface EditObjectFormTemplateProps {
 
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, getSchema, objectId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -43,13 +43,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   } = useForm();
 
   React.useEffect(() => {
-    if (createOrEditObject.isLoading || deleteObject.isLoading || getSchema.isLoading) {
-      setLoading(true);
-      return;
-    }
-
-    setLoading(false);
-  }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading]);
+    setLoading(createOrEditObject.isLoading || deleteObject.isLoading || getSchema.isLoading || dashboardLoading);
+  }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading, dashboardLoading]);
 
   const onSubmit = (data: any): void => {
     delete data.schema;
@@ -80,8 +75,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
     }
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(object.id, "object", "ObjectEntity", objectId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(object.id, "object", "ObjectEntity", objectId, dashboardCard?.id);
   };
 
   return (
@@ -98,7 +93,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
               <Button
                 className={clsx(styles.buttonIcon, styles.button)}
-                onClick={addOrRemoveFromDashboard}
+                onClick={toggleFromDashboard}
                 disabled={loading}
               >
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />

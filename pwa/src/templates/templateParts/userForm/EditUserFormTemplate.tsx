@@ -25,7 +25,7 @@ interface EditUserFormTemplateProps {
 
 export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ userId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard } = useDashboardCard();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
 
   const queryClient = new QueryClient();
@@ -37,8 +37,8 @@ export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ user
 
   const dashboardCard = getDashboardCard(getUser.data?.id);
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(getUser.data.name, "user", "User", getUser.data.id, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(getUser.data.name, "user", "User", getUser.data.id, dashboardCard?.id);
   };
 
   return (
@@ -52,7 +52,7 @@ export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ user
             {t("Save")}
           </Button>
 
-          <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard}>
             <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>

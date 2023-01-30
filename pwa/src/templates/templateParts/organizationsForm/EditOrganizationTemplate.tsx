@@ -23,8 +23,9 @@ interface CreateOrganizationTemplateProps {
 
 export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps> = ({ organizationId }) => {
   const { t, i18n } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
 
   const queryClient = new QueryClient();
@@ -33,8 +34,12 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
 
   const dashboardCard = getDashboardCard(organizationId);
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(
+  React.useEffect(() => {
+    setLoading(dashboardLoading);
+  }, [dashboardLoading]);
+
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(
       getOrganization.data.name,
       "organization",
       "Organization",
@@ -53,12 +58,17 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
             </Heading1>
 
             <div className={styles.buttons}>
-              <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="OrganisationForm">
+              <Button
+                className={clsx(styles.buttonIcon, styles.button)}
+                type="submit"
+                form="OrganisationForm"
+                disabled={loading}
+              >
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 {t("Save")}
               </Button>
 
-              <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+              <Button className={styles.buttonIcon} onClick={toggleFromDashboard} disabled={loading}>
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
                 {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
               </Button>

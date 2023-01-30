@@ -25,7 +25,7 @@ interface SchemasDetailPageProps {
 
 export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schemaId }) => {
   const { t, i18n } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -49,18 +49,13 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
     }
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
   };
 
   React.useEffect(() => {
-    if (deleteSchema.isLoading || getSchema.isLoading) {
-      setLoading(true);
-      return;
-    }
-
-    setLoading(false);
-  }, [deleteSchema.isLoading, getSchema.isLoading]);
+    setLoading(deleteSchema.isLoading || getSchema.isLoading || dashboardLoading);
+  }, [deleteSchema.isLoading, getSchema.isLoading, dashboardLoading]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -79,7 +74,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                 Download
               </Button>
             </a>
-            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={addOrRemoveFromDashboard} disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

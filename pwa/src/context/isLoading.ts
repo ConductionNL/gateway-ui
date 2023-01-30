@@ -2,7 +2,6 @@ import * as React from "react";
 
 export interface IsLoadingProps {
   alert?: boolean;
-  addDashboardCard?: boolean;
 }
 
 export const isLoading = {} as IsLoadingProps;

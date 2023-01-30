@@ -32,8 +32,8 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditOrganization.isLoading);
-  }, [createOrEditOrganization.isLoading]);
+    setLoading(createOrEditOrganization.isLoading || dashboardLoading);
+  }, [createOrEditOrganization.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     organization && handleSetFormValues(organization);
