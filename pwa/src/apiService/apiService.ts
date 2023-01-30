@@ -209,7 +209,7 @@ export const Send = (
       headers: {},
     });
   }
-  console.log(method);
+
   switch (method) {
     case "GET":
       const response = instance.get(endpoint);
