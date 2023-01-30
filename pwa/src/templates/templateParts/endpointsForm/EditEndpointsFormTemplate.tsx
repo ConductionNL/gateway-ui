@@ -86,7 +86,9 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   };
 
   const handleDelete = () => {
-    deleteEndpoint.mutate({ id: endpointId });
+    const confirmDeletion = confirm("Are you sure you want to delete this endpoint?");
+
+    confirmDeletion && deleteEndpoint.mutate({ id: endpointId });
   };
 
   const toggleFromDashboard = () => {
@@ -123,8 +125,8 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditEndpoint.isLoading || dashboardLoading);
-  }, [createOrEditEndpoint.isLoading, dashboardLoading]);
+    setLoading(createOrEditEndpoint.isLoading || deleteEndpoint.isLoading || dashboardLoading);
+  }, [createOrEditEndpoint.isLoading, deleteEndpoint.isLoading || dashboardLoading]);
 
   React.useEffect(() => {
     handleSetSelectFormValues(endpoint);
@@ -157,11 +159,7 @@ export const EditEndpointFormTemplate: React.FC<EditEndpointFormTemplateProps> =
               {t("Save")}
             </Button>
 
-            <Button
-              className={clsx(styles.buttonIcon, styles.button)}
-              onClick={toggleFromDashboard}
-              disabled={loading}
-            >
+            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>

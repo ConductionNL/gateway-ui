@@ -55,7 +55,9 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   };
 
   const handleDelete = () => {
-    deleteCronjob.mutate({ id: cronjobId });
+    const confirmDeletion = confirm("Are you sure you want to delete this cronjob?");
+
+    confirmDeletion && deleteCronjob.mutate({ id: cronjobId });
   };
 
   const toggleFromDashboard = () => {
@@ -73,8 +75,8 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditCronjob.isLoading || dashboardLoading);
-  }, [createOrEditCronjob.isLoading, dashboardLoading]);
+    setLoading(createOrEditCronjob.isLoading || deleteCronjob.isLoading || dashboardLoading);
+  }, [createOrEditCronjob.isLoading, deleteCronjob, dashboardLoading]);
 
   React.useEffect(() => {
     setListensAndThrows([...predefinedSubscriberEvents]);
@@ -96,11 +98,7 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
               {t("Save")}
             </Button>
 
-            <Button
-              className={clsx(styles.buttonIcon, styles.button)}
-              onClick={toggleFromDashboard}
-              disabled={loading}
-            >
+            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
