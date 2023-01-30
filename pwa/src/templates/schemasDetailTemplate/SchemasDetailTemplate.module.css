@@ -99,3 +99,7 @@
 .downloadSchemaButton {
   text-decoration: none;
 }
+
+.downloadSchemaButton.disabled {
+  pointer-events: none;
+}

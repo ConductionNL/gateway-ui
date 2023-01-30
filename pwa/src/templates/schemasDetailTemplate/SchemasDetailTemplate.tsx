@@ -66,7 +66,9 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
           <div className={styles.buttons}>
             <a
-              className={styles.downloadSchemaButton}
+              className={clsx(styles.downloadSchemaButton, [
+                (isLoading.schemaForm || !getSchemaSchema.isSuccess) && styles.disabled,
+              ])}
               href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
               download="schema.json"
             >
