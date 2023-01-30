@@ -16,7 +16,7 @@ import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import Skeleton from "react-loading-skeleton";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
-import { dateTimeTag } from "../../../services/dateTime";
+import { formatDateTime } from "../../../services/dateTime";
 
 interface EditCronjobFormTemplateProps {
   cronjob: any;
@@ -29,8 +29,8 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
 
   const [loading, setLoading] = React.useState<boolean>(false);
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
-  const [lastRun, setLastRun] = React.useState<string>("");
-  const [nextRun, setNextRun] = React.useState<string>("");
+  const [lastRun] = React.useState<string>(cronjob.lastRun);
+  const [nextRun] = React.useState<string>(cronjob.nextRun);
 
   const queryClient = useQueryClient();
   const _useCronjobs = useCronjob(queryClient);
@@ -73,9 +73,6 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
       "throws",
       cronjob["throws"]?.map((_throw: any) => ({ label: _throw, value: _throw })),
     );
-
-    setNextRun(cronjob.nextRun);
-    setLastRun(cronjob.lastRun);
   };
 
   React.useEffect(() => {
@@ -178,16 +175,16 @@ export const EditCronjobFormTemplate: React.FC<EditCronjobFormTemplateProps> = (
             </FormField>
 
             <FormField>
-              <FormFieldInput className={styles.flex}>
+              <FormFieldInput>
                 <FormFieldLabel>{t("Last run")}</FormFieldLabel>
-                <Tag label={dateTimeTag(t(i18n.language), lastRun) ?? "-"} />
+                <Tag label={formatDateTime(t(i18n.language), lastRun) ?? "-"} />
               </FormFieldInput>
             </FormField>
 
             <FormField>
-              <FormFieldInput className={styles.flex}>
+              <FormFieldInput>
                 <FormFieldLabel>{t("Next run")}</FormFieldLabel>
-                <Tag label={dateTimeTag(t(i18n.language), nextRun) ?? "-"} />
+                <Tag label={formatDateTime(t(i18n.language), nextRun) ?? "-"} />
               </FormFieldInput>
             </FormField>
 

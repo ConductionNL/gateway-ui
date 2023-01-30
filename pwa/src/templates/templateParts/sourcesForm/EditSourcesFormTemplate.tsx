@@ -260,11 +260,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               {t("Save")}
             </Button>
 
-            <Button
-              className={clsx(styles.buttonIcon, styles.button)}
-              onClick={toggleFromDashboard}
-              disabled={loading}
-            >
+            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
@@ -320,14 +316,14 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                 </FormField>
 
                 <FormField>
-                  <FormFieldInput className={styles.flex}>
+                  <FormFieldInput>
                     <FormFieldLabel>{t("Created")}</FormFieldLabel>
                     <Tag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
-                  <FormFieldInput className={styles.flex}>
+                  <FormFieldInput>
                     <FormFieldLabel>{t("Modified")}</FormFieldLabel>
                     <Tag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
                   </FormFieldInput>
