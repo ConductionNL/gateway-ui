@@ -172,7 +172,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                   </TableBody>
                 </Table>
               </TabPanel>
-              <TabPanel className={styles.tabPanel} value="2   ">
+              <TabPanel className={styles.tabPanel} value="2">
                 Logs are not yet supported.
               </TabPanel>
             </TabContext>
