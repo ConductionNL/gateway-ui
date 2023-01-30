@@ -14,7 +14,7 @@ export const CreateAuthenticationFormTemplate: React.FC = () => {
   return (
     <div className={styles.container}>
       <section className={styles.section}>
-        <Heading1>Create Authentication</Heading1>
+        <Heading1>Create Authentication Provider</Heading1>
 
         <div className={styles.buttons}>
           <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="AuthForm" disabled={loading}>

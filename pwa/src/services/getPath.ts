@@ -35,7 +35,7 @@ export const getPath = (value: any): any => {
     case "user":
       return "settings/users";
 
-    case "authentication":
+    case "authentication provider":
       return "settings/authentication";
   }
 };

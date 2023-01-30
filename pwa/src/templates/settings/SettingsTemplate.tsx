@@ -33,7 +33,7 @@ export const SettingsTemplate: React.FC = () => {
             <Tab className={styles.tab} label={t("Applications")} value={2} />
             <Tab className={styles.tab} label={t("Users")} value={3} />
             <Tab className={styles.tab} label={t("Organizations")} value={4} />
-            <Tab className={styles.tab} label={t("Authentication")} value={5} />
+            <Tab className={styles.tab} label={t("Authentication Provider")} value={5} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
