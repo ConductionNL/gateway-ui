@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Button } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputText, SelectSingle, Textarea } from "@conduction/components";
+import { InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -30,7 +30,6 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
     setValue,
   } = useForm();
@@ -83,6 +82,7 @@ export const EditSchemasFormTemplate: React.FC<EditSchemaFormTemplateProps> = ({
               {errors["name"] && <ErrorMessage message={errors["name"].message} />}
             </FormFieldInput>
           </FormField>
+
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Description")}</FormFieldLabel>
