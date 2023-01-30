@@ -114,8 +114,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const watchQuery = watch("query");
 
   React.useEffect(() => {
-    setLoading(createOrEditSource.isLoading || dashboardLoading);
-  }, [createOrEditSource.isLoading, dashboardLoading]);
+    setLoading(createOrEditSource.isLoading || deleteSource.isLoading || dashboardLoading);
+  }, [createOrEditSource.isLoading, deleteSource.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     if (!watchAuth) return;
@@ -167,7 +167,9 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   };
 
   const handleDelete = (id: string): void => {
-    deleteSource.mutateAsync({ id: id });
+    const confirmDeletion = confirm("Are you sure you want to delete this source?");
+
+    confirmDeletion && deleteSource.mutateAsync({ id: id });
   };
 
   const toggleFromDashboard = () => {
@@ -260,11 +262,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
               {t("Save")}
             </Button>
 
-            <Button
-              className={clsx(styles.buttonIcon, styles.button)}
-              onClick={toggleFromDashboard}
-              disabled={loading}
-            >
+            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
@@ -368,7 +366,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                   </FormFieldInput>
                 </FormField>
 
-                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} />}
+                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} disabled={loading} />}
               </div>
             </div>
           </TabPanel>
