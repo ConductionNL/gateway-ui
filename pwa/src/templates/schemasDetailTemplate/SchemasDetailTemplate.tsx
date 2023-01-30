@@ -5,7 +5,6 @@ import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../hooks/schema";
-import { EditSchemasFormTemplate } from "../templateParts/schemasForm/EditSchemasFormTemplate";
 import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useObject } from "../../hooks/object";
 import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
@@ -13,11 +12,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { faDownload, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabsContext } from "../../context/tabs";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import clsx from "clsx";
+import { SchemaFormTemplate, formId } from "../templateParts/schemasForm/SchemaFormTemplate";
+import { IsLoadingContext } from "../../context/isLoading";
 
 interface SchemasDetailPageProps {
   schemaId: string;
@@ -27,7 +28,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const { t, i18n } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = new QueryClient();
   const _useSchema = useSchema(queryClient);
@@ -54,7 +55,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   };
 
   React.useEffect(() => {
-    setLoading(deleteSchema.isLoading || getSchema.isLoading || dashboardLoading);
+    setIsLoading({ ...isLoading, schemaForm: deleteSchema.isLoading || getSchema.isLoading || dashboardLoading });
   }, [deleteSchema.isLoading, getSchema.isLoading, dashboardLoading]);
 
   return (
@@ -65,23 +66,32 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
           <div className={styles.buttons}>
             <a
-              className={styles.downloadSchemaButton}
+              className={clsx(styles.downloadSchemaButton, [
+                (isLoading.schemaForm || !getSchemaSchema.isSuccess) && styles.disabled,
+              ])}
               href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
               download="schema.json"
             >
-              <Button className={clsx(styles.buttonIcon, styles.button)} disabled={!getSchemaSchema.isSuccess || loading}>
+              <Button
+                className={clsx(styles.buttonIcon, styles.button)}
+                disabled={!getSchemaSchema.isSuccess || isLoading.schemaForm}
+              >
                 <FontAwesomeIcon icon={faDownload} />
                 Download
               </Button>
             </a>
-            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard} disabled={loading}>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              onClick={toggleFromDashboard}
+              disabled={isLoading.schemaForm}
+            >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
             <Button
               onClick={handleDeleteSchema}
               className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
-              disabled={loading}
+              disabled={isLoading.schemaForm}
             >
               <FontAwesomeIcon icon={faTrash} />
               {t("Delete")}
@@ -97,14 +107,18 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             }}
             variant="scrollable"
           >
-            <Tab className={styles.tab} label={t("Objects")} value={0} />
-            <Tab className={styles.tab} label={t("General")} value={1} />
-            <Tab className={styles.tab} label={t("Properties")} value={2} />
-            <Tab className={styles.tab} label={t("Logs")} value={3} />
+            <Tab className={styles.tab} label={t("Objects")} value={0} disabled={isLoading.schemaForm} />
+            <Tab className={styles.tab} label={t("General")} value={1} disabled={isLoading.schemaForm} />
+            <Tab className={styles.tab} label={t("Properties")} value={2} disabled={isLoading.schemaForm} />
+            <Tab className={styles.tab} label={t("Logs")} value={3} disabled={isLoading.schemaForm} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            <Button className={styles.addObjectButton} onClick={() => navigate(`/objects/new?schema=${schemaId}`)}>
+            <Button
+              className={styles.addObjectButton}
+              onClick={() => navigate(`/objects/new?schema=${schemaId}`)}
+              disabled={isLoading.schemaForm}
+            >
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
@@ -113,14 +127,32 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            {getSchema.isError && "Error..."}
+            {getSchema.isSuccess && (
+              <>
+                <Button
+                  className={clsx(styles.buttonIcon, styles.button, styles.saveSchemaButton)}
+                  type="submit"
+                  form={formId}
+                  disabled={isLoading.schemaForm}
+                >
+                  <FontAwesomeIcon icon={faFloppyDisk} />
+                  {t("Save")}
+                </Button>
 
-            {getSchema.isSuccess && <EditSchemasFormTemplate schema={getSchema.data} {...{ schemaId }} />}
+                <SchemaFormTemplate schema={getSchema.data} />
+              </>
+            )}
+
             {getSchema.isLoading && <Skeleton height="200px" />}
+            {getSchema.isError && "Error..."}
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="2">
-            <Button className={styles.addPropertyButton} onClick={() => navigate(`/schemas/${schemaId}/new`)}>
+            <Button
+              className={styles.addPropertyButton}
+              onClick={() => navigate(`/schemas/${schemaId}/new`)}
+              disabled={isLoading.schemaForm}
+            >
               <FontAwesomeIcon icon={faPlus} /> {t("Add Property")}
             </Button>
             {getSchema.isLoading && <Skeleton height="100px" />}
