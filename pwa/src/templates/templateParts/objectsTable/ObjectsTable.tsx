@@ -48,7 +48,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, schemaId })
       </TableHead>
 
       <TableBody>
-        {!!objects.length &&
+        {!!objects?.length &&
           objects.map((object) => (
             <TableRow onClick={() => navigate(`/objects/${object._self.id}?schema=${schemaId}`)} key={object._self.id}>
               <TableCell>{object._self.id ?? "-"}</TableCell>
@@ -71,7 +71,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, schemaId })
             </TableRow>
           ))}
 
-        {!objects.length && (
+        {!objects?.length && (
           <TableRow>
             <TableCell>{t("No objects found")}</TableCell>
             <TableCell />

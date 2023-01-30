@@ -31,11 +31,9 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.addObjectButton {
-  margin-block-end: var(--gateway-ui-size-lg);
-}
-
-.addPropertyButton {
+.addObjectButton,
+.addPropertyButton,
+.saveSchemaButton {
   margin-block-end: var(--gateway-ui-size-lg);
 }
 

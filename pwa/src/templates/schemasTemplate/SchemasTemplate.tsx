@@ -63,7 +63,7 @@ export const SchemasTemplate: React.FC = () => {
 
                 {getObjects.isSuccess && (
                   <TableCell>
-                    {getObjects.data.results.filter((object: any) => object._self.schema.id === schema.id).length}
+                    {getObjects.data.results?.filter((object: any) => object._self.schema.id === schema.id).length}
                   </TableCell>
                 )}
 
