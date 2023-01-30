@@ -44,14 +44,14 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
             <Heading1>{`Edit ${getApplication.data.name}`}</Heading1>
 
             <div className={styles.buttons}>
-              <Button className={styles.buttonIcon} onClick={() => saveFunction()} type="submit" disabled={loading}>
+              <Button className={clsx(styles.buttonIcon, styles.button)} onClick={() => saveFunction()} type="submit" disabled={loading}>
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 {t("Save")}
               </Button>
 
               <Button
                 onClick={handleDeleteApplication}
-                className={clsx(styles.buttonIcon, styles.deleteButton)}
+                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
                 disabled={loading}
               >
                 <FontAwesomeIcon icon={faTrash} />

@@ -29,7 +29,7 @@ export const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessf
         <Button
           type="submit"
           onClick={() => setAfterSuccessfulFormSubmit("save")}
-          className={clsx(styles.buttonIcon, styles.primaryButton)}
+          className={clsx(styles.buttonIcon, styles.button, styles.primaryButton)}
           {...{ disabled }}
         >
           <FontAwesomeIcon icon={faFloppyDisk} />
@@ -55,7 +55,7 @@ export const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessf
           <button
             type="submit"
             onMouseDown={() => setAfterSuccessfulFormSubmit("saveAndClose")}
-            className={clsx(styles.buttonIcon, styles.optionsButton)}
+            className={clsx(styles.buttonIcon, styles.button, styles.optionsButton)}
           >
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save and Close")}
@@ -64,7 +64,7 @@ export const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessf
           <button
             type="submit"
             onMouseDown={() => setAfterSuccessfulFormSubmit("saveAndCreateNew")}
-            className={clsx(styles.buttonIcon, styles.optionsButton)}
+            className={clsx(styles.buttonIcon, styles.button, styles.optionsButton)}
           >
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save and Create New")}

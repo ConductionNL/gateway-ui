@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
+import clsx from "clsx";
 
 export const CreateUserFormTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -24,7 +25,7 @@ export const CreateUserFormTemplate: React.FC = () => {
         <Heading1>Create User</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" form="UserForm" disabled={loading}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="UserForm" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>

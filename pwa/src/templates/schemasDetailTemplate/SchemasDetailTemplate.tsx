@@ -25,7 +25,7 @@ interface SchemasDetailPageProps {
 
 export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schemaId }) => {
   const { t, i18n } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -49,18 +49,13 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
     }
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
   };
 
   React.useEffect(() => {
-    if (deleteSchema.isLoading || getSchema.isLoading) {
-      setLoading(true);
-      return;
-    }
-
-    setLoading(false);
-  }, [deleteSchema.isLoading, getSchema.isLoading]);
+    setLoading(deleteSchema.isLoading || getSchema.isLoading || dashboardLoading);
+  }, [deleteSchema.isLoading, getSchema.isLoading, dashboardLoading]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -74,18 +69,18 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
               download="schema.json"
             >
-              <Button className={styles.buttonIcon} disabled={!getSchemaSchema.isSuccess || loading}>
+              <Button className={clsx(styles.buttonIcon, styles.button)} disabled={!getSchemaSchema.isSuccess || loading}>
                 <FontAwesomeIcon icon={faDownload} />
                 Download
               </Button>
             </a>
-            <Button className={styles.buttonIcon} onClick={addOrRemoveFromDashboard} disabled={loading}>
+            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard} disabled={loading}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
             <Button
               onClick={handleDeleteSchema}
-              className={clsx(styles.buttonIcon, styles.deleteButton)}
+              className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
               disabled={loading}
             >
               <FontAwesomeIcon icon={faTrash} />

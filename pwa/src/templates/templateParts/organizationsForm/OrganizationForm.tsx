@@ -10,6 +10,7 @@ import { faFloppyDisk, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import clsx from "clsx";
 
 interface OrganizationFormProps {
   organization?: any;
@@ -17,7 +18,7 @@ interface OrganizationFormProps {
 
 export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const queryClient = new QueryClient();
@@ -33,8 +34,8 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
     formState: { errors },
   } = useForm();
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(organization.name, "organization", "Organization", organization.id, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(organization.name, "organization", "Organization", organization.id, dashboardCard?.id);
   };
 
   const handleSetFormValues = (organization: any): void => {
@@ -43,8 +44,8 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditOrganization.isLoading);
-  }, [createOrEditOrganization.isLoading]);
+    setLoading(createOrEditOrganization.isLoading || dashboardLoading);
+  }, [createOrEditOrganization.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     organization && handleSetFormValues(organization);
@@ -62,18 +63,20 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
         <Heading1>{organization?.id ? `Edit ${organization.name}` : "Create Organization"}</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} type="submit" disabled={loading}>
+          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
 
           {organization?.id && (
-            <>
-              <Button disabled={loading} className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
-            </>
+            <Button
+              className={clsx(styles.buttonIcon, styles.button)}
+              onClick={toggleFromDashboard}
+              disabled={loading}
+            >
+              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+            </Button>
           )}
         </div>
       </section>

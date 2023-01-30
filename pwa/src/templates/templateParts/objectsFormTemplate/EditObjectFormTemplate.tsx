@@ -23,7 +23,7 @@ interface EditObjectFormTemplateProps {
 
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, getSchema, objectId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -43,13 +43,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   } = useForm();
 
   React.useEffect(() => {
-    if (createOrEditObject.isLoading || deleteObject.isLoading || getSchema.isLoading) {
-      setLoading(true);
-      return;
-    }
-
-    setLoading(false);
-  }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading]);
+    setLoading(createOrEditObject.isLoading || deleteObject.isLoading || getSchema.isLoading || dashboardLoading);
+  }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading, dashboardLoading]);
 
   const onSubmit = (data: any): void => {
     delete data.schema;
@@ -80,8 +75,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
     }
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(object.id, "object", "ObjectEntity", objectId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(object.id, "object", "ObjectEntity", objectId, dashboardCard?.id);
   };
 
   return (
@@ -96,14 +91,18 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
             <div className={styles.buttons}>
               <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
 
-              <Button disabled={loading} className={styles.buttonIcon} onClick={addOrRemoveFromDashboard}>
+              <Button
+                className={clsx(styles.buttonIcon, styles.button)}
+                onClick={toggleFromDashboard}
+                disabled={loading}
+              >
                 <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
                 {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
               </Button>
 
               <Button
                 onClick={handleDeleteObject}
-                className={clsx(styles.buttonIcon, styles.deleteButton)}
+                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
                 disabled={loading}
               >
                 <FontAwesomeIcon icon={faTrash} />
