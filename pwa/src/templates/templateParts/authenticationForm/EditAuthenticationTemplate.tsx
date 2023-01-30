@@ -11,11 +11,11 @@ import { AuthenticationFormTemplate } from "./AuthenticationFormTemplate";
 import { useAuthentication } from "../../../hooks/authentication";
 import clsx from "clsx";
 
-interface EditAuthenticationFormTemplateProps {
+interface EditAuthenticationTemplateProps {
   authenticationId: string;
 }
 
-export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemplateProps> = ({ authenticationId }) => {
+export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProps> = ({ authenticationId }) => {
   const { t } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
 

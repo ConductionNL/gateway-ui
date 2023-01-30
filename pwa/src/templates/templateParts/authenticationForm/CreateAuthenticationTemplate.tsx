@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { AuthenticationFormTemplate } from "./AuthenticationFormTemplate";
 import clsx from "clsx";
 
-export const CreateAuthenticationFormTemplate: React.FC = () => {
+export const CreateAuthenticationTemplate: React.FC = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = React.useState<boolean>(false);
 
