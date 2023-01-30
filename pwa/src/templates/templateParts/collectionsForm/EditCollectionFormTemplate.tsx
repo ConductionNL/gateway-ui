@@ -19,7 +19,7 @@ interface EditCollectionFormTemplateProps {
 
 export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProps> = ({ collection, collectionId }) => {
   const { t } = useTranslation();
-  const { addOrRemoveDashboardCard, getDashboardCard } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -48,8 +48,8 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
     confirmDeletion && deleteCollection.mutateAsync({ id: collectionId });
   };
 
-  const addOrRemoveFromDashboard = () => {
-    addOrRemoveDashboardCard(collection.name, "collection", "CollectionEntity", collectionId, dashboardCard?.id);
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(collection.name, "collection", "CollectionEntity", collectionId, dashboardCard?.id);
   };
 
   const handleSetFormValues = (collection: any): void => {
@@ -58,8 +58,8 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditCollection.isLoading || deleteCollection.isLoading);
-  }, [createOrEditCollection.isLoading, deleteCollection.isLoading]);
+    setLoading(createOrEditCollection.isLoading || deleteCollection.isLoading || dashboardLoading);
+  }, [createOrEditCollection.isLoading, deleteCollection.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
     handleSetFormValues(collection);
@@ -79,7 +79,7 @@ export const EditCollectionFormTemplate: React.FC<EditCollectionFormTemplateProp
 
             <Button
               className={clsx(styles.buttonIcon, styles.button)}
-              onClick={addOrRemoveFromDashboard}
+              onClick={toggleFromDashboard}
               disabled={loading}
             >
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />

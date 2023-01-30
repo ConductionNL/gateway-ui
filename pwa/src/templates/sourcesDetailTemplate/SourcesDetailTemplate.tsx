@@ -40,7 +40,7 @@ interface SourcesDetailTemplateProps {
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
   const { t, i18n } = useTranslation();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [isLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = new QueryClient();
   const _useSources = useSource(queryClient);
@@ -64,7 +64,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
       body: data.body ? JSON.parse(data.body) : [],
     };
 
-    const proxyTest = _testProxy.mutate({ id: sourceId, payload: payload });
+    _testProxy.mutate({ id: sourceId, payload: payload });
   };
 
   const {
