@@ -126,8 +126,8 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditAction.isLoading || dashboardToggleLoading);
-  }, [createOrEditAction.isLoading, dashboardToggleLoading]);
+    setLoading(createOrEditAction.isLoading || deleteAction.isLoading || dashboardToggleLoading);
+  }, [createOrEditAction.isLoading, deleteAction, dashboardToggleLoading]);
 
   React.useEffect(() => {
     if (!getCronjobs.data) return;
@@ -153,11 +153,7 @@ export const EditActionFormTemplate: React.FC<EditActionFormTemplateProps> = ({ 
               {t("Save")}
             </Button>
 
-            <Button
-              className={clsx(styles.buttonIcon, styles.button)}
-              disabled={loading}
-              onClick={toggleFromDashboard}
-            >
+            <Button className={clsx(styles.buttonIcon, styles.button)} disabled={loading} onClick={toggleFromDashboard}>
               <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
               {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
             </Button>
