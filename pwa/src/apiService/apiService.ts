@@ -209,7 +209,7 @@ export const Send = (
       headers: {},
     });
   }
-
+  console.log(method);
   switch (method) {
     case "GET":
       const response = instance.get(endpoint);
@@ -228,7 +228,7 @@ export const Send = (
     case "PUT":
       return toast.promise(instance.put(endpoint, _payload), {
         loading: promiseMessage?.loading ?? "Updating item...",
-        success: "Succesfully updated item",
+        success: promiseMessage?.success ?? "Succesfully updated item",
         error: (err) => err.message,
       });
 
