@@ -2,36 +2,33 @@ import * as React from "react";
 import * as styles from "./SourcesFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputNumber, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
+import { InputCheckbox, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faInfoCircle, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
-import clsx from "clsx";
-import { translateDate } from "../../../services/dateFormat";
-import { useDashboardCard } from "../../../hooks/useDashboardCard";
+import { InputFloat, InputNumber } from "@conduction/components/lib/components/formFields/input";
+import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
 import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
-import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
-import { InputFloat } from "@conduction/components/lib/components/formFields/input";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
-import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
-import TextArea from "@gemeente-denhaag/textarea";
-import { IKeyValue } from "@conduction/components/lib/components/formFields";
+import { IsLoadingContext } from "../../../context/isLoading";
+import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
+import clsx from "clsx";
+import { translateDate } from "../../../services/dateFormat";
 
-interface SourcesFormTemplateProps {
-  source: any;
-  sourceId: string;
+interface SourceTemplateProps {
+  source?: any;
 }
 
-export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source, sourceId }) => {
-  const { t, i18n } = useTranslation();
-  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+export const formId: string = "source-form";
 
-  const [loading, setLoading] = React.useState<boolean>(false);
+export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) => {
+  const { t, i18n } = useTranslation();
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
@@ -45,68 +42,17 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     idnConversion: "int" as "int" | "boolean",
   });
 
-  function setupAdvancedSwitch() {
-    const newAdvancedSwitch = { ...advancedSwitch };
-
-    for (const [key, value] of Object.entries(source.configuration)) {
-      if (key === "decode_content") {
-        if (typeof value === "string") newAdvancedSwitch.decodeContent = "string";
-        if (typeof value === "boolean") newAdvancedSwitch.decodeContent = "boolean";
-        continue;
-      }
-      if (key === "delay") {
-        if (Number.isInteger(value)) newAdvancedSwitch.delay = "int";
-        else newAdvancedSwitch.delay = "float";
-        continue;
-      }
-      if (key === "expect") {
-        if (typeof value === "number") newAdvancedSwitch.expect = "int";
-        if (typeof value === "boolean") newAdvancedSwitch.expect = "boolean";
-        continue;
-      }
-      if (key === "verify") {
-        if (typeof value === "string") newAdvancedSwitch.verify = "string";
-        if (typeof value === "boolean") newAdvancedSwitch.verify = "boolean";
-        continue;
-      }
-      if (key === "idn_conversion") {
-        if (typeof value === "number") newAdvancedSwitch.idnConversion = "int";
-        if (typeof value === "boolean") newAdvancedSwitch.idnConversion = "boolean";
-      }
-    }
-
-    setAdvancedSwitch(newAdvancedSwitch);
-  }
-
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
-  const createOrEditSource = _useSources.createOrEdit(sourceId);
-  const deleteSource = _useSources.remove();
-
-  const dashboardCard = getDashboardCard(source.id);
-
-  const typeSelectOptions = [
-    { label: "JSON", value: "json" },
-    { label: "SML", value: "xml" },
-    { label: "SOAP", value: "soap" },
-    { label: "FTP", value: "ftp" },
-    { label: "SFTP", value: "sftp" },
-  ];
-
-  const authSelectOptions = [
-    { label: "No Auth", value: "none" },
-    { label: "API Key", value: "apikey" },
-    { label: "JWT", value: "jwt" },
-    { label: "Username and Password", value: "username-password" },
-  ];
+  const createOrEditSource = _useSources.createOrEdit(source?.id);
 
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
     watch,
+    setValue,
   } = useForm();
 
   const watchAuth = watch("auth");
@@ -114,8 +60,8 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   const watchQuery = watch("query");
 
   React.useEffect(() => {
-    setLoading(createOrEditSource.isLoading || deleteSource.isLoading || dashboardLoading);
-  }, [createOrEditSource.isLoading, deleteSource.isLoading, dashboardLoading]);
+    setIsLoading({ ...isLoading, sourceForm: createOrEditSource.isLoading });
+  }, [createOrEditSource.isLoading]);
 
   React.useEffect(() => {
     if (!watchAuth) return;
@@ -162,18 +108,42 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
       },
     };
 
-    createOrEditSource.mutate({ payload, id: sourceId });
-    queryClient.setQueryData(["sources", sourceId], payload);
+    createOrEditSource.mutate({ payload, id: source?.id });
+
+    source?.id && queryClient.setQueryData(["sources", source.id], payload); // optimistic update query data
   };
 
-  const handleDelete = (id: string): void => {
-    const confirmDeletion = confirm("Are you sure you want to delete this source?");
+  const setupAdvancedSwitch = () => {
+    const newAdvancedSwitch = { ...advancedSwitch };
 
-    confirmDeletion && deleteSource.mutateAsync({ id: id });
-  };
+    for (const [key, value] of Object.entries(source.configuration)) {
+      if (key === "decode_content") {
+        if (typeof value === "string") newAdvancedSwitch.decodeContent = "string";
+        if (typeof value === "boolean") newAdvancedSwitch.decodeContent = "boolean";
+        continue;
+      }
+      if (key === "delay") {
+        if (Number.isInteger(value)) newAdvancedSwitch.delay = "int";
+        else newAdvancedSwitch.delay = "float";
+        continue;
+      }
+      if (key === "expect") {
+        if (typeof value === "number") newAdvancedSwitch.expect = "int";
+        if (typeof value === "boolean") newAdvancedSwitch.expect = "boolean";
+        continue;
+      }
+      if (key === "verify") {
+        if (typeof value === "string") newAdvancedSwitch.verify = "string";
+        if (typeof value === "boolean") newAdvancedSwitch.verify = "boolean";
+        continue;
+      }
+      if (key === "idn_conversion") {
+        if (typeof value === "number") newAdvancedSwitch.idnConversion = "int";
+        if (typeof value === "boolean") newAdvancedSwitch.idnConversion = "boolean";
+      }
+    }
 
-  const toggleFromDashboard = () => {
-    toggleDashboardCard(source.name, "source", "Gateway", sourceId, dashboardCard?.id);
+    setAdvancedSwitch(newAdvancedSwitch);
   };
 
   const handleSetFormValues = (source: any): void => {
@@ -243,40 +213,16 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
   };
 
   React.useEffect(() => {
-    handleSetFormValues(source);
-  }, []);
+    source && handleSetFormValues(source);
+  }, [source]);
 
   React.useEffect(() => {
     ReactTooltip.rebuild();
-  });
+  }, [currentTab]);
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className={styles.section}>
-          <Heading1>{`Edit ${source.name}`}</Heading1>
-
-          <div className={styles.buttons}>
-            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save")}
-            </Button>
-
-            <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard} disabled={loading}>
-              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-            </Button>
-
-            <Button
-              className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
-              onClick={() => handleDelete(source.id)}
-              disabled={loading}
-            >
-              <FontAwesomeIcon icon={faTrash} />
-              {t("Delete")}
-            </Button>
-          </div>
-        </section>
+      <form onSubmit={handleSubmit(onSubmit)} id={formId}>
         <TabContext value={currentTab.toString()}>
           <Tabs
             value={currentTab}
@@ -301,41 +247,44 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       {...{ register, errors }}
                       name="name"
                       validation={{ required: true, maxLength: 225 }}
-                      disabled={loading}
+                      disabled={isLoading.sourceForm}
                     />
                     {errors["name"] && <ErrorMessage message={errors["name"].message} />}
                   </FormFieldInput>
                 </FormField>
 
-                <FormField>
-                  <FormFieldLabel>{t("Status")}</FormFieldLabel>
-                  <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
-                    <Tag
-                      icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
-                      label={source.status?.toString() ?? "no known status"}
-                    />
-                  </div>
-                </FormField>
+                {source && (
+                  <>
+                    <FormField>
+                      <FormFieldLabel>{t("Status")}</FormFieldLabel>
+                      <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
+                        <Tag
+                          icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
+                          label={source.status?.toString() ?? "no known status"}
+                        />
+                      </div>
+                    </FormField>
 
-                <FormField>
-                  <FormFieldInput>
-                    <FormFieldLabel>{t("Created")}</FormFieldLabel>
-                    <Tag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
-                  </FormFieldInput>
-                </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Created")}</FormFieldLabel>
+                        <Tag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
+                      </FormFieldInput>
+                    </FormField>
 
-                <FormField>
-                  <FormFieldInput>
-                    <FormFieldLabel>{t("Modified")}</FormFieldLabel>
-                    <Tag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
-                  </FormFieldInput>
-                </FormField>
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Modified")}</FormFieldLabel>
+                        <Tag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
+                      </FormFieldInput>
+                    </FormField>
+                  </>
+                )}
               </div>
-
               <FormField>
                 <FormFieldInput>
                   <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                  <Textarea {...{ register, errors }} name="description" disabled={loading} />
+                  <Textarea {...{ register, errors }} name="description" disabled={isLoading.sourceForm} />
                 </FormFieldInput>
               </FormField>
 
@@ -347,7 +296,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       {...{ register, errors }}
                       name="location"
                       validation={{ required: true, maxLength: 225 }}
-                      disabled={loading}
+                      disabled={isLoading.sourceForm}
                     />
                     {errors["location"] && <ErrorMessage message={errors["location"].message} />}
                   </FormFieldInput>
@@ -361,23 +310,28 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       name="auth"
                       options={authSelectOptions}
                       validation={{ required: true }}
-                      disabled={loading}
+                      disabled={isLoading.sourceForm}
                     />
                   </FormFieldInput>
                 </FormField>
 
-                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} disabled={loading} />}
+                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} />}
               </div>
             </div>
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            <CreateKeyValue disabled={loading} name="query" defaultValue={query} {...{ register, errors, control }} />
+            <CreateKeyValue
+              name="query"
+              disabled={isLoading.sourceForm}
+              defaultValue={query}
+              {...{ register, errors, control }}
+            />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="2">
             <CreateKeyValue
-              disabled={loading}
+              disabled={isLoading.sourceForm}
               name="headers"
               defaultValue={headers}
               {...{ register, errors, control }}
@@ -408,7 +362,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                         />
                       </a>
                     </div>
-                    <InputFloat {...{ register, errors }} name="connect_timeout" disabled={loading} />
+                    <InputFloat disabled={isLoading.sourceForm} {...{ register, errors }} name="connect_timeout" />
                   </FormFieldInput>
                 </FormField>
 
@@ -432,7 +386,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       />
                     </a>
                   </div>
-                  <InputCheckbox disabled={loading} name="debug" label="True" {...{ register, errors }} />
+                  <InputCheckbox name="debug" disabled={isLoading.sourceForm} label="True" {...{ register, errors }} />
                 </FormField>
 
                 <FormField>
@@ -456,11 +410,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     </a>
                   </div>
                   <ToggleButton
-                    disabled={loading}
+                    disabled={isLoading.sourceForm}
                     layoutClassName={styles.toggleButton}
                     startLabel="string"
                     endLabel="boolean"
-                    defaultState={advancedSwitch.decodeContent === "boolean"}
                     onChange={() =>
                       setAdvancedSwitch({
                         ...advancedSwitch,
@@ -470,16 +423,11 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                   />
                   <div className={styles.expectFormField}>
                     {advancedSwitch.decodeContent === "string" && (
-                      <TextArea disabled={loading} name="decode_content_str" {...{ register, errors }} />
+                      <Textarea disabled={isLoading.sourceForm} name="decode_content_str" {...{ register, errors }} />
                     )}
                     {advancedSwitch.decodeContent === "boolean" && (
                       <span className={styles.checkboxInput}>
-                        <InputCheckbox
-                          disabled={loading}
-                          name="decode_content_bool"
-                          label="True"
-                          {...{ register, errors }}
-                        />
+                        <InputCheckbox name="decode_content_bool" label="True" {...{ register, errors }} />
                       </span>
                     )}
                   </div>
@@ -502,11 +450,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     </a>
                   </div>
                   <ToggleButton
-                    disabled={loading}
+                    disabled={isLoading.sourceForm}
                     layoutClassName={styles.toggleButton}
                     startLabel="int"
                     endLabel="float"
-                    defaultState={advancedSwitch.delay === "float"}
                     onChange={() =>
                       setAdvancedSwitch({
                         ...advancedSwitch,
@@ -516,10 +463,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                   />
                   <div className={styles.expectFormField}>
                     {advancedSwitch.delay === "int" && (
-                      <InputNumber disabled={loading} name="delay" {...{ register, errors }} />
+                      <InputNumber disabled={isLoading.sourceForm} name="delay" {...{ register, errors }} />
                     )}
                     {advancedSwitch.delay === "float" && (
-                      <InputFloat disabled={loading} name="delay" {...{ register, errors }} />
+                      <InputFloat disabled={isLoading.sourceForm} name="delay" {...{ register, errors }} />
                     )}
                   </div>
                 </FormField>
@@ -541,11 +488,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     </a>
                   </div>
                   <ToggleButton
-                    disabled={loading}
+                    disabled={isLoading.sourceForm}
                     layoutClassName={styles.toggleButton}
                     startLabel="int"
                     endLabel="boolean"
-                    defaultState={advancedSwitch.expect === "boolean"}
                     onChange={() =>
                       setAdvancedSwitch({
                         ...advancedSwitch,
@@ -556,11 +502,11 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                   <div className={styles.expectFormField}>
                     {advancedSwitch.expect === "boolean" && (
                       <span className={styles.checkboxInput}>
-                        <InputCheckbox disabled={loading} name="expect_bool" label="True" {...{ register, errors }} />
+                        <InputCheckbox name="expect_bool" label="True" {...{ register, errors }} />
                       </span>
                     )}
                     {advancedSwitch.expect === "int" && (
-                      <InputNumber disabled={loading} name="expect_int" {...{ register, errors }} />
+                      <InputNumber disabled={isLoading.sourceForm} name="expect_int" {...{ register, errors }} />
                     )}
                   </div>
                 </FormField>
@@ -582,7 +528,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                         />
                       </a>
                     </div>
-                    <InputText disabled={loading} {...{ register, errors }} name="force_ip_resolve" />
+                    <InputText disabled={isLoading.sourceForm} {...{ register, errors }} name="force_ip_resolve" />
                   </FormFieldInput>
                 </FormField>
 
@@ -607,11 +553,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     </a>
                   </div>
                   <ToggleButton
-                    disabled={loading}
+                    disabled={isLoading.sourceForm}
                     layoutClassName={styles.toggleButton}
                     startLabel="string"
                     endLabel="boolean"
-                    defaultState={advancedSwitch.verify === "boolean"}
                     onChange={() =>
                       setAdvancedSwitch({
                         ...advancedSwitch,
@@ -622,11 +567,16 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                   <div className={styles.expectFormField}>
                     {advancedSwitch.verify === "boolean" && (
                       <span className={styles.checkboxInput}>
-                        <InputCheckbox disabled={loading} name="verify_bool" label="True" {...{ register, errors }} />
+                        <InputCheckbox
+                          disabled={isLoading.sourceForm}
+                          name="verify_bool"
+                          label="True"
+                          {...{ register, errors }}
+                        />
                       </span>
                     )}
                     {advancedSwitch.verify === "string" && (
-                      <InputText disabled={loading} name="verify_str" {...{ register, errors }} />
+                      <InputText disabled={isLoading.sourceForm} name="verify_str" {...{ register, errors }} />
                     )}
                   </div>
                 </FormField>
@@ -645,7 +595,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                         <FontAwesomeIcon data-tip={"Protocol version to use with the request."} icon={faInfoCircle} />
                       </a>
                     </div>
-                    <InputText disabled={loading} {...{ register, errors }} name="version" />
+                    <InputText disabled={isLoading.sourceForm} {...{ register, errors }} name="version" />
                   </FormFieldInput>
                 </FormField>
 
@@ -666,7 +616,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                         />
                       </a>
                     </div>
-                    <InputFloat disabled={loading} {...{ register, errors }} name="read_timeout" />
+                    <InputFloat disabled={isLoading.sourceForm} {...{ register, errors }} name="read_timeout" />
                   </FormFieldInput>
                 </FormField>
               </div>
@@ -692,7 +642,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       />
                     </a>
                   </div>
-                  <Textarea disabled={loading} {...{ register, errors }} name="proxy" />
+                  <Textarea disabled={isLoading.sourceForm} {...{ register, errors }} name="proxy" />
                 </FormFieldInput>
               </FormField>
 
@@ -718,11 +668,10 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     </a>
                   </div>
                   <ToggleButton
-                    disabled={loading}
+                    disabled={isLoading.sourceForm}
                     layoutClassName={styles.toggleButton}
                     startLabel="int"
                     endLabel="boolean"
-                    defaultState={advancedSwitch.idnConversion === "boolean"}
                     onChange={() =>
                       setAdvancedSwitch({
                         ...advancedSwitch,
@@ -734,7 +683,7 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                     {advancedSwitch.idnConversion === "boolean" && (
                       <span className={styles.checkboxInput}>
                         <InputCheckbox
-                          disabled={loading}
+                          disabled={isLoading.sourceForm}
                           name="idn_conversion_bool"
                           label="True"
                           {...{ register, errors }}
@@ -742,7 +691,11 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       </span>
                     )}
                     {advancedSwitch.idnConversion === "int" && (
-                      <InputNumber disabled={loading} name="idn_conversion_int" {...{ register, errors }} />
+                      <InputNumber
+                        disabled={isLoading.sourceForm}
+                        name="idn_conversion_int"
+                        {...{ register, errors }}
+                      />
                     )}
                   </div>
                 </FormField>
@@ -767,7 +720,12 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                       />
                     </a>
                   </div>
-                  <InputCheckbox disabled={loading} name="https_errors" label="True" {...{ register, errors }} />
+                  <InputCheckbox
+                    disabled={isLoading.sourceForm}
+                    name="https_errors"
+                    label="True"
+                    {...{ register, errors }}
+                  />
                 </FormField>
               </div>
             </div>
@@ -779,3 +737,18 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
     </div>
   );
 };
+
+const typeSelectOptions = [
+  { label: "JSON", value: "json" },
+  { label: "SML", value: "xml" },
+  { label: "SOAP", value: "soap" },
+  { label: "FTP", value: "ftp" },
+  { label: "SFTP", value: "sftp" },
+];
+
+const authSelectOptions = [
+  { label: "No Auth", value: "none" },
+  { label: "API Key", value: "apikey" },
+  { label: "JWT", value: "jwt" },
+  { label: "Username and Password", value: "username-password" },
+];

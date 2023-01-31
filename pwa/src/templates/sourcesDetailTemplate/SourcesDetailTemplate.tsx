@@ -4,13 +4,13 @@ import { QueryClient } from "react-query";
 import _ from "lodash";
 import { useSource } from "../../hooks/source";
 import { Container, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
-import { SourcesFormTemplate } from "../templateParts/sourcesForm/EditSourcesFormTemplate";
 import Skeleton from "react-loading-skeleton";
 import {
   Button,
   FormField,
   FormFieldInput,
   FormFieldLabel,
+  Heading1,
   Link,
   Tab,
   TabContext,
@@ -27,11 +27,13 @@ import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndI
 import clsx from "clsx";
 import { dateTime } from "../../services/dateTime";
 import { IsLoadingContext } from "../../context/isLoading";
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { validateStringAsJSON } from "../../services/validateJSON";
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { TabsContext } from "../../context/tabs";
+import { SourceFormTemplate, formId } from "../templateParts/sourcesForm/SourceFormTemplate";
+import { useDashboardCard } from "../../hooks/useDashboardCard";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -40,32 +42,16 @@ interface SourcesDetailTemplateProps {
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
   const { t, i18n } = useTranslation();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
-  const [isLoading] = React.useContext(IsLoadingContext);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = new QueryClient();
-  const _useSources = useSource(queryClient);
-  const _useCallLogs = useCallLog(queryClient);
-  const _getSources = _useSources.getOne(sourceId);
-  const _getCallLogs = _useCallLogs.getSourceLog(sourceId);
-  const _testProxy = _useSources.getProxy(sourceId);
+  const _useSource = useSource(queryClient);
+  const _useCallLog = useCallLog(queryClient);
 
-  const methodSelectOptions = [
-    { label: "POST", value: "POST" },
-    { label: "PUT", value: "PUT" },
-    { label: "PATCH", value: "PATCH" },
-    { label: "UPDATE", value: "UPDATE" },
-    { label: "GET", value: "GET" },
-    { label: "DELETE", value: "DELETE" },
-  ];
-
-  const onSubmit = (data: any) => {
-    const payload = {
-      ...data,
-      body: data.body ? JSON.parse(data.body) : [],
-    };
-
-    _testProxy.mutate({ id: sourceId, payload: payload });
-  };
+  const getSource = _useSource.getOne(sourceId);
+  const getCallLog = _useCallLog.getSourceLog(sourceId);
+  const deleteSource = _useSource.remove();
+  const testProxy = _useSource.getProxy(sourceId);
 
   const {
     register,
@@ -74,12 +60,77 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
     formState: { errors },
   } = useForm();
 
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+
+  const dashboardCard = getDashboardCard(getSource.data?.id);
+
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(getSource.data.name, "source", "Gateway", sourceId, dashboardCard?.id);
+  };
+
+  const handleDelete = (id: string): void => {
+    const confirmDeletion = confirm("Are you sure you want to delete this source?");
+
+    confirmDeletion && deleteSource.mutateAsync({ id: id });
+  };
+
+  const onSubmit = (data: any) => {
+    const payload = {
+      ...data,
+      body: data.body ? JSON.parse(data.body) : [],
+    };
+
+    testProxy.mutate({ id: sourceId, payload: payload });
+  };
+
+  React.useEffect(() => {
+    setIsLoading({ ...isLoading, sourceForm: deleteSource.isLoading || testProxy.isLoading || dashboardLoading });
+  }, [deleteSource.isLoading, testProxy.isLoading, dashboardLoading]);
+
   return (
     <Container layoutClassName={styles.container}>
-      {_getSources.isLoading && <Skeleton height="200px" />}
-      {_getSources.isError && "Error..."}
+      {getSource.isLoading && <Skeleton height="200px" />}
+      {getSource.isError && "Error..."}
 
-      {_getSources.isSuccess && <SourcesFormTemplate source={_getSources.data} sourceId={sourceId} />}
+      {getSource.isSuccess && (
+        <>
+          <section className={styles.section}>
+            <Heading1>{`Edit ${getSource.data.name}`}</Heading1>
+
+            <div className={styles.buttons}>
+              <Button
+                type="submit"
+                form={formId}
+                disabled={isLoading.sourceForm}
+                className={clsx(styles.buttonIcon, styles.button)}
+              >
+                <FontAwesomeIcon icon={faFloppyDisk} />
+                {t("Save")}
+              </Button>
+
+              <Button
+                className={clsx(styles.buttonIcon, styles.button)}
+                onClick={toggleFromDashboard}
+                disabled={isLoading.sourceForm}
+              >
+                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+              </Button>
+
+              <Button
+                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+                onClick={() => handleDelete(getSource.data.id)}
+                disabled={isLoading.sourceForm}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+                {t("Delete")}
+              </Button>
+            </div>
+          </section>
+
+          <SourceFormTemplate source={getSource.data} />
+        </>
+      )}
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.sourceDetailTabs.toString()}>
@@ -95,12 +146,12 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {_getSources.isLoading && <Skeleton height="200px" />}
-            {_getSources.isSuccess && (
+            {getSource.isLoading && <Skeleton height="200px" />}
+            {getSource.isSuccess && (
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Button
                   className={clsx(styles.buttonIcon, styles.testConnectionButton)}
-                  disabled={isLoading.alert}
+                  disabled={isLoading.sourceForm}
                   type="submit"
                 >
                   <FontAwesomeIcon icon={faArrowsRotate} />
@@ -117,6 +168,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                           {...{ register, errors, control }}
                           name="method"
                           options={methodSelectOptions}
+                          disabled={isLoading.sourceForm}
                         />
 
                         {errors["method"] && <ErrorMessage message="This field is required." />}
@@ -125,7 +177,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Endpoint")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="endpoint" />
+                        <InputText {...{ register, errors }} name="endpoint" disabled={isLoading.sourceForm} />
                       </FormFieldInput>
                     </FormField>
                     <FormField>
@@ -135,6 +187,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                           {...{ register, errors }}
                           name="body"
                           validation={{ validate: validateStringAsJSON }}
+                          disabled={isLoading.sourceForm}
                         />
                         {errors["body"] && <ErrorMessage message={errors["body"].message} />}
                       </FormFieldInput>
@@ -146,9 +199,9 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            {_getCallLogs.isLoading && <Skeleton height="200px" />}
+            {getCallLog.isLoading && <Skeleton height="200px" />}
 
-            {_getCallLogs.isSuccess && (
+            {getCallLog.isSuccess && (
               <Table>
                 <TableHead>
                   <TableRow>
@@ -162,11 +215,8 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {_getCallLogs.data.map((callLog: any) => (
-                    <TableRow
-                      onClick={() => navigate(`/sources/${_getSources.data.id}/${callLog.id}`)}
-                      key={callLog.id}
-                    >
+                  {getCallLog.data.map((callLog: any) => (
+                    <TableRow onClick={() => navigate(`/sources/${getSource.data.id}/${callLog.id}`)} key={callLog.id}>
                       <TableCell>{callLog.id ?? "-"}</TableCell>
                       <TableCell>{callLog.endpoint ?? "-"}</TableCell>
                       <TableCell>
@@ -198,7 +248,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
                       </TableCell>
                     </TableRow>
                   ))}
-                  {!_getCallLogs.data.length && (
+                  {!getCallLog.data.length && (
                     <>
                       <TableRow>
                         <TableCell>{t("No logs found")}</TableCell>
@@ -219,3 +269,12 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
     </Container>
   );
 };
+
+const methodSelectOptions = [
+  { label: "POST", value: "POST" },
+  { label: "PUT", value: "PUT" },
+  { label: "PATCH", value: "PATCH" },
+  { label: "UPDATE", value: "UPDATE" },
+  { label: "GET", value: "GET" },
+  { label: "DELETE", value: "DELETE" },
+];

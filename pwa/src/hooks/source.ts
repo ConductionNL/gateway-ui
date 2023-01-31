@@ -4,12 +4,10 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
-import { IsLoadingContext } from "../context/isLoading";
 import toast from "react-hot-toast";
 
 export const useSource = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
-  const [_, setIsLoading] = React.useContext(IsLoadingContext);
   const _queryClient = useQueryClient();
 
   const getAll = () =>
@@ -30,9 +28,6 @@ export const useSource = (queryClient: QueryClient) => {
 
   const getProxy = (sourceId?: string) =>
     useMutation<any, Error, any>(API.Sources.getProxy, {
-      onMutate: () => {
-        setIsLoading({ alert: true });
-      },
       onSuccess: async () => {
         toast.success("Request succeeded with status code 200");
       },
@@ -43,7 +38,6 @@ export const useSource = (queryClient: QueryClient) => {
           toast.error(error.message);
         }
 
-        setIsLoading({ alert: false });
         _queryClient.invalidateQueries(["callLogs", sourceId]);
         _queryClient.invalidateQueries(["sources", sourceId]);
 
@@ -52,8 +46,6 @@ export const useSource = (queryClient: QueryClient) => {
       onSettled: () => {
         _queryClient.invalidateQueries(["callLogs", sourceId]);
         _queryClient.invalidateQueries(["sources", sourceId]);
-
-        setIsLoading({ alert: false });
       },
     });
 
