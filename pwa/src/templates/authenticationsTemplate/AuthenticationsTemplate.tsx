@@ -28,7 +28,7 @@ export const AuthenticationsTemplate: React.FC = () => {
   ) => {
     e.stopPropagation();
 
-    const confirmDeletion = confirm("Are you sure you want to delete this authentication?");
+    const confirmDeletion = confirm("Are you sure you want to delete this authentication provider?");
 
     if (confirmDeletion) {
       deleteAuthentication.mutate({ id: authenticationId });
@@ -38,11 +38,11 @@ export const AuthenticationsTemplate: React.FC = () => {
   return (
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
-        <Heading1>{t("Authentication")}</Heading1>
+        <Heading1>{t("Authentication Provider")}</Heading1>
         <div className={styles.buttons}>
           <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/authentication/new`)}>
             <FontAwesomeIcon icon={faPlus} />
-            {t("Add Authentication")}
+            {t("Add Authentication Provider")}
           </Button>
         </div>
       </section>
@@ -51,7 +51,7 @@ export const AuthenticationsTemplate: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
+              <TableHeader>{t("Provider Name")}</TableHeader>
               <TableHeader>{t("Number of Scopes")}</TableHeader>
               <TableHeader>{t("DateCreated")}</TableHeader>
               <TableHeader>{t("DateModified")}</TableHeader>
@@ -88,7 +88,7 @@ export const AuthenticationsTemplate: React.FC = () => {
             ))}
             {!getAuthentication.data.length && (
               <TableRow>
-                <TableCell>{t("No authentications found")}</TableCell>
+                <TableCell>{t("No authentication providers found")}</TableCell>
                 <TableCell />
                 <TableCell />
                 <TableCell />

@@ -24,8 +24,8 @@ export default class Authentication {
     const { id } = variables;
 
     const { data } = await Send(this._instance, "DELETE", `/admin/authentications/${id}`, undefined, {
-      loading: "Removing authentication...",
-      success: "Authentication successfully removed.",
+      loading: "Removing authentication provider...",
+      success: "Authentication Provider successfully removed.",
     });
     return data;
   };
@@ -35,15 +35,15 @@ export default class Authentication {
 
     if (id) {
       const { data } = await Send(this._instance, "PUT", `/admin/authentications/${id}`, payload, {
-        loading: "Updating authentication...",
-        success: "Authentication successfully updated.",
+        loading: "Updating authentication provider...",
+        success: "Authentication Provider successfully updated.",
       });
       return data;
     }
 
     const { data } = await Send(this._instance, "POST", "/admin/authentications", payload, {
-      loading: "Creating authentication...",
-      success: "Authentication successfully created.",
+      loading: "Creating authentication provider...",
+      success: "Authentication Provider successfully created.",
     });
     return data;
   };

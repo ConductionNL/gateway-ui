@@ -1,11 +1,12 @@
 import * as React from "react";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem } from "../services/mutateQueries";
 
 export const useDashboardCards = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const _queryClient = useQueryClient();
 
   const getAll = () =>
     useQuery<any[], Error>("dashboardCards", API.DashboardCards.getAll, {
@@ -39,6 +40,9 @@ export const useDashboardCards = (queryClient: QueryClient) => {
       },
       onError: (error) => {
         console.warn(error.message);
+      },
+      onSettled: () => {
+        _queryClient.resetQueries(["dashboardCards"]);
       },
     });
 
