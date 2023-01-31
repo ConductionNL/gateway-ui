@@ -318,14 +318,14 @@ export const SourcesFormTemplate: React.FC<SourcesFormTemplateProps> = ({ source
                 </FormField>
 
                 <FormField>
-                  <FormFieldInput className={styles.flex}>
+                  <FormFieldInput>
                     <FormFieldLabel>{t("Created")}</FormFieldLabel>
                     <Tag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
-                  <FormFieldInput className={styles.flex}>
+                  <FormFieldInput>
                     <FormFieldLabel>{t("Modified")}</FormFieldLabel>
                     <Tag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
                   </FormFieldInput>
