@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputText, SelectSingle, Textarea } from "@conduction/components";
+import { InputCheckbox, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useSource } from "../../../hooks/source";
@@ -16,6 +16,9 @@ import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
 import { IsLoadingContext } from "../../../context/isLoading";
+import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
+import clsx from "clsx";
+import { translateDate } from "../../../services/dateFormat";
 
 interface SourceTemplateProps {
   source?: any;
@@ -24,7 +27,7 @@ interface SourceTemplateProps {
 export const formId: string = "source-form";
 
 export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
@@ -249,6 +252,34 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {errors["name"] && <ErrorMessage message={errors["name"].message} />}
                   </FormFieldInput>
                 </FormField>
+
+                {source && (
+                  <>
+                    <FormField>
+                      <FormFieldLabel>{t("Status")}</FormFieldLabel>
+                      <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
+                        <Tag
+                          icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
+                          label={source.status?.toString() ?? "no known status"}
+                        />
+                      </div>
+                    </FormField>
+
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Created")}</FormFieldLabel>
+                        <Tag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
+                      </FormFieldInput>
+                    </FormField>
+
+                    <FormField>
+                      <FormFieldInput>
+                        <FormFieldLabel>{t("Modified")}</FormFieldLabel>
+                        <Tag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
+                      </FormFieldInput>
+                    </FormField>
+                  </>
+                )}
               </div>
               <FormField>
                 <FormFieldInput>

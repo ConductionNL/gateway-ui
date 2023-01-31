@@ -11,11 +11,11 @@ import { AuthenticationFormTemplate } from "./AuthenticationFormTemplate";
 import { useAuthentication } from "../../../hooks/authentication";
 import clsx from "clsx";
 
-interface EditAuthenticationFormTemplateProps {
+interface EditAuthenticationTemplateProps {
   authenticationId: string;
 }
 
-export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemplateProps> = ({ authenticationId }) => {
+export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProps> = ({ authenticationId }) => {
   const { t } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
 
@@ -32,7 +32,7 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
     toggleDashboardCard(
       getAuthentication.data.name,
       "authentication",
-      "Authentication",
+      "Authentication Provider",
       getAuthentication.data.id,
       dashboardCard?.id,
     );
@@ -50,7 +50,7 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
     <div className={styles.container}>
       <section className={styles.section}>
         <Heading1>
-          {getAuthentication.isSuccess ? `Edit ${getAuthentication.data.name}` : "Edit Authentication"}
+          {getAuthentication.isSuccess ? `Edit ${getAuthentication.data.name}` : "Edit Authentication Provider"}
         </Heading1>
 
         <div className={styles.buttons}>
@@ -64,7 +64,11 @@ export const EditAuthenticationFormTemplate: React.FC<EditAuthenticationFormTemp
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>
 
-          <Button className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)} onClick={handleDelete} disabled={loading}>
+          <Button
+            className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+            onClick={handleDelete}
+            disabled={loading}
+          >
             <FontAwesomeIcon icon={faTrash} />
             {t("Delete")}
           </Button>

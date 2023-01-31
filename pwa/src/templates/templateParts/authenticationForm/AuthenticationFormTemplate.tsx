@@ -64,7 +64,7 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
         <div className={styles.grid}>
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("Name")}</FormFieldLabel>
+              <FormFieldLabel>{t("Provider Name")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="name" validation={{ required: true }} />
             </FormFieldInput>
           </FormField>

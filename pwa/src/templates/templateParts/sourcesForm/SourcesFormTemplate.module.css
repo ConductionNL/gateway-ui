@@ -80,14 +80,6 @@
   flex-direction: column;
 }
 
-.flex {
-  flex: 1;
-}
-
-.flex > *:not(:last-child) {
-  margin-inline-end: var(--gateway-ui-size-md);
-}
-
 .deleteButton {
   --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
 }

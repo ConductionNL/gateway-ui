@@ -11,7 +11,7 @@ export type TEntity =
   | "CollectionEntity"
   | "Organization"
   | "User"
-  | "Authentication";
+  | "Authentication Provider";
 
 export default class DashboardCards {
   private _instance: AxiosInstance;
