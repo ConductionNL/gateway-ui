@@ -3,6 +3,7 @@ import * as React from "react";
 export interface IsLoadingProps {
   alert?: boolean;
   schemaForm?: boolean;
+  authenticationForm?: boolean;
 }
 
 export const isLoading = {} as IsLoadingProps;

@@ -7,9 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
-import { AuthenticationFormTemplate } from "./AuthenticationFormTemplate";
+import { AuthenticationFormTemplate, formId } from "./AuthenticationFormTemplate";
 import { useAuthentication } from "../../../hooks/authentication";
 import clsx from "clsx";
+import { IsLoadingContext } from "../../../context/isLoading";
 
 interface EditAuthenticationTemplateProps {
   authenticationId: string;
@@ -18,8 +19,7 @@ interface EditAuthenticationTemplateProps {
 export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProps> = ({ authenticationId }) => {
   const { t } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
-
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = new QueryClient();
   const _useAuthentications = useAuthentication(queryClient);
@@ -39,11 +39,13 @@ export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProp
   };
 
   React.useEffect(() => {
-    setLoading(deleteAuthentication.isLoading || dashboardToggleLoading);
+    setIsLoading({ ...isLoading, authenticationForm: deleteAuthentication.isLoading || dashboardToggleLoading });
   }, [deleteAuthentication.isLoading, dashboardToggleLoading]);
 
   const handleDelete = (): void => {
-    deleteAuthentication.mutateAsync({ id: authenticationId });
+    const confirmDeletion = confirm("Are you sure you want to delete this authentication provider?");
+
+    confirmDeletion && deleteAuthentication.mutateAsync({ id: authenticationId });
   };
 
   return (
@@ -54,12 +56,21 @@ export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProp
         </Heading1>
 
         <div className={styles.buttons}>
-          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="AuthForm" disabled={loading}>
+          <Button
+            className={clsx(styles.buttonIcon, styles.button)}
+            type="submit"
+            form={formId}
+            disabled={isLoading.authenticationForm}
+          >
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
 
-          <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard}>
+          <Button
+            className={clsx(styles.buttonIcon, styles.button)}
+            onClick={toggleFromDashboard}
+            disabled={!getAuthentication.data || isLoading.authenticationForm}
+          >
             <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>
@@ -67,7 +78,7 @@ export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProp
           <Button
             className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
             onClick={handleDelete}
-            disabled={loading}
+            disabled={isLoading.authenticationForm}
           >
             <FontAwesomeIcon icon={faTrash} />
             {t("Delete")}
