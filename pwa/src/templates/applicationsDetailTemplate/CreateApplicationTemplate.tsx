@@ -1,32 +1,35 @@
 import * as React from "react";
 import * as styles from "./ApplicationTemplate.module.css";
 import { Button, Heading1 } from "@gemeente-denhaag/components-react";
-import { ApplicationsFormTemplate } from "../templateParts/applicationsForm/ApplicationsFormTemplate";
+import { ApplicationsFormTemplate, formId } from "../templateParts/applicationsForm/ApplicationsFormTemplate";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
+import { IsLoadingContext } from "../../context/isLoading";
 
-interface CreateApplicationTemplateProps {}
-
-export const CreateApplicationTemplate: React.FC<CreateApplicationTemplateProps> = ({}) => {
+export const CreateApplicationTemplate: React.FC = () => {
   const { t } = useTranslation();
-
-  let saveFunction: Function;
-  const getSave = (save: Function) => (saveFunction = save);
+  const [isLoading] = React.useContext(IsLoadingContext);
 
   return (
     <div className={styles.container}>
       <section className={styles.section}>
         <Heading1>{"Create Application"}</Heading1>
         <div className={styles.buttons}>
-          <Button className={clsx(styles.buttonIcon, styles.button)} onClick={() => saveFunction()} type="submit">
+          <Button
+            form={formId}
+            type="submit"
+            disabled={isLoading.applicationForm}
+            className={clsx(styles.buttonIcon, styles.button)}
+          >
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
         </div>
       </section>
-      <ApplicationsFormTemplate getSave={getSave} />
+
+      <ApplicationsFormTemplate />
     </div>
   );
 };

@@ -95,7 +95,7 @@ export const GatewayDetailTemplate: React.FC = () => {
                       <TableHeader className={styles.requiredTableHeader}>
                         <span>{currentRequire}</span>
                         <span>
-                          {currentRequire && new Date(getPlugins.data.versions[currentRequire].time).toLocaleString()}
+                          {/* {currentRequire && new Date(getPlugins.data.versions[currentRequire].time).toLocaleString()} */}
                         </span>
                       </TableHeader>
                     </TableRow>
@@ -105,14 +105,14 @@ export const GatewayDetailTemplate: React.FC = () => {
                       <TableCell>
                         requires: <br />
                         <ul>
-                          {currentRequire &&
+                          {/* {currentRequire &&
                             Object.entries(getPlugins.data.versions[currentRequire].require).map(([key, value]) => (
                               <>
                                 <li>
                                   {key}: {value}
                                 </li>
                               </>
-                            ))}
+                            ))} */}
                         </ul>
                       </TableCell>
                     </TableRow>
