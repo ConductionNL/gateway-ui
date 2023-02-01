@@ -26,6 +26,7 @@ import Organization from "./resources/organization";
 import User from "./resources/user";
 import Authentication from "./resources/authentication";
 import SecurityGroup from "./resources/securityGroup";
+import Mapping from "./resources/mapping";
 
 export default class APIService {
   public removeAuthentication(): void {
@@ -171,6 +172,10 @@ export default class APIService {
 
   public get SecurityGroup(): SecurityGroup {
     return new SecurityGroup(this.BaseClient);
+  }
+
+  public get Mapping(): Mapping {
+    return new Mapping(this.BaseClient);
   }
 
   // Services
