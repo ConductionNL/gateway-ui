@@ -2,13 +2,17 @@ import { PageProps } from "gatsby";
 import * as React from "react";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
 import { EndpointDetailTemplate } from "../../../templates/EndpointsDetailTemplate/EndpointDetailsTemplate";
-import { CreateEndpointFormTemplate } from "../../../templates/templateParts/endpointsForm/CreateEndpointsFormTemplate";
+import { CreateEndpointTemplate } from "../../../templates/templateParts/endpointsForm/CreateEndpointTemplate";
 
-const EndpointDetailPage: React.FC<PageProps> = (props: PageProps) => (
-  <DashboardTemplate>
-    {props.params.endpointId === "new" && <CreateEndpointFormTemplate />}
-    {props.params.endpointId !== "new" && <EndpointDetailTemplate endpointId={props.params.endpointId} />}
-  </DashboardTemplate>
-);
+const EndpointDetailPage: React.FC<PageProps> = (props: PageProps) => {
+  const endpointId = props.params.endpointId === "new" ? null : props.params.endpointId;
+
+  return (
+    <DashboardTemplate>
+      {!endpointId && <CreateEndpointTemplate />}
+      {endpointId && <EndpointDetailTemplate {...{ endpointId }} />}
+    </DashboardTemplate>
+  );
+};
 
 export default EndpointDetailPage;
