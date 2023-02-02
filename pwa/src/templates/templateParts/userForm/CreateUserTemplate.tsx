@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./UserFormTemplate.module.css";
+import * as styles from "./CreateUserTemplate.module.css";
 import { formId, UserFormTemplate } from "./UserFormTemplate";
 import { Heading1 } from "@gemeente-denhaag/typography";
 import Button from "@gemeente-denhaag/button";
@@ -10,7 +10,7 @@ import { Container } from "@conduction/components";
 import clsx from "clsx";
 import { IsLoadingContext } from "../../../context/isLoading";
 
-export const CreateUserFormTemplate: React.FC = () => {
+export const CreateUserTemplate: React.FC = () => {
   const { t } = useTranslation();
   const [isLoading] = React.useContext(IsLoadingContext);
 

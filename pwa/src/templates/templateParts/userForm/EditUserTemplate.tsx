@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as styles from "./UserFormTemplate.module.css";
+import * as styles from "./EditUserTemplate.module.css";
 import { QueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useUser } from "../../../hooks/user";
@@ -19,11 +19,11 @@ import { navigate } from "gatsby";
 import clsx from "clsx";
 import { IsLoadingContext } from "../../../context/isLoading";
 
-interface EditUserFormTemplateProps {
+interface EditUserTemplateProps {
   userId: string;
 }
 
-export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ userId }) => {
+export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
