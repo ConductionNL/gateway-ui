@@ -2,13 +2,17 @@ import * as React from "react";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
 import { SourcesDetailTemplate } from "../../../templates/sourcesDetailTemplate/SourcesDetailTemplate";
 import { PageProps } from "gatsby";
-import { CreateSourceFormTemplate } from "../../../templates/templateParts/sourcesForm/CreateSourceFormTemplate";
+import { CreateSourceFormTemplate } from "../../../templates/templateParts/sourcesForm/CreateSourceTemplate";
 
-const SourcesPage: React.FC<PageProps> = (props: PageProps) => (
-  <DashboardTemplate>
-    {props.params.sourceId === "new" && <CreateSourceFormTemplate />}
-    {props.params.sourceId !== "new" && <SourcesDetailTemplate sourceId={props.params.sourceId} />}
-  </DashboardTemplate>
-);
+const SourcesPage: React.FC<PageProps> = (props: PageProps) => {
+  const sourceId = props.params.sourceId === "new" ? null : props.params.sourceId;
+
+  return (
+    <DashboardTemplate>
+      {!sourceId && <CreateSourceFormTemplate />}
+      {sourceId && <SourcesDetailTemplate {...{ sourceId }} />}
+    </DashboardTemplate>
+  );
+};
 
 export default SourcesPage;
