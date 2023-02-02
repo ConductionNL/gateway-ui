@@ -37,7 +37,7 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
         {handleToggleDashboard && (
           <Button {...{ disabled }} onClick={handleToggleDashboard.handleToggle}>
             <FontAwesomeIcon icon={handleToggleDashboard.isActive ? faMinus : faPlus} />
-            {handleToggleDashboard ? t("Remove from dashboard") : t("Add to dashboard")}
+            {handleToggleDashboard.isActive ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>
         )}
 
