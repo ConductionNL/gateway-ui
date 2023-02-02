@@ -5,9 +5,15 @@ import { useAction } from "../../hooks/action";
 import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { EditActionFormTemplate } from "../templateParts/actionsForm/EditActionFormTemplate";
-import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
+import { ActionFormTemplate, formId } from "../templateParts/actionsForm/ActionFormTemplate";
+import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import clsx from "clsx";
+import action from "../../apiService/resources/action";
+import { IsLoadingContext } from "../../context/isLoading";
+import { useDashboardCard } from "../../hooks/useDashboardCard";
 
 interface ActionsDetailsTemplateProps {
   actionId: string;
@@ -16,18 +22,73 @@ interface ActionsDetailsTemplateProps {
 export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ actionId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = new QueryClient();
-  const _useActions = useAction(queryClient);
-  const getActions = _useActions.getOne(actionId);
+  const _useAction = useAction(queryClient);
+  const getAction = _useAction.getOne(actionId);
+  const deleteAction = _useAction.remove();
+
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
+
+  const dashboardCard = getDashboardCard(actionId);
+
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(action.name, "action", "Action", actionId, dashboardCard?.id);
+  };
+
+  const handleDeleteAction = () => {
+    const confirmDeletion = confirm("Are you sure you want to delete this action?");
+
+    confirmDeletion && deleteAction.mutate({ id: actionId });
+  };
+
+  React.useEffect(() => {
+    setIsLoading({ ...isLoading, actionForm: deleteAction.isLoading || dashboardToggleLoading });
+  }, [deleteAction.isLoading, dashboardToggleLoading]);
 
   return (
     <Container layoutClassName={styles.container}>
-      {getActions.isError && "Error..."}
+      {getAction.isError && "Error..."}
 
-      {getActions.isSuccess && (
+      {getAction.isSuccess && (
         <>
-          <EditActionFormTemplate action={getActions.data} {...{ actionId }} />
+          <section className={styles.section}>
+            <Heading1>{`Edit ${action.name}`}</Heading1>
+
+            <div className={styles.buttons}>
+              <Button
+                type="submit"
+                form={formId}
+                disabled={isLoading.actionForm}
+                className={clsx(styles.buttonIcon, styles.button)}
+              >
+                <FontAwesomeIcon icon={faFloppyDisk} />
+                {t("Save")}
+              </Button>
+
+              <Button
+                className={clsx(styles.buttonIcon, styles.button)}
+                disabled={isLoading.actionForm}
+                onClick={toggleFromDashboard}
+              >
+                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
+                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+              </Button>
+
+              <Button
+                onClick={handleDeleteAction}
+                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+                disabled={isLoading.actionForm}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+                {t("Delete")}
+              </Button>
+            </div>
+          </section>
+
+          <ActionFormTemplate action={getAction.data} />
+
           <Table>
             <TableHead>
               <TableRow>
@@ -36,13 +97,13 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
             </TableHead>
 
             <TableBody>
-              {getActions.data.throws.map((thrown: any, idx: number) => (
+              {getAction.data.throws.map((thrown: any, idx: number) => (
                 <TableRow key={idx}>
                   <TableCell>{thrown}</TableCell>
                 </TableRow>
               ))}
 
-              {!getActions.data.throws.length && (
+              {!getAction.data.throws.length && (
                 <TableRow>
                   <TableCell>No subscribed throws.</TableCell>
                 </TableRow>
@@ -51,7 +112,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
           </Table>
         </>
       )}
-      {getActions.isLoading && <Skeleton height="200px" />}
+      {getAction.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.toString()}>
@@ -66,8 +127,8 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getActions.isLoading && <Skeleton height="200px" />}
-            {getActions.isSuccess && <span>Logs</span>}{" "}
+            {getAction.isLoading && <Skeleton height="200px" />}
+            {getAction.isSuccess && <span>Logs</span>}
           </TabPanel>
         </TabContext>
       </div>

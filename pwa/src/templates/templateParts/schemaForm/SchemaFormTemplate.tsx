@@ -41,7 +41,7 @@ interface ReactHookFormProps {
 
 interface SchemaFormTemplateProps {
   schema: any;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFormProps> = ({
@@ -168,7 +168,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
 interface FormFieldGroupProps {
   type: SchemaInputType;
   name: string;
-  disabled: boolean;
+  disabled?: boolean;
   readOnly?: boolean;
   placeholder?: string;
   required?: boolean;

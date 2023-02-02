@@ -82,7 +82,7 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
   }, [createOrEditApplication.isLoading]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} id={formId}>
+    <form onSubmit={handleSubmit(onSubmit)} id={formId} className={styles.form}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
           <FormField>
