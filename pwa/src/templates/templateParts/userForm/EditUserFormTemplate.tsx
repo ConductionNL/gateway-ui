@@ -3,8 +3,7 @@ import * as styles from "./UserFormTemplate.module.css";
 import { QueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useUser } from "../../../hooks/user";
-import { UserFormTemplate } from "./UserFormTemplate";
-import { useOrganization } from "../../../hooks/organization";
+import { UserFormTemplate, formId } from "./UserFormTemplate";
 import { Heading1 } from "@gemeente-denhaag/typography";
 import Button from "@gemeente-denhaag/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +17,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { navigate } from "gatsby";
 import clsx from "clsx";
+import { IsLoadingContext } from "../../../context/isLoading";
 
 interface EditUserFormTemplateProps {
   userId: string;
@@ -25,15 +25,14 @@ interface EditUserFormTemplateProps {
 
 export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ userId }) => {
   const { t } = useTranslation();
-  const { toggleDashboardCard, getDashboardCard } = useDashboardCard();
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const queryClient = new QueryClient();
   const _useUsers = useUser(queryClient);
   const getUser = _useUsers.getOne(userId);
-
-  const _useOrganizations = useOrganization(queryClient);
-  const getOrganization = _useOrganizations.getAll();
 
   const dashboardCard = getDashboardCard(getUser.data?.id);
 
@@ -41,25 +40,38 @@ export const EditUserFormTemplate: React.FC<EditUserFormTemplateProps> = ({ user
     toggleDashboardCard(getUser.data.name, "user", "User", getUser.data.id, dashboardCard?.id);
   };
 
+  React.useEffect(() => {
+    setIsLoading({ ...isLoading, userForm: dashboardLoading });
+  }, [dashboardLoading]);
+
   return (
     <Container layoutClassName={styles.container}>
       <section className={styles.section}>
         <Heading1>{getUser.data?.id ? `Edit ${getUser.data.name}` : "Edit User"}</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="UserForm">
+          <Button
+            type="submit"
+            form={formId}
+            disabled={isLoading.userForm}
+            className={clsx(styles.buttonIcon, styles.button)}
+          >
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
 
-          <Button className={clsx(styles.buttonIcon, styles.button)} onClick={toggleFromDashboard}>
+          <Button
+            onClick={toggleFromDashboard}
+            disabled={isLoading.userForm}
+            className={clsx(styles.buttonIcon, styles.button)}
+          >
             <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>
         </div>
       </section>
 
-      {getUser.isSuccess && <UserFormTemplate user={getUser.data} {...{ getOrganization }} />}
+      {getUser.isSuccess && <UserFormTemplate user={getUser.data} />}
 
       {getUser.isSuccess && (
         <div className={styles.tabContainer}>
