@@ -9,16 +9,18 @@ import { useAuthentication } from "../../../hooks/authentication";
 import { InputURL } from "@conduction/components/lib/components/formFields";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import Skeleton from "react-loading-skeleton";
+import { IsLoadingContext } from "../../../context/isLoading";
 
 interface AuthenticationFormTemplateProps {
   authentication?: any;
 }
 
-export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProps> = ({ authentication }) => {
-  // NOTE: taken from organization
+export const formId: string = "authentication-provider-form";
 
+export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProps> = ({ authentication }) => {
   const { t } = useTranslation();
   const [scopes, setScopes] = React.useState<any[]>([]);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = new QueryClient();
   const _useAuthentications = useAuthentication(queryClient);
@@ -42,58 +44,67 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
     );
   };
 
-  React.useEffect(() => {
-    authentication && handleSetFormValues(authentication);
-    authentication && setScopes(authentication.scopes);
-  }, [authentication]);
-
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
       scopes: data.scopes?.map((scope: any) => scope.value),
     };
 
-    createOrEditAuthentication.mutate({ payload: payload, id: authentication?.id });
+    createOrEditAuthentication.mutate({ payload, id: authentication?.id });
 
     authentication?.id && queryClient.setQueryData(["organizations", authentication.id], data);
   };
 
+  React.useEffect(() => {
+    setIsLoading({ ...isLoading, authenticationForm: createOrEditAuthentication.isLoading });
+  }, [createOrEditAuthentication.isLoading]);
+
+  React.useEffect(() => {
+    authentication && handleSetFormValues(authentication);
+    authentication && setScopes(authentication.scopes);
+  }, [authentication]);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} id="AuthForm">
+    <form onSubmit={handleSubmit(onSubmit)} id={formId}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Provider Name")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="name" validation={{ required: true }} />
+              <InputText
+                {...{ register, errors }}
+                name="name"
+                validation={{ required: true }}
+                disabled={isLoading.authenticationForm}
+              />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Authenticate Url")}</FormFieldLabel>
-              <InputURL name="authenticateUrl" {...{ register, errors }} />
+              <InputURL name="authenticateUrl" {...{ register, errors }} disabled={isLoading.authenticationForm} />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Token Url")}</FormFieldLabel>
-              <InputURL name="tokenUrl" {...{ register, errors }} />
+              <InputURL name="tokenUrl" {...{ register, errors }} disabled={isLoading.authenticationForm} />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Secret")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="secret" />
+              <Textarea {...{ register, errors }} name="secret" disabled={isLoading.authenticationForm} />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Client Id")}</FormFieldLabel>
-              <InputText name="clientId" {...{ register, errors }} />
+              <InputText name="clientId" {...{ register, errors }} disabled={isLoading.authenticationForm} />
             </FormFieldInput>
           </FormField>
 
@@ -110,6 +121,7 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
                   }))}
                   name="scopes"
                   {...{ register, errors, control }}
+                  disabled={isLoading.authenticationForm}
                 />
               )}
             </FormFieldInput>
