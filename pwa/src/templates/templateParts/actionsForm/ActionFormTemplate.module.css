@@ -47,7 +47,6 @@
 
 .tabContainer {
   background: var(--gateway-ui-color-white);
-  margin-block-start: var(--gateway-ui-size-2xl);
 }
 
 .tabPanel {
