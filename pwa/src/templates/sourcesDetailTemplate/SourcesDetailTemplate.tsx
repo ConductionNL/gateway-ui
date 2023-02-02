@@ -10,7 +10,6 @@ import {
   FormField,
   FormFieldInput,
   FormFieldLabel,
-  Heading1,
   Link,
   Tab,
   TabContext,
@@ -27,13 +26,14 @@ import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndI
 import clsx from "clsx";
 import { dateTime } from "../../services/dateTime";
 import { IsLoadingContext } from "../../context/isLoading";
-import { faArrowsRotate, faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { validateStringAsJSON } from "../../services/validateJSON";
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { TabsContext } from "../../context/tabs";
 import { SourceFormTemplate, formId } from "../templateParts/sourcesForm/SourceFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
+import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -68,10 +68,10 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
     toggleDashboardCard(getSource.data.name, "source", "Gateway", sourceId, dashboardCard?.id);
   };
 
-  const handleDelete = (id: string): void => {
+  const handleDelete = (): void => {
     const confirmDeletion = confirm("Are you sure you want to delete this source?");
 
-    confirmDeletion && deleteSource.mutateAsync({ id: id });
+    confirmDeletion && deleteSource.mutateAsync({ id: sourceId });
   };
 
   const onSubmit = (data: any) => {
@@ -94,39 +94,12 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
       {getSource.isSuccess && (
         <>
-          <section className={styles.section}>
-            <Heading1>{`Edit ${getSource.data.name}`}</Heading1>
-
-            <div className={styles.buttons}>
-              <Button
-                type="submit"
-                form={formId}
-                disabled={isLoading.sourceForm}
-                className={clsx(styles.buttonIcon, styles.button)}
-              >
-                <FontAwesomeIcon icon={faFloppyDisk} />
-                {t("Save")}
-              </Button>
-
-              <Button
-                className={clsx(styles.buttonIcon, styles.button)}
-                onClick={toggleFromDashboard}
-                disabled={isLoading.sourceForm}
-              >
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
-
-              <Button
-                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
-                onClick={() => handleDelete(getSource.data.id)}
-                disabled={isLoading.sourceForm}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Delete")}
-              </Button>
-            </div>
-          </section>
+          <FormHeaderTemplate
+            {...{ formId, handleDelete }}
+            disabled={isLoading.sourceForm}
+            title={`Edit ${getSource.data.name}`}
+            handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+          />
 
           <SourceFormTemplate source={getSource.data} />
         </>
