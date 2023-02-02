@@ -7,6 +7,7 @@ export interface IsLoadingProps {
   sourceForm?: boolean;
   applicationForm?: boolean;
   actionForm?: boolean;
+  collectionForm?: boolean;
 }
 
 export const isLoading = {} as IsLoadingProps;
