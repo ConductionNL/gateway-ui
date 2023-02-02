@@ -4,6 +4,7 @@ export interface IsLoadingProps {
   schemaForm?: boolean;
   authenticationForm?: boolean;
   sourceForm?: boolean;
+  applicationForm?: boolean;
 }
 
 export const isLoading = {} as IsLoadingProps;
