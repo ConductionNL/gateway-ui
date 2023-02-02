@@ -4,13 +4,15 @@ import { DashboardTemplate } from "../../../../templates/dashboard/DashboardTemp
 import { EditAuthenticationTemplate } from "../../../../templates/templateParts/authenticationForm/EditAuthenticationTemplate";
 import { CreateAuthenticationTemplate } from "../../../../templates/templateParts/authenticationForm/CreateAuthenticationTemplate";
 
-const AuthenticationDetailPage: React.FC<PageProps> = (props: PageProps) => (
-  <DashboardTemplate>
-    {props.params.authenticationId === "new" && <CreateAuthenticationTemplate />}
-    {props.params.authenticationId !== "new" && (
-      <EditAuthenticationTemplate authenticationId={props.params.authenticationId} />
-    )}
-  </DashboardTemplate>
-);
+const AuthenticationDetailPage: React.FC<PageProps> = (props: PageProps) => {
+  const authenticationId = props.params.authenticationId === "new" ? null : props.params.authenticationId;
+
+  return (
+    <DashboardTemplate>
+      {!authenticationId && <CreateAuthenticationTemplate />}
+      {authenticationId && <EditAuthenticationTemplate {...{ authenticationId }} />}
+    </DashboardTemplate>
+  );
+};
 
 export default AuthenticationDetailPage;

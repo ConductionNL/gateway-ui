@@ -1,26 +1,28 @@
 import * as React from "react";
-import * as styles from "./ApplicationTemplate.module.css";
+import * as styles from "./SourcesFormTemplate.module.css";
+import clsx from "clsx";
+
 import { Button, Heading1 } from "@gemeente-denhaag/components-react";
-import { ApplicationsFormTemplate, formId } from "../templateParts/applicationsForm/ApplicationsFormTemplate";
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
-import clsx from "clsx";
-import { IsLoadingContext } from "../../context/isLoading";
+import { SourceFormTemplate, formId } from "./SourceFormTemplate";
+import { IsLoadingContext } from "../../../context/isLoading";
 
-export const CreateApplicationTemplate: React.FC = () => {
+export const CreateSourceFormTemplate: React.FC = () => {
   const { t } = useTranslation();
   const [isLoading] = React.useContext(IsLoadingContext);
 
   return (
     <div className={styles.container}>
       <section className={styles.section}>
-        <Heading1>{"Create Application"}</Heading1>
+        <Heading1>{t("Create Source")}</Heading1>
+
         <div className={styles.buttons}>
           <Button
-            form={formId}
             type="submit"
-            disabled={isLoading.applicationForm}
+            form={formId}
+            disabled={isLoading.sourceForm}
             className={clsx(styles.buttonIcon, styles.button)}
           >
             <FontAwesomeIcon icon={faFloppyDisk} />
@@ -29,7 +31,7 @@ export const CreateApplicationTemplate: React.FC = () => {
         </div>
       </section>
 
-      <ApplicationsFormTemplate />
+      <SourceFormTemplate />
     </div>
   );
 };

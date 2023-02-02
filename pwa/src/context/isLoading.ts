@@ -1,9 +1,11 @@
 import * as React from "react";
 
 export interface IsLoadingProps {
-  alert?: boolean;
   schemaForm?: boolean;
   userForm?: boolean;
+  authenticationForm?: boolean;
+  sourceForm?: boolean;
+  applicationForm?: boolean;
 }
 
 export const isLoading = {} as IsLoadingProps;

@@ -7,8 +7,9 @@ import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import clsx from "clsx";
 import { useApplication } from "../../hooks/application";
-import { ApplicationsFormTemplate } from "../templateParts/applicationsForm/ApplicationsFormTemplate";
+import { ApplicationsFormTemplate, formId } from "../templateParts/applicationsForm/ApplicationsFormTemplate";
 import Skeleton from "react-loading-skeleton";
+import { IsLoadingContext } from "../../context/isLoading";
 
 interface EditApplicationTemplateProps {
   applicationId: string;
@@ -16,8 +17,7 @@ interface EditApplicationTemplateProps {
 
 export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = ({ applicationId }) => {
   const { t } = useTranslation();
-
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = useQueryClient();
   const _useApplication = useApplication(queryClient);
@@ -27,14 +27,12 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
   const handleDeleteApplication = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this application?");
 
-    if (confirmDeletion) {
-      deleteApplication.mutate({ id: applicationId });
-    }
+    confirmDeletion && deleteApplication.mutate({ id: applicationId });
   };
 
-  let saveFunction: Function;
-
-  const getSave = (save: Function) => (saveFunction = save);
+  React.useEffect(() => {
+    setIsLoading({ ...isLoading, applicationForm: deleteApplication.isLoading });
+  }, [deleteApplication.isLoading]);
 
   return (
     <div className={styles.container}>
@@ -44,24 +42,31 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
             <Heading1>{`Edit ${getApplication.data.name}`}</Heading1>
 
             <div className={styles.buttons}>
-              <Button className={clsx(styles.buttonIcon, styles.button)} onClick={() => saveFunction()} type="submit" disabled={loading}>
+              <Button
+                type="submit"
+                form={formId}
+                disabled={isLoading.applicationForm}
+                className={clsx(styles.buttonIcon, styles.button)}
+              >
                 <FontAwesomeIcon icon={faFloppyDisk} />
                 {t("Save")}
               </Button>
 
               <Button
                 onClick={handleDeleteApplication}
+                disabled={isLoading.applicationForm}
                 className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
-                disabled={loading}
               >
                 <FontAwesomeIcon icon={faTrash} />
                 {t("Delete")}
               </Button>
             </div>
           </section>
-          <ApplicationsFormTemplate application={getApplication.data} getSave={getSave} />
+
+          <ApplicationsFormTemplate application={getApplication.data} />
         </>
       )}
+
       {getApplication.isLoading && <Skeleton height={200} />}
     </div>
   );
