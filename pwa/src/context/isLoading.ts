@@ -9,6 +9,7 @@ export interface IsLoadingProps {
   endpointForm?: boolean;
   cronjobForm?: boolean;
   actionForm?: boolean;
+  securityGroupForm?: boolean;
   collectionForm?: boolean;
 }
 
