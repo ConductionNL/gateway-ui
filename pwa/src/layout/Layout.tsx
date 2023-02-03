@@ -14,7 +14,7 @@ import { TabsProvider, ITabs, tabs as _tabs } from "../context/tabs";
 import { getScreenSize } from "../services/getScreenSize";
 import { IsLoadingProps, IsLoadingProvider } from "../context/isLoading";
 import { Toaster } from "react-hot-toast";
-import { FiltersProvider, IFilters, filters as _filters } from "../context/filters";
+import { FiltersProvider, pagination as _pagination, IPaginationFilters } from "../context/filters";
 import { LogFiltersProvider, LogProps } from "../context/logs";
 
 interface LayoutProps {
@@ -32,7 +32,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [tabs, setTabs] = React.useState<ITabs>(_tabs);
   const [isLoading, setIsLoading] = React.useState<IsLoadingProps>({});
   const [logFilters, setLogFilters] = React.useState<LogProps>({});
-  const [filters, setFilters] = React.useState<IFilters>(_filters);
+  const [pagination, setPagination] = React.useState<IPaginationFilters>(_pagination);
 
   React.useEffect(() => {
     setAPI(new APIService());
@@ -64,7 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
         <APIProvider value={API}>
           <StylesProvider>
             <Toaster position="bottom-right" />
-            <FiltersProvider value={[filters, setFilters]}>
+            <FiltersProvider value={[pagination, setPagination]}>
               <LogFiltersProvider value={[logFilters, setLogFilters]}>
                 <IsLoadingProvider value={[isLoading, setIsLoading]}>
                   <TabsProvider value={[tabs, setTabs]}>
