@@ -14,13 +14,32 @@ import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { LogFiltersTemplate } from "../templateParts/logFilters/LogFiltersTemplate";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { LogFiltersContext } from "../../context/logs";
+import { PaginatedItems } from "../../components/pagination/pagination";
+import { PaginationFiltersContext } from "../../context/filters";
+import { GatsbyContext } from "../../context/gatsby";
 
 export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();
   const [logFilters] = React.useContext(LogFiltersContext);
+  const { screenSize } = React.useContext(GatsbyContext);
+  const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(3);
+
+  const [pagination, setPagination] = React.useContext(PaginationFiltersContext);
 
   const queryClient = new QueryClient();
-  const getLogs = useLog(queryClient).getAll(logFilters);
+  const getLogs = useLog(queryClient).getAll(logFilters, pagination);
+
+  React.useEffect(() => {
+    if (getLogs.isSuccess && screenSize === "mobile") {
+      setMarginPageDisplayed(2);
+    }
+    if (getLogs.isSuccess && screenSize === "mobile" && getLogs.data.pages > 100) {
+      setMarginPageDisplayed(1);
+    }
+    if (getLogs.isSuccess && screenSize !== "mobile") {
+      setMarginPageDisplayed(3);
+    }
+  }, [getLogs]);
 
   const handleResourceClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
@@ -39,132 +58,149 @@ export const LogsTemplate: React.FC = () => {
       <LogFiltersTemplate />
 
       {getLogs.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Level")}</TableHeader>
-              <TableHeader>{t("Message")}</TableHeader>
-              <TableHeader>{t("Endpoint")}</TableHeader>
-              <TableHeader>{t("Schema")}</TableHeader>
-              <TableHeader>{t("Cronjob")}</TableHeader>
-              <TableHeader>{t("Action")}</TableHeader>
-              <TableHeader>{t("User")}</TableHeader>
-              <TableHeader>{t("Organization")}</TableHeader>
-              <TableHeader>{t("Application")}</TableHeader>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {getLogs.data.map((log) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/logs/${log._id.$oid}`)}
-                key={log._id.$oid}
-              >
-                <TableCell>
-                  <Tag layoutClassName={styles[log.level_name]} label={_.upperFirst(_.lowerCase(log.level_name))} />
-                </TableCell>
-
-                <TableCell>
-                  <ToolTip tooltip={log.message}>
-                    <div className={styles.message}>{log.message}</div>
-                  </ToolTip>
-                </TableCell>
-
-                <TableCell>
-                  <Button
-                    className={styles.button}
-                    disabled={!log.context.endpoint}
-                    onClick={(e) => handleResourceClick(e, "endpoints", log.context.endpoint)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Endpoint")}
-                  </Button>
-                </TableCell>
-
-                <TableCell>
-                  <Button
-                    className={styles.button}
-                    disabled={!log.context.schema}
-                    onClick={(e) => handleResourceClick(e, "schemas", log.context.schema)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Schema")}
-                  </Button>
-                </TableCell>
-
-                <TableCell>
-                  <Button
-                    className={styles.button}
-                    disabled={!log.context.cronjob}
-                    onClick={(e) => handleResourceClick(e, "cronjobs", log.context.cronjob)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Cronjob")}
-                  </Button>
-                </TableCell>
-
-                <TableCell>
-                  <Button
-                    className={styles.button}
-                    disabled={!log.context.action}
-                    onClick={(e) => handleResourceClick(e, "actions", log.context.action)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Action")}
-                  </Button>
-                </TableCell>
-
-                <TableCell>
-                  <Button
-                    className={styles.button}
-                    disabled={!log.context.user}
-                    onClick={(e) => handleResourceClick(e, "settings/users", log.context.user)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("User")}
-                  </Button>
-                </TableCell>
-
-                <TableCell>
-                  <Button
-                    className={styles.button}
-                    disabled={!log.context.organization}
-                    onClick={(e) => handleResourceClick(e, "settings/organizations", log.context.organization)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Organization")}
-                  </Button>
-                </TableCell>
-
-                <TableCell>
-                  <Button
-                    className={styles.button}
-                    disabled={!log.context.application}
-                    onClick={(e) => handleResourceClick(e, "settings/applications", log.context.application)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Application")}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-
-            {!getLogs.data.length && (
+        <>
+          <Table>
+            <TableHead>
               <TableRow>
-                <TableCell>{t("No logs found")}</TableCell>
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
+                <TableHeader>{t("Level")}</TableHeader>
+                <TableHeader>{t("Message")}</TableHeader>
+                <TableHeader>{t("Endpoint")}</TableHeader>
+                <TableHeader>{t("Schema")}</TableHeader>
+                <TableHeader>{t("Cronjob")}</TableHeader>
+                <TableHeader>{t("Action")}</TableHeader>
+                <TableHeader>{t("User")}</TableHeader>
+                <TableHeader>{t("Organization")}</TableHeader>
+                <TableHeader>{t("Application")}</TableHeader>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHead>
+
+            <TableBody>
+              {getLogs.data.results.map((log: any) => (
+                <TableRow
+                  className={styles.tableRow}
+                  onClick={() => navigate(`/logs/${log._id.$oid}`)}
+                  key={log._id.$oid}
+                >
+                  <TableCell>
+                    <Tag layoutClassName={styles[log.level_name]} label={_.upperFirst(_.lowerCase(log.level_name))} />
+                  </TableCell>
+
+                  <TableCell>
+                    <ToolTip tooltip={log.message}>
+                      <div className={styles.message}>{log.message}</div>
+                    </ToolTip>
+                  </TableCell>
+
+                  <TableCell>
+                    <Button
+                      className={styles.button}
+                      disabled={!log.context.endpoint}
+                      onClick={(e) => handleResourceClick(e, "endpoints", log.context.endpoint)}
+                    >
+                      <FontAwesomeIcon icon={faArrowRight} />
+                      {t("Endpoint")}
+                    </Button>
+                  </TableCell>
+
+                  <TableCell>
+                    <Button
+                      className={styles.button}
+                      disabled={!log.context.schema}
+                      onClick={(e) => handleResourceClick(e, "schemas", log.context.schema)}
+                    >
+                      <FontAwesomeIcon icon={faArrowRight} />
+                      {t("Schema")}
+                    </Button>
+                  </TableCell>
+
+                  <TableCell>
+                    <Button
+                      className={styles.button}
+                      disabled={!log.context.cronjob}
+                      onClick={(e) => handleResourceClick(e, "cronjobs", log.context.cronjob)}
+                    >
+                      <FontAwesomeIcon icon={faArrowRight} />
+                      {t("Cronjob")}
+                    </Button>
+                  </TableCell>
+
+                  <TableCell>
+                    <Button
+                      className={styles.button}
+                      disabled={!log.context.action}
+                      onClick={(e) => handleResourceClick(e, "actions", log.context.action)}
+                    >
+                      <FontAwesomeIcon icon={faArrowRight} />
+                      {t("Action")}
+                    </Button>
+                  </TableCell>
+
+                  <TableCell>
+                    <Button
+                      className={styles.button}
+                      disabled={!log.context.user}
+                      onClick={(e) => handleResourceClick(e, "settings/users", log.context.user)}
+                    >
+                      <FontAwesomeIcon icon={faArrowRight} />
+                      {t("User")}
+                    </Button>
+                  </TableCell>
+
+                  <TableCell>
+                    <Button
+                      className={styles.button}
+                      disabled={!log.context.organization}
+                      onClick={(e) => handleResourceClick(e, "settings/organizations", log.context.organization)}
+                    >
+                      <FontAwesomeIcon icon={faArrowRight} />
+                      {t("Organization")}
+                    </Button>
+                  </TableCell>
+
+                  <TableCell>
+                    <Button
+                      className={styles.button}
+                      disabled={!log.context.application}
+                      onClick={(e) => handleResourceClick(e, "settings/applications", log.context.application)}
+                    >
+                      <FontAwesomeIcon icon={faArrowRight} />
+                      {t("Application")}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+
+              {!getLogs.data.results.length && (
+                <TableRow>
+                  <TableCell>{t("No logs found")}</TableCell>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+
+          <PaginatedItems
+            pages={getLogs.data.pages}
+            currentPage={getLogs.data.page}
+            setPage={(page) => setPagination({ ...pagination, logCurrentPage: page })}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={marginPagesDisplayed}
+            containerClassName={styles.paginationContainer}
+            pageClassName={getLogs.data.pages > 1000 ? styles.paginationLinkSmall : styles.paginationLink}
+            previousClassName={getLogs.data.pages > 1000 ? styles.paginationLinkSmall : styles.paginationLink}
+            nextClassName={getLogs.data.pages > 1000 ? styles.paginationLinkSmall : styles.paginationLink}
+            activeClassName={getLogs.data.pages > 1000 ? styles.paginationActivePageSmall : styles.paginationActivePage}
+            disabledClassName={styles.paginationDisabled}
+            breakClassName={styles.breakLink}
+          />
+        </>
       )}
 
       {getLogs.isError && "Error..."}

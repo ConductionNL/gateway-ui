@@ -12,19 +12,19 @@ import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import clsx from "clsx";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { FiltersContext } from "../../context/filters";
+import { PaginationFiltersContext } from "../../context/filters";
 import { PaginatedItems } from "../../components/pagination/pagination";
 import { GatsbyContext } from "../../context/gatsby";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const [filters, setFilters] = React.useContext(FiltersContext);
+  const [pagination, setPagination] = React.useContext(PaginationFiltersContext);
   const { screenSize } = React.useContext(GatsbyContext);
   const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(3);
 
   const queryClient = new QueryClient();
   const _useObject = useObject(queryClient);
-  const getObject = _useObject.getAll({ ...filters }, 30);
+  const getObject = _useObject.getAll({ ...pagination }, 30);
   const deleteSchema = _useObject.remove();
 
   if (getObject.isError) return <>Oops, something went wrong...</>;
@@ -117,11 +117,12 @@ export const ObjectTemplate: React.FC = () => {
               )}
             </TableBody>
           </Table>
-          {getObject.data.results.length && (
+
+          {getObject.data.results.length > 0 && (
             <PaginatedItems
               pages={getObject.data.pages}
               currentPage={getObject.data.page}
-              setPage={(page) => setFilters({ ...filters, objectCurrentPage: page })}
+              setPage={(page) => setPagination({ ...pagination, objectCurrentPage: page })}
               pageRangeDisplayed={2}
               marginPagesDisplayed={marginPagesDisplayed}
               containerClassName={styles.paginationContainer}
