@@ -1,20 +1,21 @@
 import * as React from "react";
 import * as styles from "./LogFiltersTemplate.module.css";
 
+import _ from "lodash";
 import { useForm } from "react-hook-form";
-import { SelectMultiple } from "@conduction/components";
-import { IKeyValue } from "@conduction/components/lib/components/formFields";
-import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { channels, levelNames, LogFiltersContext } from "../../../context/logs";
 import { QueryClient } from "react-query";
-import { useEndpoint } from "../../../hooks/endpoint";
 import Skeleton from "react-loading-skeleton";
-import { useSchema } from "../../../hooks/schema";
-import { useCronjob } from "../../../hooks/cronjob";
-import { useAction } from "../../../hooks/action";
 import { useUser } from "../../../hooks/user";
-import { useOrganization } from "../../../hooks/organization";
+import { useSchema } from "../../../hooks/schema";
+import { useAction } from "../../../hooks/action";
+import { useCronjob } from "../../../hooks/cronjob";
+import { useEndpoint } from "../../../hooks/endpoint";
+import { SelectMultiple } from "@conduction/components";
 import { useApplication } from "../../../hooks/application";
+import { useOrganization } from "../../../hooks/organization";
+import { IKeyValue } from "@conduction/components/lib/components/formFields";
+import { channels, levelNames, LogFiltersContext } from "../../../context/logs";
+import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 
 export const LogFiltersTemplate: React.FC = () => {
   const [logFilters, setLogFilters] = React.useContext(LogFiltersContext);
@@ -81,7 +82,7 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Levels</FormFieldLabel>
 
           <SelectMultiple
-            options={levelNames.map((levelName) => ({ label: levelName, value: levelName }))}
+            options={levelNames.map((levelName) => ({ label: _.upperFirst(_.toLower(levelName)), value: levelName }))}
             name="levelNames"
             {...{ register, errors, control }}
           />
@@ -93,7 +94,7 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Channels</FormFieldLabel>
 
           <SelectMultiple
-            options={channels.map((channel) => ({ label: channel, value: channel }))}
+            options={channels.map((channel) => ({ label: _.upperFirst(channel), value: channel }))}
             name="channels"
             {...{ register, errors, control }}
           />

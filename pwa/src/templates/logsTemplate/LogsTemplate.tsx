@@ -1,17 +1,19 @@
 import * as React from "react";
 import * as styles from "./LogsTemplate.module.css";
-import { Button, Heading1 } from "@gemeente-denhaag/components-react";
-import { useTranslation } from "react-i18next";
-import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
+
+import _ from "lodash";
 import { navigate } from "gatsby";
-import { QueryClient } from "react-query";
-import { Container, Tag, ToolTip } from "@conduction/components";
-import Skeleton from "react-loading-skeleton";
-import { useLog } from "../../hooks/log";
-import { LogFiltersTemplate } from "../templateParts/logFilters/LogFiltersTemplate";
 import { TEMPORARY_LOGS } from "./data";
+import { useLog } from "../../hooks/log";
+import { QueryClient } from "react-query";
+import Skeleton from "react-loading-skeleton";
+import { useTranslation } from "react-i18next";
+import { Container, Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { LogFiltersTemplate } from "../templateParts/logFilters/LogFiltersTemplate";
+import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 
 export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -59,7 +61,7 @@ export const LogsTemplate: React.FC = () => {
                 key={log._id.$oid}
               >
                 <TableCell>
-                  <Tag layoutClassName={styles[log.level_name]} label={log.level_name} />
+                  <Tag layoutClassName={styles[log.level_name]} label={_.upperFirst(_.lowerCase(log.level_name))} />
                 </TableCell>
 
                 <TableCell>
