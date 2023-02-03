@@ -1,5 +1,7 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
+import { LogProps } from "../../context/logs";
+import { filtersToQueryParams } from "../../services/filtersToQueryParams";
 
 export default class Log {
   private _instance: AxiosInstance;
@@ -8,10 +10,10 @@ export default class Log {
     this._instance = _instance;
   }
 
-  public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/logs");
+  public getAll = async (filters: LogProps): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", `/admin/monologs?_limit=15${filtersToQueryParams(filters)}`);
 
-    return data;
+    return data.results;
   };
 
   public getOne = async (id: string): Promise<any> => {
