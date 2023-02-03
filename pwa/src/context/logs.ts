@@ -2,8 +2,14 @@ import * as React from "react";
 
 export interface LogProps {
   channels?: TLogChannel[];
-  contexts?: TLogContext[];
   levelNames?: TLogLevelName[];
+  endpoints?: string[];
+  schemas?: string[];
+  cronjobs?: string[];
+  actions?: string[];
+  users?: string[];
+  organizations?: string[];
+  applications?: string[];
 }
 
 export const logFilters = {} as LogProps;
@@ -18,22 +24,6 @@ export const LogFiltersProvider = LogFiltersContext.Provider;
 
 export const levelNames = ["DEBUG", "INFO", "NOTICE", "WARNING", "ERROR", "CRITICAL", "ALERT", "EMERGENCY"] as const;
 export type TLogLevelName = typeof levelNames[number];
-
-export const contexts = [
-  "session",
-  "process",
-  "endpoint",
-  "schema",
-  "cronjob",
-  "action",
-  "mapping",
-  "user",
-  "organization",
-  "application",
-  "host",
-  "ip",
-] as const;
-export type TLogContext = typeof levelNames[number];
 
 export const channels = [
   "endpoint",

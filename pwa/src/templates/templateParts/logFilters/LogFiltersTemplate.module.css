@@ -1,14 +1,11 @@
 .form {
-  display: flex;
+  display: grid;
   gap: var(--gateway-ui-size-md);
+  grid-template-columns: 1fr 1fr 1fr;
 
   background-color: var(--gateway-ui-color-white);
   padding-inline-start: var(--gateway-ui-size-md);
   padding-inline-end: var(--gateway-ui-size-md);
   padding-block-start: var(--gateway-ui-size-md);
   padding-block-end: var(--gateway-ui-size-md);
-}
-
-.form > * {
-  flex: 1;
 }
