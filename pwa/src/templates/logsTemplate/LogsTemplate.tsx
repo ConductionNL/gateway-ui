@@ -3,7 +3,6 @@ import * as styles from "./LogsTemplate.module.css";
 
 import _ from "lodash";
 import { navigate } from "gatsby";
-import { TEMPORARY_LOGS } from "./data";
 import { useLog } from "../../hooks/log";
 import { QueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
@@ -14,12 +13,14 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { LogFiltersTemplate } from "../templateParts/logFilters/LogFiltersTemplate";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
+import { LogFiltersContext } from "../../context/logs";
 
 export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const [logFilters] = React.useContext(LogFiltersContext);
 
   const queryClient = new QueryClient();
-  const getLogs = useLog(queryClient).getAll();
+  const getLogs = useLog(queryClient).getAll(logFilters);
 
   const handleResourceClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
@@ -54,7 +55,7 @@ export const LogsTemplate: React.FC = () => {
           </TableHead>
 
           <TableBody>
-            {TEMPORARY_LOGS.map((log) => (
+            {getLogs.data.map((log) => (
               <TableRow
                 className={styles.tableRow}
                 onClick={() => navigate(`/logs/${log._id.$oid}`)}
