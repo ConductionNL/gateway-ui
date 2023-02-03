@@ -15,6 +15,7 @@ import { getScreenSize } from "../services/getScreenSize";
 import { IsLoadingProps, IsLoadingProvider } from "../context/isLoading";
 import { Toaster } from "react-hot-toast";
 import { FiltersProvider, IFilters, filters as _filters } from "../context/filters";
+import { LogFiltersProvider, LogProps } from "../context/logs";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -30,6 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [screenSize, setScreenSize] = React.useState<TScreenSize>("mobile");
   const [tabs, setTabs] = React.useState<ITabs>(_tabs);
   const [isLoading, setIsLoading] = React.useState<IsLoadingProps>({});
+  const [logFilters, setLogFilters] = React.useState<LogProps>({});
   const [filters, setFilters] = React.useState<IFilters>(_filters);
 
   React.useEffect(() => {
@@ -63,17 +65,19 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
           <StylesProvider>
             <Toaster position="bottom-right" />
             <FiltersProvider value={[filters, setFilters]}>
-              <IsLoadingProvider value={[isLoading, setIsLoading]}>
-                <TabsProvider value={[tabs, setTabs]}>
-                  <ThemeProvider>
-                    <Favicon url={Logo} />
+              <LogFiltersProvider value={[logFilters, setLogFilters]}>
+                <IsLoadingProvider value={[isLoading, setIsLoading]}>
+                  <TabsProvider value={[tabs, setTabs]}>
+                    <ThemeProvider>
+                      <Favicon url={Logo} />
 
-                    <div className={styles.container}>
-                      <Content {...{ children }} />
-                    </div>
-                  </ThemeProvider>
-                </TabsProvider>
-              </IsLoadingProvider>
+                      <div className={styles.container}>
+                        <Content {...{ children }} />
+                      </div>
+                    </ThemeProvider>
+                  </TabsProvider>
+                </IsLoadingProvider>
+              </LogFiltersProvider>
             </FiltersProvider>
           </StylesProvider>
         </APIProvider>

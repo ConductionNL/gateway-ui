@@ -9,6 +9,7 @@ import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { useLog } from "../../hooks/log";
+import { LogFiltersTemplate } from "../templateParts/logFilters/LogFiltersTemplate";
 
 export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -21,8 +22,9 @@ export const LogsTemplate: React.FC = () => {
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Logs")}</Heading1>
 
-      {getLog.isError && "Error..."}
+      <LogFiltersTemplate />
 
+      {getLog.isError && "Error..."}
       {getLog.isSuccess && (
         <Table>
           <TableHead>
@@ -51,7 +53,6 @@ export const LogsTemplate: React.FC = () => {
           </TableBody>
         </Table>
       )}
-
       {getLog.isLoading && <Skeleton height="200px" />}
     </Container>
   );
