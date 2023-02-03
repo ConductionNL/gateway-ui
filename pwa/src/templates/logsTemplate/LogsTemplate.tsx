@@ -59,7 +59,7 @@ export const LogsTemplate: React.FC = () => {
                 key={log._id.$oid}
               >
                 <TableCell>
-                  <Tag label={log.level_name} />
+                  <Tag layoutClassName={styles[log.level_name]} label={log.level_name} />
                 </TableCell>
 
                 <TableCell>
