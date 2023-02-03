@@ -10,10 +10,9 @@ import { useSchema } from "../../../hooks/schema";
 import { useAction } from "../../../hooks/action";
 import { useCronjob } from "../../../hooks/cronjob";
 import { useEndpoint } from "../../../hooks/endpoint";
-import { SelectMultiple } from "@conduction/components";
 import { useApplication } from "../../../hooks/application";
 import { useOrganization } from "../../../hooks/organization";
-import { IKeyValue } from "@conduction/components/lib/components/formFields";
+import { SelectSingle } from "@conduction/components/lib/components/formFields";
 import { channels, levelNames, LogFiltersContext } from "../../../context/logs";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 
@@ -48,20 +47,19 @@ export const LogFiltersTemplate: React.FC = () => {
   const watchApplications = watch("applications");
 
   React.useEffect(() => {
-    const getSelectValuesArray = (IKeyValueArray?: IKeyValue[]): any[] =>
-      IKeyValueArray?.map((item) => item.value) ?? [];
-
     setLogFilters({
       ...logFilters,
-      channels: getSelectValuesArray(watchChannels),
-      levelNames: getSelectValuesArray(watchLevelNames),
-      endpoints: getSelectValuesArray(watchEndpoints),
-      schemas: getSelectValuesArray(watchSchemas),
-      cronjobs: getSelectValuesArray(watchCronjobs),
-      actions: getSelectValuesArray(watchActions),
-      users: getSelectValuesArray(watchUsers),
-      organizations: getSelectValuesArray(watchOrganizations),
-      applications: getSelectValuesArray(watchApplications),
+      channel: watchChannels?.value,
+      level_name: watchLevelNames?.value,
+      context: {
+        endpoint: watchEndpoints?.value,
+        schema: watchSchemas?.value,
+        cronjob: watchCronjobs?.value,
+        action: watchActions?.value,
+        user: watchUsers?.value,
+        organization: watchOrganizations?.value,
+        application: watchApplications?.value,
+      },
     });
   }, [
     watchChannels,
@@ -81,7 +79,8 @@ export const LogFiltersTemplate: React.FC = () => {
         <FormFieldInput>
           <FormFieldLabel>Levels</FormFieldLabel>
 
-          <SelectMultiple
+          <SelectSingle
+            isClearable
             options={levelNames.map((levelName) => ({ label: _.upperFirst(_.toLower(levelName)), value: levelName }))}
             name="levelNames"
             {...{ register, errors, control }}
@@ -93,7 +92,8 @@ export const LogFiltersTemplate: React.FC = () => {
         <FormFieldInput>
           <FormFieldLabel>Channels</FormFieldLabel>
 
-          <SelectMultiple
+          <SelectSingle
+            isClearable
             options={channels.map((channel) => ({ label: _.upperFirst(channel), value: channel }))}
             name="channels"
             {...{ register, errors, control }}
@@ -106,7 +106,8 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Endpoints</FormFieldLabel>
 
           {getEndpoints.isSuccess && (
-            <SelectMultiple
+            <SelectSingle
+              isClearable
               name="endpoints"
               {...{ register, errors, control }}
               options={getEndpoints.data.map((endpoint) => ({ label: endpoint.name, value: endpoint.id }))}
@@ -122,7 +123,8 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Schemas</FormFieldLabel>
 
           {getSchemas.isSuccess && (
-            <SelectMultiple
+            <SelectSingle
+              isClearable
               name="schemas"
               {...{ register, errors, control }}
               options={getSchemas.data.map((schema) => ({ label: schema.name, value: schema.id }))}
@@ -138,7 +140,8 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Cronjobs</FormFieldLabel>
 
           {getCronjobs.isSuccess && (
-            <SelectMultiple
+            <SelectSingle
+              isClearable
               name="cronjobs"
               {...{ register, errors, control }}
               options={getCronjobs.data.map((cronjob) => ({ label: cronjob.name, value: cronjob.id }))}
@@ -154,7 +157,8 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Actions</FormFieldLabel>
 
           {getActions.isSuccess && (
-            <SelectMultiple
+            <SelectSingle
+              isClearable
               name="actions"
               {...{ register, errors, control }}
               options={getActions.data.map((action) => ({ label: action.name, value: action.id }))}
@@ -170,7 +174,8 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Users</FormFieldLabel>
 
           {getUsers.isSuccess && (
-            <SelectMultiple
+            <SelectSingle
+              isClearable
               name="users"
               {...{ register, errors, control }}
               options={getUsers.data.map((user) => ({ label: user.name, value: user.id }))}
@@ -186,7 +191,8 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Organizations</FormFieldLabel>
 
           {getOrganizations.isSuccess && (
-            <SelectMultiple
+            <SelectSingle
+              isClearable
               name="organizations"
               {...{ register, errors, control }}
               options={getOrganizations.data.map((organization) => ({
@@ -205,7 +211,8 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Applications</FormFieldLabel>
 
           {getApplications.isSuccess && (
-            <SelectMultiple
+            <SelectSingle
+              isClearable
               name="applications"
               {...{ register, errors, control }}
               options={getApplications.data.map((application) => ({

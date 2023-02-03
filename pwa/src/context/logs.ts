@@ -1,15 +1,17 @@
 import * as React from "react";
 
 export interface LogProps {
-  channels?: TLogChannel[];
-  levelNames?: TLogLevelName[];
-  endpoints?: string[];
-  schemas?: string[];
-  cronjobs?: string[];
-  actions?: string[];
-  users?: string[];
-  organizations?: string[];
-  applications?: string[];
+  channel?: TLogChannel;
+  level_name?: TLogLevelName;
+  context?: {
+    endpoint?: string;
+    schema?: string;
+    cronjob?: string;
+    action?: string;
+    user?: string;
+    organization?: string;
+    application?: string;
+  };
 }
 
 export const logFilters = {} as LogProps;

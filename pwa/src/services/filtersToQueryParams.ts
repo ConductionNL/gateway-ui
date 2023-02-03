@@ -23,6 +23,14 @@ export const filtersToQueryParams = (filters: any): string => {
 
       params += arrayParams;
     }
+
+    if (typeof value === "object") {
+      for (const [_key, _value] of Object.entries(value)) {
+        if (!_value) continue;
+
+        params += `&${key}.${_key}=${_value}`;
+      }
+    }
   }
 
   return params;
