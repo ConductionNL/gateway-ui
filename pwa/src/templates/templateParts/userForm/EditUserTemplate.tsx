@@ -7,7 +7,7 @@ import { UserFormTemplate, formId } from "./UserFormTemplate";
 import { Heading1 } from "@gemeente-denhaag/typography";
 import Button from "@gemeente-denhaag/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { useTranslation } from "react-i18next";
 import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
@@ -33,6 +33,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
   const queryClient = new QueryClient();
   const _useUsers = useUser(queryClient);
   const getUser = _useUsers.getOne(userId);
+  const deleteUser = _useUsers.remove();
 
   const dashboardCard = getDashboardCard(getUser.data?.id);
 
@@ -40,9 +41,15 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
     toggleDashboardCard(getUser.data.name, "user", "User", getUser.data.id, dashboardCard?.id);
   };
 
+  const handleDelete = () => {
+    const confirmDeletion = confirm("Are you sure you want to delete this user?");
+
+    confirmDeletion && deleteUser.mutate({ id: userId });
+  };
+
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, userForm: dashboardLoading });
-  }, [dashboardLoading]);
+    setIsLoading({ ...isLoading, userForm: dashboardLoading || deleteUser.isLoading });
+  }, [deleteUser.isLoading, dashboardLoading]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -67,6 +74,15 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
           >
             <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
             {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+          </Button>
+
+          <Button
+            className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
+            onClick={handleDelete}
+            disabled={isLoading.userForm}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+            {t("Delete")}
           </Button>
         </div>
       </section>
