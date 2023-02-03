@@ -48,8 +48,8 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, userForm: dashboardLoading });
-  }, [dashboardLoading]);
+    setIsLoading({ ...isLoading, userForm: dashboardLoading || deleteUser.isLoading });
+  }, [deleteUser.isLoading, dashboardLoading]);
 
   return (
     <Container layoutClassName={styles.container}>
