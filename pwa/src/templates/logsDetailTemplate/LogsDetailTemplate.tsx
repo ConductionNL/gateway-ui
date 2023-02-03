@@ -91,11 +91,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
               <TableCell>{log.context.session !== "" ? log.context.session : "-"}</TableCell>
 
               <TableCell>
-                <Button
-                  disabled={!log.context.session}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
@@ -117,11 +113,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
               <TableCell>{log.context.process !== "" ? log.context.process : "-"}</TableCell>
 
               <TableCell>
-                <Button
-                  disabled={!log.context.process}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
@@ -150,11 +142,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 </TableCell>
               )}
               <TableCell>
-                <Button
-                  disabled={!log.context.endpoint}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
@@ -183,11 +171,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 </TableCell>
               )}
               <TableCell>
-                <Button
-                  disabled={!log.context.schema}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
@@ -216,11 +200,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 </TableCell>
               )}
               <TableCell>
-                <Button
-                  disabled={!log.context.cronjob}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
@@ -249,11 +229,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 </TableCell>
               )}
               <TableCell>
-                <Button
-                  disabled={!log.context.action}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
@@ -274,11 +250,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
               {log.context.mapping ? <TableCell>{log.context.mapping}</TableCell> : <TableCell>-</TableCell>}
 
               <TableCell>
-                <Button
-                  disabled={!log.context.mapping}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
@@ -307,11 +279,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 </TableCell>
               )}
               <TableCell>
-                <Button
-                  disabled={!log.context.user}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
@@ -342,11 +310,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 </TableCell>
               )}
               <TableCell>
-                <Button
-                  disabled={!log.context.organization}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
@@ -375,11 +339,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 </TableCell>
               )}
               <TableCell>
-                <Button
-                  disabled={!log.context.application}
-                  onClick={() => navigate(`/logs/test`)}
-                  className={styles.buttonIcon}
-                >
+                <Button disabled onClick={() => navigate(`/logs/test`)} className={styles.buttonIcon}>
                   <FontAwesomeIcon icon={faArrowRight} />
                   {t("Filters")}
                 </Button>
