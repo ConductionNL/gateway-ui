@@ -78,7 +78,7 @@ export const LogFiltersTemplate: React.FC = () => {
     <form className={styles.form}>
       <FormField>
         <FormFieldInput>
-          <FormFieldLabel>Level names</FormFieldLabel>
+          <FormFieldLabel>Levels</FormFieldLabel>
 
           <SelectMultiple
             options={levelNames.map((levelName) => ({ label: levelName, value: levelName }))}

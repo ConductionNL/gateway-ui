@@ -5,3 +5,18 @@
 .tableRow {
   cursor: pointer;
 }
+
+.button > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.message {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.message > :first-child {
+  width: 100%;
+}

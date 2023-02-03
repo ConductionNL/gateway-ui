@@ -9,7 +9,7 @@ export default class Log {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/logs");
+    const { data } = await Send(this._instance, "GET", "/admin/monologs?channels[]=object");
 
     return data;
   };
