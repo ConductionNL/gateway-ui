@@ -15,6 +15,10 @@
   background-color: var(--gateway-ui-color-white);
 }
 
+.extraContainer > pre {
+  white-space: pre-wrap;
+}
+
 .skeletonHeight {
   width: 100%;
   height: 100%;
