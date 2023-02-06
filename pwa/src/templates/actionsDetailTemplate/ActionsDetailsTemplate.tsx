@@ -14,6 +14,7 @@ import clsx from "clsx";
 import action from "../../apiService/resources/action";
 import { IsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
+import { useLog } from "../../hooks/log";
 
 interface ActionsDetailsTemplateProps {
   actionId: string;
@@ -26,8 +27,11 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
 
   const queryClient = new QueryClient();
   const _useAction = useAction(queryClient);
+
   const getAction = _useAction.getOne(actionId);
   const deleteAction = _useAction.remove();
+
+  const getLogs = useLog(queryClient).getAllFromChannel("action", actionId);
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
 
@@ -127,8 +131,9 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getAction.isLoading && <Skeleton height="200px" />}
-            {getAction.isSuccess && <span>Logs</span>}
+            {getLogs.isLoading && <Skeleton height="200px" />}
+
+            {getLogs.isSuccess && <span>Logs found...</span>}
           </TabPanel>
         </TabContext>
       </div>

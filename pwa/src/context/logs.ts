@@ -40,4 +40,4 @@ export const channels = [
   "installation",
   "mapping",
 ] as const;
-export type TLogChannel = typeof levelNames[number];
+export type TLogChannel = typeof channels[number];

@@ -2,11 +2,20 @@ import * as React from "react";
 import { QueryClient, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
-import { LogProps } from "../context/logs";
+import { LogProps, TLogChannel } from "../context/logs";
 import { IPaginationFilters } from "../context/filters";
 
 export const useLog = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+
+  const getOne = (logId: string) =>
+    useQuery<any, Error>(["log", logId], () => API?.Log.getOne(logId), {
+      initialData: () => queryClient.getQueryData<any[]>("log")?.find((_log) => _log.id === logId),
+      onError: (error) => {
+        console.warn(error.message);
+      },
+      enabled: !!logId,
+    });
 
   const getAll = (logFilters: LogProps, paginationFilters: IPaginationFilters) =>
     useQuery<any, Error>(
@@ -19,14 +28,13 @@ export const useLog = (queryClient: QueryClient) => {
       },
     );
 
-  const getOne = (logId: string) =>
-    useQuery<any, Error>(["log", logId], () => API?.Log.getOne(logId), {
-      initialData: () => queryClient.getQueryData<any[]>("log")?.find((_log) => _log.id === logId),
+  const getAllFromChannel = (channel: TLogChannel, resourceId: string) =>
+    useQuery<any, Error>(["log", resourceId], () => API?.Log.getAllFromChannel(channel, resourceId), {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!logId,
+      enabled: !!resourceId,
     });
 
-  return { getAll, getOne };
+  return { getAll, getOne, getAllFromChannel };
 };
