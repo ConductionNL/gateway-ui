@@ -10,33 +10,15 @@ import { Container } from "@conduction/components";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { LogFiltersTemplate } from "../templateParts/logFilters/LogFiltersTemplate";
 import { LogFiltersContext } from "../../context/logs";
-import { PaginatedItems } from "../../components/pagination/pagination";
-import { PaginationFiltersContext } from "../../context/filters";
-import { GatsbyContext } from "../../context/gatsby";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();
   const [logFilters] = React.useContext(LogFiltersContext);
-  const { screenSize } = React.useContext(GatsbyContext);
-  const [marginPagesDisplayed, setMarginPageDisplayed] = React.useState<number>(3);
-
-  const [pagination, setPagination] = React.useContext(PaginationFiltersContext);
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
-  const getLogs = useLog(queryClient).getAll(logFilters, pagination);
-
-  React.useEffect(() => {
-    if (getLogs.isSuccess && screenSize === "mobile") {
-      setMarginPageDisplayed(2);
-    }
-    if (getLogs.isSuccess && screenSize === "mobile" && getLogs.data.pages > 100) {
-      setMarginPageDisplayed(1);
-    }
-    if (getLogs.isSuccess && screenSize !== "mobile") {
-      setMarginPageDisplayed(3);
-    }
-  }, [getLogs]);
+  const getLogs = useLog(queryClient).getAll(logFilters, currentPage);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -45,24 +27,14 @@ export const LogsTemplate: React.FC = () => {
       <LogFiltersTemplate />
 
       {getLogs.isSuccess && (
-        <>
-          <LogsTableTemplate logs={getLogs.data.results} />
-
-          <PaginatedItems
-            pages={getLogs.data.pages}
-            currentPage={getLogs.data.page}
-            setPage={(page) => setPagination({ ...pagination, logCurrentPage: page })}
-            pageRangeDisplayed={2}
-            marginPagesDisplayed={marginPagesDisplayed}
-            containerClassName={styles.paginationContainer}
-            pageClassName={getLogs.data.pages > 1000 ? styles.paginationLinkSmall : styles.paginationLink}
-            previousClassName={getLogs.data.pages > 1000 ? styles.paginationLinkSmall : styles.paginationLink}
-            nextClassName={getLogs.data.pages > 1000 ? styles.paginationLinkSmall : styles.paginationLink}
-            activeClassName={getLogs.data.pages > 1000 ? styles.paginationActivePageSmall : styles.paginationActivePage}
-            disabledClassName={styles.paginationDisabled}
-            breakClassName={styles.breakLink}
-          />
-        </>
+        <LogsTableTemplate
+          logs={getLogs.data.results}
+          pagination={{
+            totalPages: getLogs.data.pages,
+            currentPage: currentPage,
+            changePage: setCurrentPage,
+          }}
+        />
       )}
 
       {getLogs.isError && "Error..."}

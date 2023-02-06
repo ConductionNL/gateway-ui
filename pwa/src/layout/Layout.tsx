@@ -14,7 +14,6 @@ import { TabsProvider, ITabs, tabs as _tabs } from "../context/tabs";
 import { getScreenSize } from "../services/getScreenSize";
 import { IsLoadingProps, IsLoadingProvider } from "../context/isLoading";
 import { Toaster } from "react-hot-toast";
-import { FiltersProvider, pagination as _pagination, IPaginationFilters } from "../context/filters";
 import { LogFiltersProvider, LogProps } from "../context/logs";
 
 interface LayoutProps {
@@ -32,7 +31,6 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [tabs, setTabs] = React.useState<ITabs>(_tabs);
   const [isLoading, setIsLoading] = React.useState<IsLoadingProps>({});
   const [logFilters, setLogFilters] = React.useState<LogProps>({});
-  const [pagination, setPagination] = React.useState<IPaginationFilters>(_pagination);
 
   React.useEffect(() => {
     setAPI(new APIService());
@@ -64,21 +62,19 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
         <APIProvider value={API}>
           <StylesProvider>
             <Toaster position="bottom-right" />
-            <FiltersProvider value={[pagination, setPagination]}>
-              <LogFiltersProvider value={[logFilters, setLogFilters]}>
-                <IsLoadingProvider value={[isLoading, setIsLoading]}>
-                  <TabsProvider value={[tabs, setTabs]}>
-                    <ThemeProvider>
-                      <Favicon url={Logo} />
+            <LogFiltersProvider value={[logFilters, setLogFilters]}>
+              <IsLoadingProvider value={[isLoading, setIsLoading]}>
+                <TabsProvider value={[tabs, setTabs]}>
+                  <ThemeProvider>
+                    <Favicon url={Logo} />
 
-                      <div className={styles.container}>
-                        <Content {...{ children }} />
-                      </div>
-                    </ThemeProvider>
-                  </TabsProvider>
-                </IsLoadingProvider>
-              </LogFiltersProvider>
-            </FiltersProvider>
+                    <div className={styles.container}>
+                      <Content {...{ children }} />
+                    </div>
+                  </ThemeProvider>
+                </TabsProvider>
+              </IsLoadingProvider>
+            </LogFiltersProvider>
           </StylesProvider>
         </APIProvider>
       </GatsbyProvider>

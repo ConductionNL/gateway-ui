@@ -1,59 +1,32 @@
 import * as React from "react";
-import ReactPaginate from "react-paginate";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import * as styles from "./Pagination.module.css";
 
-interface PaginatedItemsProps {
-  pages: number;
+import ReactPaginate from "react-paginate";
+import { Tag } from "@conduction/components";
+
+interface PaginationProps {
+  totalPages: number;
   currentPage: number;
-  setPage: (page: number) => any;
-  pageRangeDisplayed: number;
-  marginPagesDisplayed: number;
-  containerClassName: string;
-  pageClassName: string;
-  previousClassName: string;
-  nextClassName: string;
-  activeClassName: string;
-  disabledClassName: string;
-  breakClassName: string;
+  changePage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const PaginatedItems: React.FC<PaginatedItemsProps> = ({
-  pages,
-  currentPage,
-  setPage,
-  pageRangeDisplayed,
-  marginPagesDisplayed,
-  containerClassName,
-  pageClassName,
-  previousClassName,
-  nextClassName,
-  activeClassName,
-  disabledClassName,
-  breakClassName,
-}) => {
-  const handlePageClick = (event: any) => {
-    setPage(event.selected + 1);
-  };
+export const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, changePage }) => {
+  if (totalPages < 1) return <></>; // no pages available
 
   return (
     <ReactPaginate
-      containerClassName={containerClassName}
-      pageCount={pages}
-      onPageChange={handlePageClick}
+      className={styles.container}
+      disabledClassName={styles.disabled}
+      activeClassName={styles.currentPage}
+      onPageChange={(e: any) => changePage(e.selected + 1)}
       forcePage={currentPage - 1}
-      pageRangeDisplayed={pageRangeDisplayed}
-      marginPagesDisplayed={marginPagesDisplayed}
-      pageClassName={pageClassName}
-      previousLabel={<FontAwesomeIcon icon={faChevronLeft} />}
-      previousClassName={previousClassName}
-      nextLabel={<FontAwesomeIcon icon={faChevronRight} />}
-      nextClassName={nextClassName}
-      activeClassName={activeClassName}
-      disableInitialCallback={true}
-      disabledClassName={disabledClassName}
+      pageRangeDisplayed={3}
+      pageCount={totalPages}
+      disableInitialCallback
+      marginPagesDisplayed={2}
       breakLabel="..."
-      breakClassName={breakClassName}
+      nextLabel={<Tag label="Next" />}
+      previousLabel={<Tag label="Previous" />}
     />
   );
 };

@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gateway-ui-size-sm);
+  align-items: center;
+  list-style-type: none;
+
+  padding: 0;
+  margin: 0;
+
+  user-select: none;
+}
+
+.container > *:hover {
+  cursor: pointer;
+  color: var(--gateway-ui-color-primary);
+}
+
+.container > *.disabled:hover {
+  cursor: not-allowed;
+  color: inherit;
+}
+
+.currentPage {
+  font-weight: var(--gateway-ui-font-weight-bold);
+  color: var(--gateway-ui-color-primary);
+}
+
+.currentPage:hover {
+  cursor: not-allowed;
+}

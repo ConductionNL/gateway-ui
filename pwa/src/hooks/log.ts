@@ -3,7 +3,6 @@ import { QueryClient, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { LogProps, TLogChannel } from "../context/logs";
-import { IPaginationFilters } from "../context/filters";
 
 export const useLog = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
@@ -17,16 +16,12 @@ export const useLog = (queryClient: QueryClient) => {
       enabled: !!logId,
     });
 
-  const getAll = (logFilters: LogProps, paginationFilters: IPaginationFilters) =>
-    useQuery<any, Error>(
-      ["log", logFilters, paginationFilters.logCurrentPage],
-      () => API.Log.getAll(logFilters, paginationFilters),
-      {
-        onError: (error) => {
-          console.warn(error.message);
-        },
+  const getAll = (logFilters: LogProps, currentPage: number) =>
+    useQuery<any, Error>(["log", logFilters, currentPage], () => API.Log.getAll(logFilters, currentPage), {
+      onError: (error) => {
+        console.warn(error.message);
       },
-    );
+    });
 
   const getAllFromChannel = (channel: TLogChannel, resourceId: string, page: number) =>
     useQuery<any, Error>(["log", resourceId, page], () => API?.Log.getAllFromChannel(channel, resourceId, page), {

@@ -9,7 +9,7 @@ import { Button } from "@gemeente-denhaag/components-react";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
-import { NewPagination } from "../../../components/pagination/NewPagination";
+import { Pagination } from "../../../components/pagination/Pagination";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -32,7 +32,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <Table>
         <TableHead>
           <TableRow>
@@ -156,7 +156,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
         </TableBody>
       </Table>
 
-      <NewPagination {...pagination} />
-    </>
+      <Pagination {...pagination} />
+    </div>
   );
 };
