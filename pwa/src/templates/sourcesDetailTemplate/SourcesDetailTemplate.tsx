@@ -3,7 +3,7 @@ import * as styles from "./SourcesDetailTemplate.module.css";
 import { QueryClient } from "react-query";
 import _ from "lodash";
 import { useSource } from "../../hooks/source";
-import { Container, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
+import { Container, InputText, SelectSingle, Textarea } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import {
   Button,
@@ -11,21 +11,14 @@ import {
   FormFieldInput,
   FormFieldLabel,
   Heading1,
-  Link,
   Tab,
   TabContext,
   TabPanel,
   Tabs,
 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { navigate } from "gatsby";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { useCallLog } from "../../hooks/callLog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import clsx from "clsx";
-import { dateTime } from "../../services/dateTime";
 import { IsLoadingContext } from "../../context/isLoading";
 import { faArrowsRotate, faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
@@ -34,6 +27,8 @@ import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { TabsContext } from "../../context/tabs";
 import { SourceFormTemplate, formId } from "../templateParts/sourcesForm/SourceFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -46,10 +41,10 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
   const queryClient = new QueryClient();
   const _useSource = useSource(queryClient);
-  const _useCallLog = useCallLog(queryClient);
+
+  const getLogs = useLog(queryClient).getAllFromChannel("source", sourceId);
 
   const getSource = _useSource.getOne(sourceId);
-  const getCallLog = _useCallLog.getSourceLog(sourceId);
   const deleteSource = _useSource.remove();
   const testProxy = _useSource.getProxy(sourceId);
 
@@ -199,70 +194,9 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            {getCallLog.isLoading && <Skeleton height="200px" />}
+            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
 
-            {getCallLog.isSuccess && (
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader>{t("Id")}</TableHeader>
-                    <TableHeader>{t("Endpoint")}</TableHeader>
-                    <TableHeader>{t("Method")}</TableHeader>
-                    <TableHeader>{t("Response Status")}</TableHeader>
-                    <TableHeader>{t("Created")}</TableHeader>
-
-                    <TableHeader />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {getCallLog.data.map((callLog: any) => (
-                    <TableRow onClick={() => navigate(`/sources/${getSource.data.id}/${callLog.id}`)} key={callLog.id}>
-                      <TableCell>{callLog.id ?? "-"}</TableCell>
-                      <TableCell>{callLog.endpoint ?? "-"}</TableCell>
-                      <TableCell>
-                        <div className={clsx(styles[`${_.lowerCase(callLog.method)}Tag`])}>
-                          <Tag label={callLog.method?.toString() ?? "no known method"} />
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div
-                          className={clsx(
-                            styles[getStatusColor(callLog.responseStatusCode.toString() ?? "no known status")],
-                          )}
-                        >
-                          <Tag
-                            icon={
-                              <FontAwesomeIcon
-                                icon={getStatusIcon(callLog.responseStatusCode.toString() ?? "no known status")}
-                              />
-                            }
-                            label={callLog.responseStatusCode?.toString() ?? "no known status"}
-                          />
-                        </div>
-                      </TableCell>
-                      <TableCell>{dateTime(t(i18n.language), callLog.dateCreated) ?? "-"}</TableCell>
-                      <TableCell onClick={() => navigate(`/sources/${callLog.id}/test`)}>
-                        <Link icon={<ArrowRightIcon />} iconAlign="start">
-                          {t("Details")}
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {!getCallLog.data.length && (
-                    <>
-                      <TableRow>
-                        <TableCell>{t("No logs found")}</TableCell>
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                      </TableRow>
-                    </>
-                  )}
-                </TableBody>
-              </Table>
-            )}
+            {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
         </TabContext>
       </div>

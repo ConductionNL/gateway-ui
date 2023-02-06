@@ -32,6 +32,7 @@ export const channels = [
   "request",
   "schema",
   "cronjob",
+  "source",
   "action",
   "object",
   "synchronization",
