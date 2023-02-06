@@ -19,6 +19,8 @@ import { useDashboardCard } from "../../hooks/useDashboardCard";
 import clsx from "clsx";
 import { SchemaFormTemplate, formId } from "../templateParts/schemasForm/SchemaFormTemplate";
 import { IsLoadingContext } from "../../context/isLoading";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface SchemasDetailPageProps {
   schemaId: string;
@@ -36,6 +38,8 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const deleteSchema = _useSchema.remove();
 
   const getSchemaSchema = _useSchema.getSchema(schemaId);
+
+  const getLogs = useLog(queryClient).getAllFromChannel("schema", schemaId);
 
   const dashboardCard = getDashboardCard(getSchema.data?.id);
 
@@ -207,7 +211,9 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="3">
-            Logs are not yet supported.
+            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
+
+            {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
         </TabContext>
       </div>
