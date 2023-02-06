@@ -49,13 +49,23 @@ export const EndpointsTemplate: React.FC = () => {
             {getEndpoints.data.map((endpoint: any) => (
               <TableRow onClick={() => navigate(`/endpoints/${endpoint.id}`)} key={endpoint.id}>
                 <TableCell>{endpoint.name}</TableCell>
+
                 <TableCell>
-                  <div className={clsx(styles[endpoint.status === "Ok" ? "statusOk" : "statusFailed"])}>
-                    <Tag label={endpoint.status?.toString() ?? "-"} />
+                  <div
+                    className={clsx(
+                      endpoint.status === "Ok" ? styles.statusOk : "",
+                      endpoint.status === false ? styles.statusFailed : "",
+                      endpoint.status === null ? styles.statusUnknown : "",
+                    )}
+                  >
+                    <Tag label={endpoint.status?.toString() ?? "Unknown"} />
                   </div>
                 </TableCell>
+
                 <TableCell>{endpoint.pathRegex ?? "-"}</TableCell>
+
                 <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
+
                 <TableCell>{translateDate(i18n.language, endpoint.dateModified)}</TableCell>
               </TableRow>
             ))}
