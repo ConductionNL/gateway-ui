@@ -8,8 +8,8 @@ import { Tag, ToolTip } from "@conduction/components";
 import { Button } from "@gemeente-denhaag/components-react";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { Pagination } from "../../../components/pagination/Pagination";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
+import { Paginate } from "../../../components/paginate/Paginate";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -156,7 +156,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
         </TableBody>
       </Table>
 
-      {/* <Pagination {...pagination} /> */}
+      <Paginate {...pagination} />
     </div>
   );
 };

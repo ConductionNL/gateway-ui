@@ -12,7 +12,7 @@ import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import clsx from "clsx";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-// import { Pagination } from "../../components/pagination/Pagination";
+import { Paginate } from "../../components/paginate/Paginate";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -101,8 +101,7 @@ export const ObjectTemplate: React.FC = () => {
               )}
             </TableBody>
           </Table>
-
-          {/* <Pagination totalPages={getObjects.data.pages} currentPage={currentPage} changePage={setCurrentPage} /> */}
+          <Paginate totalPages={getObjects.data.pages} currentPage={currentPage} changePage={setCurrentPage} />
         </>
       )}
       {getObjects.isLoading && <Skeleton height="200px" />}

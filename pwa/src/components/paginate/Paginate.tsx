@@ -1,16 +1,16 @@
 import * as React from "react";
-import * as styles from "./Pagination.module.css";
+import * as styles from "./Paginate.module.css";
 
 import ReactPaginate from "react-paginate";
 import { Tag } from "@conduction/components";
 
-interface PaginationProps {
+interface PaginateProps {
   totalPages: number;
   currentPage: number;
   changePage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, changePage }) => {
+export const Paginate: React.FC<PaginateProps> = ({ totalPages, currentPage, changePage }) => {
   if (totalPages < 1) return <></>; // no pages available
 
   return (
