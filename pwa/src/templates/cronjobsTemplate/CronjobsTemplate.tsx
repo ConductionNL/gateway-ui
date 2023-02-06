@@ -59,24 +59,31 @@ export const CronjobsTemplate: React.FC = () => {
                 key={cronjob.id}
               >
                 <TableCell>{cronjob.name}</TableCell>
+
                 <TableCell>
-                  <div className={clsx(styles[cronjob.status === true ? "statusOk" : "statusFailed"])}>
-                    <ToolTip tooltip="Status">
-                      <Tag
-                        layoutClassName={styles.tagWidth}
-                        icon={<FontAwesomeIcon icon={cronjob.status === true ? faCheck : faXmark} />}
-                        label={cronjob.status?.toString() ?? "no status"}
-                      />
-                    </ToolTip>
+                  <div
+                    className={clsx(
+                      cronjob.status ? styles.statusOk : "",
+                      cronjob.status === false ? styles.statusFailed : "",
+                      cronjob.status === undefined ? styles.statusUnknown : "",
+                    )}
+                  >
+                    <Tag layoutClassName={styles.tagWidth} label={cronjob.status?.toString() ?? "Unknown"} />
                   </div>
                 </TableCell>
+
                 <TableCell>{cronjob.isEnabled ? "Yes" : "No"}</TableCell>
+
                 <TableCell>{cronjob.crontab}</TableCell>
+
                 <TableCell>{dateTime(t(i18n.language), cronjob.lastRun) ?? "-"}</TableCell>
+
                 <TableCell>{dateTime(t(i18n.language), cronjob.nextRun) ?? "-"}</TableCell>
 
                 <TableCell>{translateDate(i18n.language, cronjob.dateCreated)}</TableCell>
+
                 <TableCell>{translateDate(i18n.language, cronjob.dateMo)}</TableCell>
+
                 <TableCell onClick={() => navigate(`/cronjobs/${cronjob.id}`)}>
                   <Link icon={<ArrowRightIcon />} iconAlign="start">
                     {t("Details")}
