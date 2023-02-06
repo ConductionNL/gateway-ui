@@ -25,6 +25,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const queryClient = new QueryClient();
@@ -32,7 +33,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
   const getEndpoint = _useEndpoints.getOne(endpointId);
   const deleteEndpoint = _useEndpoints.remove();
 
-  const getLogs = useLog(queryClient).getAllFromChannel("endpoint", endpointId);
+  const getLogs = useLog(queryClient).getAllFromChannel("endpoint", endpointId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(endpointId);
 
@@ -111,7 +112,16 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
+            )}
 
             {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
