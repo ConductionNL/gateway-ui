@@ -14,6 +14,8 @@ import clsx from "clsx";
 import { EndpointFormTemplate, formId } from "../templateParts/endpointsForm/EndpointFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { IsLoadingContext } from "../../context/isLoading";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface EndpointDetailsTemplateProps {
   endpointId: string;
@@ -29,6 +31,8 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
   const _useEndpoints = useEndpoint(queryClient);
   const getEndpoint = _useEndpoints.getOne(endpointId);
   const deleteEndpoint = _useEndpoints.remove();
+
+  const getLogs = useLog(queryClient).getAllFromChannel("endpoint", endpointId);
 
   const dashboardCard = getDashboardCard(endpointId);
 
@@ -107,9 +111,11 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getEndpoint.isLoading && <Skeleton height="200px" />}
-            {getEndpoint.isSuccess && <span>Logs</span>}
+            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
+
+            {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
+
           <TabPanel className={styles.tabPanel} value="1">
             {getEndpoint.isSuccess && (
               <Table>
@@ -129,6 +135,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
               </Table>
             )}
           </TabPanel>
+
           <TabPanel className={styles.tabPanel} value="2">
             {getEndpoint.isSuccess && <SchemasTable schemas={getEndpoint.data.entities} />}
           </TabPanel>
