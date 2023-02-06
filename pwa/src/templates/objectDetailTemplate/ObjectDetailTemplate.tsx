@@ -25,6 +25,7 @@ interface ObjectDetailTemplateProps {
 export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ objectId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
   const _useObject = useObject(queryClient);
@@ -36,7 +37,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
 
   const getSchema = _useObject.getSchema(objectId);
 
-  const getLogs = useLog(queryClient).getAllFromChannel("object", objectId);
+  const getLogs = useLog(queryClient).getAllFromChannel("object", objectId, currentLogsPage);
 
   const handleDeleteObject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
@@ -76,7 +77,16 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
+            )}
 
             {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>

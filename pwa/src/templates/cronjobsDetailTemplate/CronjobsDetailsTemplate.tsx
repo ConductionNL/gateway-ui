@@ -23,6 +23,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const queryClient = new QueryClient();
@@ -30,7 +31,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
   const getCronjob = _useCronjob.getOne(cronjobId);
   const deleteCronjob = _useCronjob.remove();
 
-  const getLogs = useLog(queryClient).getAllFromChannel("cronjob", cronjobId);
+  const getLogs = useLog(queryClient).getAllFromChannel("cronjob", cronjobId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(cronjobId);
 
@@ -108,7 +109,16 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
+            )}
 
             {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>

@@ -27,8 +27,12 @@ export default class Log {
     return data;
   };
 
-  public getAllFromChannel = async (channel: TLogChannel, resourceId: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/monologs?_limit=10&context.${channel}=${resourceId}`);
+  public getAllFromChannel = async (channel: TLogChannel, resourceId: string, page: number): Promise<any> => {
+    const { data } = await Send(
+      this._instance,
+      "GET",
+      `/admin/monologs?_limit=10&_page=${page}&context.${channel}=${resourceId}`,
+    );
 
     return data;
   };

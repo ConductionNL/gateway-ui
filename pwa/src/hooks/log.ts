@@ -28,8 +28,8 @@ export const useLog = (queryClient: QueryClient) => {
       },
     );
 
-  const getAllFromChannel = (channel: TLogChannel, resourceId: string) =>
-    useQuery<any, Error>(["log", resourceId], () => API?.Log.getAllFromChannel(channel, resourceId), {
+  const getAllFromChannel = (channel: TLogChannel, resourceId: string, page: number) =>
+    useQuery<any, Error>(["log", resourceId, page], () => API?.Log.getAllFromChannel(channel, resourceId, page), {
       onError: (error) => {
         console.warn(error.message);
       },

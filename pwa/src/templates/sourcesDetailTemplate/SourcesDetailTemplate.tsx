@@ -35,14 +35,15 @@ interface SourcesDetailTemplateProps {
 }
 
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
   const _useSource = useSource(queryClient);
 
-  const getLogs = useLog(queryClient).getAllFromChannel("source", sourceId);
+  const getLogs = useLog(queryClient).getAllFromChannel("source", sourceId, currentLogsPage);
 
   const getSource = _useSource.getOne(sourceId);
   const deleteSource = _useSource.remove();
@@ -194,7 +195,16 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
+            )}
 
             {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>

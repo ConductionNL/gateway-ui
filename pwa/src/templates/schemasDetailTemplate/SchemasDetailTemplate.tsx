@@ -31,6 +31,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
   const _useSchema = useSchema(queryClient);
@@ -39,7 +40,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
   const getSchemaSchema = _useSchema.getSchema(schemaId);
 
-  const getLogs = useLog(queryClient).getAllFromChannel("schema", schemaId);
+  const getLogs = useLog(queryClient).getAllFromChannel("schema", schemaId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(getSchema.data?.id);
 
@@ -211,7 +212,16 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="3">
-            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
+            )}
 
             {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
