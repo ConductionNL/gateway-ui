@@ -15,6 +15,7 @@ import action from "../../apiService/resources/action";
 import { IsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface ActionsDetailsTemplateProps {
   actionId: string;
@@ -133,7 +134,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
           <TabPanel className={styles.tabPanel} value="0">
             {getLogs.isLoading && <Skeleton height="200px" />}
 
-            {getLogs.isSuccess && <span>Logs found...</span>}
+            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
           </TabPanel>
         </TabContext>
       </div>
