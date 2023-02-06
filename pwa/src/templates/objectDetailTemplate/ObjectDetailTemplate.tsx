@@ -15,6 +15,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useSync } from "../../hooks/synchronization";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { TabsContext } from "../../context/tabs";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -33,6 +35,8 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
   const deleteSync = _useSync.remove();
 
   const getSchema = _useObject.getSchema(objectId);
+
+  const getLogs = useLog(queryClient).getAllFromChannel("object", objectId);
 
   const handleDeleteObject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
@@ -72,9 +76,11 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getObject.isLoading && <Skeleton height="200px" />}
-            {getObject.isSuccess && <span>Logs</span>}
+            {getLogs.isSuccess && <LogsTableTemplate logs={getLogs.data.results} />}
+
+            {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
+
           <TabPanel className={styles.tabPanel} value="1">
             {getObject.isLoading && <Skeleton height="200px" />}
             {getObject.isSuccess && (
@@ -137,6 +143,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
               </Table>
             )}
           </TabPanel>
+
           <TabPanel className={styles.tabPanel} value="2">
             {getObject.isLoading && <Skeleton height="200px" />}
             {getObject.isSuccess && <pre>{JSON.stringify(getObject.data, null, 2)}</pre>}
