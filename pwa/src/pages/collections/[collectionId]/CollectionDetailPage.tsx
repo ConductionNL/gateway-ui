@@ -2,13 +2,17 @@ import * as React from "react";
 import { PageProps } from "gatsby";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
 import { CollectionsDetailTemplate } from "../../../templates/collectionDetailsTemplate/CollectionsDetailsTemplate";
-import { CreateCollectionFormTemplate } from "../../../templates/templateParts/collectionsForm/CreateCollectionFormTemplate";
+import { CreateCollectionTemplate } from "../../../templates/templateParts/collectionsForm/CreateCollectionTemplate";
 
-const CollectionDetailPage: React.FC<PageProps> = (props: PageProps) => (
-  <DashboardTemplate>
-    {props.params.collectionId === "new" && <CreateCollectionFormTemplate />}
-    {props.params.collectionId !== "new" && <CollectionsDetailTemplate collectionId={props.params.collectionId} />}
-  </DashboardTemplate>
-);
+const CollectionDetailPage: React.FC<PageProps> = (props: PageProps) => {
+  const collectionId = props.params.collectionId === "new" ? null : props.params.collectionId;
+
+  return (
+    <DashboardTemplate>
+      {!collectionId && <CreateCollectionTemplate />}
+      {collectionId && <CollectionsDetailTemplate {...{ collectionId }} />}
+    </DashboardTemplate>
+  );
+};
 
 export default CollectionDetailPage;

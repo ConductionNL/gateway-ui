@@ -2,7 +2,7 @@ import * as React from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
-import { addItem, updateItem } from "../services/mutateQueries";
+import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
 
 export const useUser = (queryClient: QueryClient) => {
@@ -24,6 +24,17 @@ export const useUser = (queryClient: QueryClient) => {
       enabled: !!userId,
     });
 
+  const remove = () =>
+    useMutation<any, Error, any>(API.User.delete, {
+      onSuccess: async (_, variables) => {
+        deleteItem(queryClient, "user", variables.id);
+        navigate("/settings/users");
+      },
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const createOrEdit = (userId?: string) =>
     useMutation<any, Error, any>(API.User.createOrUpdate, {
       onSuccess: async (newUser) => {
@@ -42,5 +53,5 @@ export const useUser = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, createOrEdit };
+  return { getAll, getOne, createOrEdit, remove };
 };

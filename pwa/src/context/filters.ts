@@ -1,13 +1,18 @@
 import * as React from "react";
 
-export interface IFilters {
+export interface IPaginationFilters {
   objectCurrentPage: number;
+  logCurrentPage: number;
 }
 
-export const filters = {
+export const pagination = {
   objectCurrentPage: 1,
-} as IFilters;
+  logCurrentPage: 1,
+} as IPaginationFilters;
 
-export const FiltersContext = React.createContext<[IFilters, (data: IFilters) => void]>([filters, () => null]);
+export const PaginationFiltersContext = React.createContext<[IPaginationFilters, (data: IPaginationFilters) => void]>([
+  pagination,
+  () => null,
+]);
 
-export const FiltersProvider = FiltersContext.Provider;
+export const FiltersProvider = PaginationFiltersContext.Provider;

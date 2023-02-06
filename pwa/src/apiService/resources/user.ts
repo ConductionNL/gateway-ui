@@ -20,6 +20,16 @@ export default class User {
     return data;
   };
 
+  public delete = async (variables: { id: string }): Promise<any> => {
+    const { id } = variables;
+
+    const { data } = await Send(this._instance, "DELETE", `/admin/users/${id}`, undefined, {
+      loading: "Removing user...",
+      success: "User successfully removed.",
+    });
+    return data;
+  };
+
   public createOrUpdate = async (variables: { payload: any; id?: string }): Promise<any> => {
     const { payload, id } = variables;
 

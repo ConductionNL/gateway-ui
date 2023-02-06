@@ -1,8 +1,6 @@
 import * as React from "react";
-import * as styles from "./UserFormTemplate.module.css";
-import { UserFormTemplate } from "./UserFormTemplate";
-import { QueryClient } from "react-query";
-import { useOrganization } from "../../../hooks/organization";
+import * as styles from "./CreateUserTemplate.module.css";
+import { formId, UserFormTemplate } from "./UserFormTemplate";
 import { Heading1 } from "@gemeente-denhaag/typography";
 import Button from "@gemeente-denhaag/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,14 +8,11 @@ import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
 import clsx from "clsx";
+import { IsLoadingContext } from "../../../context/isLoading";
 
-export const CreateUserFormTemplate: React.FC = () => {
+export const CreateUserTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const [loading, setLoading] = React.useState<boolean>(false);
-
-  const queryClient = new QueryClient();
-  const _useOrganizations = useOrganization(queryClient);
-  const getOrganization = _useOrganizations.getAll();
+  const [isLoading] = React.useContext(IsLoadingContext);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -25,14 +20,19 @@ export const CreateUserFormTemplate: React.FC = () => {
         <Heading1>Create User</Heading1>
 
         <div className={styles.buttons}>
-          <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" form="UserForm" disabled={loading}>
+          <Button
+            type="submit"
+            form={formId}
+            disabled={isLoading.userForm}
+            className={clsx(styles.buttonIcon, styles.button)}
+          >
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
         </div>
       </section>
 
-      <UserFormTemplate {...{ getOrganization }} />
+      <UserFormTemplate />
     </Container>
   );
 };

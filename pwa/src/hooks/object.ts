@@ -3,14 +3,14 @@ import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query"
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
-import { IFilters } from "../context/filters";
+import { IPaginationFilters } from "../context/filters";
 
 export const useObject = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
   const _queryClient = useQueryClient();
 
-  const getAll = (filters?: IFilters, limit?: number) =>
-    useQuery<any, Error>(["objects", filters], () => API.Object.getAll(filters, limit), {
+  const getAll = (pagination?: IPaginationFilters, limit?: number) =>
+    useQuery<any, Error>(["objects", pagination], () => API.Object.getAll(pagination, limit), {
       onError: (error) => {
         console.warn(error.message);
       },

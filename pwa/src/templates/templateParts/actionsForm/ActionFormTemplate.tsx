@@ -2,11 +2,9 @@ import * as React from "react";
 import * as styles from "./ActionFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Divider, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Divider, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputNumber, InputText, Textarea, SelectSingle } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useAction } from "../../../hooks/action";
 import { useCronjob } from "../../../hooks/cronjob";
@@ -16,14 +14,21 @@ import Skeleton from "react-loading-skeleton";
 import { validateStringAsJSON } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
-import clsx from "clsx";
+import { IsLoadingContext } from "../../../context/isLoading";
 
-export const CreateActionFormTemplate: React.FC = () => {
+export const formId: string = "action-form";
+
+interface ActionFormTemplateProps {
+  action?: any;
+}
+
+export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }) => {
   const { t } = useTranslation();
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
   const [selectedHanlderSchema, setSelectedHanlderSchema] = React.useState<any>(null);
-
+  const [actionHandlerSchema, setActionHandlerSchema] = React.useState<any>(action?.actionHandlerConfiguration);
   const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   const queryClient = useQueryClient();
@@ -40,13 +45,14 @@ export const CreateActionFormTemplate: React.FC = () => {
     handleSubmit,
     control,
     watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
   const watchClass = watch("class");
 
   React.useEffect(() => {
-    setLoading(createOrEditAction.isLoading);
+    setIsLoading({ ...isLoading, actionForm: createOrEditAction.isLoading });
   }, [createOrEditAction.isLoading]);
 
   React.useEffect(() => {
@@ -81,22 +87,53 @@ export const CreateActionFormTemplate: React.FC = () => {
     }
 
     createOrEditAction.mutate({ payload });
+
+    action && queryClient.setQueryData(["actions", action.id], payload);
   };
+
+  const handleSetFormValues = (): void => {
+    const basicFields: string[] = ["name", "description", "priority", "async", "isLockable", "isEnabled"];
+    basicFields.forEach((field) => setValue(field, action[field]));
+
+    setValue("conditions", JSON.stringify(action["conditions"]));
+
+    setValue("class", { label: action.class, value: action.class });
+
+    setValue(
+      "listens",
+      action["listens"].map((listen: any) => ({ label: listen, value: listen })),
+    );
+
+    setValue(
+      "throws",
+      action["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
+    );
+
+    if (actionHandlerSchema?.properties) {
+      for (const [key, value] of Object.entries(actionHandlerSchema.properties)) {
+        const _value = value as any;
+
+        setValue(key, action.configuration[key]);
+
+        if (_value.type === "object") {
+          action.configuration[key] && setValue(key, JSON.stringify(action.configuration[key]));
+        }
+
+        setActionHandlerSchema((schema: any) => ({
+          ...schema,
+          properties: { ...schema.properties, [key]: { ..._value, value: action.configuration[key] } },
+        }));
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    action && handleSetFormValues();
+  }, [action]);
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <section className={styles.section}>
-          <Heading1>{t("Create Action")}</Heading1>
-
-          <div className={styles.buttons}>
-            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-              {t("Save")}
-            </Button>
-          </div>
-        </section>
-
+      <form onSubmit={handleSubmit(onSubmit)} id={formId}>
         <div className={styles.tabContainer}>
           <TabContext value={currentTab.toString()}>
             <Tabs
@@ -120,7 +157,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                         {...{ register, errors }}
                         name="name"
                         validation={{ required: true, maxLength: 225 }}
-                        disabled={loading}
+                        disabled={isLoading.actionForm}
                       />
                       {errors["name"] && <ErrorMessage message={errors["name"].message} />}
                     </FormFieldInput>
@@ -129,7 +166,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                      <Textarea {...{ register, errors }} name="description" disabled={loading} />
+                      <Textarea {...{ register, errors }} name="description" disabled={isLoading.actionForm} />
                     </FormFieldInput>
                   </FormField>
 
@@ -141,7 +178,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                       {listensAndThrows.length > 0 && (
                         <SelectCreate
                           options={listensAndThrows}
-                          disabled={loading}
+                          disabled={isLoading.actionForm}
                           name="listens"
                           validation={{ required: true }}
                           {...{ register, errors, control }}
@@ -158,7 +195,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                       {listensAndThrows.length > 0 && (
                         <SelectCreate
                           options={listensAndThrows}
-                          disabled={loading}
+                          disabled={isLoading.actionForm}
                           name="throws"
                           {...{ register, errors, control }}
                         />
@@ -181,7 +218,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                           name="class"
                           validation={{ required: true }}
                           {...{ register, errors, control }}
-                          disabled={loading}
+                          disabled={isLoading.actionForm}
                         />
                       )}
                     </FormFieldInput>
@@ -194,7 +231,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                         {...{ register, errors }}
                         name="priority"
                         validation={{ required: true }}
-                        disabled={loading}
+                        disabled={isLoading.actionForm}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -202,21 +239,36 @@ export const CreateActionFormTemplate: React.FC = () => {
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("async")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="async" />
+                      <InputCheckbox
+                        {...{ register, errors }}
+                        disabled={isLoading.actionForm}
+                        label="on"
+                        name="async"
+                      />
                     </FormFieldInput>
                   </FormField>
 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="isEnabled" />
+                      <InputCheckbox
+                        {...{ register, errors }}
+                        disabled={isLoading.actionForm}
+                        label="on"
+                        name="isEnabled"
+                      />
                     </FormFieldInput>
                   </FormField>
 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("IsLockable")}</FormFieldLabel>
-                      <InputCheckbox {...{ register, errors }} disabled={loading} label="on" name="isLockable" />
+                      <InputCheckbox
+                        {...{ register, errors }}
+                        disabled={isLoading.actionForm}
+                        label="on"
+                        name="isLockable"
+                      />
                     </FormFieldInput>
                   </FormField>
                 </div>
@@ -233,7 +285,7 @@ export const CreateActionFormTemplate: React.FC = () => {
                       <Textarea
                         {...{ register, errors }}
                         name="conditions"
-                        disabled={loading}
+                        disabled={isLoading.actionForm}
                         validation={{ validate: validateStringAsJSON }}
                       />
 
@@ -249,7 +301,11 @@ export const CreateActionFormTemplate: React.FC = () => {
         {selectedHanlderSchema && (
           <>
             <Divider />
-            <SchemaFormTemplate {...{ register, errors, control }} schema={selectedHanlderSchema} disabled={loading} />
+            <SchemaFormTemplate
+              {...{ register, errors, control }}
+              schema={selectedHanlderSchema}
+              disabled={isLoading.actionForm}
+            />
           </>
         )}
       </form>

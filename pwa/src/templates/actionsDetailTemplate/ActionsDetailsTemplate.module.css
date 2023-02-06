@@ -1,3 +1,11 @@
+.container {
+  background-color: var(--gateway-ui-color-white);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+  box-sizing: border-box;
+}
 .container > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-2xl);
 }
@@ -16,4 +24,43 @@
 
 .tab {
   max-width: unset !important;
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttons > * {
+  display: flex;
+  align-items: center;
+}
+
+.buttons *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.button {
+  width: max-content;
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.deleteButton {
+  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
+}
+
+.deleteButton:hover {
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-red
+  );
 }
