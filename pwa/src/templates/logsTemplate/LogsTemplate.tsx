@@ -20,6 +20,10 @@ export const LogsTemplate: React.FC = () => {
   const queryClient = new QueryClient();
   const getLogs = useLog(queryClient).getAll(logFilters, currentPage);
 
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [logFilters]);
+
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Logs")}</Heading1>
