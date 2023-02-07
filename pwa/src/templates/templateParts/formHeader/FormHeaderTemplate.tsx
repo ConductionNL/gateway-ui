@@ -8,13 +8,15 @@ import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-
 
 interface FormHeaderTemplateProps {
   title: string;
-  formId: string;
+  formId?: string;
+  disabled?: boolean;
   handleToggleDashboard?: {
     isActive?: boolean;
     handleToggle: () => any;
   };
   handleDelete?: () => any;
-  disabled?: boolean;
+
+  customElements?: JSX.Element;
 }
 
 export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
@@ -23,16 +25,21 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
   handleToggleDashboard,
   handleDelete,
   disabled,
+  customElements,
 }) => {
   return (
     <section className={styles.container}>
-      <Heading1 className={styles.title}>{title}</Heading1>
+      <Heading1 className={styles.title}>TEMPLATE!!! {title}</Heading1>
 
       <div className={styles.buttonsContainer}>
-        <Button type="submit" form={formId} {...{ disabled }}>
-          <FontAwesomeIcon icon={faFloppyDisk} />
-          {t("Save")}
-        </Button>
+        {customElements && customElements}
+
+        {formId && (
+          <Button type="submit" form={formId} {...{ disabled }}>
+            <FontAwesomeIcon icon={faFloppyDisk} />
+            {t("Save")}
+          </Button>
+        )}
 
         {handleToggleDashboard && (
           <Button {...{ disabled }} onClick={handleToggleDashboard.handleToggle}>
