@@ -40,5 +40,6 @@ export const channels = [
   "composer",
   "installation",
   "mapping",
+  "organization",
 ] as const;
 export type TLogChannel = typeof channels[number];
