@@ -26,7 +26,7 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
 }) => {
   return (
     <section className={styles.container}>
-      <Heading1>{title}</Heading1>
+      <Heading1 className={styles.title}>{title}</Heading1>
 
       <div className={styles.buttonsContainer}>
         <Button type="submit" form={formId} {...{ disabled }}>
