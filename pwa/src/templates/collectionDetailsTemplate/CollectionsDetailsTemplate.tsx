@@ -12,6 +12,8 @@ import clsx from "clsx";
 import { isLoading, IsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { CollectionFormTemplate, formId } from "../templateParts/collectionsForm/CollectionFormTemplate";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface CollectionsDetailPageProps {
   collectionId: string;
@@ -21,6 +23,7 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
   const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
@@ -28,6 +31,8 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
   const _useCollection = useCollection(queryClient);
   const getCollection = _useCollection.getOne(collectionId);
   const deleteCollection = _useCollection.remove();
+
+  const getLogs = useLog(queryClient).getAllFromChannel("collection", collectionId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(collectionId);
 
@@ -103,8 +108,18 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getCollection.isLoading && <Skeleton height="200px" />}
-            {getCollection.isSuccess && <span>Logs</span>}{" "}
+            {getLogs.isLoading && <Skeleton height="200px" />}
+
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
+            )}
           </TabPanel>
         </TabContext>
       </div>
