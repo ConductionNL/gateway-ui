@@ -42,7 +42,7 @@
 
 .currentPage {
   font-weight: var(--gateway-ui-font-weight-bold);
-  color: var(--gateway-ui-color-primary);
+  text-decoration: underline;
 }
 
 .currentPage:hover {
