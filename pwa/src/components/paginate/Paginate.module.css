@@ -21,6 +21,25 @@
   color: inherit;
 }
 
+.button {
+  padding-inline-start: var(--gateway-ui-size-sm) !important;
+  padding-inline-end: var(--gateway-ui-size-sm) !important;
+  padding-block-start: var(--gateway-ui-size-2xs) !important;
+  padding-block-end: var(--gateway-ui-size-2xs) !important;
+}
+
+.disabled .button {
+  background-color: var(
+    --denhaag-button-primary-action-disabled-background-color
+  );
+  color: var(--denhaag-button-primary-action-disabled-color);
+  pointer-events: none;
+}
+
+.disabled .button:hover {
+  cursor: not-allowed;
+}
+
 .currentPage {
   font-weight: var(--gateway-ui-font-weight-bold);
   color: var(--gateway-ui-color-primary);

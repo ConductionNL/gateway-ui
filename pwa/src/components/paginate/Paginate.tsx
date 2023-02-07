@@ -2,7 +2,9 @@ import * as React from "react";
 import * as styles from "./Paginate.module.css";
 
 import ReactPaginate from "react-paginate";
-import { Tag } from "@conduction/components";
+import { faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@gemeente-denhaag/components-react";
 
 interface PaginateProps {
   totalPages: number;
@@ -25,8 +27,16 @@ export const Paginate: React.FC<PaginateProps> = ({ totalPages, currentPage, cha
       disableInitialCallback
       marginPagesDisplayed={2}
       breakLabel="..."
-      nextLabel={<Tag label="Next" />}
-      previousLabel={<Tag label="Previous" />}
+      nextLabel={
+        <Button className={styles.button}>
+          <FontAwesomeIcon icon={faChevronRight} />
+        </Button>
+      }
+      previousLabel={
+        <Button className={styles.button}>
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </Button>
+      }
     />
   );
 };
