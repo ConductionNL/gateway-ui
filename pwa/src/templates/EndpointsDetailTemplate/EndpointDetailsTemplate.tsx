@@ -15,6 +15,8 @@ import { EndpointFormTemplate, formId } from "../templateParts/endpointsForm/End
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { IsLoadingContext } from "../../context/isLoading";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface EndpointDetailsTemplateProps {
   endpointId: string;
@@ -24,12 +26,15 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const queryClient = new QueryClient();
   const _useEndpoints = useEndpoint(queryClient);
   const getEndpoint = _useEndpoints.getOne(endpointId);
   const deleteEndpoint = _useEndpoints.remove();
+
+  const getLogs = useLog(queryClient).getAllFromChannel("endpoint", endpointId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(endpointId);
 
@@ -82,9 +87,20 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getEndpoint.isLoading && <Skeleton height="200px" />}
-            {getEndpoint.isSuccess && <span>Logs</span>}
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
+            )}
+
+            {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
+
           <TabPanel className={styles.tabPanel} value="1">
             {getEndpoint.isSuccess && (
               <Table>
@@ -104,6 +120,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
               </Table>
             )}
           </TabPanel>
+
           <TabPanel className={styles.tabPanel} value="2">
             {getEndpoint.isSuccess && <SchemasTable schemas={getEndpoint.data.entities} />}
           </TabPanel>

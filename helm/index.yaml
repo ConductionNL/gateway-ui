@@ -2,31 +2,67 @@ apiVersion: v1
 entries:
   commonground-gateway:
   - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2023-01-25T18:14:13.897093291+01:00"
+    appVersion: "2.2"
+    created: "2023-02-06T12:41:42.009595782+01:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
-      version: 10.9.5
+      version: 12.1.2
     - condition: redis.enabled
       name: redis
       repository: https://charts.bitnami.com/bitnami
-      version: 15.3.2
+      version: 17.3.11
     - name: rabbitmq
       repository: https://charts.bitnami.com/bitnami
       version: 9.0.1
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 13.4.4
     description: A Helm chart for Kubernetes
-    digest: 61176b210c41b7f1153021924af204988fb50a0dbef2ed51856d5b98543078f7
+    digest: 92d891d1e69717a8c7350edaa3520962e210fead1c1d0d3982476f9097daa37d
     name: commonground-gateway
     type: application
     urls:
-    - charts/commonground-gateway-0.1.7.tgz
-    version: 0.1.7
+    - charts/commonground-gateway-1.2.0.tgz
+    version: 1.2.0
   skeleton-app:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-01-25T18:14:13.849429653+01:00"
+    created: "2023-02-06T12:41:41.950199055+01:00"
+    dependencies:
+    - alias: gateway
+      condition: gateway.enabled
+      name: commonground-gateway
+      repository: https://raw.githubusercontent.com/ConductionNL/commonground-gateway/feature-cleanup/api/helm/
+      version: 1.2.0
+    description: A Helm chart for the Skeleton Gatsby Application
+    digest: cb902ec46b3d527f5531a48cf58d533f8578a8d1e694351bc084e2b08a8981de
+    name: skeleton-app
+    type: application
+    urls:
+    - skeleton-app-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-02-06T12:41:41.908837491+01:00"
+    dependencies:
+    - alias: gateway
+      condition: gateway.enabled
+      name: commonground-gateway
+      repository: https://raw.githubusercontent.com/ConductionNL/commonground-gateway/feature-cleanup/api/helm/
+      version: 1.2.0
+    description: A Helm chart for the Skeleton Gatsby Application
+    digest: 9f312e6581b31632e60e835546b8b55df096dceb3e1eec9b0136d3db170ec77f
+    name: skeleton-app
+    type: application
+    urls:
+    - skeleton-app-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-02-06T12:41:41.873503095+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -42,7 +78,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-01-25T18:14:13.828431156+01:00"
+    created: "2023-02-06T12:41:41.835440602+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -59,7 +95,7 @@ entries:
   skeleton-pip:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-01-25T18:14:13.87285682+01:00"
+    created: "2023-02-06T12:41:41.981370257+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -73,4 +109,4 @@ entries:
     urls:
     - skeleton-pip-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-25T18:14:13.804489682+01:00"
+generated: "2023-02-06T12:41:41.798429476+01:00"

@@ -41,3 +41,8 @@
   --conduction-tag-background-color: var(--gateway-ui-color-status-red);
   --conduction-tag-color: var(--gateway-ui-color-white);
 }
+
+.statusUnknown {
+  --conduction-tag-background-color: inherit;
+  --conduction-tag-color: inherit;
+}

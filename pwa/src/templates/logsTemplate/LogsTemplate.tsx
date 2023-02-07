@@ -1,58 +1,48 @@
 import * as React from "react";
 import * as styles from "./LogsTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
-import { useTranslation } from "react-i18next";
-import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
-import { navigate } from "gatsby";
-import { QueryClient } from "react-query";
-import { Container } from "@conduction/components";
-import Skeleton from "react-loading-skeleton";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+
+import _ from "lodash";
 import { useLog } from "../../hooks/log";
+import { QueryClient } from "react-query";
+import Skeleton from "react-loading-skeleton";
+import { useTranslation } from "react-i18next";
+import { Container } from "@conduction/components";
+import { Heading1 } from "@gemeente-denhaag/components-react";
+import { LogFiltersTemplate } from "../templateParts/logFilters/LogFiltersTemplate";
+import { LogFiltersContext } from "../../context/logs";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const [logFilters] = React.useContext(LogFiltersContext);
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
-  const _useLog = useLog(queryClient);
-  const getLog = _useLog.getAll();
+  const getLogs = useLog(queryClient).getAll(logFilters, currentPage);
+
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [logFilters]);
 
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Logs")}</Heading1>
 
-      {getLog.isError && "Error..."}
+      <LogFiltersTemplate />
 
-      {getLog.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Id")}</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getLog.data.map((log) => (
-              <TableRow className={styles.tableRow} onClick={() => navigate(`/logs/${log.id}`)} key={log.id}>
-                <TableCell>{log.id ?? "-"}</TableCell>
-                <TableCell onClick={() => navigate(`/logs/${log.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
-            {!getLog.data.length && (
-              <TableRow>
-                <TableCell>{t("No logs found")}</TableCell>
-                <TableCell />
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+      {getLogs.isSuccess && (
+        <LogsTableTemplate
+          logs={getLogs.data.results}
+          pagination={{
+            totalPages: getLogs.data.pages,
+            currentPage: currentPage,
+            changePage: setCurrentPage,
+          }}
+        />
       )}
 
-      {getLog.isLoading && <Skeleton height="200px" />}
+      {getLogs.isError && "Error..."}
+      {getLogs.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };
