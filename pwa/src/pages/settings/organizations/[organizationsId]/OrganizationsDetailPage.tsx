@@ -4,13 +4,15 @@ import { DashboardTemplate } from "../../../../templates/dashboard/DashboardTemp
 import { CreateOrganizationTemplate } from "../../../../templates/templateParts/organizationsForm/CreateOrganizationTemplate";
 import { EditOrganizationTemplate } from "../../../../templates/templateParts/organizationsForm/EditOrganizationTemplate";
 
-const OrganizationsDetailPage: React.FC<PageProps> = (props: PageProps) => (
-  <DashboardTemplate>
-    {props.params.organizationsId === "new" && <CreateOrganizationTemplate />}
-    {props.params.organizationsId !== "new" && (
-      <EditOrganizationTemplate organizationId={props.params.organizationsId} />
-    )}
-  </DashboardTemplate>
-);
+const OrganizationsDetailPage: React.FC<PageProps> = (props: PageProps) => {
+  const organizationsId = props.params.organizationsId === "new" ? null : props.params.organizationsId;
+
+  return (
+    <DashboardTemplate>
+      {!organizationsId && <CreateOrganizationTemplate />}
+      {organizationsId && <EditOrganizationTemplate organizationId={props.params.organizationsId} />}
+    </DashboardTemplate>
+  );
+};
 
 export default OrganizationsDetailPage;
