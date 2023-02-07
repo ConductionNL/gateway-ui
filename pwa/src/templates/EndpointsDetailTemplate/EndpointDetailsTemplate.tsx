@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { EndpointFormTemplate, formId } from "../templateParts/endpointsForm/EndpointFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { IsLoadingContext } from "../../context/isLoading";
+import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
@@ -41,7 +42,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
     toggleDashboardCard(getEndpoint.data.name, "endpoint", "Endpoint", endpointId, dashboardCard?.id);
   };
 
-  const handleDelete = () => {
+  const handleDeleteEndpoint = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this endpoint?");
 
     confirmDeletion && deleteEndpoint.mutate({ id: endpointId });
@@ -55,39 +56,13 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
     <Container layoutClassName={styles.container}>
       {getEndpoint.isSuccess && (
         <>
-          <section className={styles.section}>
-            <Heading1>{`Edit ${getEndpoint.data.name}`}</Heading1>
-
-            <div className={styles.buttons}>
-              <Button
-                type="submit"
-                form={formId}
-                disabled={isLoading.endpointForm}
-                className={clsx(styles.buttonIcon, styles.button)}
-              >
-                <FontAwesomeIcon icon={faFloppyDisk} />
-                {t("Save")}
-              </Button>
-
-              <Button
-                className={clsx(styles.buttonIcon, styles.button)}
-                onClick={toggleFromDashboard}
-                disabled={isLoading.endpointForm}
-              >
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
-
-              <Button
-                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
-                onClick={handleDelete}
-                disabled={isLoading.endpointForm}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Delete")}
-              </Button>
-            </div>
-          </section>
+          <FormHeaderTemplate
+            title={`Edit ${getEndpoint.data.name}`}
+            {...{ formId }}
+            disabled={isLoading.endpointForm}
+            handleDelete={handleDeleteEndpoint}
+            handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+          />
 
           <EndpointFormTemplate endpoint={getEndpoint.data} />
         </>
