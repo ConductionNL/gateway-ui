@@ -18,6 +18,8 @@ import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { navigate } from "gatsby";
 import clsx from "clsx";
 import { IsLoadingContext } from "../../../context/isLoading";
+import { useLog } from "../../../hooks/log";
+import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 
 interface EditUserTemplateProps {
   userId: string;
@@ -27,6 +29,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
@@ -34,6 +37,8 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
   const _useUsers = useUser(queryClient);
   const getUser = _useUsers.getOne(userId);
   const deleteUser = _useUsers.remove();
+
+  const getLogs = useLog(queryClient).getAllFromChannel("user", userId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(getUser.data?.id);
 
@@ -143,6 +148,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                 </TableBody>
               </Table>
             </TabPanel>
+
             <TabPanel className={styles.tabPanel} value="1">
               <Table>
                 <TableHead>
@@ -165,8 +171,20 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                 </TableBody>
               </Table>
             </TabPanel>
+
             <TabPanel className={styles.tabPanel} value="2">
-              Logs are not yet supported.
+              {getLogs.isLoading && <Skeleton height="200px" />}
+
+              {getLogs.isSuccess && (
+                <LogsTableTemplate
+                  logs={getLogs.data.results}
+                  pagination={{
+                    totalPages: getLogs.data.pages,
+                    currentPage: currentLogsPage,
+                    changePage: setCurrentLogsPage,
+                  }}
+                />
+              )}
             </TabPanel>
           </TabContext>
         </div>
