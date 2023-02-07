@@ -21,38 +21,38 @@
   width: 100%;
 }
 
-.DEBUG {
+.debug {
   background-color: var(--gateway-ui-color-log-level-debug);
   color: darken(var(--gateway-ui-color-log-level-debug), 50%);
 }
 
-.INFO {
+.info {
   background-color: var(--gateway-ui-color-log-level-info);
 }
 
-.NOTICE {
+.notice {
   background-color: var(--gateway-ui-color-log-level-notice);
 }
 
-.WARNING {
+.warning {
   background-color: var(--gateway-ui-color-log-level-warning);
 }
 
-.ERROR {
+.error {
   background-color: var(--gateway-ui-color-log-level-error);
 }
 
-.CRITICAL {
+.critical {
   background-color: var(--gateway-ui-color-log-level-critical);
   color: var(--gateway-ui-color-white);
 }
 
-.ALERT {
+.alert {
   background-color: var(--gateway-ui-color-log-level-alert);
   color: var(--gateway-ui-color-white);
 }
 
-.EMERGENCY {
+.emergency {
   background-color: var(--gateway-ui-color-log-level-emergency);
   color: var(--gateway-ui-color-white);
 }

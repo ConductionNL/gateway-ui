@@ -52,7 +52,10 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
           {logs.map((log: any) => (
             <TableRow className={styles.tableRow} onClick={() => navigate(`/logs/${log._id.$oid}`)} key={log._id.$oid}>
               <TableCell>
-                <Tag layoutClassName={styles[log.level_name]} label={_.upperFirst(_.lowerCase(log.level_name))} />
+                <Tag
+                  layoutClassName={styles[_.lowerCase(log.level_name)]}
+                  label={_.upperFirst(_.lowerCase(log.level_name))}
+                />
               </TableCell>
 
               <TableCell>
