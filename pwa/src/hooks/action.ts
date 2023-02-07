@@ -15,6 +15,13 @@ export const useAction = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("action_select_options", API.Action.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getAllHandlers = () =>
     useQuery<any[], Error>("action_handlers", API.Action.getAllHandlers, {
       onError: (error) => {
@@ -60,5 +67,5 @@ export const useAction = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getAllHandlers, getOne, remove, createOrEdit };
+  return { getAll, getAllSelectOptions, getAllHandlers, getOne, remove, createOrEdit };
 };

@@ -14,6 +14,12 @@ export default class Endpoint {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", "/admin/endpoints");
+
+    return data?.map((endpoint: any) => ({ label: endpoint.name, value: endpoint.id }));
+  };
+
   public getOne = async (id: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/endpoints/${id}`);
 
