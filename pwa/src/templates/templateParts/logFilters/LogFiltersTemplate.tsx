@@ -17,12 +17,6 @@ import { channels, levelNames, LogFiltersContext } from "../../../context/logs";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 
 export const LogFiltersTemplate: React.FC = () => {
-  const levelNameOptions = levelNames.map((levelName) => ({
-    label: _.upperFirst(_.toLower(levelName)),
-    value: levelName,
-  }));
-  const channelOptions = channels.map((channel) => ({ label: _.upperFirst(channel), value: channel }));
-
   const [logFilters, setLogFilters] = React.useContext(LogFiltersContext);
 
   const queryClient = new QueryClient();
@@ -241,3 +235,9 @@ export const LogFiltersTemplate: React.FC = () => {
     </form>
   );
 };
+
+const levelNameOptions = levelNames.map((levelName) => ({
+  label: _.upperFirst(_.toLower(levelName)),
+  value: levelName,
+}));
+const channelOptions = channels.map((channel) => ({ label: _.upperFirst(channel), value: channel }));
