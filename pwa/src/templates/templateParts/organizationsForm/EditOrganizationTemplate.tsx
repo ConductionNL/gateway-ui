@@ -16,6 +16,8 @@ import { faFloppyDisk, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { translateDate } from "../../../services/dateFormat";
 import clsx from "clsx";
+import { useLog } from "../../../hooks/log";
+import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 
 interface CreateOrganizationTemplateProps {
   organizationId: string;
@@ -23,6 +25,7 @@ interface CreateOrganizationTemplateProps {
 
 export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps> = ({ organizationId }) => {
   const { t, i18n } = useTranslation();
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -31,6 +34,8 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
   const queryClient = new QueryClient();
   const _useOrganizations = useOrganization(queryClient);
   const getOrganization = _useOrganizations.getOne(organizationId);
+
+  const getLogs = useLog(queryClient).getAllFromChannel("organization", organizationId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(organizationId);
 
@@ -87,7 +92,9 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                 variant="scrollable"
               >
                 <Tab className={styles.tab} label={t("Applications")} value={0} />
+
                 <Tab className={styles.tab} label={t("Users")} value={1} />
+
                 <Tab className={styles.tab} label={t("Logs")} value={2} />
               </Tabs>
 
@@ -102,6 +109,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                       <TableHeader></TableHeader>
                     </TableRow>
                   </TableHead>
+
                   <TableBody>
                     {getOrganization.data.applications &&
                       getOrganization.data.applications.map((application: any) => (
@@ -121,6 +129,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                           </TableCell>
                         </TableRow>
                       ))}
+
                     {!getOrganization.data.applications.length && (
                       <TableRow>
                         <TableCell>{t("No applications found")}</TableCell>
@@ -132,6 +141,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                   </TableBody>
                 </Table>
               </TabPanel>
+
               <TabPanel className={styles.tabPanel} value="1">
                 <Table>
                   <TableHead>
@@ -143,6 +153,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                       <TableHeader></TableHeader>
                     </TableRow>
                   </TableHead>
+
                   <TableBody>
                     {getOrganization.data.users.map((user: any) => (
                       <TableRow
@@ -161,6 +172,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                         </TableCell>
                       </TableRow>
                     ))}
+
                     {!getOrganization.data.users.length && (
                       <TableRow>
                         <TableCell>No users found</TableCell>
@@ -172,8 +184,20 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                   </TableBody>
                 </Table>
               </TabPanel>
+
               <TabPanel className={styles.tabPanel} value="2">
-                Logs are not yet supported.
+                {getLogs.isLoading && <Skeleton height="200px" />}
+
+                {getLogs.isSuccess && (
+                  <LogsTableTemplate
+                    logs={getLogs.data.results}
+                    pagination={{
+                      totalPages: getLogs.data.pages,
+                      currentPage: currentLogsPage,
+                      changePage: setCurrentLogsPage,
+                    }}
+                  />
+                )}
               </TabPanel>
             </TabContext>
           </div>

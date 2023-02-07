@@ -14,6 +14,8 @@ import clsx from "clsx";
 import action from "../../apiService/resources/action";
 import { IsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface ActionsDetailsTemplateProps {
   actionId: string;
@@ -23,11 +25,15 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
   const _useAction = useAction(queryClient);
+
   const getAction = _useAction.getOne(actionId);
   const deleteAction = _useAction.remove();
+
+  const getLogs = useLog(queryClient).getAllFromChannel("action", actionId, currentLogsPage);
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
 
@@ -42,6 +48,8 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
 
     confirmDeletion && deleteAction.mutate({ id: actionId });
   };
+
+  React.useEffect(() => {}, []);
 
   React.useEffect(() => {
     setIsLoading({ ...isLoading, actionForm: deleteAction.isLoading || dashboardToggleLoading });
@@ -127,8 +135,18 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {getAction.isLoading && <Skeleton height="200px" />}
-            {getAction.isSuccess && <span>Logs</span>}
+            {getLogs.isLoading && <Skeleton height="200px" />}
+
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
+            )}
           </TabPanel>
         </TabContext>
       </div>
