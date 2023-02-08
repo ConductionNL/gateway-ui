@@ -21,17 +21,32 @@ export interface DashboardCardProps {
   isEnabled?: boolean | undefined;
   lastRun?: string;
   lastCall?: string;
+  deleteOnClick?: (e: any) => void;
 }
 
-export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, status, isEnabled, lastRun, lastCall }) => {
+export const DashboardCard: React.FC<DashboardCardProps> = ({
+  title,
+  type,
+  status,
+  isEnabled,
+  lastRun,
+  lastCall,
+  deleteOnClick,
+}) => {
   const { t, i18n } = useTranslation();
 
   return (
     <div className={styles.container}>
-      <div className={styles.titleLink} onClick={() => navigate(title.href)}>
+      <div className={styles.titleLink}>
         <Link icon={<ArrowRightIcon />} iconAlign="start">
           {title.label}
         </Link>
+      </div>
+
+      <div>
+        <button onClick={deleteOnClick} iconAlign="end">
+          Remove
+        </button>
       </div>
 
       <Paragraph className={styles.statusTypeContainer}>
