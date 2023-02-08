@@ -27,8 +27,8 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
   const { t, i18n } = useTranslation();
 
   return (
-    <div className={styles.container}>
-      <div className={styles.titleLink} onClick={() => navigate(title.href)}>
+    <div className={styles.container} onClick={() => navigate(title.href)}>
+      <div className={styles.titleLink}>
         <Link icon={<ArrowRightIcon />} iconAlign="start">
           {title.label}
         </Link>

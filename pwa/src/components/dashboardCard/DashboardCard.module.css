@@ -1,4 +1,5 @@
 .container {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   border: var(--gateway-ui-card-border-color);
