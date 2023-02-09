@@ -119,7 +119,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             {getSchema.isSuccess && (
               <>
                 <Button
-                  className={clsx(styles.buttonIcon, styles.button, styles.saveSchemaButton)}
+                  className={clsx(styles.saveSchemaButton)}
                   type="submit"
                   form={formId}
                   disabled={isLoading.schemaForm}

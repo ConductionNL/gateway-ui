@@ -282,7 +282,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
         </FormField>
       </section>
 
-      <section className={styles.section}>
+      <section>
         <FormField>
           <FormFieldInput>
             <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>

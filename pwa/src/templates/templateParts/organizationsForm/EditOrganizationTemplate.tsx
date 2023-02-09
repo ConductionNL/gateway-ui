@@ -97,7 +97,6 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                     {getOrganization.data.applications &&
                       getOrganization.data.applications.map((application: any) => (
                         <TableRow
-                          className={styles.tableRow}
                           onClick={() => navigate(`/settings/applications/${application.id}`)}
                           key={application.id}
                         >
@@ -139,11 +138,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
 
                   <TableBody>
                     {getOrganization.data.users.map((user: any) => (
-                      <TableRow
-                        className={styles.tableRow}
-                        onClick={() => navigate(`/settings/users/${user.id}`)}
-                        key={user.id}
-                      >
+                      <TableRow onClick={() => navigate(`/settings/users/${user.id}`)} key={user.id}>
                         <TableCell>{user.name}</TableCell>
                         <TableCell>{user.securityGroups?.length ?? "-"}</TableCell>
                         <TableCell>{translateDate(i18n.language, user.dateCreated) ?? "-"}</TableCell>

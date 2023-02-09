@@ -6,9 +6,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { QueryClient } from "react-query";
 import { useCronjob } from "../../hooks/cronjob";
 import { navigate } from "gatsby";
-import { Container, Tag, ToolTip } from "@conduction/components";
+import { Container, Tag } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import clsx from "clsx";
@@ -68,7 +68,7 @@ export const CronjobsTemplate: React.FC = () => {
                       cronjob.status === undefined ? styles.statusUnknown : "",
                     )}
                   >
-                    <Tag layoutClassName={styles.tagWidth} label={cronjob.status?.toString() ?? "Unknown"} />
+                    <Tag label={cronjob.status?.toString() ?? "Unknown"} />
                   </div>
                 </TableCell>
 

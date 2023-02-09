@@ -65,7 +65,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
       {getUser.isSuccess && <UserFormTemplate user={getUser.data} />}
 
       {getUser.isSuccess && (
-        <div className={styles.tabContainer}>
+        <div>
           <TabContext value={currentTab.userDetailTabs.toString()}>
             <Tabs
               value={currentTab.userDetailTabs}
@@ -74,12 +74,12 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
               }}
               variant="scrollable"
             >
-              <Tab className={styles.tab} label={t("Security Groups")} value={0} />
-              <Tab className={styles.tab} label={t("Scopes")} value={1} />
-              <Tab className={styles.tab} label={t("Logs")} value={2} />
+              <Tab label={t("Security Groups")} value={0} />
+              <Tab label={t("Scopes")} value={1} />
+              <Tab label={t("Logs")} value={2} />
             </Tabs>
 
-            <TabPanel className={styles.tabPanel} value="0">
+            <TabPanel value="0">
               <Table>
                 <TableHead>
                   <TableRow>
@@ -92,11 +92,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                 <TableBody>
                   {getUser.data.securityGroups &&
                     getUser.data.securityGroups.map((userGroup: any) => (
-                      <TableRow
-                        className={styles.tableRow}
-                        onClick={() => navigate(`/settings/securitygroups/${userGroup.id}`)}
-                        key={userGroup.id}
-                      >
+                      <TableRow onClick={() => navigate(`/settings/securitygroups/${userGroup.id}`)} key={userGroup.id}>
                         <TableCell>{userGroup.name}</TableCell>
                         <TableCell>{userGroup.description ?? "-"}</TableCell>
                         <TableCell>{userGroup.config ?? "-"}</TableCell>
@@ -119,7 +115,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
               </Table>
             </TabPanel>
 
-            <TabPanel className={styles.tabPanel} value="1">
+            <TabPanel value="1">
               <Table>
                 <TableHead>
                   <TableRow>
@@ -129,7 +125,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                 <TableBody>
                   {getUser.data.scopes &&
                     getUser.data.scopes.map((scope: any) => (
-                      <TableRow className={styles.tableRow} key={scope.id}>
+                      <TableRow key={scope.id}>
                         <TableCell>{scope.name}</TableCell>
                       </TableRow>
                     ))}
@@ -142,7 +138,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
               </Table>
             </TabPanel>
 
-            <TabPanel className={styles.tabPanel} value="2">
+            <TabPanel value="2">
               {getLogs.isLoading && <Skeleton height="200px" />}
 
               {getLogs.isSuccess && (
