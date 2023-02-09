@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
 import { QueryClient } from "react-query";
 import _ from "lodash";
-import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 import Skeleton from "react-loading-skeleton";
 import { useCallLog } from "../../hooks/callLog";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@gemeente-denhaag/table";
@@ -14,6 +13,7 @@ import clsx from "clsx";
 import { Tag } from "@conduction/components";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 interface CallLogDetailTemplateProps {
   calllogId: string;
@@ -30,7 +30,7 @@ export const CallLogDetailTemplate: React.FC<CallLogDetailTemplateProps> = ({ ca
   return (
     <div className={styles.container}>
       <div onClick={() => navigate(`/sources/${sourceId}`)}>
-        <Link icon={<ArrowLeftIcon />} iconAlign="start">
+        <Link icon={<FontAwesomeIcon icon={faArrowLeft} />} iconAlign="start">
           {t("Back to source")}
         </Link>
       </div>
@@ -93,11 +93,11 @@ export const CallLogDetailTemplate: React.FC<CallLogDetailTemplateProps> = ({ ca
               </TableRow>
               <TableRow>
                 <TableHeader>Date Created</TableHeader>
-                <TableCell>{dateTime(t(i18n.language),_getCallLog.data.dateCreated) ?? "-"}</TableCell>
+                <TableCell>{dateTime(t(i18n.language), _getCallLog.data.dateCreated) ?? "-"}</TableCell>
               </TableRow>
               <TableRow>
                 <TableHeader>Date Modified</TableHeader>
-                <TableCell>{dateTime(t(i18n.language),_getCallLog.data.dateModified) ?? "-"}</TableCell>
+                <TableCell>{dateTime(t(i18n.language), _getCallLog.data.dateModified) ?? "-"}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

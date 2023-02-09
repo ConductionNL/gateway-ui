@@ -6,8 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { QueryClient } from "react-query";
 import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
@@ -58,7 +57,7 @@ export const UsersTemplate: React.FC = () => {
                 <TableCell>{translateDate(i18n.language, user.dateCreated) ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, user.dateModified) ?? "-"}</TableCell>
                 <TableCell onClick={() => navigate(`/settings/users/${user.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>

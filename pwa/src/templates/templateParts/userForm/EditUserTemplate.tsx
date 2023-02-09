@@ -10,12 +10,13 @@ import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/compone
 import { TabsContext } from "../../../context/tabs";
 import { Container } from "@conduction/components";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { navigate } from "gatsby";
 import { IsLoadingContext } from "../../../context/isLoading";
 import { useLog } from "../../../hooks/log";
 import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface EditUserTemplateProps {
   userId: string;
@@ -97,7 +98,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                         <TableCell>{userGroup.description ?? "-"}</TableCell>
                         <TableCell>{userGroup.config ?? "-"}</TableCell>
                         <TableCell onClick={() => navigate(`/settings/securitygroups/${userGroup.id}`)}>
-                          <Link icon={<ArrowRightIcon />} iconAlign="start">
+                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                             {t("Details")}
                           </Link>
                         </TableCell>

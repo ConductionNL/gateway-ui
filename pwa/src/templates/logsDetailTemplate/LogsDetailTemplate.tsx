@@ -9,7 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { useApplication } from "../../hooks/application";
 import { navigate } from "gatsby";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faFilter, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useEndpoint } from "../../hooks/endpoint";
 import { useSchema } from "../../hooks/schema";
 import { useCronjob } from "../../hooks/cronjob";
@@ -63,6 +63,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
             variant="info"
             text={getLog.data.message}
             className={clsx(styles[_.camelCase(`${getLog.data.level_name} level`)])}
+            supportIcon={<FontAwesomeIcon icon={faInfoCircle} />}
           ></Alert>
 
           <div className={styles.contextContainer}>

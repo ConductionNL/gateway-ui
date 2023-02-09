@@ -11,8 +11,7 @@ import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { faDownload, faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faDownload, faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabsContext } from "../../context/tabs";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
@@ -173,7 +172,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                         <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
                         <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
                         <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
-                          <Link icon={<ArrowRightIcon />} iconAlign="start">
+                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                             {t("Details")}
                           </Link>
                         </TableCell>

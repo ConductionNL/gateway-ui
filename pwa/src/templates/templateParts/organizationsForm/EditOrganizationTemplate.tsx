@@ -9,7 +9,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useTranslation } from "react-i18next";
 import { TabsContext } from "../../../context/tabs";
 import { navigate } from "gatsby";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { Container } from "@conduction/components";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { translateDate } from "../../../services/dateFormat";
@@ -17,6 +16,8 @@ import { useLog } from "../../../hooks/log";
 import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 import { IsLoadingContext } from "../../../context/isLoading";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface CreateOrganizationTemplateProps {
   organizationId: string;
@@ -105,7 +106,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                           <TableCell>{translateDate(i18n.language, application.dateCreated)}</TableCell>
                           <TableCell>{translateDate(i18n.language, application.dateModified)}</TableCell>
                           <TableCell onClick={() => navigate(`/settings/applications/${application.id}`)}>
-                            <Link icon={<ArrowRightIcon />} iconAlign="start">
+                            <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                               {t("Details")}
                             </Link>
                           </TableCell>
@@ -144,7 +145,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                         <TableCell>{translateDate(i18n.language, user.dateCreated) ?? "-"}</TableCell>
                         <TableCell>{translateDate(i18n.language, user.dateModified) ?? "-"}</TableCell>
                         <TableCell onClick={() => navigate(`/settings/users/${user.id}`)}>
-                          <Link icon={<ArrowRightIcon />} iconAlign="start">
+                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                             {t("Details")}
                           </Link>
                         </TableCell>

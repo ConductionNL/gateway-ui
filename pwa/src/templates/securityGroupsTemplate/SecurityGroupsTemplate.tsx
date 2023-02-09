@@ -6,8 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSecurityGroup } from "../../hooks/securityGroup";
 import { QueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
@@ -52,7 +51,7 @@ export const SecurityGroupsTemplate: React.FC = () => {
                 <TableCell>{securityGroup.description ?? "-"}</TableCell>
                 <TableCell>{securityGroup.config ?? "-"}</TableCell>
                 <TableCell onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>

@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { useQueryClient } from "react-query";
 import { useEndpoint } from "../../../hooks/endpoint";
-import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, InputCheckbox } from "@conduction/components/lib/components/formFields";
 import { useSource } from "../../../hooks/source";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../../hooks/schema";
