@@ -12,7 +12,7 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { useEndpoint } from "../../../hooks/endpoint";
 import { useApplication } from "../../../hooks/application";
 import { useOrganization } from "../../../hooks/organization";
-import { SelectSingle } from "@conduction/components/lib/components/formFields";
+import { InputText, SelectSingle } from "@conduction/components/lib/components/formFields";
 import { channels, levelNames, LogFiltersContext } from "../../../context/logs";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 
@@ -37,46 +37,36 @@ export const LogFiltersTemplate: React.FC = () => {
     formState: { errors },
   } = useForm();
 
-  const watchChannels = watch("channels");
-  const watchLevelNames = watch("levelNames");
-  const watchEndpoints = watch("endpoints");
-  const watchSchemas = watch("schemas");
-  const watchCronjobs = watch("cronjobs");
-  const watchActions = watch("actions");
-  const watchUsers = watch("users");
-  const watchOrganizations = watch("organizations");
-  const watchApplications = watch("applications");
-
   React.useEffect(() => {
-    setLogFilters({
-      ...logFilters,
-      channel: watchChannels?.value,
-      level_name: watchLevelNames?.value,
-      context: {
-        endpoint: watchEndpoints?.value,
-        schema: watchSchemas?.value,
-        cronjob: watchCronjobs?.value,
-        action: watchActions?.value,
-        user: watchUsers?.value,
-        organization: watchOrganizations?.value,
-        application: watchApplications?.value,
-      },
+    const subscription = watch((value) => {
+      setLogFilters({
+        ...logFilters,
+        channel: value.channels?.value,
+        level_name: value.level_name?.value,
+        context: {
+          session: value.session,
+          process: value.process,
+          endpoint: value.endpoints?.value,
+          schema: value.schemas?.value,
+          cronjob: value.cronjobs?.value,
+          action: value.actions?.value,
+          user: value.users?.value,
+          organization: value.organizations?.value,
+          application: value.applications?.value,
+        },
+      });
     });
-  }, [
-    watchChannels,
-    watchLevelNames,
-    watchEndpoints,
-    watchSchemas,
-    watchCronjobs,
-    watchActions,
-    watchUsers,
-    watchOrganizations,
-    watchApplications,
-  ]);
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   React.useEffect(() => {
+    setValue("session", logFilters.context?.session);
+
+    setValue("process", logFilters.context?.process);
+
     setValue(
-      "levelNames",
+      "level_name",
       levelNameOptions.find((levelName) => levelName.value === logFilters.level_name),
     );
 
@@ -123,115 +113,140 @@ export const LogFiltersTemplate: React.FC = () => {
 
   return (
     <form className={styles.form}>
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Levels</FormFieldLabel>
+      <div className={styles.textFiltersContainer}>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Session</FormFieldLabel>
 
-          <SelectSingle isClearable options={levelNameOptions} name="levelNames" {...{ register, errors, control }} />
-        </FormFieldInput>
-      </FormField>
+            <InputText name="session" placeholder="Session id" {...{ register, errors }} />
+          </FormFieldInput>
+        </FormField>
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Channels</FormFieldLabel>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Process</FormFieldLabel>
 
-          <SelectSingle isClearable options={channelOptions} name="channels" {...{ register, errors, control }} />
-        </FormFieldInput>
-      </FormField>
+            <InputText name="process" placeholder="Process id" {...{ register, errors }} />
+          </FormFieldInput>
+        </FormField>
+      </div>
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Endpoints</FormFieldLabel>
+      <div className={styles.selectFiltersContainer}>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Levels</FormFieldLabel>
 
-          {getEndpoints.isSuccess && (
-            <SelectSingle isClearable name="endpoints" {...{ register, errors, control }} options={getEndpoints.data} />
-          )}
+            <SelectSingle isClearable options={levelNameOptions} name="level_name" {...{ register, errors, control }} />
+          </FormFieldInput>
+        </FormField>
 
-          {getEndpoints.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Channels</FormFieldLabel>
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Schemas</FormFieldLabel>
+            <SelectSingle isClearable options={channelOptions} name="channels" {...{ register, errors, control }} />
+          </FormFieldInput>
+        </FormField>
 
-          {getSchemas.isSuccess && (
-            <SelectSingle isClearable name="schemas" {...{ register, errors, control }} options={getSchemas.data} />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Endpoints</FormFieldLabel>
 
-          {getSchemas.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getEndpoints.isSuccess && (
+              <SelectSingle
+                isClearable
+                name="endpoints"
+                {...{ register, errors, control }}
+                options={getEndpoints.data}
+              />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Cronjobs</FormFieldLabel>
+            {getEndpoints.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getCronjobs.isSuccess && (
-            <SelectSingle isClearable name="cronjobs" {...{ register, errors, control }} options={getCronjobs.data} />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Schemas</FormFieldLabel>
 
-          {getCronjobs.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getSchemas.isSuccess && (
+              <SelectSingle isClearable name="schemas" {...{ register, errors, control }} options={getSchemas.data} />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Actions</FormFieldLabel>
+            {getSchemas.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getActions.isSuccess && (
-            <SelectSingle isClearable name="actions" {...{ register, errors, control }} options={getActions.data} />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Cronjobs</FormFieldLabel>
 
-          {getActions.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getCronjobs.isSuccess && (
+              <SelectSingle isClearable name="cronjobs" {...{ register, errors, control }} options={getCronjobs.data} />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Users</FormFieldLabel>
+            {getCronjobs.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getUsers.isSuccess && (
-            <SelectSingle isClearable name="users" {...{ register, errors, control }} options={getUsers.data} />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Actions</FormFieldLabel>
 
-          {getUsers.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getActions.isSuccess && (
+              <SelectSingle isClearable name="actions" {...{ register, errors, control }} options={getActions.data} />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Organizations</FormFieldLabel>
+            {getActions.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getOrganizations.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="organizations"
-              {...{ register, errors, control }}
-              options={getOrganizations.data}
-            />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Users</FormFieldLabel>
 
-          {getOrganizations.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getUsers.isSuccess && (
+              <SelectSingle isClearable name="users" {...{ register, errors, control }} options={getUsers.data} />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Applications</FormFieldLabel>
+            {getUsers.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getApplications.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="applications"
-              {...{ register, errors, control }}
-              options={getApplications.data}
-            />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Organizations</FormFieldLabel>
 
-          {getApplications.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getOrganizations.isSuccess && (
+              <SelectSingle
+                isClearable
+                name="organizations"
+                {...{ register, errors, control }}
+                options={getOrganizations.data}
+              />
+            )}
+
+            {getOrganizations.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
+
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Applications</FormFieldLabel>
+
+            {getApplications.isSuccess && (
+              <SelectSingle
+                isClearable
+                name="applications"
+                {...{ register, errors, control }}
+                options={getApplications.data}
+              />
+            )}
+
+            {getApplications.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
+      </div>
     </form>
   );
 };

@@ -40,11 +40,20 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
   const getUser = useUser(queryClient).getOne(getLog.data?.context?.user);
   const getOrganization = useOrganization(queryClient).getOne(getLog.data?.context?.organization);
 
-  const handleSetChannelFilter = (
-    channel: "endpoint" | "schema" | "cronjob" | "action" | "user" | "organization" | "application",
+  const handleSetContextFilter = (
+    context:
+      | "session"
+      | "process"
+      | "endpoint"
+      | "schema"
+      | "cronjob"
+      | "action"
+      | "user"
+      | "organization"
+      | "application",
     value: string,
   ) => {
-    setLogFilters({ context: { [channel]: value } });
+    setLogFilters({ context: { [context]: value } });
 
     navigate("/logs");
   };
@@ -72,7 +81,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 <TableRow>
                   <TableHeader></TableHeader>
                   <TableHeader>Name or id</TableHeader>
-                  <TableHeader>Filter on channel</TableHeader>
+                  <TableHeader>Filter on context</TableHeader>
                   <TableHeader>Details</TableHeader>
                 </TableRow>
               </TableHead>
@@ -93,7 +102,16 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   <TableHeader>Session</TableHeader>
                   <TableCell>{getLog.data.context?.session !== "" ? getLog.data.context?.session : "-"}</TableCell>
 
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    <Button
+                      disabled={!getLog.data.context?.session}
+                      onClick={() => handleSetContextFilter("session", getLog.data.context?.session)}
+                      className={styles.buttonIcon}
+                    >
+                      <FontAwesomeIcon icon={faFilter} />
+                      {t("Set filter")}
+                    </Button>
+                  </TableCell>
                   <TableCell>-</TableCell>
                 </TableRow>
 
@@ -101,7 +119,16 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   <TableHeader>Process</TableHeader>
                   <TableCell>{getLog.data.context?.process !== "" ? getLog.data.context?.process : "-"}</TableCell>
 
-                  <TableCell>-</TableCell>
+                  <TableCell>
+                    <Button
+                      disabled={!getLog.data.context?.process}
+                      onClick={() => handleSetContextFilter("process", getLog.data.context?.process)}
+                      className={styles.buttonIcon}
+                    >
+                      <FontAwesomeIcon icon={faFilter} />
+                      {t("Set filter")}
+                    </Button>
+                  </TableCell>
                   <TableCell>-</TableCell>
                 </TableRow>
                 <TableRow>
@@ -121,7 +148,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   <TableCell>
                     <Button
                       disabled={!getEndpoint.data?.id}
-                      onClick={() => handleSetChannelFilter("endpoint", getEndpoint.data.id)}
+                      onClick={() => handleSetContextFilter("endpoint", getEndpoint.data.id)}
                       className={styles.buttonIcon}
                     >
                       <FontAwesomeIcon icon={faFilter} />
@@ -154,7 +181,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   <TableCell>
                     <Button
                       disabled={!getEndpoint.data?.id}
-                      onClick={() => handleSetChannelFilter("schema", getEndpoint.data.id)}
+                      onClick={() => handleSetContextFilter("schema", getEndpoint.data.id)}
                       className={styles.buttonIcon}
                     >
                       <FontAwesomeIcon icon={faFilter} />
@@ -189,7 +216,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   <TableCell>
                     <Button
                       disabled={!getCronjob.data?.id}
-                      onClick={() => handleSetChannelFilter("cronjob", getCronjob.data.id)}
+                      onClick={() => handleSetContextFilter("cronjob", getCronjob.data.id)}
                       className={styles.buttonIcon}
                     >
                       <FontAwesomeIcon icon={faFilter} />
@@ -222,7 +249,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   <TableCell>
                     <Button
                       disabled={!getAction.data?.id}
-                      onClick={() => handleSetChannelFilter("action", getAction.data.id)}
+                      onClick={() => handleSetContextFilter("action", getAction.data.id)}
                       className={styles.buttonIcon}
                     >
                       <FontAwesomeIcon icon={faFilter} />
@@ -266,7 +293,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   <TableCell>
                     <Button
                       disabled={!getUser.data?.id}
-                      onClick={() => handleSetChannelFilter("user", getUser.data.id)}
+                      onClick={() => handleSetContextFilter("user", getUser.data.id)}
                       className={styles.buttonIcon}
                     >
                       <FontAwesomeIcon icon={faFilter} />
@@ -301,7 +328,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   <TableCell>
                     <Button
                       disabled={!getOrganization.data?.id}
-                      onClick={() => handleSetChannelFilter("organization", getOrganization.data.id)}
+                      onClick={() => handleSetContextFilter("organization", getOrganization.data.id)}
                       className={styles.buttonIcon}
                     >
                       <FontAwesomeIcon icon={faFilter} />
@@ -336,7 +363,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   <TableCell>
                     <Button
                       disabled={!getApplication.data?.id}
-                      onClick={() => handleSetChannelFilter("application", getApplication.data.id)}
+                      onClick={() => handleSetContextFilter("application", getApplication.data.id)}
                       className={styles.buttonIcon}
                     >
                       <FontAwesomeIcon icon={faFilter} />
