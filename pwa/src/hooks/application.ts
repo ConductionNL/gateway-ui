@@ -15,6 +15,13 @@ export const useApplication = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("application_select_options", API.Application.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getOne = (applicationId: string) =>
     useQuery<any, Error>(["applications", applicationId], () => API?.Application.getOne(applicationId), {
       initialData: () =>
@@ -54,5 +61,5 @@ export const useApplication = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getAllSelectOptions, getOne, remove, createOrEdit };
 };

@@ -21,18 +21,19 @@ export const LogFiltersTemplate: React.FC = () => {
 
   const queryClient = new QueryClient();
 
-  const getEndpoints = useEndpoint(queryClient).getAll();
-  const getSchemas = useSchema(queryClient).getAll();
-  const getCronjobs = useCronjob(queryClient).getAll();
-  const getActions = useAction(queryClient).getAll();
-  const getUsers = useUser(queryClient).getAll();
-  const getOrganizations = useOrganization(queryClient).getAll();
-  const getApplications = useApplication(queryClient).getAll();
+  const getEndpoints = useEndpoint(queryClient).getAllSelectOptions();
+  const getSchemas = useSchema(queryClient).getAllSelectOptions();
+  const getCronjobs = useCronjob(queryClient).getAllSelectOptions();
+  const getActions = useAction(queryClient).getAllSelectOptions();
+  const getUsers = useUser(queryClient).getAllSelectOptions();
+  const getOrganizations = useOrganization(queryClient).getAllSelectOptions();
+  const getApplications = useApplication(queryClient).getAllSelectOptions();
 
   const {
     register,
     control,
     watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -73,18 +74,60 @@ export const LogFiltersTemplate: React.FC = () => {
     watchApplications,
   ]);
 
+  React.useEffect(() => {
+    setValue(
+      "levelNames",
+      levelNameOptions.find((levelName) => levelName.value === logFilters.level_name),
+    );
+
+    setValue(
+      "channels",
+      channelOptions.find((channelName) => channelName.value === logFilters.channel),
+    );
+
+    setValue(
+      "endpoints",
+      getEndpoints.data?.find((endpoint) => endpoint.value === logFilters.context?.endpoint),
+    );
+
+    setValue(
+      "schemas",
+      getSchemas.data?.find((schema) => schema.value === logFilters.context?.schema),
+    );
+
+    setValue(
+      "cronjobs",
+      getCronjobs.data?.find((cronjob) => cronjob.value === logFilters.context?.cronjob),
+    );
+
+    setValue(
+      "actions",
+      getActions.data?.find((action) => action.value === logFilters.context?.action),
+    );
+
+    setValue(
+      "users",
+      getUsers.data?.find((user) => user.value === logFilters.context?.user),
+    );
+
+    setValue(
+      "organizations",
+      getOrganizations.data?.find((organization) => organization.value === logFilters.context?.organization),
+    );
+
+    setValue(
+      "applications",
+      getApplications.data?.find((application) => application.value === logFilters.context?.application),
+    );
+  }, []);
+
   return (
     <form className={styles.form}>
       <FormField>
         <FormFieldInput>
           <FormFieldLabel>Levels</FormFieldLabel>
 
-          <SelectSingle
-            isClearable
-            options={levelNames.map((levelName) => ({ label: _.upperFirst(_.toLower(levelName)), value: levelName }))}
-            name="levelNames"
-            {...{ register, errors, control }}
-          />
+          <SelectSingle isClearable options={levelNameOptions} name="levelNames" {...{ register, errors, control }} />
         </FormFieldInput>
       </FormField>
 
@@ -92,12 +135,7 @@ export const LogFiltersTemplate: React.FC = () => {
         <FormFieldInput>
           <FormFieldLabel>Channels</FormFieldLabel>
 
-          <SelectSingle
-            isClearable
-            options={channels.map((channel) => ({ label: _.upperFirst(channel), value: channel }))}
-            name="channels"
-            {...{ register, errors, control }}
-          />
+          <SelectSingle isClearable options={channelOptions} name="channels" {...{ register, errors, control }} />
         </FormFieldInput>
       </FormField>
 
@@ -106,12 +144,7 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Endpoints</FormFieldLabel>
 
           {getEndpoints.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="endpoints"
-              {...{ register, errors, control }}
-              options={getEndpoints.data.map((endpoint) => ({ label: endpoint.name, value: endpoint.id }))}
-            />
+            <SelectSingle isClearable name="endpoints" {...{ register, errors, control }} options={getEndpoints.data} />
           )}
 
           {getEndpoints.isLoading && <Skeleton height="50px" />}
@@ -123,12 +156,7 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Schemas</FormFieldLabel>
 
           {getSchemas.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="schemas"
-              {...{ register, errors, control }}
-              options={getSchemas.data.map((schema) => ({ label: schema.name, value: schema.id }))}
-            />
+            <SelectSingle isClearable name="schemas" {...{ register, errors, control }} options={getSchemas.data} />
           )}
 
           {getSchemas.isLoading && <Skeleton height="50px" />}
@@ -140,12 +168,7 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Cronjobs</FormFieldLabel>
 
           {getCronjobs.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="cronjobs"
-              {...{ register, errors, control }}
-              options={getCronjobs.data.map((cronjob) => ({ label: cronjob.name, value: cronjob.id }))}
-            />
+            <SelectSingle isClearable name="cronjobs" {...{ register, errors, control }} options={getCronjobs.data} />
           )}
 
           {getCronjobs.isLoading && <Skeleton height="50px" />}
@@ -157,12 +180,7 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Actions</FormFieldLabel>
 
           {getActions.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="actions"
-              {...{ register, errors, control }}
-              options={getActions.data.map((action) => ({ label: action.name, value: action.id }))}
-            />
+            <SelectSingle isClearable name="actions" {...{ register, errors, control }} options={getActions.data} />
           )}
 
           {getActions.isLoading && <Skeleton height="50px" />}
@@ -174,12 +192,7 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldLabel>Users</FormFieldLabel>
 
           {getUsers.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="users"
-              {...{ register, errors, control }}
-              options={getUsers.data.map((user) => ({ label: user.name, value: user.id }))}
-            />
+            <SelectSingle isClearable name="users" {...{ register, errors, control }} options={getUsers.data} />
           )}
 
           {getUsers.isLoading && <Skeleton height="50px" />}
@@ -195,10 +208,7 @@ export const LogFiltersTemplate: React.FC = () => {
               isClearable
               name="organizations"
               {...{ register, errors, control }}
-              options={getOrganizations.data.map((organization) => ({
-                label: organization.name,
-                value: organization.id,
-              }))}
+              options={getOrganizations.data}
             />
           )}
 
@@ -215,10 +225,7 @@ export const LogFiltersTemplate: React.FC = () => {
               isClearable
               name="applications"
               {...{ register, errors, control }}
-              options={getApplications.data.map((application) => ({
-                label: application.name,
-                value: application.id,
-              }))}
+              options={getApplications.data}
             />
           )}
 
@@ -228,3 +235,9 @@ export const LogFiltersTemplate: React.FC = () => {
     </form>
   );
 };
+
+const levelNameOptions = levelNames.map((levelName) => ({
+  label: _.upperFirst(_.toLower(levelName)),
+  value: levelName,
+}));
+const channelOptions = channels.map((channel) => ({ label: _.upperFirst(channel), value: channel }));

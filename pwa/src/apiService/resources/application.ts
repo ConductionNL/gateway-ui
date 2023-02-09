@@ -14,6 +14,12 @@ export default class Application {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", "/admin/applications?limit=200");
+
+    return data?.map((application: any) => ({ label: application.name, value: application.id }));
+  };
+
   public getOne = async (id: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/applications/${id}`);
 

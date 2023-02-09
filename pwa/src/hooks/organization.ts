@@ -15,6 +15,13 @@ export const useOrganization = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("organization_select_options", API.Organization.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getOne = (organizationId: string) =>
     useQuery<any, Error>(["organizations", organizationId], () => API?.Organization.getOne(organizationId), {
       initialData: () =>
@@ -43,5 +50,5 @@ export const useOrganization = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, createOrEdit };
+  return { getAll, getAllSelectOptions, getOne, createOrEdit };
 };

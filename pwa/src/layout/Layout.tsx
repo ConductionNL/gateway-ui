@@ -14,7 +14,7 @@ import { TabsProvider, ITabs, tabs as _tabs } from "../context/tabs";
 import { getScreenSize } from "../services/getScreenSize";
 import { IsLoadingProps, IsLoadingProvider } from "../context/isLoading";
 import { Toaster } from "react-hot-toast";
-import { LogFiltersProvider, LogProps } from "../context/logs";
+import { LogFiltersProvider, LogProps, logFilters as _logFilters } from "../context/logs";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -30,7 +30,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [screenSize, setScreenSize] = React.useState<TScreenSize>("mobile");
   const [tabs, setTabs] = React.useState<ITabs>(_tabs);
   const [isLoading, setIsLoading] = React.useState<IsLoadingProps>({});
-  const [logFilters, setLogFilters] = React.useState<LogProps>({});
+  const [logFilters, setLogFilters] = React.useState<LogProps>(_logFilters);
 
   React.useEffect(() => {
     setAPI(new APIService());
