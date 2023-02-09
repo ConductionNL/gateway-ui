@@ -34,7 +34,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
         </Link>
       </div>
 
-      <Paragraph className={styles.statusTypeContainer}>
+      <div className={styles.statusTypeContainer}>
         <div>{_.upperFirst(type)}</div>
 
         <div className={clsx(styles[getStatusColor(status ?? "no known status")])}>
@@ -45,7 +45,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
             />
           </ToolTip>
         </div>
-      </Paragraph>
+      </div>
 
       <div className={styles.sectionDivider}>
         <div className={styles.mainSection}>
