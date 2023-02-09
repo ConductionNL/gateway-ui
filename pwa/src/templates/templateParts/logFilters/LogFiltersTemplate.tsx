@@ -37,48 +37,28 @@ export const LogFiltersTemplate: React.FC = () => {
     formState: { errors },
   } = useForm();
 
-  const watchProcess = watch("process");
-  const watchSession = watch("session");
-  const watchChannels = watch("channels");
-  const watchLevelNames = watch("levelNames");
-  const watchEndpoints = watch("endpoints");
-  const watchSchemas = watch("schemas");
-  const watchCronjobs = watch("cronjobs");
-  const watchActions = watch("actions");
-  const watchUsers = watch("users");
-  const watchOrganizations = watch("organizations");
-  const watchApplications = watch("applications");
-
   React.useEffect(() => {
-    setLogFilters({
-      ...logFilters,
-      channel: watchChannels?.value,
-      level_name: watchLevelNames?.value,
-      context: {
-        session: watchSession,
-        process: watchProcess,
-        endpoint: watchEndpoints?.value,
-        schema: watchSchemas?.value,
-        cronjob: watchCronjobs?.value,
-        action: watchActions?.value,
-        user: watchUsers?.value,
-        organization: watchOrganizations?.value,
-        application: watchApplications?.value,
-      },
+    const subscription = watch((value) => {
+      setLogFilters({
+        ...logFilters,
+        channel: value.channels?.value,
+        level_name: value.level_name?.value,
+        context: {
+          session: value.session,
+          process: value.process,
+          endpoint: value.endpoints?.value,
+          schema: value.schemas?.value,
+          cronjob: value.cronjobs?.value,
+          action: value.actions?.value,
+          user: value.users?.value,
+          organization: value.organizations?.value,
+          application: value.applications?.value,
+        },
+      });
     });
-  }, [
-    watchSession,
-    watchProcess,
-    watchChannels,
-    watchLevelNames,
-    watchEndpoints,
-    watchSchemas,
-    watchCronjobs,
-    watchActions,
-    watchUsers,
-    watchOrganizations,
-    watchApplications,
-  ]);
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   React.useEffect(() => {
     setValue("session", logFilters.context?.session);
@@ -86,7 +66,7 @@ export const LogFiltersTemplate: React.FC = () => {
     setValue("process", logFilters.context?.process);
 
     setValue(
-      "levelNames",
+      "level_name",
       levelNameOptions.find((levelName) => levelName.value === logFilters.level_name),
     );
 
@@ -156,7 +136,7 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldInput>
             <FormFieldLabel>Levels</FormFieldLabel>
 
-            <SelectSingle isClearable options={levelNameOptions} name="levelNames" {...{ register, errors, control }} />
+            <SelectSingle isClearable options={levelNameOptions} name="level_name" {...{ register, errors, control }} />
           </FormFieldInput>
         </FormField>
 
