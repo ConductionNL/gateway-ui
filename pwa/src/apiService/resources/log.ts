@@ -20,7 +20,7 @@ export default class Log {
     const { data } = await Send(
       this._instance,
       "GET",
-      `/admin/monologs?_limit=15&_page=${currentPage}${filtersToQueryParams(logFilters)}`,
+      `/admin/monologs?_limit=15&_page=${currentPage}${filtersToQueryParams(logFilters, ["activeColumns"])}`,
     );
 
     return data;

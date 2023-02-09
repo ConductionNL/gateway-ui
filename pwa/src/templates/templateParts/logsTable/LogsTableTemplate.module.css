@@ -1,3 +1,7 @@
+.container {
+  background-color: var(--gateway-ui-color-white);
+}
+
 .container > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-lg);
 }
@@ -55,4 +59,17 @@
 .emergency {
   background-color: var(--gateway-ui-color-log-level-emergency);
   color: var(--gateway-ui-color-white);
+}
+
+.columnFiltersContainer {
+  display: flex;
+  gap: var(--gateway-ui-size-md);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.columnFiltersContainer > * {
+  user-select: none;
 }

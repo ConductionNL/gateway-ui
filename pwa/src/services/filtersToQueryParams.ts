@@ -1,6 +1,6 @@
-export const filtersToQueryParams = (filters: any): string => {
+export const filtersToQueryParams = (filters: any, filterKeysToRemove?: string[]): string => {
   Object.keys(filters)
-    .filter((key) => filterKeysToRemove.includes(key))
+    .filter((key) => filterKeysToRemove?.includes(key))
     .forEach((key) => {
       delete filters[key];
     });
@@ -35,5 +35,3 @@ export const filtersToQueryParams = (filters: any): string => {
 
   return params;
 };
-
-const filterKeysToRemove: string[] = []; // optional array of keys to skip when creating params
