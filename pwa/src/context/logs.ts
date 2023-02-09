@@ -4,6 +4,8 @@ export interface LogProps {
   channel?: TLogChannel;
   level_name?: TLogLevelName;
   context?: {
+    session?: string;
+    process?: string;
     endpoint?: string;
     schema?: string;
     cronjob?: string;
