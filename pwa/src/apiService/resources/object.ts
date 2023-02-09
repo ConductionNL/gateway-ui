@@ -1,6 +1,5 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
-import { IPaginationFilters } from "../../context/filters";
 
 export default class Sources {
   private _instance: AxiosInstance;
@@ -9,13 +8,11 @@ export default class Sources {
     this._instance = _instance;
   }
 
-  public getAll = async (pagination?: IPaginationFilters, limit?: number): Promise<any> => {
+  public getAll = async (currentPage: number, limit?: number): Promise<any> => {
     const { data } = await Send(
       this._instance,
       "GET",
-      `/admin/objects?extend[]=all${pagination?.objectCurrentPage ? `&page=${pagination.objectCurrentPage}` : ""}${
-        limit ? `&limit=${limit}` : ""
-      }`,
+      `/admin/objects?extend[]=all&page=${currentPage}${limit ? `&limit=${limit}` : ""}`,
     );
 
     return data;

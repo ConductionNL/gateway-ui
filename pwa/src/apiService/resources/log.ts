@@ -1,8 +1,7 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
-import { LogProps } from "../../context/logs";
+import { LogProps, TLogChannel } from "../../context/logs";
 import { filtersToQueryParams } from "../../services/filtersToQueryParams";
-import { IPaginationFilters } from "../../context/filters";
 
 export default class Log {
   private _instance: AxiosInstance;
@@ -11,19 +10,29 @@ export default class Log {
     this._instance = _instance;
   }
 
-  public getAll = async (logFilters: LogProps, paginationFilters: IPaginationFilters): Promise<any> => {
+  public getOne = async (id: string): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", `/admin/monologs?_id=${id}`);
+
+    return data.results[0];
+  };
+
+  public getAll = async (logFilters: LogProps, currentPage: number): Promise<any> => {
     const { data } = await Send(
       this._instance,
       "GET",
-      `/admin/monologs?_limit=15&_page=${paginationFilters.logCurrentPage}${filtersToQueryParams(logFilters)}`,
+      `/admin/monologs?_limit=15&_page=${currentPage}${filtersToQueryParams(logFilters)}`,
     );
 
     return data;
   };
 
-  public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/monologs?_id=${id}`);
+  public getAllFromChannel = async (channel: TLogChannel, resourceId: string, page: number): Promise<any> => {
+    const { data } = await Send(
+      this._instance,
+      "GET",
+      `/admin/monologs?_limit=10&_page=${page}&context.${channel}=${resourceId}`,
+    );
 
-    return data.results[0];
+    return data;
   };
 }

@@ -3,53 +3,51 @@ import * as styles from "./SourcesDetailTemplate.module.css";
 import { QueryClient } from "react-query";
 import _ from "lodash";
 import { useSource } from "../../hooks/source";
-import { Container, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
+import { Container, InputText, SelectSingle, Textarea } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import {
   Button,
   FormField,
   FormFieldInput,
   FormFieldLabel,
-  Heading1,
   Link,
+  Heading1,
   Tab,
   TabContext,
   TabPanel,
   Tabs,
 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { navigate } from "gatsby";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { useCallLog } from "../../hooks/callLog";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import clsx from "clsx";
-import { dateTime } from "../../services/dateTime";
 import { IsLoadingContext } from "../../context/isLoading";
-import { faArrowsRotate, faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { validateStringAsJSON } from "../../services/validateJSON";
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { TabsContext } from "../../context/tabs";
 import { SourceFormTemplate, formId } from "../templateParts/sourcesForm/SourceFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
+import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
 }
 
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
   const _useSource = useSource(queryClient);
-  const _useCallLog = useCallLog(queryClient);
+
+  const getLogs = useLog(queryClient).getAllFromChannel("source", sourceId, currentLogsPage);
 
   const getSource = _useSource.getOne(sourceId);
-  const getCallLog = _useCallLog.getSourceLog(sourceId);
   const deleteSource = _useSource.remove();
   const testProxy = _useSource.getProxy(sourceId);
 
@@ -68,10 +66,10 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
     toggleDashboardCard(getSource.data.name, "source", "Gateway", sourceId, dashboardCard?.id);
   };
 
-  const handleDelete = (id: string): void => {
+  const handleDelete = (): void => {
     const confirmDeletion = confirm("Are you sure you want to delete this source?");
 
-    confirmDeletion && deleteSource.mutateAsync({ id: id });
+    confirmDeletion && deleteSource.mutateAsync({ id: sourceId });
   };
 
   const onSubmit = (data: any) => {
@@ -94,39 +92,12 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
       {getSource.isSuccess && (
         <>
-          <section className={styles.section}>
-            <Heading1>{`Edit ${getSource.data.name}`}</Heading1>
-
-            <div className={styles.buttons}>
-              <Button
-                type="submit"
-                form={formId}
-                disabled={isLoading.sourceForm}
-                className={clsx(styles.buttonIcon, styles.button)}
-              >
-                <FontAwesomeIcon icon={faFloppyDisk} />
-                {t("Save")}
-              </Button>
-
-              <Button
-                className={clsx(styles.buttonIcon, styles.button)}
-                onClick={toggleFromDashboard}
-                disabled={isLoading.sourceForm}
-              >
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
-
-              <Button
-                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
-                onClick={() => handleDelete(getSource.data.id)}
-                disabled={isLoading.sourceForm}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Delete")}
-              </Button>
-            </div>
-          </section>
+          <FormHeaderTemplate
+            {...{ formId, handleDelete }}
+            disabled={isLoading.sourceForm}
+            title={`Edit ${getSource.data.name}`}
+            handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+          />
 
           <SourceFormTemplate source={getSource.data} />
         </>
@@ -199,70 +170,18 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            {getCallLog.isLoading && <Skeleton height="200px" />}
-
-            {getCallLog.isSuccess && (
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader>{t("Id")}</TableHeader>
-                    <TableHeader>{t("Endpoint")}</TableHeader>
-                    <TableHeader>{t("Method")}</TableHeader>
-                    <TableHeader>{t("Response Status")}</TableHeader>
-                    <TableHeader>{t("Created")}</TableHeader>
-
-                    <TableHeader />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {getCallLog.data.map((callLog: any) => (
-                    <TableRow onClick={() => navigate(`/sources/${getSource.data.id}/${callLog.id}`)} key={callLog.id}>
-                      <TableCell>{callLog.id ?? "-"}</TableCell>
-                      <TableCell>{callLog.endpoint ?? "-"}</TableCell>
-                      <TableCell>
-                        <div className={clsx(styles[`${_.lowerCase(callLog.method)}Tag`])}>
-                          <Tag label={callLog.method?.toString() ?? "no known method"} />
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div
-                          className={clsx(
-                            styles[getStatusColor(callLog.responseStatusCode.toString() ?? "no known status")],
-                          )}
-                        >
-                          <Tag
-                            icon={
-                              <FontAwesomeIcon
-                                icon={getStatusIcon(callLog.responseStatusCode.toString() ?? "no known status")}
-                              />
-                            }
-                            label={callLog.responseStatusCode?.toString() ?? "no known status"}
-                          />
-                        </div>
-                      </TableCell>
-                      <TableCell>{dateTime(t(i18n.language), callLog.dateCreated) ?? "-"}</TableCell>
-                      <TableCell onClick={() => navigate(`/sources/${callLog.id}/test`)}>
-                        <Link icon={<ArrowRightIcon />} iconAlign="start">
-                          {t("Details")}
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {!getCallLog.data.length && (
-                    <>
-                      <TableRow>
-                        <TableCell>{t("No logs found")}</TableCell>
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                        <TableCell />
-                      </TableRow>
-                    </>
-                  )}
-                </TableBody>
-              </Table>
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
             )}
+
+            {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
         </TabContext>
       </div>

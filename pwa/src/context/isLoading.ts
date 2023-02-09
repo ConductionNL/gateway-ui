@@ -11,6 +11,7 @@ export interface IsLoadingProps {
   actionForm?: boolean;
   securityGroupForm?: boolean;
   collectionForm?: boolean;
+  organizationForm?: boolean;
 }
 
 export const isLoading = {} as IsLoadingProps;

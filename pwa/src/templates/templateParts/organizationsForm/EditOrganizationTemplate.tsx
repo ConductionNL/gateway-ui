@@ -1,21 +1,22 @@
 import * as React from "react";
 import * as styles from "./OrganizationFormTemplate.module.css";
-import { OrganizationForm } from "./OrganizationForm";
+import { OrganizationForm, formId } from "./OrganizationForm";
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
 import Skeleton from "react-loading-skeleton";
-import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useTranslation } from "react-i18next";
 import { TabsContext } from "../../../context/tabs";
 import { navigate } from "gatsby";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { Container } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { translateDate } from "../../../services/dateFormat";
-import clsx from "clsx";
+import { useLog } from "../../../hooks/log";
+import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
+import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
+import { IsLoadingContext } from "../../../context/isLoading";
 
 interface CreateOrganizationTemplateProps {
   organizationId: string;
@@ -23,19 +24,22 @@ interface CreateOrganizationTemplateProps {
 
 export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps> = ({ organizationId }) => {
   const { t, i18n } = useTranslation();
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
-  const [loading, setLoading] = React.useState<boolean>(false);
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
 
   const queryClient = new QueryClient();
   const _useOrganizations = useOrganization(queryClient);
   const getOrganization = _useOrganizations.getOne(organizationId);
 
+  const getLogs = useLog(queryClient).getAllFromChannel("organization", organizationId, currentLogsPage);
+
   const dashboardCard = getDashboardCard(organizationId);
 
   React.useEffect(() => {
-    setLoading(dashboardLoading);
+    setIsLoading({ ...isLoading, organizationForm: dashboardLoading });
   }, [dashboardLoading]);
 
   const toggleFromDashboard = () => {
@@ -52,28 +56,12 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
     <Container layoutClassName={styles.container}>
       {getOrganization.isSuccess && (
         <>
-          <section className={styles.section}>
-            <Heading1>
-              {getOrganization.data?.id ? `Edit ${getOrganization.data.name}` : "Create Organization"}
-            </Heading1>
-
-            <div className={styles.buttons}>
-              <Button
-                className={clsx(styles.buttonIcon, styles.button)}
-                type="submit"
-                form="OrganisationForm"
-                disabled={loading}
-              >
-                <FontAwesomeIcon icon={faFloppyDisk} />
-                {t("Save")}
-              </Button>
-
-              <Button className={styles.buttonIcon} onClick={toggleFromDashboard} disabled={loading}>
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
-            </div>
-          </section>
+          <FormHeaderTemplate
+            title={getOrganization.data?.id ? `Edit ${getOrganization.data.name}` : "Create Organization"}
+            {...{ formId }}
+            disabled={isLoading.organizationForm}
+            handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+          />
 
           <OrganizationForm organization={getOrganization.data} />
 
@@ -87,7 +75,9 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                 variant="scrollable"
               >
                 <Tab className={styles.tab} label={t("Applications")} value={0} />
+
                 <Tab className={styles.tab} label={t("Users")} value={1} />
+
                 <Tab className={styles.tab} label={t("Logs")} value={2} />
               </Tabs>
 
@@ -102,6 +92,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                       <TableHeader></TableHeader>
                     </TableRow>
                   </TableHead>
+
                   <TableBody>
                     {getOrganization.data.applications &&
                       getOrganization.data.applications.map((application: any) => (
@@ -121,6 +112,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                           </TableCell>
                         </TableRow>
                       ))}
+
                     {!getOrganization.data.applications.length && (
                       <TableRow>
                         <TableCell>{t("No applications found")}</TableCell>
@@ -132,6 +124,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                   </TableBody>
                 </Table>
               </TabPanel>
+
               <TabPanel className={styles.tabPanel} value="1">
                 <Table>
                   <TableHead>
@@ -143,6 +136,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                       <TableHeader></TableHeader>
                     </TableRow>
                   </TableHead>
+
                   <TableBody>
                     {getOrganization.data.users.map((user: any) => (
                       <TableRow
@@ -161,6 +155,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                         </TableCell>
                       </TableRow>
                     ))}
+
                     {!getOrganization.data.users.length && (
                       <TableRow>
                         <TableCell>No users found</TableCell>
@@ -172,8 +167,20 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                   </TableBody>
                 </Table>
               </TabPanel>
+
               <TabPanel className={styles.tabPanel} value="2">
-                Logs are not yet supported.
+                {getLogs.isLoading && <Skeleton height="200px" />}
+
+                {getLogs.isSuccess && (
+                  <LogsTableTemplate
+                    logs={getLogs.data.results}
+                    pagination={{
+                      totalPages: getLogs.data.pages,
+                      currentPage: currentLogsPage,
+                      changePage: setCurrentLogsPage,
+                    }}
+                  />
+                )}
               </TabPanel>
             </TabContext>
           </div>

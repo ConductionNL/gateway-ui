@@ -4,10 +4,6 @@ import { QueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useUser } from "../../../hooks/user";
 import { UserFormTemplate, formId } from "./UserFormTemplate";
-import { Heading1 } from "@gemeente-denhaag/typography";
-import Button from "@gemeente-denhaag/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { useTranslation } from "react-i18next";
 import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
@@ -16,8 +12,10 @@ import { Container } from "@conduction/components";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { navigate } from "gatsby";
-import clsx from "clsx";
 import { IsLoadingContext } from "../../../context/isLoading";
+import { useLog } from "../../../hooks/log";
+import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
+import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 
 interface EditUserTemplateProps {
   userId: string;
@@ -27,6 +25,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
@@ -35,13 +34,15 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
   const getUser = _useUsers.getOne(userId);
   const deleteUser = _useUsers.remove();
 
+  const getLogs = useLog(queryClient).getAllFromChannel("user", userId, currentLogsPage);
+
   const dashboardCard = getDashboardCard(getUser.data?.id);
 
   const toggleFromDashboard = () => {
     toggleDashboardCard(getUser.data.name, "user", "User", getUser.data.id, dashboardCard?.id);
   };
 
-  const handleDelete = () => {
+  const handleDeleteUser = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this user?");
 
     confirmDeletion && deleteUser.mutate({ id: userId });
@@ -53,39 +54,13 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{getUser.data?.id ? `Edit ${getUser.data.name}` : "Edit User"}</Heading1>
-
-        <div className={styles.buttons}>
-          <Button
-            type="submit"
-            form={formId}
-            disabled={isLoading.userForm}
-            className={clsx(styles.buttonIcon, styles.button)}
-          >
-            <FontAwesomeIcon icon={faFloppyDisk} />
-            {t("Save")}
-          </Button>
-
-          <Button
-            onClick={toggleFromDashboard}
-            disabled={isLoading.userForm}
-            className={clsx(styles.buttonIcon, styles.button)}
-          >
-            <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-            {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-          </Button>
-
-          <Button
-            className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
-            onClick={handleDelete}
-            disabled={isLoading.userForm}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-            {t("Delete")}
-          </Button>
-        </div>
-      </section>
+      <FormHeaderTemplate
+        title={getUser.data?.id ? `Edit ${getUser.data.name}` : "Edit User"}
+        {...{ formId }}
+        disabled={isLoading.userForm}
+        handleDelete={handleDeleteUser}
+        handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+      />
 
       {getUser.isSuccess && <UserFormTemplate user={getUser.data} />}
 
@@ -143,6 +118,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                 </TableBody>
               </Table>
             </TabPanel>
+
             <TabPanel className={styles.tabPanel} value="1">
               <Table>
                 <TableHead>
@@ -165,8 +141,20 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                 </TableBody>
               </Table>
             </TabPanel>
+
             <TabPanel className={styles.tabPanel} value="2">
-              Logs are not yet supported.
+              {getLogs.isLoading && <Skeleton height="200px" />}
+
+              {getLogs.isSuccess && (
+                <LogsTableTemplate
+                  logs={getLogs.data.results}
+                  pagination={{
+                    totalPages: getLogs.data.pages,
+                    currentPage: currentLogsPage,
+                    changePage: setCurrentLogsPage,
+                  }}
+                />
+              )}
             </TabPanel>
           </TabContext>
         </div>

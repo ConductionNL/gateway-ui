@@ -6,32 +6,3 @@
   padding-block-start: var(--gateway-ui-size-md);
   padding-block-end: var(--gateway-ui-size-md);
 }
-
-.section {
-  display: flex;
-  justify-content: space-between;
-  margin-block-end: var(--gateway-ui-size-2xl);
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.buttons > * {
-  display: flex;
-  align-items: center;
-}
-
-.buttons *:not(:last-child) {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
-.button {
-  width: max-content;
-}
-
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}

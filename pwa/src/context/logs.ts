@@ -32,6 +32,7 @@ export const channels = [
   "request",
   "schema",
   "cronjob",
+  "source",
   "action",
   "object",
   "synchronization",
@@ -39,5 +40,8 @@ export const channels = [
   "composer",
   "installation",
   "mapping",
+  "organization",
+  "user",
+  "collection",
 ] as const;
-export type TLogChannel = typeof levelNames[number];
+export type TLogChannel = typeof channels[number];

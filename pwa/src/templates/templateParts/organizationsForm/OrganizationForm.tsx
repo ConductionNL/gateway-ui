@@ -6,14 +6,17 @@ import { InputText, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
+import { IsLoadingContext } from "../../../context/isLoading";
 
 interface OrganizationFormProps {
   organization?: any;
 }
 
+export const formId: string = "organization-form";
+
 export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization }) => {
   const { t } = useTranslation();
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
 
   const queryClient = new QueryClient();
   const _useOrganizations = useOrganization(queryClient);
@@ -32,7 +35,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   };
 
   React.useEffect(() => {
-    setLoading(createOrEditOrganization.isLoading);
+    setIsLoading({ ...isLoading, organizationForm: createOrEditOrganization.isLoading });
   }, [createOrEditOrganization.isLoading]);
 
   React.useEffect(() => {
@@ -46,13 +49,18 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer} id="OrganisationForm">
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer} id={formId}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="name" validation={{ required: true }} disabled={loading} />
+              <InputText
+                {...{ register, errors }}
+                name="name"
+                validation={{ required: true }}
+                disabled={isLoading.organizationForm}
+              />
             </FormFieldInput>
           </FormField>
 
@@ -63,7 +71,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
                 {...{ register, errors }}
                 name="description"
                 validation={{ required: true }}
-                disabled={loading}
+                disabled={isLoading.organizationForm}
               />
             </FormFieldInput>
           </FormField>

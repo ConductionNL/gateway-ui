@@ -5,20 +5,23 @@ import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../hooks/schema";
-import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useObject } from "../../hooks/object";
 import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
 import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { faDownload, faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabsContext } from "../../context/tabs";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import clsx from "clsx";
 import { SchemaFormTemplate, formId } from "../templateParts/schemasForm/SchemaFormTemplate";
 import { IsLoadingContext } from "../../context/isLoading";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
+import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 
 interface SchemasDetailPageProps {
   schemaId: string;
@@ -29,6 +32,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
   const _useSchema = useSchema(queryClient);
@@ -36,6 +40,8 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const deleteSchema = _useSchema.remove();
 
   const getSchemaSchema = _useSchema.getSchema(schemaId);
+
+  const getLogs = useLog(queryClient).getAllFromChannel("schema", schemaId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(getSchema.data?.id);
 
@@ -61,10 +67,12 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   return (
     <Container layoutClassName={styles.container}>
       <div className={styles.contentContainer}>
-        <div className={styles.section}>
-          <Heading1>{`Edit ${getSchema.data?.name || "Schema"}`}</Heading1>
-
-          <div className={styles.buttons}>
+        <FormHeaderTemplate
+          title={`Edit ${getSchema.data?.name || "Schema"}`}
+          disabled={isLoading.schemaForm}
+          handleDelete={handleDeleteSchema}
+          handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+          customElements={
             <a
               className={clsx(styles.downloadSchemaButton, [
                 (isLoading.schemaForm || !getSchemaSchema.isSuccess) && styles.disabled,
@@ -72,32 +80,13 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
               download="schema.json"
             >
-              <Button
-                className={clsx(styles.buttonIcon, styles.button)}
-                disabled={!getSchemaSchema.isSuccess || isLoading.schemaForm}
-              >
+              <Button className={styles.downloadButton} disabled={!getSchemaSchema.isSuccess || isLoading.schemaForm}>
                 <FontAwesomeIcon icon={faDownload} />
                 Download
               </Button>
             </a>
-            <Button
-              className={clsx(styles.buttonIcon, styles.button)}
-              onClick={toggleFromDashboard}
-              disabled={isLoading.schemaForm}
-            >
-              <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-              {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-            </Button>
-            <Button
-              onClick={handleDeleteSchema}
-              className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
-              disabled={isLoading.schemaForm}
-            >
-              <FontAwesomeIcon icon={faTrash} />
-              {t("Delete")}
-            </Button>
-          </div>
-        </div>
+          }
+        />
 
         <TabContext value={currentTab.schemaDetailTabs.toString()}>
           <Tabs
@@ -207,7 +196,18 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="3">
-            Logs are not yet supported.
+            {getLogs.isSuccess && (
+              <LogsTableTemplate
+                logs={getLogs.data.results}
+                pagination={{
+                  totalPages: getLogs.data.pages,
+                  currentPage: currentLogsPage,
+                  changePage: setCurrentLogsPage,
+                }}
+              />
+            )}
+
+            {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
         </TabContext>
       </div>
