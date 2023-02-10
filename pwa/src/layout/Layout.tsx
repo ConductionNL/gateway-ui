@@ -8,11 +8,8 @@ import { StylesProvider } from "@gemeente-denhaag/components-react";
 import { Head } from "./Head";
 import { Content } from "../Content";
 import { ThemeProvider } from "../templates/themeProvider/ThemeProvider";
-import Favicon from "react-favicon";
-import Logo from "../assets/svgs/conduction-logo.svg";
 import { getScreenSize } from "../services/getScreenSize";
 import { Toaster } from "react-hot-toast";
-import { LogFiltersProvider, LogProps, logFilters as _logFilters } from "../context/logs";
 import { defaultGlobalContext, GlobalProvider, IGlobalContext } from "../context/global";
 
 interface LayoutProps {
@@ -24,7 +21,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [API, setAPI] = React.useState<APIService>(React.useContext(APIContext));
   const [screenSize, setScreenSize] = React.useState<TScreenSize>("mobile");
-  const [logFilters, setLogFilters] = React.useState<LogProps>(_logFilters);
 
   const [globalContext, setGlobalContext] = React.useState<IGlobalContext>({
     ...defaultGlobalContext,
@@ -64,15 +60,12 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
         <APIProvider value={API}>
           <StylesProvider>
             <Toaster position="bottom-right" />
-            <LogFiltersProvider value={[logFilters, setLogFilters]}>
-              <ThemeProvider>
-                <Favicon url={Logo} />
 
-                <div className={styles.container}>
-                  <Content {...{ children }} />
-                </div>
-              </ThemeProvider>
-            </LogFiltersProvider>
+            <ThemeProvider>
+              <div className={styles.container}>
+                <Content {...{ children }} />
+              </div>
+            </ThemeProvider>
           </StylesProvider>
         </APIProvider>
       </GlobalProvider>

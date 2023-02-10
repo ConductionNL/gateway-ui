@@ -13,11 +13,11 @@ import { useEndpoint } from "../../../hooks/endpoint";
 import { useApplication } from "../../../hooks/application";
 import { useOrganization } from "../../../hooks/organization";
 import { InputText, SelectSingle } from "@conduction/components/lib/components/formFields";
-import { channels, levelNames, LogFiltersContext } from "../../../context/logs";
+import { channels, levelNames, useLogFiltersContext } from "../../../context/logs";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 
 export const LogFiltersTemplate: React.FC = () => {
-  const [logFilters, setLogFilters] = React.useContext(LogFiltersContext);
+  const { logFilters, setLogFilters } = useLogFiltersContext();
 
   const queryClient = new QueryClient();
 
