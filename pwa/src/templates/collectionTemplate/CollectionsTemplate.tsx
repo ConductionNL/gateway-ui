@@ -1,15 +1,14 @@
 import * as React from "react";
 import * as styles from "./CollectionsTemplate.module.css";
-import { Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { QueryClient } from "react-query";
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { useCollection } from "../../hooks/collection";
 
 export const CollectionsTemplate: React.FC = () => {
@@ -50,7 +49,7 @@ export const CollectionsTemplate: React.FC = () => {
               >
                 <TableCell>{collection.name}</TableCell>
                 <TableCell onClick={() => navigate(`/collections/${collection.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>

@@ -10,12 +10,13 @@ import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/compone
 import { TabsContext } from "../../../context/tabs";
 import { Container } from "@conduction/components";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { navigate } from "gatsby";
 import { IsLoadingContext } from "../../../context/isLoading";
 import { useLog } from "../../../hooks/log";
 import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface EditUserTemplateProps {
   userId: string;
@@ -65,7 +66,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
       {getUser.isSuccess && <UserFormTemplate user={getUser.data} />}
 
       {getUser.isSuccess && (
-        <div className={styles.tabContainer}>
+        <div>
           <TabContext value={currentTab.userDetailTabs.toString()}>
             <Tabs
               value={currentTab.userDetailTabs}
@@ -74,12 +75,12 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
               }}
               variant="scrollable"
             >
-              <Tab className={styles.tab} label={t("Security Groups")} value={0} />
-              <Tab className={styles.tab} label={t("Scopes")} value={1} />
-              <Tab className={styles.tab} label={t("Logs")} value={2} />
+              <Tab label={t("Security Groups")} value={0} />
+              <Tab label={t("Scopes")} value={1} />
+              <Tab label={t("Logs")} value={2} />
             </Tabs>
 
-            <TabPanel className={styles.tabPanel} value="0">
+            <TabPanel value="0">
               <Table>
                 <TableHead>
                   <TableRow>
@@ -92,16 +93,12 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                 <TableBody>
                   {getUser.data.securityGroups &&
                     getUser.data.securityGroups.map((userGroup: any) => (
-                      <TableRow
-                        className={styles.tableRow}
-                        onClick={() => navigate(`/settings/securitygroups/${userGroup.id}`)}
-                        key={userGroup.id}
-                      >
+                      <TableRow onClick={() => navigate(`/settings/securitygroups/${userGroup.id}`)} key={userGroup.id}>
                         <TableCell>{userGroup.name}</TableCell>
                         <TableCell>{userGroup.description ?? "-"}</TableCell>
                         <TableCell>{userGroup.config ?? "-"}</TableCell>
                         <TableCell onClick={() => navigate(`/settings/securitygroups/${userGroup.id}`)}>
-                          <Link icon={<ArrowRightIcon />} iconAlign="start">
+                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                             {t("Details")}
                           </Link>
                         </TableCell>
@@ -119,7 +116,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
               </Table>
             </TabPanel>
 
-            <TabPanel className={styles.tabPanel} value="1">
+            <TabPanel value="1">
               <Table>
                 <TableHead>
                   <TableRow>
@@ -129,7 +126,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                 <TableBody>
                   {getUser.data.scopes &&
                     getUser.data.scopes.map((scope: any) => (
-                      <TableRow className={styles.tableRow} key={scope.id}>
+                      <TableRow key={scope.id}>
                         <TableCell>{scope.name}</TableCell>
                       </TableRow>
                     ))}
@@ -142,7 +139,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
               </Table>
             </TabPanel>
 
-            <TabPanel className={styles.tabPanel} value="2">
+            <TabPanel value="2">
               {getLogs.isLoading && <Skeleton height="200px" />}
 
               {getLogs.isSuccess && (

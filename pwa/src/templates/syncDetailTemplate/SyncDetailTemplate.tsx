@@ -8,7 +8,8 @@ import Skeleton from "react-loading-skeleton";
 import { EditSyncFormTemplate } from "../templateParts/syncForm/EditSyncFormTemplate";
 import { useSync } from "../../hooks/synchronization";
 import { navigate } from "gatsby";
-import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface SyncDetailTemplateProps {
   syncId: string;
@@ -25,7 +26,7 @@ export const SyncDetailTemplate: React.FC<SyncDetailTemplateProps> = ({ syncId, 
   return (
     <Container layoutClassName={styles.container}>
       <div onClick={() => navigate(`/objects/${objectId}`)}>
-        <Link icon={<ArrowLeftIcon />} iconAlign="start">
+        <Link icon={<FontAwesomeIcon icon={faArrowLeft} />} iconAlign="start">
           {t("Back to object")}
         </Link>
       </div>

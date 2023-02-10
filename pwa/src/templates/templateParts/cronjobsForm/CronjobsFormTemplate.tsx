@@ -68,7 +68,7 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
   }, [cronjob]);
 
   return (
-    <div className={styles.container}>
+    <div>
       <form onSubmit={handleSubmit(onSubmit)} id={formId}>
         <div className={styles.gridContainer}>
           <div className={styles.grid}>

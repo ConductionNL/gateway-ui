@@ -24,6 +24,7 @@ export const HomeTemplate: React.FC = () => {
         <div className={styles.cardsGrid}>
           {getDashboardCards.data.map((dashboardCard) => (
             <DashboardCard
+              key={dashboardCard.id}
               title={{
                 label: dashboardCard.object?.name ?? dashboardCard.object?.id,
                 href: `/${getPath(dashboardCard.type)}/${dashboardCard.object?.id}`,

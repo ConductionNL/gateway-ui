@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
 import { QueryClient } from "react-query";
 import _ from "lodash";
-import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
-
 import Skeleton from "react-loading-skeleton";
 import { useAttribute } from "../../hooks/attribute";
 import { Container } from "@conduction/components";
 import { EditPropertyFormTemplate } from "../templateParts/propertyForm/EditPropertyFormTemplate";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface PropertyDetailTemplateProps {
   propertyId: string;
@@ -27,7 +27,7 @@ export const PropertyDetailTemplate: React.FC<PropertyDetailTemplateProps> = ({ 
   return (
     <Container layoutClassName={styles.container}>
       <div onClick={() => navigate(`/schemas/${schemaId}`)}>
-        <Link icon={<ArrowLeftIcon />} iconAlign="start">
+        <Link icon={<FontAwesomeIcon icon={faArrowLeft} />} iconAlign="start">
           {t("Back to schema")}
         </Link>
       </div>

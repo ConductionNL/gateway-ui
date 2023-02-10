@@ -6,8 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../hooks/organization";
 import { translateDate } from "../../services/dateFormat";
@@ -55,7 +54,7 @@ export const OrganizationsTemplate: React.FC = () => {
                 <TableCell>{translateDate(i18n.language, organization.dateCreated) ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, organization.dateModified) ?? "-"}</TableCell>
                 <TableCell onClick={() => navigate(`/settings/organizations/${organization.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>

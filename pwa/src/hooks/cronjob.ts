@@ -15,6 +15,13 @@ export const useCronjob = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("cronjob_select_options", API.Cronjob.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getOne = (cronjobId: string) =>
     useQuery<any, Error>(["cronjobs", cronjobId], () => API?.Cronjob.getOne(cronjobId), {
       initialData: () => queryClient.getQueryData<any[]>("cronjobs")?.find((_cronjob) => _cronjob.id === cronjobId),
@@ -53,5 +60,5 @@ export const useCronjob = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getAllSelectOptions, getOne, remove, createOrEdit };
 };

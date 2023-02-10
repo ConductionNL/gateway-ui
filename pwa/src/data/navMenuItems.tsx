@@ -3,7 +3,6 @@ import {
   faClipboardList,
   faDatabase,
   faDiagramProject,
-  faDownload,
   faGear,
   faGrip,
   faHome,
