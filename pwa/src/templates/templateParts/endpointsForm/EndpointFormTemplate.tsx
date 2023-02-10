@@ -7,7 +7,6 @@ import FormField, {
   FormFieldInput,
   FormFieldLabel,
 } from "@gemeente-denhaag/form-field";
-import { Checkbox, FormControlLabel } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { useQueryClient } from "react-query";
@@ -55,7 +54,6 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    console.log({ methodsArray: methods, methodsObject: data.methods });
     const payload = {
       ...data,
       path: data.path.split("/"),
@@ -145,7 +143,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
             </FormFieldInput>
           </FormField>
 
-          <FormFieldGroup>
+          <FormFieldGroup className={styles.methods}>
             <FormFieldGroupLabel>Methods</FormFieldGroupLabel>
             {methods.map((method, idx) => (
               <InputCheckbox
@@ -153,6 +151,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
                 name={`methods.${method}`}
                 label={method}
                 disabled={isLoading.endpointForm}
+                defaultChecked={endpoint?.methods.includes(method)}
                 {...{ register, errors }}
               />
             ))}
@@ -222,19 +221,17 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
         </FormField>
       </section>
 
-      <section className={styles.section}>
-        <FormField>
-          <FormFieldInput>
-            <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>
-            <CreateKeyValue
-              name="pathArray"
-              {...{ register, errors, control }}
-              defaultValue={pathParts}
-              disabled={isLoading.endpointForm}
-            />
-          </FormFieldInput>
-        </FormField>
-      </section>
+      <FormField>
+        <FormFieldInput>
+          <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>
+          <CreateKeyValue
+            name="pathArray"
+            {...{ register, errors, control }}
+            defaultValue={pathParts}
+            disabled={isLoading.endpointForm}
+          />
+        </FormFieldInput>
+      </FormField>
     </form>
   );
 };
