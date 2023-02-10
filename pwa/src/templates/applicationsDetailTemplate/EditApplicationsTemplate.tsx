@@ -5,7 +5,7 @@ import { useQueryClient } from "react-query";
 import { useApplication } from "../../hooks/application";
 import { ApplicationsFormTemplate, formId } from "../templateParts/applicationsForm/ApplicationsFormTemplate";
 import Skeleton from "react-loading-skeleton";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoading } from "../../context/isLoading";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 
 interface EditApplicationTemplateProps {
@@ -14,7 +14,7 @@ interface EditApplicationTemplateProps {
 
 export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = ({ applicationId }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoading();
 
   const queryClient = useQueryClient();
   const _useApplication = useApplication(queryClient);
@@ -28,7 +28,7 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, applicationForm: deleteApplication.isLoading });
+    setIsLoading({ applicationForm: deleteApplication.isLoading });
   }, [deleteApplication.isLoading]);
 
   return (

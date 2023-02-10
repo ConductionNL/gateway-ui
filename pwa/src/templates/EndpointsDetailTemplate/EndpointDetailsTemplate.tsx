@@ -5,15 +5,12 @@ import { QueryClient } from "react-query";
 import { useEndpoint } from "../../hooks/endpoint";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { Table, TableBody, TableCell, TableRow } from "@gemeente-denhaag/table";
 import { SchemasTable } from "../templateParts/schemasTable/SchemasTable";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import clsx from "clsx";
 import { EndpointFormTemplate, formId } from "../templateParts/endpointsForm/EndpointFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoading } from "../../context/isLoading";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
@@ -25,7 +22,7 @@ interface EndpointDetailsTemplateProps {
 export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({ endpointId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoading();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
@@ -49,7 +46,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, endpointForm: deleteEndpoint.isLoading || dashboardLoading });
+    setIsLoading({ endpointForm: deleteEndpoint.isLoading || dashboardLoading });
   }, [deleteEndpoint.isLoading, dashboardLoading]);
 
   return (

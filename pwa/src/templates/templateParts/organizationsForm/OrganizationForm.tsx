@@ -6,7 +6,7 @@ import { InputText, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { QueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoading } from "../../../context/isLoading";
 
 interface OrganizationFormProps {
   organization?: any;
@@ -16,7 +16,7 @@ export const formId: string = "organization-form";
 
 export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoading();
 
   const queryClient = new QueryClient();
   const _useOrganizations = useOrganization(queryClient);
@@ -35,7 +35,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, organizationForm: createOrEditOrganization.isLoading });
+    setIsLoading({ organizationForm: createOrEditOrganization.isLoading });
   }, [createOrEditOrganization.isLoading]);
 
   React.useEffect(() => {

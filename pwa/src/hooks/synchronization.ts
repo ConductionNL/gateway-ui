@@ -4,12 +4,10 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
-import { IsLoadingContext } from "../context/isLoading";
 import toast from "react-hot-toast";
 
 export const useSync = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
-  const [_, setIsLoading] = React.useContext(IsLoadingContext);
   const _queryClient = useQueryClient();
 
   const getAll = () =>
@@ -45,9 +43,6 @@ export const useSync = (queryClient: QueryClient) => {
 
   const createOrEdit = (objectId: string, syncId?: string) =>
     useMutation<any, Error, any>(API.Synchroniation.createOrUpdate, {
-      onMutate: () => {
-        setIsLoading({ alert: true });
-      },
       onSuccess: async (newSync) => {
         if (syncId) {
           toast.success("Succesfully updated synchroniation");
@@ -71,13 +66,9 @@ export const useSync = (queryClient: QueryClient) => {
           toast.error(error.message);
         }
 
-        setIsLoading({ alert: false });
-
         console.warn(error.message);
       },
-      onSettled: () => {
-        setIsLoading({ alert: false });
-      },
+      onSettled: () => {},
     });
 
   return { getAll, getOne, remove, createOrEdit };

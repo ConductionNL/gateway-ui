@@ -2,11 +2,10 @@ import * as React from "react";
 import * as styles from "./AuthenticationFormTemplate.module.css";
 import { QueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
-import { useTranslation } from "react-i18next";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { AuthenticationFormTemplate, formId } from "./AuthenticationFormTemplate";
 import { useAuthentication } from "../../../hooks/authentication";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoading } from "../../../context/isLoading";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 
 interface EditAuthenticationTemplateProps {
@@ -14,9 +13,8 @@ interface EditAuthenticationTemplateProps {
 }
 
 export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProps> = ({ authenticationId }) => {
-  const { t } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoading();
 
   const queryClient = new QueryClient();
   const _useAuthentications = useAuthentication(queryClient);
@@ -36,7 +34,7 @@ export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProp
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, authenticationForm: deleteAuthentication.isLoading || dashboardToggleLoading });
+    setIsLoading({ authenticationForm: deleteAuthentication.isLoading || dashboardToggleLoading });
   }, [deleteAuthentication.isLoading, dashboardToggleLoading]);
 
   const handleDeleteAuthentication = (): void => {

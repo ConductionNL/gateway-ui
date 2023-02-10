@@ -10,7 +10,7 @@ import Skeleton from "react-loading-skeleton";
 import { validatePassword } from "../../../services/stringValidations";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useOrganization } from "../../../hooks/organization";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoading } from "../../../context/isLoading";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -20,7 +20,7 @@ export const formId: string = "user-form";
 
 export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoading();
 
   const queryClient = new QueryClient();
   const _useUsers = useUser(queryClient);
@@ -65,7 +65,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, userForm: createOrEditUser.isLoading });
+    setIsLoading({ userForm: createOrEditUser.isLoading });
   }, [createOrEditUser.isLoading]);
 
   React.useEffect(() => {

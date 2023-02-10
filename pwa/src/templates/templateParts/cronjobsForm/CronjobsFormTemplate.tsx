@@ -11,7 +11,7 @@ import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import Skeleton from "react-loading-skeleton";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoading } from "../../../context/isLoading";
 
 interface CronjobFormTemplateProps {
   cronjob?: any;
@@ -21,7 +21,7 @@ export const formId: string = "cronjob-form";
 
 export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjob }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoading();
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
@@ -37,7 +37,7 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
   } = useForm();
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, cronjobForm: createOrEditCronjob.isLoading });
+    setIsLoading({ cronjobForm: createOrEditCronjob.isLoading });
   }, [createOrEditCronjob.isLoading]);
 
   React.useEffect(() => {

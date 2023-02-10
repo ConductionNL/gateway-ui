@@ -15,7 +15,7 @@ import { translateDate } from "../../../services/dateFormat";
 import { useLog } from "../../../hooks/log";
 import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoading } from "../../../context/isLoading";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -25,7 +25,7 @@ interface CreateOrganizationTemplateProps {
 
 export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps> = ({ organizationId }) => {
   const { t, i18n } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoading();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
@@ -40,7 +40,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
   const dashboardCard = getDashboardCard(organizationId);
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, organizationForm: dashboardLoading });
+    setIsLoading({ organizationForm: dashboardLoading });
   }, [dashboardLoading]);
 
   const toggleFromDashboard = () => {

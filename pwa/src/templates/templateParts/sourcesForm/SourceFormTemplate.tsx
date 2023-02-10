@@ -15,7 +15,7 @@ import { ReactTooltip } from "@conduction/components/lib/components/toolTip/Tool
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoading } from "../../../context/isLoading";
 import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
 import clsx from "clsx";
 import { translateDate } from "../../../services/dateFormat";
@@ -28,7 +28,7 @@ export const formId: string = "source-form";
 
 export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) => {
   const { t, i18n } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoading();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
@@ -60,7 +60,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   const watchQuery = watch("query");
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, sourceForm: createOrEditSource.isLoading });
+    setIsLoading({ sourceForm: createOrEditSource.isLoading });
   }, [createOrEditSource.isLoading]);
 
   React.useEffect(() => {

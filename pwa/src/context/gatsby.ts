@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export type TScreenSize = "mobile" | "tablet" | "desktop";
 
 export interface IGatsbyContext {

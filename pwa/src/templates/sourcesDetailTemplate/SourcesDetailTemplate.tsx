@@ -20,7 +20,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoading } from "../../context/isLoading";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { validateStringAsJSON } from "../../services/validateJSON";
@@ -39,7 +39,7 @@ interface SourcesDetailTemplateProps {
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoading();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
@@ -82,7 +82,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, sourceForm: deleteSource.isLoading || testProxy.isLoading || dashboardLoading });
+    setIsLoading({ sourceForm: deleteSource.isLoading || testProxy.isLoading || dashboardLoading });
   }, [deleteSource.isLoading, testProxy.isLoading, dashboardLoading]);
 
   return (
