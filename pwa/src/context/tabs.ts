@@ -25,8 +25,6 @@ export const useCurrentTabContext = () => {
   const currentTabs: ITabsContext = globalContext.currentTabs;
 
   const setCurrentTabs = (currentTabs: ITabsContext) => {
-    console.log({ currentTabs });
-
     setGlobalContext({ ...globalContext, currentTabs });
   };
 
