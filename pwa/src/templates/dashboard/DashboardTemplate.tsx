@@ -9,27 +9,33 @@ import { useGatsbyContext } from "../../context/gatsby";
 
 export const DashboardTemplate: React.FC = ({ children }) => {
   const { gatsbyContext } = useGatsbyContext();
+  const [translatedCrumbs, setTranslatedCrumbs] = React.useState<any>(null);
 
-  const {
-    pageContext: {
-      breadcrumb: { crumbs },
-    },
-    location: { pathname },
-    screenSize,
-  } = gatsbyContext;
+  React.useEffect(() => {
+    if (!gatsbyContext) return;
 
-  const translatedCrumbs = crumbs.map((crumb: any, idx: any) => {
-    const cutPathname = pathname.substring(0, pathname.lastIndexOf("/"));
-    const crumbPathname = idx === 2 ? cutPathname : crumb.pathname;
+    const {
+      pageContext: {
+        breadcrumb: { crumbs },
+      },
+      location: { pathname },
+    } = gatsbyContext;
 
-    return { ...crumb, crumbLabel: _.upperFirst(crumb.crumbLabel), pathname: crumbPathname };
-  });
+    setTranslatedCrumbs(
+      crumbs.map((crumb: any, idx: any) => {
+        const cutPathname = pathname.substring(0, pathname.lastIndexOf("/"));
+        const crumbPathname = idx === 2 ? cutPathname : crumb.pathname;
+
+        return { ...crumb, crumbLabel: _.upperFirst(crumb.crumbLabel), pathname: crumbPathname };
+      }),
+    );
+  }, [gatsbyContext]);
 
   return (
     <PrivateRoute authenticated={isLoggedIn()}>
       <Container layoutClassName={styles.container}>
-        {screenSize !== "mobile" && <Sidebar layoutClassName={styles.sidebar} />}
-        {screenSize === "mobile" && <Topbar />}
+        {gatsbyContext?.screenSize !== "mobile" && <Sidebar layoutClassName={styles.sidebar} />}
+        {gatsbyContext?.screenSize === "mobile" && <Topbar />}
 
         <div className={styles.content}>
           <Breadcrumbs crumbs={translatedCrumbs} />

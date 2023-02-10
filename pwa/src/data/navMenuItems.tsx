@@ -22,10 +22,13 @@ import { handleLogout } from "../services/auth";
 
 export const mainMenuItems = () => {
   const { gatsbyContext } = useGatsbyContext();
+  const [pathname, setPathname] = React.useState<string>("");
 
-  const {
-    location: { pathname },
-  } = gatsbyContext;
+  React.useEffect(() => {
+    if (!gatsbyContext) return;
+
+    setPathname(gatsbyContext.location.pathname);
+  }, [gatsbyContext]);
 
   return [
     {
@@ -94,10 +97,13 @@ export const mainMenuItems = () => {
 export const bottomMenuItems = () => {
   const API: APIService | null = React.useContext(APIContext);
   const { gatsbyContext } = useGatsbyContext();
+  const [pathname, setPathname] = React.useState<string>("");
 
-  const {
-    location: { pathname },
-  } = gatsbyContext;
+  React.useEffect(() => {
+    if (!gatsbyContext) return;
+
+    setPathname(gatsbyContext.location.pathname);
+  }, [gatsbyContext]);
 
   return [
     {
