@@ -9,7 +9,7 @@ import { useAuthentication } from "../../../hooks/authentication";
 import { InputURL } from "@conduction/components/lib/components/formFields";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import Skeleton from "react-loading-skeleton";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 interface AuthenticationFormTemplateProps {
   authentication?: any;
@@ -20,7 +20,7 @@ export const formId: string = "authentication-provider-form";
 export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProps> = ({ authentication }) => {
   const { t } = useTranslation();
   const [scopes, setScopes] = React.useState<any[]>([]);
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = new QueryClient();
   const _useAuthentications = useAuthentication(queryClient);

@@ -17,7 +17,7 @@ import { TabsContext } from "../../context/tabs";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import clsx from "clsx";
 import { SchemaFormTemplate, formId } from "../templateParts/schemasForm/SchemaFormTemplate";
-import { useIsLoading } from "../../context/isLoading";
+import { useIsLoadingContext } from "../../context/isLoading";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
@@ -30,7 +30,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const { t, i18n } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();

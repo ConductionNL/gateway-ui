@@ -15,7 +15,7 @@ import { ReactTooltip } from "@conduction/components/lib/components/toolTip/Tool
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
 import clsx from "clsx";
 import { translateDate } from "../../../services/dateFormat";
@@ -28,7 +28,7 @@ export const formId: string = "source-form";
 
 export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) => {
   const { t, i18n } = useTranslation();
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);

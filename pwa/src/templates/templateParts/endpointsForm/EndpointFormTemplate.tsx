@@ -18,7 +18,7 @@ import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../../hooks/schema";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 interface EndpointFormTemplateProps {
   endpoint?: any;
@@ -28,7 +28,7 @@ export const formId: string = "endpoint-form";
 
 export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endpoint }) => {
   const { t } = useTranslation();
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const [pathParts, setPathParts] = React.useState<any[]>([]);
   const [methods, setMethods] = React.useState<any[]>([]);

@@ -3,12 +3,12 @@ import * as styles from "./SourcesFormTemplate.module.css";
 
 import { useTranslation } from "react-i18next";
 import { SourceFormTemplate, formId } from "./SourceFormTemplate";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 
 export const CreateSourceFormTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const { isLoading } = useIsLoading();
+  const { isLoading } = useIsLoadingContext();
 
   return (
     <div className={styles.container}>

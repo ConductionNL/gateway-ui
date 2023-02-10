@@ -14,7 +14,7 @@ import Skeleton from "react-loading-skeleton";
 import { validateStringAsJSON } from "../../../services/validateJSON";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 export const formId: string = "action-form";
 
@@ -24,7 +24,7 @@ interface ActionFormTemplateProps {
 
 export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }) => {
   const { t } = useTranslation();
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
   const [selectedHanlderSchema, setSelectedHanlderSchema] = React.useState<any>(null);

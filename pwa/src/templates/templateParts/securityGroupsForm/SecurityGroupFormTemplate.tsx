@@ -7,7 +7,7 @@ import { InputText, Textarea } from "@conduction/components";
 import { SelectCreate } from "@conduction/components/lib/components/formFields";
 import { useQueryClient } from "react-query";
 import { useSecurityGroup } from "../../../hooks/securityGroup";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 interface SecurityGroupFormTemplateProps {
   securityGroup?: any;
@@ -17,7 +17,7 @@ export const formId: string = "security-group-form";
 
 export const SecurityGroupFormTemplate: React.FC<SecurityGroupFormTemplateProps> = ({ securityGroup }) => {
   const { t } = useTranslation();
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = useQueryClient();
   const _useSecurityGroups = useSecurityGroup(queryClient);

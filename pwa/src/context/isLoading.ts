@@ -17,7 +17,7 @@ export interface IIsLoadingContext {
 
 export const defaultIsLoadingContext: IIsLoadingContext = {};
 
-export const useIsLoading = () => {
+export const useIsLoadingContext = () => {
   const [globalContext, setGlobalContext] = React.useContext(GlobalContext);
 
   const isLoading: IIsLoadingContext = globalContext.isLoading;

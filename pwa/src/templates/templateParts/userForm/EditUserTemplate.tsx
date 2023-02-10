@@ -11,7 +11,7 @@ import { TabsContext } from "../../../context/tabs";
 import { Container } from "@conduction/components";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 import { useLog } from "../../../hooks/log";
 import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
@@ -24,7 +24,7 @@ interface EditUserTemplateProps {
 
 export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) => {
   const { t } = useTranslation();
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentTab, setCurrentTab] = React.useContext(TabsContext);
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 

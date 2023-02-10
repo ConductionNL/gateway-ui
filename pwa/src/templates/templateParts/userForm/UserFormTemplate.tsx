@@ -10,7 +10,7 @@ import Skeleton from "react-loading-skeleton";
 import { validatePassword } from "../../../services/stringValidations";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useOrganization } from "../../../hooks/organization";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -20,7 +20,7 @@ export const formId: string = "user-form";
 
 export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const { t } = useTranslation();
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = new QueryClient();
   const _useUsers = useUser(queryClient);

@@ -5,7 +5,7 @@ import Skeleton from "react-loading-skeleton";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { AuthenticationFormTemplate, formId } from "./AuthenticationFormTemplate";
 import { useAuthentication } from "../../../hooks/authentication";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 
 interface EditAuthenticationTemplateProps {
@@ -14,7 +14,7 @@ interface EditAuthenticationTemplateProps {
 
 export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProps> = ({ authenticationId }) => {
   const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = new QueryClient();
   const _useAuthentications = useAuthentication(queryClient);

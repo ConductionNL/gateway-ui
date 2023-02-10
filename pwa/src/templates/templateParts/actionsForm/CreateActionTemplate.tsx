@@ -3,11 +3,11 @@ import * as styles from "./ActionFormTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { ActionFormTemplate, formId } from "./ActionFormTemplate";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
-import { useIsLoading } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 export const CreateActionTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const { isLoading } = useIsLoading();
+  const { isLoading } = useIsLoadingContext();
 
   return (
     <div className={styles.container}>

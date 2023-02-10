@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableRow } from "@gemeente-denhaag/table";
 import { SchemasTable } from "../templateParts/schemasTable/SchemasTable";
 import { EndpointFormTemplate, formId } from "../templateParts/endpointsForm/EndpointFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
-import { useIsLoading } from "../../context/isLoading";
+import { useIsLoadingContext } from "../../context/isLoading";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
@@ -22,7 +22,7 @@ interface EndpointDetailsTemplateProps {
 export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({ endpointId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
-  const { setIsLoading, isLoading } = useIsLoading();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
