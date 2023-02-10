@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DashboardTemplate } from "../../templates/dashboard/DashboardTemplate";
-import { MappingTemplate } from "../../templates/mappingTemplate/MappingTemplate";
+import { MappingTemplate } from "../../templates/mappingTemplate/MappingsTemplate";
 
 const MappingsPage: React.FC = () => (
   <DashboardTemplate>

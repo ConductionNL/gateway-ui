@@ -11,45 +11,6 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.section {
-  display: flex;
-  justify-content: space-between;
-  margin-block-end: var(--gateway-ui-size-xl);
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.buttons > * {
-  display: flex;
-  align-items: center;
-}
-
-.buttons *:not(:last-child) {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
-.button {
-  width: max-content;
-}
-
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
-.deleteButton {
-  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
-}
-
-.deleteButton:hover {
-  --denhaag-button-primary-action-hover-background-color: var(
-    --gateway-ui-color-dark-red
-  );
-}
-
 .grid {
   display: grid;
   grid-gap: var(--gateway-ui-size-lg);

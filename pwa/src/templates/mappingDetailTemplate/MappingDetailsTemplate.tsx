@@ -1,25 +1,19 @@
 import * as React from "react";
 import * as styles from "./MappingDetailsTemplate.module.css";
-import { useTranslation } from "react-i18next";
-
 import { Container } from "@conduction/components";
-import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { MappingFormTemplate, formId } from "../templateParts/mappingForm/MappingFormTemplate";
 import { useMapping } from "../../hooks/mapping";
 import { QueryClient } from "react-query";
 import { IsLoadingContext } from "../../context/isLoading";
-import clsx from "clsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import Skeleton from "react-loading-skeleton";
+import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
 }
 
 export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ mappingId }) => {
-  const { t } = useTranslation();
   const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
@@ -48,39 +42,13 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
       {getMapping.isLoading && <Skeleton height="200px" />}
       {getMapping.isSuccess && (
         <>
-          <section className={styles.section}>
-            <Heading1>{`Edit ${getMapping.data.name}`}</Heading1>
-
-            <div className={styles.buttons}>
-              <Button
-                type="submit"
-                form={formId}
-                disabled={isLoading.mappingForm}
-                className={clsx(styles.buttonIcon, styles.button)}
-              >
-                <FontAwesomeIcon icon={faFloppyDisk} />
-                {t("Save")}
-              </Button>
-
-              <Button
-                className={clsx(styles.buttonIcon, styles.button)}
-                onClick={toggleFromDashboard}
-                disabled={isLoading.mappingForm}
-              >
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
-
-              <Button
-                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
-                onClick={handleDelete}
-                disabled={isLoading.mappingForm}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Delete")}
-              </Button>
-            </div>
-          </section>
+          <FormHeaderTemplate
+            title={`Edit ${getMapping.data.name}`}
+            {...{ formId }}
+            disabled={isLoading.mappingForm}
+            handleDelete={handleDelete}
+            handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+          />
 
           <MappingFormTemplate mapping={getMapping.data} />
         </>
