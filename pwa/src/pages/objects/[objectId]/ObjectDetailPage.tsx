@@ -3,9 +3,10 @@ import { navigate, PageProps } from "gatsby";
 import { DashboardTemplate } from "../../../templates/dashboard/DashboardTemplate";
 import { ObjectDetailTemplate } from "../../../templates/objectDetailTemplate/ObjectDetailTemplate";
 import { CreateObjectFormTemplate } from "../../../templates/templateParts/objectsFormTemplate/CreateObjectFormTemplate";
-import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ObjectDetailPage: React.FC<PageProps> = (props: PageProps) => {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ const ObjectDetailPage: React.FC<PageProps> = (props: PageProps) => {
         <>
           {params.schema && (
             <div onClick={() => navigate(`/schemas/${params.schema}`)}>
-              <Link icon={<ArrowLeftIcon />} iconAlign="start">
+              <Link icon={<FontAwesomeIcon icon={faArrowLeft} />} iconAlign="start">
                 {t("Back to schema")}
               </Link>
             </div>
@@ -29,11 +30,12 @@ const ObjectDetailPage: React.FC<PageProps> = (props: PageProps) => {
           <CreateObjectFormTemplate predefinedSchema={params.schema} />
         </>
       )}
+
       {props.params.objectId !== "new" && (
         <>
           {params.schema && (
             <div onClick={() => navigate(`/schemas/${params.schema}`)}>
-              <Link icon={<ArrowLeftIcon />} iconAlign="start">
+              <Link icon={<FontAwesomeIcon icon={faArrowLeft} />} iconAlign="start">
                 {t("Back to schema")}
               </Link>
             </div>

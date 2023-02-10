@@ -3,12 +3,12 @@ import * as styles from "./PluginCard.module.css";
 import { Link, Paragraph } from "@gemeente-denhaag/components-react";
 import { navigate } from "gatsby";
 import _ from "lodash";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { useTranslation } from "react-i18next";
 import { Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GitHubLogo } from "../../assets/svgs/GitHub";
 import {
+  faArrowRight,
   faArrowsRotate,
   faCheckCircle,
   faCircleDown,
@@ -68,7 +68,7 @@ export const PluginCard: React.FC<PluginCardProps> = ({
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.titleLink} onClick={() => navigate(title.href)}>
-          <Link icon={<ArrowRightIcon />} iconAlign="start">
+          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
             {title.label}
           </Link>
         </div>
