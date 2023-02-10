@@ -7,7 +7,7 @@ import { UserFormTemplate, formId } from "./UserFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { useTranslation } from "react-i18next";
 import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
-import { TabsContext } from "../../../context/tabs";
+import { useCurrentTabContext } from "../../../context/tabs";
 import { Container } from "@conduction/components";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -25,7 +25,7 @@ interface EditUserTemplateProps {
 export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) => {
   const { t } = useTranslation();
   const { setIsLoading, isLoading } = useIsLoadingContext();
-  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
@@ -67,11 +67,11 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
 
       {getUser.isSuccess && (
         <div>
-          <TabContext value={currentTab.userDetailTabs.toString()}>
+          <TabContext value={currentTabs.userDetailTabs.toString()}>
             <Tabs
-              value={currentTab.userDetailTabs}
+              value={currentTabs.userDetailTabs}
               onChange={(_, newValue: number) => {
-                setCurrentTab({ ...currentTab, userDetailTabs: newValue });
+                setCurrentTabs({ ...currentTabs, userDetailTabs: newValue });
               }}
               variant="scrollable"
             >

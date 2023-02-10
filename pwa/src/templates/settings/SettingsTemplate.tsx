@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
 import { SecurityGroupsTemplate } from "../securityGroupsTemplate/SecurityGroupsTemplate";
 import { GatewayDetailTemplate } from "../gatewayDetailTemplate/GatewayDetailTemplate";
-import { TabsContext } from "../../context/tabs";
+import { useCurrentTabContext } from "../../context/tabs";
 import { ApplicationsTemplate } from "../applicationsTemplate/ApplicationsTemplate";
 import { OrganizationsTemplate } from "../organizationsTemplate/OrganizationsTemplate";
 import { UsersTemplate } from "../usersTemplate/UsersTemplate";
@@ -13,18 +13,18 @@ import { AuthenticationsTemplate } from "../authenticationsTemplate/Authenticati
 
 export const SettingsTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
 
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Settings")}</Heading1>
 
       <div className={styles.tabContainer}>
-        <TabContext value={currentTab.settingsDetailTabs.toString()}>
+        <TabContext value={currentTabs.settingsDetailTabs.toString()}>
           <Tabs
-            value={currentTab.settingsDetailTabs}
+            value={currentTabs.settingsDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab({ ...currentTab, settingsDetailTabs: newValue });
+              setCurrentTabs({ ...currentTabs, settingsDetailTabs: newValue });
             }}
             variant="scrollable"
           >

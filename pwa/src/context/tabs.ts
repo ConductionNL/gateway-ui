@@ -1,6 +1,7 @@
 import * as React from "react";
+import { GlobalContext } from "./global";
 
-export interface ITabs {
+export interface ITabsContext {
   schemaDetailTabs: number;
   sourceDetailTabs: number;
   settingsDetailTabs: number;
@@ -9,15 +10,25 @@ export interface ITabs {
   organizationDetailTabs: number;
 }
 
-export const tabs = {
+export const defaultTabsContext = {
   schemaDetailTabs: 0,
   sourceDetailTabs: 0,
   settingsDetailTabs: 0,
   objectDetailTabs: 0,
   userDetailTabs: 0,
   organizationDetailTabs: 0,
-} as ITabs;
+} as ITabsContext;
 
-export const TabsContext = React.createContext<[ITabs, (data: ITabs) => void]>([tabs, () => null]);
+export const useCurrentTabContext = () => {
+  const [globalContext, setGlobalContext] = React.useContext(GlobalContext);
 
-export const TabsProvider = TabsContext.Provider;
+  const currentTabs: ITabsContext = globalContext.currentTabs;
+
+  const setCurrentTabs = (currentTabs: ITabsContext) => {
+    console.log({ currentTabs });
+
+    setGlobalContext({ ...globalContext, currentTabs });
+  };
+
+  return { setCurrentTabs, currentTabs };
+};

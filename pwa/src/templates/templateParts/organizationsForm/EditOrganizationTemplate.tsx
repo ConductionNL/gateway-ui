@@ -7,7 +7,7 @@ import Skeleton from "react-loading-skeleton";
 import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useTranslation } from "react-i18next";
-import { TabsContext } from "../../../context/tabs";
+import { useCurrentTabContext } from "../../../context/tabs";
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
@@ -29,7 +29,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
-  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
 
   const queryClient = new QueryClient();
   const _useOrganizations = useOrganization(queryClient);
@@ -67,11 +67,11 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
           <OrganizationForm organization={getOrganization.data} />
 
           <div className={styles.tabContainer}>
-            <TabContext value={currentTab.organizationDetailTabs.toString()}>
+            <TabContext value={currentTabs.organizationDetailTabs.toString()}>
               <Tabs
-                value={currentTab.organizationDetailTabs}
+                value={currentTabs.organizationDetailTabs}
                 onChange={(_, newValue: number) => {
-                  setCurrentTab({ ...currentTab, organizationDetailTabs: newValue });
+                  setCurrentTabs({ ...currentTabs, organizationDetailTabs: newValue });
                 }}
                 variant="scrollable"
               >
