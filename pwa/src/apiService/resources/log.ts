@@ -1,6 +1,6 @@
 import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
-import { LogProps, TLogChannel } from "../../context/logs";
+import { ILogFiltersContext, TLogChannel } from "../../context/logs";
 import { filtersToQueryParams } from "../../services/filtersToQueryParams";
 
 export default class Log {
@@ -16,7 +16,7 @@ export default class Log {
     return data.results[0];
   };
 
-  public getAll = async (logFilters: LogProps, currentPage: number): Promise<any> => {
+  public getAll = async (logFilters: ILogFiltersContext, currentPage: number): Promise<any> => {
     const { data } = await Send(
       this._instance,
       "GET",
