@@ -35,31 +35,28 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
   } = useForm();
 
   const onSubmit = (data: any): void => {
-    createOrEditMapping.mutate({ payload: data, id: mapping?.id });
+    const payload = {
+      ...data,
+      mapping: Object.assign({}, ...data.mapping.map(({ key, value }: any) => ({ [key]: value }))),
+      unset: Object.assign({}, ...data.unset.map(({ key, value }: any) => ({ [key]: value }))),
+      cast: Object.assign({}, ...data.cast.map(({ key, value }: any) => ({ [key]: value }))),
+    };
+
+    createOrEditMapping.mutate({ payload, id: mapping?.id });
   };
 
   const handleSetFormValues = (): void => {
     const basicFields: string[] = ["name", "reference", "version", "description", "passTrough"];
     basicFields.forEach((field) => setValue(field, mapping[field]));
 
-    if (Array.isArray(mapping.mapping) || mapping.mapping === undefined) {
-      setMapping(mapping.mapping);
-    } else {
-      const newMapping = Object.entries(mapping.mapping).map(([key, value]) => ({ key, value: value }));
-      setMapping(newMapping);
-    }
-    if (Array.isArray(mapping.unset) || mapping.unset === undefined) {
-      setUnset(mapping.unset);
-    } else {
-      const newUnset = Object.entries(mapping.unset).map(([key, value]) => ({ key, value: value }));
-      setUnset(newUnset);
-    }
-    if (Array.isArray(mapping.cast) || mapping.cast === undefined) {
-      setCast(mapping.cast);
-    } else {
-      const newCast = Object.entries(mapping.cast).map(([key, value]) => ({ key, value: value }));
-      setCast(newCast);
-    }
+    const newMapping = Object.entries(mapping.mapping).map(([key, value]) => ({ key, value }));
+    setMapping(newMapping);
+
+    const newUnset = Object.entries(mapping.unset).map(([key, value]) => ({ key, value }));
+    setUnset(newUnset);
+
+    const newCast = Object.entries(mapping.cast).map(([key, value]) => ({ key, value }));
+    setCast(newCast);
   };
 
   React.useEffect(() => {
