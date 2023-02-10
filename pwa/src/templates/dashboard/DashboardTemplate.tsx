@@ -5,20 +5,18 @@ import { isLoggedIn } from "../../services/auth";
 import { Sidebar } from "../sidebar/Sidebar";
 import _ from "lodash";
 import { Topbar } from "../topbar/Topbar";
-import { GlobalContext } from "../../context/global";
+import { useGatsbyContext } from "../../context/gatsby";
 
 export const DashboardTemplate: React.FC = ({ children }) => {
-  const [globalContext] = React.useContext(GlobalContext);
+  const { gatsbyContext } = useGatsbyContext();
 
   const {
-    gatsby: {
-      pageContext: {
-        breadcrumb: { crumbs },
-      },
-      location: { pathname },
-      screenSize,
+    pageContext: {
+      breadcrumb: { crumbs },
     },
-  } = globalContext;
+    location: { pathname },
+    screenSize,
+  } = gatsbyContext;
 
   const translatedCrumbs = crumbs.map((crumb: any, idx: any) => {
     const cutPathname = pathname.substring(0, pathname.lastIndexOf("/"));

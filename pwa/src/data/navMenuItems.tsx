@@ -17,17 +17,15 @@ import { navigate } from "gatsby";
 import React from "react";
 import APIContext from "../apiService/apiContext";
 import APIService from "../apiService/apiService";
-import { GlobalContext } from "../context/global";
+import { useGatsbyContext } from "../context/gatsby";
 import { handleLogout } from "../services/auth";
 
 export const mainMenuItems = () => {
-  const [globalContext] = React.useContext(GlobalContext);
-
-  const { gatsby } = globalContext;
+  const { gatsbyContext } = useGatsbyContext();
 
   const {
     location: { pathname },
-  } = gatsby;
+  } = gatsbyContext;
 
   return [
     {
@@ -95,13 +93,11 @@ export const mainMenuItems = () => {
 
 export const bottomMenuItems = () => {
   const API: APIService | null = React.useContext(APIContext);
-  const [globalContext] = React.useContext(GlobalContext);
-
-  const { gatsby } = globalContext;
+  const { gatsbyContext } = useGatsbyContext();
 
   const {
     location: { pathname },
-  } = gatsby;
+  } = gatsbyContext;
 
   return [
     {

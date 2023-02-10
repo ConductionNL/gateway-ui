@@ -3,7 +3,7 @@ import * as styles from "./Layout.module.css";
 import "../translations/i18n";
 import APIContext, { APIProvider } from "../apiService/apiContext";
 import APIService from "../apiService/apiService";
-import { TScreenSize } from "../context/gatsby";
+import { TScreenSize, useGatsbyContext } from "../context/gatsby";
 import { StylesProvider } from "@gemeente-denhaag/components-react";
 import { Head } from "./Head";
 import { Content } from "../Content";
@@ -21,11 +21,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [API, setAPI] = React.useState<APIService>(React.useContext(APIContext));
   const [screenSize, setScreenSize] = React.useState<TScreenSize>("mobile");
-
-  const [globalContext, setGlobalContext] = React.useState<IGlobalContext>({
-    ...defaultGlobalContext,
-    gatsby: { ...{ pageContext, location, screenSize: "mobile" } },
-  });
+  const [globalContext, setGlobalContext] = React.useState<IGlobalContext>(defaultGlobalContext);
 
   React.useEffect(() => {
     setAPI(new APIService());
