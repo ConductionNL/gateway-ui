@@ -9,7 +9,6 @@ import {
   faHourglass,
   faList,
   faLocationDot,
-  faMagnifyingGlass,
   faMap,
   faPlay,
   faPuzzlePiece,
