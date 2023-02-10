@@ -3,18 +3,22 @@ import * as styles from "./DashboardTemplate.module.css";
 import { Breadcrumbs, Container, PrivateRoute } from "@conduction/components";
 import { isLoggedIn } from "../../services/auth";
 import { Sidebar } from "../sidebar/Sidebar";
-import { GatsbyContext } from "../../context/gatsby";
 import _ from "lodash";
 import { Topbar } from "../topbar/Topbar";
+import { GlobalContext } from "../../context/global";
 
 export const DashboardTemplate: React.FC = ({ children }) => {
+  const [globalContext] = React.useContext(GlobalContext);
+
   const {
-    pageContext: {
-      breadcrumb: { crumbs },
+    gatsby: {
+      pageContext: {
+        breadcrumb: { crumbs },
+      },
+      location: { pathname },
+      screenSize,
     },
-    location: { pathname },
-    screenSize,
-  } = React.useContext(GatsbyContext);
+  } = globalContext;
 
   const translatedCrumbs = crumbs.map((crumb: any, idx: any) => {
     const cutPathname = pathname.substring(0, pathname.lastIndexOf("/"));

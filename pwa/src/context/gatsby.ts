@@ -8,10 +8,8 @@ export interface IGatsbyContext {
   screenSize: TScreenSize;
 }
 
-export const GatsbyContext = React.createContext<IGatsbyContext>({
+export const defaultGatsbyContext: IGatsbyContext = {
   pageContext: null,
   location: null,
   screenSize: "mobile",
-});
-
-export const GatsbyProvider = GatsbyContext.Provider;
+};
