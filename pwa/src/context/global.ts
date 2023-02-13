@@ -25,9 +25,8 @@ export const defaultGlobalContext: IGlobalContext = {
   logTableColumns: defaultLogTableColumnsContext,
 };
 
-export const GlobalContext = React.createContext<[IGlobalContext, (data: IGlobalContext) => void]>([
-  defaultGlobalContext,
-  () => null,
-]);
+export const GlobalContext = React.createContext<
+  [IGlobalContext, React.Dispatch<React.SetStateAction<IGlobalContext>>]
+>([defaultGlobalContext, () => null]);
 
 export const GlobalProvider = GlobalContext.Provider;
