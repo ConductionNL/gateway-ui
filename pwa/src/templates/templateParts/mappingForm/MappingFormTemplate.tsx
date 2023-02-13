@@ -70,7 +70,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
       cast: Object.assign({}, ...data.cast.map(({ key, value }: any) => ({ [key]: value }))),
     };
 
-    // createOrEditMapping.mutate({ payload, id: mapping?.id });
+    createOrEditMapping.mutate({ payload, id: mapping?.id });
   };
 
   const watchMapping = watch("mapping");
