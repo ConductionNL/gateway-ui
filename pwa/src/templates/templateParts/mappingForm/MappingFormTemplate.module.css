@@ -1,16 +1,3 @@
-.container {
-  box-sizing: border-box;
-  background-color: var(--gateway-ui-color-white);
-  padding-inline-start: var(--gateway-ui-size-md);
-  padding-inline-end: var(--gateway-ui-size-md);
-  padding-block-start: var(--gateway-ui-size-md);
-  padding-block-end: var(--gateway-ui-size-md);
-}
-
-.container > :not(:last-child) {
-  margin-block-end: var(--gateway-ui-size-2xl);
-}
-
 .grid {
   display: grid;
   grid-gap: var(--gateway-ui-size-lg);
@@ -26,10 +13,27 @@
   margin-block-end: var(--gateway-ui-size-md);
 }
 
-.trigger {
+.triggerContainer {
+  z-index: 100;
+  top: calc(
+    var(--gateway-ui-size-xl) * -1
+  ); /* Dashboard Template padding offset  */
+  position: sticky;
+  background-color: var(--gateway-ui-color-white);
+  box-shadow: var(--gateway-ui-side-bar-box-shadow);
+  user-select: none;
+
   display: flex;
   align-items: center;
   cursor: pointer;
+  justify-content: space-between;
+}
+
+.triggerButton {
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
 }
 
 .collapsibleTitle {
@@ -57,14 +61,6 @@
   justify-content: flex-end;
   cursor: pointer;
   font-size: var(--gateway-ui-font-size-md);
-}
-
-.toCollapsibleEnd {
-  margin-block-end: var(--gateway-ui-size-md);
-}
-
-.toCollapsibleStart {
-  margin-block-start: var(--gateway-ui-size-xl);
 }
 
 .toCollapsibleEnd > svg,
