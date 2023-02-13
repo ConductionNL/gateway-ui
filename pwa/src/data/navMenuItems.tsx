@@ -9,6 +9,7 @@ import {
   faHourglass,
   faList,
   faLocationDot,
+  faMap,
   faPlay,
   faPuzzlePiece,
 } from "@fortawesome/free-solid-svg-icons";
@@ -90,6 +91,12 @@ export const mainMenuItems = () => {
       icon: <FontAwesomeIcon icon={faDiagramProject} />,
       onClick: () => navigate("/collections"),
       current: pathname.includes("/collections"),
+    },
+    {
+      label: "Mappings",
+      icon: <FontAwesomeIcon icon={faMap} />,
+      onClick: () => navigate("/mappings"),
+      current: pathname.includes("/mappings"),
     },
   ];
 };

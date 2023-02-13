@@ -37,5 +37,8 @@ export const getPath = (value: any): any => {
 
     case "authentication provider":
       return "settings/authentication";
+
+    case "mapping":
+      return "mappings";
   }
 };

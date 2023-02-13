@@ -13,6 +13,7 @@ export interface IIsLoadingContext {
   securityGroupForm?: boolean;
   collectionForm?: boolean;
   organizationForm?: boolean;
+  mappingForm?: boolean;
 }
 
 export const defaultIsLoadingContext: IIsLoadingContext = {};
