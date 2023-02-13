@@ -5,7 +5,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { useTranslation } from "react-i18next";
 import { InputText } from "@conduction/components";
 import { useQueryClient } from "react-query";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 import { useMapping } from "../../../hooks/mapping";
 import { CreateKeyValue, InputCheckbox, Textarea } from "@conduction/components/lib/components/formFields";
 
@@ -17,7 +17,7 @@ export const formId: string = "mapping-form";
 
 export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mapping }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const [_mapping, setMapping] = React.useState<any[]>([]);
   const [unset, setUnset] = React.useState<any[]>([]);
