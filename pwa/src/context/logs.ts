@@ -25,7 +25,7 @@ export const useLogFiltersContext = () => {
   const logFilters: ILogFiltersContext = globalContext.logFilters;
 
   const setLogFilters = (logFilters: ILogFiltersContext) => {
-    setGlobalContext({ ...globalContext, logFilters });
+    setGlobalContext((context) => ({ ...context, logFilters }));
   };
 
   return { setLogFilters, logFilters };
@@ -90,7 +90,10 @@ export const useLogTableColumnsContext = () => {
   const logTableColumns: ILogTableColumnsContext = globalContext.logTableColumns;
 
   const setLogTableColumns = (logTableColumns: ILogTableColumnsContext) => {
-    setGlobalContext({ ...globalContext, logTableColumns: { ...globalContext.logTableColumns, ...logTableColumns } });
+    setGlobalContext((context) => ({
+      ...context,
+      logTableColumns: { ...context.logTableColumns, ...logTableColumns },
+    }));
   };
 
   return { setLogTableColumns, logTableColumns };

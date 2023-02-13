@@ -23,7 +23,7 @@ export const useIsLoadingContext = () => {
   const isLoading: IIsLoadingContext = globalContext.isLoading;
 
   const setIsLoading = (loading: IIsLoadingContext) => {
-    setGlobalContext({ ...globalContext, isLoading: { ...globalContext.isLoading, ...loading } });
+    setGlobalContext((context) => ({ ...context, isLoading: { ...globalContext.isLoading, ...loading } }));
   };
 
   return { setIsLoading, isLoading };
