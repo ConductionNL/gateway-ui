@@ -190,20 +190,16 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
 const LogsTableColumnFilters: React.FC = () => {
   const { setLogTableColumns, logTableColumns } = useLogTableColumnsContext();
 
-  const handleColumnToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLogTableColumns({ [e.target.name]: e.target.checked });
+  const handleColumnToggle = (key: string, checked: boolean) => {
+    setLogTableColumns({ [key]: checked });
   };
-
-  React.useEffect(() => {
-    console.log({ logTableColumns });
-  }, [logTableColumns]);
 
   return (
     <div className={styles.columnFiltersContainer}>
       {Object.entries(logTableColumns).map(([key, value]) => (
         <div {...{ key }}>
           <label htmlFor={key}>{_.upperFirst(key)}</label>
-          <input onChange={handleColumnToggle} type="checkbox" id={key} name={key} checked={value} />
+          <input onChange={() => handleColumnToggle(key, !value)} type="checkbox" id={key} name={key} checked={value} />
         </div>
       ))}
     </div>
