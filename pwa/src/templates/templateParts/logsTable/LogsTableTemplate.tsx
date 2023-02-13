@@ -6,11 +6,13 @@ import { t } from "i18next";
 import { navigate } from "gatsby";
 import { Tag, ToolTip } from "@conduction/components";
 import { Button } from "@gemeente-denhaag/components-react";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { Paginate } from "../../../components/paginate/Paginate";
 import { useLogTableColumnsContext } from "../../../context/logs";
+import Collapsible from "react-collapsible";
+import clsx from "clsx";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -168,15 +170,11 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
 
           {!logs.length && (
             <TableRow>
-              <TableCell>{t("No logs found")}</TableCell>
-              <TableCell />
-              <TableCell />
-              <TableCell />
-              <TableCell />
-              <TableCell />
-              <TableCell />
-              <TableCell />
-              <TableCell />
+              {Object.values(logTableColumns)
+                .filter((value) => value)
+                .map((_, idx) => (
+                  <TableCell key={idx}>{idx === 0 && <>No logs found</>}</TableCell>
+                ))}
             </TableRow>
           )}
         </TableBody>
@@ -188,6 +186,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
 };
 
 const LogsTableColumnFilters: React.FC = () => {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const { setLogTableColumns, logTableColumns } = useLogTableColumnsContext();
 
   const handleColumnToggle = (key: string, checked: boolean) => {
@@ -195,13 +194,31 @@ const LogsTableColumnFilters: React.FC = () => {
   };
 
   return (
-    <div className={styles.columnFiltersContainer}>
-      {Object.entries(logTableColumns).map(([key, value]) => (
-        <div {...{ key }}>
-          <label htmlFor={key}>{_.upperFirst(key)}</label>
-          <input onChange={() => handleColumnToggle(key, !value)} type="checkbox" id={key} name={key} checked={value} />
+    <Collapsible
+      trigger={
+        <div className={clsx(styles.columnFiltersToggle, isOpen && styles.isOpen)}>
+          Filter columns <FontAwesomeIcon icon={faChevronDown} />
         </div>
-      ))}
-    </div>
+      }
+      open={isOpen}
+      transitionTime={200}
+      onOpening={() => setIsOpen(true)}
+      onClosing={() => setIsOpen(false)}
+    >
+      <div className={styles.columnFiltersContainer}>
+        {Object.entries(logTableColumns).map(([key, value]) => (
+          <div {...{ key }}>
+            <label htmlFor={key}>{_.upperFirst(key)}</label>
+            <input
+              onChange={() => handleColumnToggle(key, !value)}
+              type="checkbox"
+              id={key}
+              name={key}
+              checked={value}
+            />
+          </div>
+        ))}
+      </div>
+    </Collapsible>
   );
 };
