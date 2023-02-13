@@ -4,7 +4,7 @@ import { Container } from "@conduction/components";
 import { MappingFormTemplate, formId } from "../templateParts/mappingForm/MappingFormTemplate";
 import { useMapping } from "../../hooks/mapping";
 import { QueryClient } from "react-query";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import Skeleton from "react-loading-skeleton";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
@@ -14,7 +14,7 @@ interface MappingDetailsTemplateProps {
 }
 
 export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ mappingId }) => {
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
   const queryClient = new QueryClient();
