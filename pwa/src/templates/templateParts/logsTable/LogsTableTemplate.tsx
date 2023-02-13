@@ -189,10 +189,6 @@ const LogsTableColumnFilters: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const { setLogTableColumns, logTableColumns } = useLogTableColumnsContext();
 
-  const handleColumnToggle = (key: string, checked: boolean) => {
-    setLogTableColumns({ [key]: checked });
-  };
-
   return (
     <Collapsible
       trigger={
@@ -210,11 +206,11 @@ const LogsTableColumnFilters: React.FC = () => {
           <div {...{ key }}>
             <label htmlFor={key}>{_.upperFirst(key)}</label>
             <input
-              onChange={() => handleColumnToggle(key, !value)}
-              type="checkbox"
               id={key}
               name={key}
               checked={value}
+              type="checkbox"
+              onChange={() => setLogTableColumns({ [key]: !value })}
             />
           </div>
         ))}
