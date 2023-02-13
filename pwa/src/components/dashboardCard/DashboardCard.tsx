@@ -21,7 +21,7 @@ export interface DashboardCardProps {
   isEnabled?: boolean | undefined;
   lastRun?: string;
   lastCall?: string;
-  deleteOnClick?: (e: any) => void;
+  deleteOnClick?: (e?: any) => void;
 }
 
 export const DashboardCard: React.FC<DashboardCardProps> = ({
@@ -44,9 +44,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({
       </div>
 
       <div>
-        <button onClick={deleteOnClick} iconAlign="end">
-          Remove
-        </button>
+        <button onClick={deleteOnClick}>Remove</button>
       </div>
 
       <Paragraph className={styles.statusTypeContainer}>
