@@ -8,6 +8,9 @@ export const getPath = (value: any): any => {
     case "source":
       return "sources";
 
+    case "gateway":
+      return "sources";
+
     case "cronjob":
       return "cronjobs";
 
