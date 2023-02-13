@@ -1,6 +1,7 @@
 import * as React from "react";
+import { GlobalContext } from "./global";
 
-export interface IsLoadingProps {
+export interface IIsLoadingContext {
   schemaForm?: boolean;
   userForm?: boolean;
   authenticationForm?: boolean;
@@ -14,11 +15,16 @@ export interface IsLoadingProps {
   organizationForm?: boolean;
 }
 
-export const isLoading = {} as IsLoadingProps;
+export const defaultIsLoadingContext: IIsLoadingContext = {};
 
-export const IsLoadingContext = React.createContext<[IsLoadingProps, (data: IsLoadingProps) => void]>([
-  isLoading,
-  () => null,
-]);
+export const useIsLoadingContext = () => {
+  const [globalContext, setGlobalContext] = React.useContext(GlobalContext);
 
-export const IsLoadingProvider = IsLoadingContext.Provider;
+  const isLoading: IIsLoadingContext = globalContext.isLoading;
+
+  const setIsLoading = (loading: IIsLoadingContext) => {
+    setGlobalContext({ ...globalContext, isLoading: { ...globalContext.isLoading, ...loading } });
+  };
+
+  return { setIsLoading, isLoading };
+};

@@ -13,7 +13,7 @@ import { faArrowRight, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons
 import { navigate } from "gatsby";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useSync } from "../../hooks/synchronization";
-import { TabsContext } from "../../context/tabs";
+import { useCurrentTabContext } from "../../context/tabs";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
@@ -23,7 +23,7 @@ interface ObjectDetailTemplateProps {
 
 export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ objectId }) => {
   const { t } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
@@ -62,11 +62,11 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
       {getObject.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
-        <TabContext value={currentTab.objectDetailTabs.toString()}>
+        <TabContext value={currentTabs.objectDetailTabs.toString()}>
           <Tabs
-            value={currentTab.objectDetailTabs}
+            value={currentTabs.objectDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab({ ...currentTab, objectDetailTabs: newValue });
+              setCurrentTabs({ ...currentTabs, objectDetailTabs: newValue });
             }}
             variant="scrollable"
           >

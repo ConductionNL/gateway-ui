@@ -19,7 +19,7 @@ import { useOrganization } from "../../hooks/organization";
 import clsx from "clsx";
 import _ from "lodash";
 import { useLog } from "../../hooks/log";
-import { LogFiltersContext } from "../../context/logs";
+import { useLogFiltersContext } from "../../context/logs";
 
 interface LogsDetailTemplateProps {
   logId: string;
@@ -27,7 +27,7 @@ interface LogsDetailTemplateProps {
 
 export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId }) => {
   const { t } = useTranslation();
-  const [__, setLogFilters] = React.useContext(LogFiltersContext);
+  const { setLogFilters } = useLogFiltersContext();
 
   const queryClient = new QueryClient();
 

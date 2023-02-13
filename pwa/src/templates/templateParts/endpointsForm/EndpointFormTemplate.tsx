@@ -12,13 +12,13 @@ import { useTranslation } from "react-i18next";
 import { InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { useQueryClient } from "react-query";
 import { useEndpoint } from "../../../hooks/endpoint";
-import { CreateKeyValue, InputCheckbox } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { useSource } from "../../../hooks/source";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../../hooks/schema";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 interface EndpointFormTemplateProps {
   endpoint?: any;
@@ -28,7 +28,7 @@ export const formId: string = "endpoint-form";
 
 export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endpoint }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const [pathParts, setPathParts] = React.useState<any[]>([]);
   const [methods, setMethods] = React.useState<any[]>([]);
@@ -108,7 +108,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, endpointForm: createOrEditEndpoint.isLoading });
+    setIsLoading({ endpointForm: createOrEditEndpoint.isLoading });
   }, [createOrEditEndpoint.isLoading]);
 
   React.useEffect(() => {

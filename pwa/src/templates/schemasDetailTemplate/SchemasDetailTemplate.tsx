@@ -13,11 +13,11 @@ import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
 import { faArrowRight, faDownload, faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TabsContext } from "../../context/tabs";
+import { useCurrentTabContext } from "../../context/tabs";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import clsx from "clsx";
 import { SchemaFormTemplate, formId } from "../templateParts/schemasForm/SchemaFormTemplate";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoadingContext } from "../../context/isLoading";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
@@ -29,8 +29,8 @@ interface SchemasDetailPageProps {
 export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schemaId }) => {
   const { t, i18n } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
-  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
@@ -60,7 +60,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, schemaForm: deleteSchema.isLoading || getSchema.isLoading || dashboardLoading });
+    setIsLoading({ schemaForm: deleteSchema.isLoading || getSchema.isLoading || dashboardLoading });
   }, [deleteSchema.isLoading, getSchema.isLoading, dashboardLoading]);
 
   return (
@@ -87,11 +87,11 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           }
         />
 
-        <TabContext value={currentTab.schemaDetailTabs.toString()}>
+        <TabContext value={currentTabs.schemaDetailTabs.toString()}>
           <Tabs
-            value={currentTab.schemaDetailTabs}
+            value={currentTabs.schemaDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab({ ...currentTab, schemaDetailTabs: newValue });
+              setCurrentTabs({ ...currentTabs, schemaDetailTabs: newValue });
             }}
             variant="scrollable"
           >

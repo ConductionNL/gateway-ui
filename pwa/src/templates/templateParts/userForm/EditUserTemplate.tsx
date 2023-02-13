@@ -7,11 +7,11 @@ import { UserFormTemplate, formId } from "./UserFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { useTranslation } from "react-i18next";
 import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
-import { TabsContext } from "../../../context/tabs";
+import { useCurrentTabContext } from "../../../context/tabs";
 import { Container } from "@conduction/components";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 import { useLog } from "../../../hooks/log";
 import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
@@ -24,8 +24,8 @@ interface EditUserTemplateProps {
 
 export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
-  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
@@ -50,7 +50,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, userForm: dashboardLoading || deleteUser.isLoading });
+    setIsLoading({ userForm: dashboardLoading || deleteUser.isLoading });
   }, [deleteUser.isLoading, dashboardLoading]);
 
   return (
@@ -67,11 +67,11 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
 
       {getUser.isSuccess && (
         <div>
-          <TabContext value={currentTab.userDetailTabs.toString()}>
+          <TabContext value={currentTabs.userDetailTabs.toString()}>
             <Tabs
-              value={currentTab.userDetailTabs}
+              value={currentTabs.userDetailTabs}
               onChange={(_, newValue: number) => {
-                setCurrentTab({ ...currentTab, userDetailTabs: newValue });
+                setCurrentTabs({ ...currentTabs, userDetailTabs: newValue });
               }}
               variant="scrollable"
             >

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { InputText } from "@conduction/components";
 import { useQueryClient } from "react-query";
 import { useCollection } from "../../../hooks/collection";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 interface CollectionFormTemplateProps {
   collection?: any;
@@ -16,7 +16,7 @@ export const formId: string = "collection-form";
 
 export const CollectionFormTemplate: React.FC<CollectionFormTemplateProps> = ({ collection }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = useQueryClient();
   const _useCollection = useCollection(queryClient);
@@ -43,7 +43,7 @@ export const CollectionFormTemplate: React.FC<CollectionFormTemplateProps> = ({ 
   }, [collection]);
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, collectionForm: createOrEditCollection.isLoading });
+    setIsLoading({ collectionForm: createOrEditCollection.isLoading });
   }, [createOrEditCollection.isLoading]);
 
   return (

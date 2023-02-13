@@ -11,7 +11,7 @@ import Skeleton from "react-loading-skeleton";
 import { SelectCreate, SelectSingle } from "@conduction/components/lib/components/formFields/select/select";
 import { InputURL } from "@conduction/components/lib/components/formFields";
 import { useOrganization } from "../../../hooks/organization";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 interface ApplicationFormTemplateProps {
   application?: any;
@@ -21,8 +21,7 @@ export const formId: string = "application-form";
 
 export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = ({ application }) => {
   const { t } = useTranslation();
-
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [domains, setDomains] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
@@ -78,7 +77,7 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
   }, [application]);
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, applicationForm: createOrEditApplication.isLoading });
+    setIsLoading({ applicationForm: createOrEditApplication.isLoading });
   }, [createOrEditApplication.isLoading]);
 
   return (

@@ -9,7 +9,7 @@ import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-re
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { ActionFormTemplate, formId } from "../templateParts/actionsForm/ActionFormTemplate";
 import action from "../../apiService/resources/action";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
@@ -22,7 +22,7 @@ interface ActionsDetailsTemplateProps {
 export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ actionId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();

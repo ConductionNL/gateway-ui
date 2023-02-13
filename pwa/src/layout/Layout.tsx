@@ -3,18 +3,14 @@ import * as styles from "./Layout.module.css";
 import "../translations/i18n";
 import APIContext, { APIProvider } from "../apiService/apiContext";
 import APIService from "../apiService/apiService";
-import { GatsbyProvider, IGatsbyContext, TScreenSize } from "../context/gatsby";
+import { TScreenSize, useGatsbyContext } from "../context/gatsby";
 import { StylesProvider } from "@gemeente-denhaag/components-react";
 import { Head } from "./Head";
 import { Content } from "../Content";
 import { ThemeProvider } from "../templates/themeProvider/ThemeProvider";
-import Favicon from "react-favicon";
-import Logo from "../assets/svgs/conduction-logo.svg";
-import { TabsProvider, ITabs, tabs as _tabs } from "../context/tabs";
 import { getScreenSize } from "../services/getScreenSize";
-import { IsLoadingProps, IsLoadingProvider } from "../context/isLoading";
 import { Toaster } from "react-hot-toast";
-import { LogFiltersProvider, LogProps, logFilters as _logFilters } from "../context/logs";
+import { defaultGlobalContext, GlobalProvider, IGlobalContext } from "../context/global";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -24,20 +20,18 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [API, setAPI] = React.useState<APIService>(React.useContext(APIContext));
-  const [gatsbyContext, setGatsbyContext] = React.useState<IGatsbyContext>({
-    ...{ pageContext, location, screenSize: "mobile" },
-  });
   const [screenSize, setScreenSize] = React.useState<TScreenSize>("mobile");
-  const [tabs, setTabs] = React.useState<ITabs>(_tabs);
-  const [isLoading, setIsLoading] = React.useState<IsLoadingProps>({});
-  const [logFilters, setLogFilters] = React.useState<LogProps>(_logFilters);
+  const [globalContext, setGlobalContext] = React.useState<IGlobalContext>(defaultGlobalContext);
 
   React.useEffect(() => {
     setAPI(new APIService());
   }, []);
 
   React.useEffect(() => {
-    setGatsbyContext({ ...{ pageContext, location, screenSize: getScreenSize(window.innerWidth) } });
+    setGlobalContext((context) => ({
+      ...context,
+      gatsby: { ...{ pageContext, location, screenSize: getScreenSize(window.innerWidth) } },
+    }));
 
     const JWT = sessionStorage.getItem("JWT");
 
@@ -58,26 +52,19 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
     <>
       <Head crumbs={pageContext.breadcrumb?.crumbs} />
 
-      <GatsbyProvider value={gatsbyContext}>
+      <GlobalProvider value={[globalContext, setGlobalContext]}>
         <APIProvider value={API}>
           <StylesProvider>
             <Toaster position="bottom-right" />
-            <LogFiltersProvider value={[logFilters, setLogFilters]}>
-              <IsLoadingProvider value={[isLoading, setIsLoading]}>
-                <TabsProvider value={[tabs, setTabs]}>
-                  <ThemeProvider>
-                    <Favicon url={Logo} />
 
-                    <div className={styles.container}>
-                      <Content {...{ children }} />
-                    </div>
-                  </ThemeProvider>
-                </TabsProvider>
-              </IsLoadingProvider>
-            </LogFiltersProvider>
+            <ThemeProvider>
+              <div className={styles.container}>
+                <Content {...{ children }} />
+              </div>
+            </ThemeProvider>
           </StylesProvider>
         </APIProvider>
-      </GatsbyProvider>
+      </GlobalProvider>
     </>
   );
 };
