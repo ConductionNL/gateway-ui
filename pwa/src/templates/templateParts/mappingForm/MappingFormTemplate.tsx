@@ -34,27 +34,18 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
   const queryClient = useQueryClient();
   const createOrEditMapping = useMapping(queryClient).createOrEdit(mapping?.id);
 
-  const mappingRefTop: any = React.useRef();
   const mappingRefBottom: any = React.useRef();
-  const unsetRefTop: any = React.useRef();
   const unsetRefBottom: any = React.useRef();
-  const castRefTop: any = React.useRef();
   const castRefBottom: any = React.useRef();
 
-  const handleScrollToCreateMapping = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleScrollToCreate = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, ref: any) => {
     e.preventDefault();
     e.stopPropagation();
 
-    mappingRefBottom.current.sc;
+    ref.current.sc;
 
-    mappingRefBottom.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+    ref.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
   };
-
-  const viewUnsetBottom = () =>
-    unsetRefBottom.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
-
-  const viewCastBottom = () =>
-    castRefBottom.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
 
   const {
     register,
@@ -147,12 +138,11 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
         </FormField>
         <FormField>
           <FormFieldInput>
-            <div ref={mappingRefTop} />
             <Collapsible
               className={styles.collapsible}
               openedClassName={styles.collapsible}
               trigger={
-                <div className={styles.triggerContainer}>
+                <div className={clsx(styles.triggerContainer, isOpenMapping && styles.triggerContainerBorder)}>
                   <div className={styles.triggerButton}>
                     <span className={styles.collapsibleTitle}>
                       {t("Mapping")} <span className={styles.collapsibleCountIndicator}>({watchMapping?.length})</span>
@@ -164,7 +154,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   </div>
 
                   {isOpenMapping && (
-                    <div className={styles.triggerButton} onClick={handleScrollToCreateMapping}>
+                    <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, mappingRefBottom)}>
                       <Link icon={<FontAwesomeIcon icon={faArrowDown} />} iconAlign="start">
                         {t("Scroll to create")}
                       </Link>
@@ -177,33 +167,43 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
               onOpening={() => setIsOpenMapping(true)}
               onClosing={() => setIsOpenMapping(false)}
             >
-              <CreateKeyValue
-                name="mapping"
-                {...{ register, errors, control }}
-                defaultValue={_mapping}
-                disabled={isLoading.endpointForm}
-                validation={{ required: true }}
-              />
+              <div className={styles.keyValueContainer}>
+                <CreateKeyValue
+                  name="mapping"
+                  {...{ register, errors, control }}
+                  defaultValue={_mapping}
+                  disabled={isLoading.endpointForm}
+                  validation={{ required: true }}
+                />
+              </div>
             </Collapsible>
             <div ref={mappingRefBottom} />
           </FormFieldInput>
         </FormField>
         <FormField>
           <FormFieldInput>
-            <div ref={unsetRefTop} />
-
             <Collapsible
               className={styles.collapsible}
               openedClassName={styles.collapsible}
               trigger={
-                <div className={styles.triggerContainer}>
-                  <span className={styles.collapsibleTitle}>
-                    {t("Unset")} <span className={styles.collapsibleCountIndicator}>({watchUnset?.length})</span>
-                  </span>
-                  <FontAwesomeIcon
-                    className={clsx(styles.toggleIcon, isOpenUnset && styles.isOpen)}
-                    icon={faChevronRight}
-                  />
+                <div className={clsx(styles.triggerContainer, isOpenUnset && styles.triggerContainerBorder)}>
+                  <div className={styles.triggerButton}>
+                    <span className={styles.collapsibleTitle}>
+                      {t("Unset")} <span className={styles.collapsibleCountIndicator}>({watchUnset?.length})</span>
+                    </span>
+                    <FontAwesomeIcon
+                      className={clsx(styles.toggleIcon, isOpenUnset && styles.isOpen)}
+                      icon={faChevronRight}
+                    />
+                  </div>
+
+                  {isOpenUnset && (
+                    <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, unsetRefBottom)}>
+                      <Link icon={<FontAwesomeIcon icon={faArrowDown} />} iconAlign="start">
+                        {t("Scroll to create")}
+                      </Link>
+                    </div>
+                  )}
                 </div>
               }
               open={isOpenUnset}
@@ -211,16 +211,14 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
               onOpening={() => setIsOpenUnset(true)}
               onClosing={() => setIsOpenUnset(false)}
             >
-              <span className={clsx(styles.toCollapsibleEnd, styles.toCollapsibleIcon)} onClick={viewUnsetBottom}>
-                <FontAwesomeIcon icon={faArrowDown} /> Go to Bottom
-              </span>
-
-              <CreateKeyValue
-                name="unset"
-                {...{ register, errors, control }}
-                defaultValue={unset}
-                disabled={isLoading.endpointForm}
-              />
+              <div className={styles.keyValueContainer}>
+                <CreateKeyValue
+                  name="unset"
+                  {...{ register, errors, control }}
+                  defaultValue={unset}
+                  disabled={isLoading.endpointForm}
+                />
+              </div>
             </Collapsible>
 
             <div ref={unsetRefBottom} />
@@ -228,20 +226,28 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
         </FormField>
         <FormField>
           <FormFieldInput>
-            <div ref={castRefTop} />
-
             <Collapsible
               className={styles.collapsible}
               openedClassName={styles.collapsible}
               trigger={
                 <div className={styles.triggerContainer}>
-                  <span className={styles.collapsibleTitle}>
-                    {t("Cast")} <span className={styles.collapsibleCountIndicator}>({watchCast?.length})</span>
-                  </span>
-                  <FontAwesomeIcon
-                    className={clsx(styles.toggleIcon, isOpenCast && styles.isOpen)}
-                    icon={faChevronRight}
-                  />
+                  <div className={styles.triggerButton}>
+                    <span className={styles.collapsibleTitle}>
+                      {t("Cast")} <span className={styles.collapsibleCountIndicator}>({watchCast?.length})</span>
+                    </span>
+                    <FontAwesomeIcon
+                      className={clsx(styles.toggleIcon, isOpenCast && styles.isOpen)}
+                      icon={faChevronRight}
+                    />
+                  </div>
+
+                  {isOpenCast && (
+                    <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, castRefBottom)}>
+                      <Link icon={<FontAwesomeIcon icon={faArrowDown} />} iconAlign="start">
+                        {t("Scroll to create")}
+                      </Link>
+                    </div>
+                  )}
                 </div>
               }
               open={isOpenCast}
@@ -249,15 +255,14 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
               onOpening={() => setIsOpenCast(true)}
               onClosing={() => setIsOpenCast(false)}
             >
-              <span className={styles.toCollapsibleEnd} onClick={viewCastBottom}>
-                <FontAwesomeIcon icon={faArrowDown} /> Go to Bottom
-              </span>
-              <CreateKeyValue
-                name="cast"
-                {...{ register, errors, control }}
-                defaultValue={cast}
-                disabled={isLoading.endpointForm}
-              />
+              <div className={styles.keyValueContainer}>
+                <CreateKeyValue
+                  name="cast"
+                  {...{ register, errors, control }}
+                  defaultValue={cast}
+                  disabled={isLoading.endpointForm}
+                />
+              </div>
             </Collapsible>
 
             <div ref={castRefBottom} />

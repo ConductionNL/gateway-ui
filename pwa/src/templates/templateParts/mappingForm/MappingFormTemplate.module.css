@@ -19,14 +19,16 @@
     var(--gateway-ui-size-xl) * -1
   ); /* Dashboard Template padding offset  */
   position: sticky;
-  background-color: var(--gateway-ui-color-white);
-  box-shadow: var(--gateway-ui-side-bar-box-shadow);
+  background-color: var(--gateway-ui-mapping-header-background-color);
   user-select: none;
-
   display: flex;
   align-items: center;
   cursor: pointer;
   justify-content: space-between;
+}
+
+.triggerContainerBorder {
+  border-bottom: var(--gateway-ui-mapping-header-border-color);
 }
 
 .triggerButton {
@@ -34,6 +36,11 @@
   padding-inline-end: var(--gateway-ui-size-md);
   padding-block-start: var(--gateway-ui-size-md);
   padding-block-end: var(--gateway-ui-size-md);
+}
+
+.keyValueContainer {
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
 }
 
 .collapsibleTitle {
