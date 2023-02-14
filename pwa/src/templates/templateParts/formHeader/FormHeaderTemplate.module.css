@@ -4,6 +4,7 @@
   justify-content: space-between;
   gap: var(--gateway-ui-size-lg);
   margin-block-end: var(--gateway-ui-size-xl);
+  white-space: nowrap;
 }
 
 .container > * {
@@ -11,7 +12,9 @@
 }
 
 .title {
-  word-break: break-word;
+  font-size: var(--gateway-ui-font-size-2xl);
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .buttonsContainer {
