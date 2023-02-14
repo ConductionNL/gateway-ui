@@ -531,14 +531,14 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("minDate")}</FormFieldLabel>
-                        <InputDate {...{ register, errors }} name="minDate" disabled={loading} />
+                        <InputDate {...{ register, errors, control }} name="minDate" disabled={loading} />
                       </FormFieldInput>
                     </FormField>
 
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("maxDate")}</FormFieldLabel>
-                        <InputDate {...{ register, errors }} name="maxDate" disabled={loading} />
+                        <InputDate {...{ register, errors, control }} name="maxDate" disabled={loading} />
                       </FormFieldInput>
                     </FormField>
 
