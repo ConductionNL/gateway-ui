@@ -16,6 +16,20 @@ export const HomeTemplate: React.FC = () => {
   const queryClient = new QueryClient();
   const _useDashboardCards = useDashboardCards(queryClient);
   const getDashboardCards = _useDashboardCards.getAll();
+  const deleteDashboardCard = _useDashboardCards.createOrDelete();
+
+  const handleDeleteDashboardCard = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
+    dashboardCardId: string,
+  ) => {
+    e.stopPropagation();
+
+    const confirmDeletion = confirm("Are you sure you want to delete this card?");
+
+    if (confirmDeletion) {
+      deleteDashboardCard.mutate({ id: dashboardCardId });
+    }
+  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -34,6 +48,7 @@ export const HomeTemplate: React.FC = () => {
               isEnabled={dashboardCard?.object?.isEnabled}
               lastRun={dashboardCard?.object?.lastRun}
               lastCall={dashboardCard?.object?.lastCall}
+              onDelete={(e) => handleDeleteDashboardCard(e, dashboardCard.id)}
             />
           ))}
         </div>
