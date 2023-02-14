@@ -106,7 +106,6 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
           <Tabs
             value={currentTabs.sourceDetailTabs}
             onChange={(_, newValue: number) => {
-              console.log("change");
               setCurrentTabs({ ...currentTabs, sourceDetailTabs: newValue });
             }}
             variant="scrollable"
