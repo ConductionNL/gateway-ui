@@ -24,7 +24,7 @@ export const HomeTemplate: React.FC = () => {
   ) => {
     e.stopPropagation();
 
-    const confirmDeletion = confirm("Are you sure you want to delete this object?");
+    const confirmDeletion = confirm("Are you sure you want to delete this card?");
 
     if (confirmDeletion) {
       deleteDashboardCard.mutate({ id: dashboardCardId });
@@ -48,7 +48,7 @@ export const HomeTemplate: React.FC = () => {
               isEnabled={dashboardCard?.object?.isEnabled}
               lastRun={dashboardCard?.object?.lastRun}
               lastCall={dashboardCard?.object?.lastCall}
-              deleteOnClick={(e) => handleDeleteDashboardCard(e, dashboardCard.id)}
+              onDelete={(e) => handleDeleteDashboardCard(e, dashboardCard.id)}
             />
           ))}
         </div>
