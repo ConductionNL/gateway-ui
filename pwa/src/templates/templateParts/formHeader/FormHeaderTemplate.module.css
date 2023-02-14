@@ -28,6 +28,10 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
+.buttonContentWrap {
+  white-space: nowrap;
+}
+
 .deleteButton {
   --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
 }
