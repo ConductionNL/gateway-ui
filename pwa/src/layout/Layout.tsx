@@ -50,7 +50,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
 
   return (
     <>
-      <Head crumbs={pageContext.breadcrumb?.crumbs} />
+      <Head crumbs={pageContext.breadcrumb?.crumbs} pathname={location.pathname} />
 
       <GlobalProvider value={[globalContext, setGlobalContext]}>
         <APIProvider value={API}>
