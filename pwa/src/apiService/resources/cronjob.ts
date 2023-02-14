@@ -14,6 +14,12 @@ export default class Cronjob {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", "/admin/cronjobs?limit=200");
+
+    return data?.map((cronjob: any) => ({ label: cronjob.name, value: cronjob.id }));
+  };
+
   public getOne = async (id: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/cronjobs/${id}`);
 

@@ -3,12 +3,12 @@ import * as styles from "./CreateUserTemplate.module.css";
 import { formId, UserFormTemplate } from "./UserFormTemplate";
 import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 
 export const CreateUserTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const [isLoading] = React.useContext(IsLoadingContext);
+  const { isLoading } = useIsLoadingContext();
 
   return (
     <Container layoutClassName={styles.container}>

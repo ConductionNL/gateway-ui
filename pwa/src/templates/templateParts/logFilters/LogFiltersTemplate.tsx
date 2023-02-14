@@ -12,219 +12,247 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { useEndpoint } from "../../../hooks/endpoint";
 import { useApplication } from "../../../hooks/application";
 import { useOrganization } from "../../../hooks/organization";
-import { SelectSingle } from "@conduction/components/lib/components/formFields";
-import { channels, levelNames, LogFiltersContext } from "../../../context/logs";
+import { InputText, SelectSingle } from "@conduction/components/lib/components/formFields";
+import { channels, levelNames, useLogFiltersContext } from "../../../context/logs";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 
 export const LogFiltersTemplate: React.FC = () => {
-  const [logFilters, setLogFilters] = React.useContext(LogFiltersContext);
+  const { logFilters, setLogFilters } = useLogFiltersContext();
 
   const queryClient = new QueryClient();
 
-  const getEndpoints = useEndpoint(queryClient).getAll();
-  const getSchemas = useSchema(queryClient).getAll();
-  const getCronjobs = useCronjob(queryClient).getAll();
-  const getActions = useAction(queryClient).getAll();
-  const getUsers = useUser(queryClient).getAll();
-  const getOrganizations = useOrganization(queryClient).getAll();
-  const getApplications = useApplication(queryClient).getAll();
+  const getEndpoints = useEndpoint(queryClient).getAllSelectOptions();
+  const getSchemas = useSchema(queryClient).getAllSelectOptions();
+  const getCronjobs = useCronjob(queryClient).getAllSelectOptions();
+  const getActions = useAction(queryClient).getAllSelectOptions();
+  const getUsers = useUser(queryClient).getAllSelectOptions();
+  const getOrganizations = useOrganization(queryClient).getAllSelectOptions();
+  const getApplications = useApplication(queryClient).getAllSelectOptions();
 
   const {
     register,
     control,
     watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
-  const watchChannels = watch("channels");
-  const watchLevelNames = watch("levelNames");
-  const watchEndpoints = watch("endpoints");
-  const watchSchemas = watch("schemas");
-  const watchCronjobs = watch("cronjobs");
-  const watchActions = watch("actions");
-  const watchUsers = watch("users");
-  const watchOrganizations = watch("organizations");
-  const watchApplications = watch("applications");
+  React.useEffect(() => {
+    const subscription = watch((value) => {
+      setLogFilters({
+        ...logFilters,
+        channel: value.channels?.value,
+        level_name: value.level_name?.value,
+        context: {
+          session: value.session,
+          process: value.process,
+          endpoint: value.endpoints?.value,
+          schema: value.schemas?.value,
+          cronjob: value.cronjobs?.value,
+          action: value.actions?.value,
+          user: value.users?.value,
+          organization: value.organizations?.value,
+          application: value.applications?.value,
+        },
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   React.useEffect(() => {
-    setLogFilters({
-      ...logFilters,
-      channel: watchChannels?.value,
-      level_name: watchLevelNames?.value,
-      context: {
-        endpoint: watchEndpoints?.value,
-        schema: watchSchemas?.value,
-        cronjob: watchCronjobs?.value,
-        action: watchActions?.value,
-        user: watchUsers?.value,
-        organization: watchOrganizations?.value,
-        application: watchApplications?.value,
-      },
-    });
-  }, [
-    watchChannels,
-    watchLevelNames,
-    watchEndpoints,
-    watchSchemas,
-    watchCronjobs,
-    watchActions,
-    watchUsers,
-    watchOrganizations,
-    watchApplications,
-  ]);
+    setValue("session", logFilters.context?.session);
+
+    setValue("process", logFilters.context?.process);
+
+    setValue(
+      "level_name",
+      levelNameOptions.find((levelName) => levelName.value === logFilters.level_name),
+    );
+
+    setValue(
+      "channels",
+      channelOptions.find((channelName) => channelName.value === logFilters.channel),
+    );
+
+    setValue(
+      "endpoints",
+      getEndpoints.data?.find((endpoint) => endpoint.value === logFilters.context?.endpoint),
+    );
+
+    setValue(
+      "schemas",
+      getSchemas.data?.find((schema) => schema.value === logFilters.context?.schema),
+    );
+
+    setValue(
+      "cronjobs",
+      getCronjobs.data?.find((cronjob) => cronjob.value === logFilters.context?.cronjob),
+    );
+
+    setValue(
+      "actions",
+      getActions.data?.find((action) => action.value === logFilters.context?.action),
+    );
+
+    setValue(
+      "users",
+      getUsers.data?.find((user) => user.value === logFilters.context?.user),
+    );
+
+    setValue(
+      "organizations",
+      getOrganizations.data?.find((organization) => organization.value === logFilters.context?.organization),
+    );
+
+    setValue(
+      "applications",
+      getApplications.data?.find((application) => application.value === logFilters.context?.application),
+    );
+  }, []);
 
   return (
     <form className={styles.form}>
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Levels</FormFieldLabel>
+      <div className={styles.textFiltersContainer}>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Session</FormFieldLabel>
 
-          <SelectSingle
-            isClearable
-            options={levelNames.map((levelName) => ({ label: _.upperFirst(_.toLower(levelName)), value: levelName }))}
-            name="levelNames"
-            {...{ register, errors, control }}
-          />
-        </FormFieldInput>
-      </FormField>
+            <InputText name="session" placeholder="Session id" {...{ register, errors }} />
+          </FormFieldInput>
+        </FormField>
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Channels</FormFieldLabel>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Process</FormFieldLabel>
 
-          <SelectSingle
-            isClearable
-            options={channels.map((channel) => ({ label: _.upperFirst(channel), value: channel }))}
-            name="channels"
-            {...{ register, errors, control }}
-          />
-        </FormFieldInput>
-      </FormField>
+            <InputText name="process" placeholder="Process id" {...{ register, errors }} />
+          </FormFieldInput>
+        </FormField>
+      </div>
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Endpoints</FormFieldLabel>
+      <div className={styles.selectFiltersContainer}>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Levels</FormFieldLabel>
 
-          {getEndpoints.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="endpoints"
-              {...{ register, errors, control }}
-              options={getEndpoints.data.map((endpoint) => ({ label: endpoint.name, value: endpoint.id }))}
-            />
-          )}
+            <SelectSingle isClearable options={levelNameOptions} name="level_name" {...{ register, errors, control }} />
+          </FormFieldInput>
+        </FormField>
 
-          {getEndpoints.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Channels</FormFieldLabel>
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Schemas</FormFieldLabel>
+            <SelectSingle isClearable options={channelOptions} name="channels" {...{ register, errors, control }} />
+          </FormFieldInput>
+        </FormField>
 
-          {getSchemas.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="schemas"
-              {...{ register, errors, control }}
-              options={getSchemas.data.map((schema) => ({ label: schema.name, value: schema.id }))}
-            />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Endpoints</FormFieldLabel>
 
-          {getSchemas.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getEndpoints.isSuccess && (
+              <SelectSingle
+                isClearable
+                name="endpoints"
+                {...{ register, errors, control }}
+                options={getEndpoints.data}
+              />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Cronjobs</FormFieldLabel>
+            {getEndpoints.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getCronjobs.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="cronjobs"
-              {...{ register, errors, control }}
-              options={getCronjobs.data.map((cronjob) => ({ label: cronjob.name, value: cronjob.id }))}
-            />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Schemas</FormFieldLabel>
 
-          {getCronjobs.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getSchemas.isSuccess && (
+              <SelectSingle isClearable name="schemas" {...{ register, errors, control }} options={getSchemas.data} />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Actions</FormFieldLabel>
+            {getSchemas.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getActions.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="actions"
-              {...{ register, errors, control }}
-              options={getActions.data.map((action) => ({ label: action.name, value: action.id }))}
-            />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Cronjobs</FormFieldLabel>
 
-          {getActions.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getCronjobs.isSuccess && (
+              <SelectSingle isClearable name="cronjobs" {...{ register, errors, control }} options={getCronjobs.data} />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Users</FormFieldLabel>
+            {getCronjobs.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getUsers.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="users"
-              {...{ register, errors, control }}
-              options={getUsers.data.map((user) => ({ label: user.name, value: user.id }))}
-            />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Actions</FormFieldLabel>
 
-          {getUsers.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getActions.isSuccess && (
+              <SelectSingle isClearable name="actions" {...{ register, errors, control }} options={getActions.data} />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Organizations</FormFieldLabel>
+            {getActions.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getOrganizations.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="organizations"
-              {...{ register, errors, control }}
-              options={getOrganizations.data.map((organization) => ({
-                label: organization.name,
-                value: organization.id,
-              }))}
-            />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Users</FormFieldLabel>
 
-          {getOrganizations.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getUsers.isSuccess && (
+              <SelectSingle isClearable name="users" {...{ register, errors, control }} options={getUsers.data} />
+            )}
 
-      <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>Applications</FormFieldLabel>
+            {getUsers.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
 
-          {getApplications.isSuccess && (
-            <SelectSingle
-              isClearable
-              name="applications"
-              {...{ register, errors, control }}
-              options={getApplications.data.map((application) => ({
-                label: application.name,
-                value: application.id,
-              }))}
-            />
-          )}
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Organizations</FormFieldLabel>
 
-          {getApplications.isLoading && <Skeleton height="50px" />}
-        </FormFieldInput>
-      </FormField>
+            {getOrganizations.isSuccess && (
+              <SelectSingle
+                isClearable
+                name="organizations"
+                {...{ register, errors, control }}
+                options={getOrganizations.data}
+              />
+            )}
+
+            {getOrganizations.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
+
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Applications</FormFieldLabel>
+
+            {getApplications.isSuccess && (
+              <SelectSingle
+                isClearable
+                name="applications"
+                {...{ register, errors, control }}
+                options={getApplications.data}
+              />
+            )}
+
+            {getApplications.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
+      </div>
     </form>
   );
 };
+
+const levelNameOptions = levelNames.map((levelName) => ({
+  label: _.upperFirst(_.toLower(levelName)),
+  value: levelName,
+}));
+const channelOptions = channels.map((channel) => ({ label: _.upperFirst(channel), value: channel }));

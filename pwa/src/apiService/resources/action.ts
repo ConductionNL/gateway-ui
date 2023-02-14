@@ -14,6 +14,12 @@ export default class Action {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", "/admin/actions");
+
+    return data?.map((action: any) => ({ label: action.name, value: action.id }));
+  };
+
   public getOne = async (id: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/actions/${id}`);
 

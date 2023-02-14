@@ -14,6 +14,12 @@ export default class Organization {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", "/admin/organisations?limit=200");
+
+    return data?.map((organization: any) => ({ label: organization.name, value: organization.id }));
+  };
+
   public getOne = async (id: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/organisations/${id}`);
 

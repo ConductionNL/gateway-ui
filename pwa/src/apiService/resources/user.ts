@@ -14,6 +14,12 @@ export default class User {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", "/admin/users?limit=200");
+
+    return data?.map((user: any) => ({ label: user.name, value: user.id }));
+  };
+
   public getOne = async (id: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/users/${id}`);
 

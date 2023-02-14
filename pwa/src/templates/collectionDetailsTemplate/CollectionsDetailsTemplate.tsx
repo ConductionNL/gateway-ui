@@ -6,7 +6,7 @@ import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useCollection } from "../../hooks/collection";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { CollectionFormTemplate, formId } from "../templateParts/collectionsForm/CollectionFormTemplate";
 import { useLog } from "../../hooks/log";
@@ -19,7 +19,7 @@ interface CollectionsDetailPageProps {
 
 export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = ({ collectionId }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
@@ -45,7 +45,7 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, collectionForm: deleteCollection.isLoading || dashboardLoading });
+    setIsLoading({ collectionForm: deleteCollection.isLoading || dashboardLoading });
   }, [deleteCollection.isLoading, dashboardLoading]);
 
   return (

@@ -9,6 +9,7 @@ import {
   faChevronDown,
   faChevronUp,
   faDownload,
+  faExternalLink,
   faHome,
   faScroll,
   faTrash,
@@ -19,7 +20,6 @@ import _ from "lodash";
 import { QueryClient } from "react-query";
 import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
-import { ExternalLinkIcon } from "@gemeente-denhaag/icons";
 import { GitHubLogo } from "../../assets/svgs/GitHub";
 import { VerticalMenu } from "../templateParts/verticalMenu/VerticalMenu";
 
@@ -161,8 +161,8 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 <div className={styles.tags}>
                   {getPlugin.data?.license &&
                     getPlugin.data.license.length > 0 &&
-                    getPlugin.data.license.map((_license: any) => (
-                      <ToolTip tooltip={`License ${_license}`}>
+                    getPlugin.data.license.map((_license: any, idx: number) => (
+                      <ToolTip tooltip={`License ${_license}`} key={idx}>
                         <Tag icon={<FontAwesomeIcon icon={faScroll} />} label={_.upperFirst(_license)} />
                       </ToolTip>
                     ))}
@@ -212,11 +212,13 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                           requires: <br />
                           <ul>
                             {currentRequire &&
-                              Object.entries(getPlugin.data.versions[currentRequire]?.require).map(([key, value]) => (
-                                <li>
-                                  {key}: {value}
-                                </li>
-                              ))}
+                              Object.entries(getPlugin.data.versions[currentRequire]?.require).map(
+                                ([key, value], idx) => (
+                                  <li key={idx}>
+                                    {key}: {value}
+                                  </li>
+                                ),
+                              )}
                           </ul>
                         </TableCell>
                       </TableRow>
@@ -263,18 +265,24 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                       <Heading3>Support</Heading3>
                       <div>
                         {getPlugin.data.support?.source && (
-                          <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.source)}>
+                          <Button
+                            icon={<FontAwesomeIcon icon={faExternalLink} />}
+                            onClick={() => open(getPlugin.data.support.source)}
+                          >
                             Source
                           </Button>
                         )}
                         {getPlugin.data.support?.issues && (
-                          <Button icon={<ExternalLinkIcon />} onClick={() => open(getPlugin.data.support.issues)}>
+                          <Button
+                            icon={<FontAwesomeIcon icon={faExternalLink} />}
+                            onClick={() => open(getPlugin.data.support.issues)}
+                          >
                             Issues
                           </Button>
                         )}
                         {getPlugin.data.dist && (
                           <Button
-                            icon={<ExternalLinkIcon />}
+                            icon={<FontAwesomeIcon icon={faExternalLink} />}
                             onClick={() => handleDownloadButton(getPlugin.data.dist.url)}
                           >
                             Download
@@ -333,8 +341,8 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                     <div className={styles.sideBarTitle}>
                       <Heading3>Maintainers</Heading3>
                       <div className={styles.maintainersContainer}>
-                        {getPlugin.data.maintainers.map((maintainer: any) => (
-                          <ToolTip tooltip={maintainer.name}>
+                        {getPlugin.data.maintainers.map((maintainer: any, idx: number) => (
+                          <ToolTip tooltip={maintainer.name} key={idx}>
                             <div className={styles.maintainer}>
                               <img src={maintainer.avatar_url} />
                             </div>

@@ -6,8 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
+import { faArrowRight, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { translateDate } from "../../services/dateFormat";
 import { QueryClient } from "react-query";
 import { useApplication } from "../../hooks/application";
@@ -80,7 +79,7 @@ export const ApplicationsTemplate: React.FC = () => {
                   </Button>
                 </TableCell>
                 <TableCell onClick={() => navigate(`/settings/applications/${application.id}`)}>
-                  <Link icon={<ArrowRightIcon />} iconAlign="start">
+                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                     {t("Details")}
                   </Link>
                 </TableCell>

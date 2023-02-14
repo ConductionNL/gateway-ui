@@ -8,10 +8,9 @@ import { QueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import clsx from "clsx";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { Paginate } from "../../components/paginate/Paginate";
 
 export const ObjectTemplate: React.FC = () => {
@@ -82,7 +81,7 @@ export const ObjectTemplate: React.FC = () => {
                       </Button>
                     </TableCell>
                     <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
-                      <Link icon={<ArrowRightIcon />} iconAlign="start">
+                      <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                         {t("Details")}
                       </Link>
                     </TableCell>

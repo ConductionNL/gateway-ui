@@ -9,12 +9,12 @@ import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { LogFiltersTemplate } from "../templateParts/logFilters/LogFiltersTemplate";
-import { LogFiltersContext } from "../../context/logs";
+import { useLogFiltersContext } from "../../context/logs";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 export const LogsTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const [logFilters] = React.useContext(LogFiltersContext);
+  const { logFilters } = useLogFiltersContext();
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();

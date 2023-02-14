@@ -11,6 +11,12 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        icon: "./src/assets/svgs/conduction-logo.svg",
+      },
+    },
+    {
       resolve: `gatsby-plugin-breadcrumb`,
       options: {
         useAutoGen: true,
@@ -120,6 +126,10 @@ module.exports = {
           {
             pathname: "/settings/authentication/[authenticationId]",
             crumbLabel: "Authentication",
+          },
+          {
+            pathname: "/mappings/[mappingId]",
+            crumbLabel: "Mapping",
           },
         ],
       },

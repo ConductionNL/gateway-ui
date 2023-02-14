@@ -9,10 +9,9 @@ import { QueryClient } from "react-query";
 import { Tag, ToolTip } from "@conduction/components";
 import _ from "lodash";
 import clsx from "clsx";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { translateDate } from "../../services/dateFormat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import TableWrapper from "../../components/tableWrapper/TableWrapper";
@@ -74,7 +73,7 @@ export const SourcesTemplate: React.FC = () => {
                   <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
                   <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
                   <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
-                    <Link icon={<ArrowRightIcon />} iconAlign="start">
+                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                       {t("Details")}
                     </Link>
                   </TableCell>

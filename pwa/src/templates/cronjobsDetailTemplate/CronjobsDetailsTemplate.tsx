@@ -7,7 +7,7 @@ import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { CronjobFormTemplate, formId } from "../templateParts/cronjobsForm/CronjobsFormTemplate";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
@@ -20,7 +20,7 @@ interface CronjobDetailPageProps {
 export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronjobId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
@@ -44,7 +44,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, cronjobForm: deleteCronjob.isLoading || dashboardLoading });
+    setIsLoading({ cronjobForm: deleteCronjob.isLoading || dashboardLoading });
   }, [deleteCronjob.isLoading, dashboardLoading]);
 
   return (

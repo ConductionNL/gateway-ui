@@ -15,6 +15,13 @@ export const useEndpoint = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("endpoint_select_options", API.Endpoints.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getOne = (endpointId: string) =>
     useQuery<any, Error>(["endpoint", endpointId], () => API?.Endpoints.getOne(endpointId), {
       initialData: () => queryClient.getQueryData<any[]>("endpoint")?.find((_endpoint) => _endpoint.id === endpointId),
@@ -53,5 +60,5 @@ export const useEndpoint = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getAllSelectOptions, getOne, remove, createOrEdit };
 };

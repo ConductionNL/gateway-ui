@@ -2,7 +2,7 @@ import * as React from "react";
 import { QueryClient, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
-import { LogProps, TLogChannel } from "../context/logs";
+import { ILogFiltersContext, TLogChannel } from "../context/logs";
 
 export const useLog = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
@@ -16,7 +16,7 @@ export const useLog = (queryClient: QueryClient) => {
       enabled: !!logId,
     });
 
-  const getAll = (logFilters: LogProps, currentPage: number) =>
+  const getAll = (logFilters: ILogFiltersContext, currentPage: number) =>
     useQuery<any, Error>(["log", logFilters, currentPage], () => API.Log.getAll(logFilters, currentPage), {
       onError: (error) => {
         console.warn(error.message);

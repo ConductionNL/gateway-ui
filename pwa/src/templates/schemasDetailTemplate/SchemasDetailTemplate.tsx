@@ -11,14 +11,13 @@ import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { faDownload, faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faDownload, faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TabsContext } from "../../context/tabs";
+import { useCurrentTabContext } from "../../context/tabs";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import clsx from "clsx";
 import { SchemaFormTemplate, formId } from "../templateParts/schemasForm/SchemaFormTemplate";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoadingContext } from "../../context/isLoading";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
@@ -30,8 +29,8 @@ interface SchemasDetailPageProps {
 export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schemaId }) => {
   const { t, i18n } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
-  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
@@ -61,7 +60,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, schemaForm: deleteSchema.isLoading || getSchema.isLoading || dashboardLoading });
+    setIsLoading({ schemaForm: deleteSchema.isLoading || getSchema.isLoading || dashboardLoading });
   }, [deleteSchema.isLoading, getSchema.isLoading, dashboardLoading]);
 
   return (
@@ -88,11 +87,11 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           }
         />
 
-        <TabContext value={currentTab.schemaDetailTabs.toString()}>
+        <TabContext value={currentTabs.schemaDetailTabs.toString()}>
           <Tabs
-            value={currentTab.schemaDetailTabs}
+            value={currentTabs.schemaDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab({ ...currentTab, schemaDetailTabs: newValue });
+              setCurrentTabs({ ...currentTabs, schemaDetailTabs: newValue });
             }}
             variant="scrollable"
           >
@@ -119,7 +118,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
             {getSchema.isSuccess && (
               <>
                 <Button
-                  className={clsx(styles.buttonIcon, styles.button, styles.saveSchemaButton)}
+                  className={clsx(styles.saveSchemaButton)}
                   type="submit"
                   form={formId}
                   disabled={isLoading.schemaForm}
@@ -173,7 +172,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                         <TableCell>{translateDate(i18n.language, property.dateCreated) ?? "-"}</TableCell>
                         <TableCell>{translateDate(i18n.language, property.dateModified) ?? "-"}</TableCell>
                         <TableCell onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}>
-                          <Link icon={<ArrowRightIcon />} iconAlign="start">
+                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                             {t("Details")}
                           </Link>
                         </TableCell>

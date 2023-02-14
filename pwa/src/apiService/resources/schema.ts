@@ -14,6 +14,12 @@ export default class Schema {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", "/admin/entities?limit=200");
+
+    return data?.map((schema: any) => ({ label: schema.name, value: schema.id }));
+  };
+
   public getOne = async (id: string): Promise<any> => {
     const { data } = await Send(this._instance, "GET", `/admin/entities/${id}`);
 

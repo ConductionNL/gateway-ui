@@ -1,0 +1,22 @@
+.container {
+  box-sizing: border-box;
+  background-color: var(--gateway-ui-color-white);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.container > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.grid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}
+
+.gridContainer > *:not(:first-child) {
+  margin-block-start: var(--gateway-ui-size-sm);
+}

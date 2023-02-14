@@ -1,9 +1,12 @@
 import * as React from "react";
+import { GlobalContext } from "./global";
 
-export interface LogProps {
+export interface ILogFiltersContext {
   channel?: TLogChannel;
   level_name?: TLogLevelName;
   context?: {
+    session?: string;
+    process?: string;
     endpoint?: string;
     schema?: string;
     cronjob?: string;
@@ -14,11 +17,19 @@ export interface LogProps {
   };
 }
 
-export const logFilters = {} as LogProps;
+export const defaultLogFiltersContext = {} as ILogFiltersContext;
 
-export const LogFiltersContext = React.createContext<[LogProps, (data: LogProps) => void]>([logFilters, () => null]);
+export const useLogFiltersContext = () => {
+  const [globalContext, setGlobalContext] = React.useContext(GlobalContext);
 
-export const LogFiltersProvider = LogFiltersContext.Provider;
+  const logFilters: ILogFiltersContext = globalContext.logFilters;
+
+  const setLogFilters = (logFilters: ILogFiltersContext) => {
+    setGlobalContext({ ...globalContext, logFilters });
+  };
+
+  return { setLogFilters, logFilters };
+};
 
 /**
  * Types

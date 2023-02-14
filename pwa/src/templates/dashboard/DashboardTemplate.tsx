@@ -3,31 +3,39 @@ import * as styles from "./DashboardTemplate.module.css";
 import { Breadcrumbs, Container, PrivateRoute } from "@conduction/components";
 import { isLoggedIn } from "../../services/auth";
 import { Sidebar } from "../sidebar/Sidebar";
-import { GatsbyContext } from "../../context/gatsby";
 import _ from "lodash";
 import { Topbar } from "../topbar/Topbar";
+import { useGatsbyContext } from "../../context/gatsby";
 
 export const DashboardTemplate: React.FC = ({ children }) => {
-  const {
-    pageContext: {
-      breadcrumb: { crumbs },
-    },
-    location: { pathname },
-    screenSize,
-  } = React.useContext(GatsbyContext);
+  const { gatsbyContext } = useGatsbyContext();
+  const [translatedCrumbs, setTranslatedCrumbs] = React.useState<any>(null);
 
-  const translatedCrumbs = crumbs.map((crumb: any, idx: any) => {
-    const cutPathname = pathname.substring(0, pathname.lastIndexOf("/"));
-    const crumbPathname = idx === 2 ? cutPathname : crumb.pathname;
+  React.useEffect(() => {
+    if (!gatsbyContext) return;
 
-    return { ...crumb, crumbLabel: _.upperFirst(crumb.crumbLabel), pathname: crumbPathname };
-  });
+    const {
+      pageContext: {
+        breadcrumb: { crumbs },
+      },
+      location: { pathname },
+    } = gatsbyContext;
+
+    setTranslatedCrumbs(
+      crumbs.map((crumb: any, idx: any) => {
+        const cutPathname = pathname.substring(0, pathname.lastIndexOf("/"));
+        const crumbPathname = idx === 2 ? cutPathname : crumb.pathname;
+
+        return { ...crumb, crumbLabel: _.upperFirst(crumb.crumbLabel), pathname: crumbPathname };
+      }),
+    );
+  }, [gatsbyContext]);
 
   return (
     <PrivateRoute authenticated={isLoggedIn()}>
       <Container layoutClassName={styles.container}>
-        {screenSize !== "mobile" && <Sidebar layoutClassName={styles.sidebar} />}
-        {screenSize === "mobile" && <Topbar />}
+        {gatsbyContext?.screenSize !== "mobile" && <Sidebar layoutClassName={styles.sidebar} />}
+        {gatsbyContext?.screenSize === "mobile" && <Topbar />}
 
         <div className={styles.content}>
           <Breadcrumbs crumbs={translatedCrumbs} />

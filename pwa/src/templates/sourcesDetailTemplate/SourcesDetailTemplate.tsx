@@ -10,8 +10,6 @@ import {
   FormField,
   FormFieldInput,
   FormFieldLabel,
-  Link,
-  Heading1,
   Tab,
   TabContext,
   TabPanel,
@@ -20,12 +18,12 @@ import {
 import { useTranslation } from "react-i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
-import { IsLoadingContext } from "../../context/isLoading";
+import { useIsLoadingContext } from "../../context/isLoading";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { validateStringAsJSON } from "../../services/validateJSON";
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
-import { TabsContext } from "../../context/tabs";
+import { useCurrentTabContext } from "../../context/tabs";
 import { SourceFormTemplate, formId } from "../templateParts/sourcesForm/SourceFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
@@ -38,8 +36,8 @@ interface SourcesDetailTemplateProps {
 
 export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ sourceId }) => {
   const { t } = useTranslation();
-  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = new QueryClient();
@@ -82,7 +80,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
   };
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, sourceForm: deleteSource.isLoading || testProxy.isLoading || dashboardLoading });
+    setIsLoading({ sourceForm: deleteSource.isLoading || testProxy.isLoading || dashboardLoading });
   }, [deleteSource.isLoading, testProxy.isLoading, dashboardLoading]);
 
   return (
@@ -104,11 +102,12 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
       )}
 
       <div className={styles.tabContainer}>
-        <TabContext value={currentTab.sourceDetailTabs.toString()}>
+        <TabContext value={currentTabs.sourceDetailTabs.toString()}>
           <Tabs
-            value={currentTab.sourceDetailTabs}
+            value={currentTabs.sourceDetailTabs}
             onChange={(_, newValue: number) => {
-              setCurrentTab({ ...currentTab, sourceDetailTabs: newValue });
+              console.log("change");
+              setCurrentTabs({ ...currentTabs, sourceDetailTabs: newValue });
             }}
             variant="scrollable"
           >

@@ -15,6 +15,13 @@ export const useSchema = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("entity_select_options", API.Schema.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getOne = (schemaId: string) =>
     useQuery<any, Error>(["entities", schemaId], () => API?.Schema.getOne(schemaId), {
       initialData: () => queryClient.getQueryData<any[]>("entities")?.find((_schema) => _schema.id === schemaId),
@@ -61,5 +68,5 @@ export const useSchema = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, getSchema, remove, createOrEdit };
+  return { getAll, getAllSelectOptions, getOne, getSchema, remove, createOrEdit };
 };

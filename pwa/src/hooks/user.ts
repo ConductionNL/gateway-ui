@@ -15,6 +15,13 @@ export const useUser = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("user_select_options", API.User.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getOne = (userId: string) =>
     useQuery<any, Error>(["users", userId], () => API?.User.getOne(userId), {
       initialData: () => queryClient.getQueryData<any[]>("users")?.find((_user) => _user.id === userId),
@@ -53,5 +60,5 @@ export const useUser = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, createOrEdit, remove };
+  return { getAll, getAllSelectOptions, getOne, createOrEdit, remove };
 };

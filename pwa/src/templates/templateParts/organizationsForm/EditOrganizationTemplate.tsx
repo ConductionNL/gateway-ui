@@ -7,16 +7,17 @@ import Skeleton from "react-loading-skeleton";
 import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useTranslation } from "react-i18next";
-import { TabsContext } from "../../../context/tabs";
+import { useCurrentTabContext } from "../../../context/tabs";
 import { navigate } from "gatsby";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
 import { Container } from "@conduction/components";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { translateDate } from "../../../services/dateFormat";
 import { useLog } from "../../../hooks/log";
 import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface CreateOrganizationTemplateProps {
   organizationId: string;
@@ -24,11 +25,11 @@ interface CreateOrganizationTemplateProps {
 
 export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps> = ({ organizationId }) => {
   const { t, i18n } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
-  const [currentTab, setCurrentTab] = React.useContext(TabsContext);
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
 
   const queryClient = new QueryClient();
   const _useOrganizations = useOrganization(queryClient);
@@ -39,7 +40,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
   const dashboardCard = getDashboardCard(organizationId);
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, organizationForm: dashboardLoading });
+    setIsLoading({ organizationForm: dashboardLoading });
   }, [dashboardLoading]);
 
   const toggleFromDashboard = () => {
@@ -66,11 +67,11 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
           <OrganizationForm organization={getOrganization.data} />
 
           <div className={styles.tabContainer}>
-            <TabContext value={currentTab.organizationDetailTabs.toString()}>
+            <TabContext value={currentTabs.organizationDetailTabs.toString()}>
               <Tabs
-                value={currentTab.organizationDetailTabs}
+                value={currentTabs.organizationDetailTabs}
                 onChange={(_, newValue: number) => {
-                  setCurrentTab({ ...currentTab, organizationDetailTabs: newValue });
+                  setCurrentTabs({ ...currentTabs, organizationDetailTabs: newValue });
                 }}
                 variant="scrollable"
               >
@@ -97,7 +98,6 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                     {getOrganization.data.applications &&
                       getOrganization.data.applications.map((application: any) => (
                         <TableRow
-                          className={styles.tableRow}
                           onClick={() => navigate(`/settings/applications/${application.id}`)}
                           key={application.id}
                         >
@@ -106,7 +106,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                           <TableCell>{translateDate(i18n.language, application.dateCreated)}</TableCell>
                           <TableCell>{translateDate(i18n.language, application.dateModified)}</TableCell>
                           <TableCell onClick={() => navigate(`/settings/applications/${application.id}`)}>
-                            <Link icon={<ArrowRightIcon />} iconAlign="start">
+                            <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                               {t("Details")}
                             </Link>
                           </TableCell>
@@ -139,17 +139,13 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
 
                   <TableBody>
                     {getOrganization.data.users.map((user: any) => (
-                      <TableRow
-                        className={styles.tableRow}
-                        onClick={() => navigate(`/settings/users/${user.id}`)}
-                        key={user.id}
-                      >
+                      <TableRow onClick={() => navigate(`/settings/users/${user.id}`)} key={user.id}>
                         <TableCell>{user.name}</TableCell>
                         <TableCell>{user.securityGroups?.length ?? "-"}</TableCell>
                         <TableCell>{translateDate(i18n.language, user.dateCreated) ?? "-"}</TableCell>
                         <TableCell>{translateDate(i18n.language, user.dateModified) ?? "-"}</TableCell>
                         <TableCell onClick={() => navigate(`/settings/users/${user.id}`)}>
-                          <Link icon={<ArrowRightIcon />} iconAlign="start">
+                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                             {t("Details")}
                           </Link>
                         </TableCell>

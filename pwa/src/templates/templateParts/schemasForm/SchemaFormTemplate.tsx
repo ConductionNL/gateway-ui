@@ -8,7 +8,7 @@ import { useSchema } from "../../../hooks/schema";
 import { InputText, Textarea } from "@conduction/components";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { IsLoadingContext } from "../../../context/isLoading";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 interface SchemaFormTemplateProps {
   schema?: any;
@@ -18,7 +18,7 @@ export const formId: string = "schema-form";
 
 export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }) => {
   const { t } = useTranslation();
-  const [isLoading, setIsLoading] = React.useContext(IsLoadingContext);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = useQueryClient();
   const _useSchema = useSchema(queryClient);
@@ -44,7 +44,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }
   }, [schema]);
 
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, schemaForm: createOrEditSchema.isLoading });
+    setIsLoading({ schemaForm: createOrEditSchema.isLoading });
   }, [createOrEditSchema.isLoading]);
 
   return (

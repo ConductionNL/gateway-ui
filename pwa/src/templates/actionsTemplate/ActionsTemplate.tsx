@@ -8,8 +8,7 @@ import { navigate } from "gatsby";
 import { QueryClient } from "react-query";
 import { Container, Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ArrowRightIcon } from "@gemeente-denhaag/icons";
-import { faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
@@ -73,7 +72,7 @@ export const ActionsTemplate: React.FC = () => {
                   <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
                   <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
                   <TableCell className={styles.details} onClick={() => navigate(`/actions/${action.id}`)}>
-                    <Link icon={<ArrowRightIcon />} iconAlign="start">
+                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                       {t("Details")}
                     </Link>
                   </TableCell>
