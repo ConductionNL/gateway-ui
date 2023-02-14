@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { PluginCard } from "../../components/pluginCard/PluginCard";
 import _ from "lodash";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { PluginsSearchBarTemplate } from "./PluginsSearchBarTemplate";
@@ -23,7 +23,7 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = React.useState<string>("");
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _usePlugin = usePlugin(queryClient);
   let getPlugins;
 

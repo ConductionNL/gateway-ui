@@ -3,7 +3,7 @@ import * as styles from "./LogsTemplate.module.css";
 
 import _ from "lodash";
 import { useLog } from "../../hooks/log";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
@@ -17,7 +17,7 @@ export const LogsTemplate: React.FC = () => {
   const { logFilters } = useLogFiltersContext();
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const getLogs = useLog(queryClient).getAll(logFilters, currentPage);
 
   React.useEffect(() => {

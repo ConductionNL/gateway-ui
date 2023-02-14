@@ -8,13 +8,13 @@ import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSecurityGroup } from "../../hooks/securityGroup";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 
 export const SecurityGroupsTemplate: React.FC = () => {
   const { t } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useSecurityGroups = useSecurityGroup(queryClient);
   const getSecurityGroups = _useSecurityGroups.getAll();
 

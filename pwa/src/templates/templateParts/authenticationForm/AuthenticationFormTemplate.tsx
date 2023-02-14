@@ -4,8 +4,8 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { useTranslation } from "react-i18next";
 import { InputText, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
-import { QueryClient } from "react-query";
 import { useAuthentication } from "../../../hooks/authentication";
+import { useQueryClient } from "react-query";
 import { InputURL } from "@conduction/components/lib/components/formFields";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import Skeleton from "react-loading-skeleton";
@@ -22,7 +22,7 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
   const [scopes, setScopes] = React.useState<any[]>([]);
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useAuthentications = useAuthentication(queryClient);
   const createOrEditAuthentication = _useAuthentications.createOrEdit(authentication?.id);
 

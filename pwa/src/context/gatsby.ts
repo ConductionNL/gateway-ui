@@ -7,6 +7,7 @@ export interface IGatsbyContext {
   pageContext: any;
   location: any;
   screenSize: TScreenSize;
+  previousPath?: string;
 }
 
 export const defaultGatsbyContext: IGatsbyContext = {

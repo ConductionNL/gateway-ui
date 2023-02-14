@@ -3,7 +3,7 @@ import * as styles from "./LogFiltersTemplate.module.css";
 
 import _ from "lodash";
 import { useForm } from "react-hook-form";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useUser } from "../../../hooks/user";
 import { useSchema } from "../../../hooks/schema";
@@ -19,7 +19,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 export const LogFiltersTemplate: React.FC = () => {
   const { logFilters, setLogFilters } = useLogFiltersContext();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const getEndpoints = useEndpoint(queryClient).getAllSelectOptions();
   const getSchemas = useSchema(queryClient).getAllSelectOptions();

@@ -19,7 +19,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { PackagistLogo } from "../../assets/svgs/Packagist";
 import { usePlugin } from "../../hooks/plugin";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 
 export interface PluginCardProps {
   title: {
@@ -51,7 +51,7 @@ export const PluginCard: React.FC<PluginCardProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _usePlugin = usePlugin(queryClient);
   const installPlugin = _usePlugin.install();
   const upgradePlugin = _usePlugin.upgrade();

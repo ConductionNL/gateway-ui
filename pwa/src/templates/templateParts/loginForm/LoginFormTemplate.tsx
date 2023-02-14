@@ -7,11 +7,14 @@ import * as styles from "./LoginFormTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import APIService from "../../../apiService/apiService";
 import { InputText, InputPassword } from "@conduction/components";
+import { navigate } from "gatsby";
+import { useGatsbyContext } from "../../../context/gatsby";
 
 export const LoginFormTemplate: React.FC = () => {
   const { t } = useTranslation();
   const API: APIService | null = React.useContext(APIContext);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const { gatsbyContext } = useGatsbyContext();
 
   const {
     register,
@@ -24,7 +27,9 @@ export const LoginFormTemplate: React.FC = () => {
 
     API &&
       handleLogin(data, API)
-        .catch(() => undefined)
+        .then(() => {
+          navigate(gatsbyContext.previousPath ?? "/");
+        })
         .finally(() => {
           setLoading(false);
         });

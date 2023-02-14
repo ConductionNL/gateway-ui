@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./LogsDetailTemplate.module.css";
 import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import Skeleton from "react-loading-skeleton";
@@ -29,7 +29,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
   const { t } = useTranslation();
   const { setLogFilters } = useLogFiltersContext();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const getLog = useLog(queryClient).getOne(logId);
   const getApplication = useApplication(queryClient).getOne(getLog.data?.context?.application);

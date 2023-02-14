@@ -3,7 +3,7 @@ import * as styles from "./CronjobsTemplate.module.css";
 import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useCronjob } from "../../hooks/cronjob";
 import { navigate } from "gatsby";
 import { Container, Tag } from "@conduction/components";
@@ -17,7 +17,7 @@ import { dateTime } from "../../services/dateTime";
 export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
 

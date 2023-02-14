@@ -4,7 +4,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { useTranslation } from "react-i18next";
 import { InputText, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
 import { useIsLoadingContext } from "../../../context/isLoading";
 
@@ -18,7 +18,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   const { t } = useTranslation();
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useOrganizations = useOrganization(queryClient);
   const createOrEditOrganization = _useOrganizations.createOrEdit(organization?.id);
 
