@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./DashboardCard.module.css";
-import { Link } from "@gemeente-denhaag/components-react";
+import { Button, Link } from "@gemeente-denhaag/components-react";
 import { navigate } from "gatsby";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,7 @@ import { Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import { dateTime } from "../../services/dateTime";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export interface DashboardCardProps {
   title: {
@@ -21,9 +21,18 @@ export interface DashboardCardProps {
   isEnabled?: boolean | undefined;
   lastRun?: string;
   lastCall?: string;
+  onDelete?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>) => void;
 }
 
-export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, status, isEnabled, lastRun, lastCall }) => {
+export const DashboardCard: React.FC<DashboardCardProps> = ({
+  title,
+  type,
+  status,
+  isEnabled,
+  lastRun,
+  lastCall,
+  onDelete,
+}) => {
   const { t, i18n } = useTranslation();
 
   return (
@@ -32,6 +41,13 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, statu
         <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
           {title.label}
         </Link>
+      </div>
+
+      <div>
+        <Button className={styles.deleteButton} onClick={onDelete}>
+          <FontAwesomeIcon icon={faTrash} />
+          {t("Remove")}
+        </Button>
       </div>
 
       <div className={styles.statusTypeContainer}>
