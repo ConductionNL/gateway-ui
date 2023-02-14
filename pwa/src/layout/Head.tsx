@@ -5,15 +5,10 @@ import { Helmet } from "react-helmet";
 
 interface HeadProps {
   crumbs: any[];
-  pathname: string;
 }
 
-export const Head: React.FC<HeadProps> = ({ crumbs, pathname }) => {
+export const Head: React.FC<HeadProps> = ({ crumbs }) => {
   const title = crumbs && _.capitalize(_.last(crumbs).crumbLabel);
-
-  React.useEffect(() => {
-    console.log({ pathname });
-  }, [pathname]);
 
   return (
     <Helmet>

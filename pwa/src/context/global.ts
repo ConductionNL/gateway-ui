@@ -1,7 +1,6 @@
 import * as React from "react";
 import { defaultGatsbyContext, IGatsbyContext } from "./gatsby";
 import { defaultIsLoadingContext, IIsLoadingContext } from "./isLoading";
-import { defaultRouterContext, IRouterContext } from "./router";
 import {
   defaultLogFiltersContext,
   defaultLogTableColumnsContext,
@@ -15,7 +14,6 @@ export interface IGlobalContext {
   isLoading: IIsLoadingContext;
   currentTabs: ITabsContext;
   logFilters: ILogFiltersContext;
-  router: IRouterContext;
   logTableColumns: ILogTableColumnsContext;
 }
 
@@ -24,7 +22,6 @@ export const defaultGlobalContext: IGlobalContext = {
   isLoading: defaultIsLoadingContext,
   currentTabs: defaultTabsContext,
   logFilters: defaultLogFiltersContext,
-  router: defaultRouterContext,
   logTableColumns: defaultLogTableColumnsContext,
 };
 
