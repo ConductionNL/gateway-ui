@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { useSource } from "../../hooks/source";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { Tag, ToolTip } from "@conduction/components";
 import _ from "lodash";
 import clsx from "clsx";
@@ -20,7 +20,7 @@ import { dateTime } from "../../services/dateTime";
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
   const getSources = _useSources.getAll();
 

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./SecurityGroupsDetailsTemplate.module.css";
 import { Container } from "@conduction/components";
 import { useSecurityGroup } from "../../hooks/securityGroup";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useIsLoadingContext } from "../../context/isLoading";
 import { SecurityGroupFormTemplate, formId } from "../templateParts/securityGroupsForm/SecurityGroupFormTemplate";
@@ -15,7 +15,7 @@ interface SecurityGroupsDetailPageProps {
 export const SecurityGroupsDetailsTemplate: React.FC<SecurityGroupsDetailPageProps> = ({ securityGroupId }) => {
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const _useSecurityGroups = useSecurityGroup(queryClient);
   const getSecurityGroup = _useSecurityGroups.getOne(securityGroupId);

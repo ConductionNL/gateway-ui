@@ -7,7 +7,7 @@ import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
 import { useUser } from "../../hooks/user";
@@ -15,7 +15,7 @@ import { useUser } from "../../hooks/user";
 export const UsersTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useUsers = useUser(queryClient);
   const getUsers = _useUsers.getAll();
 

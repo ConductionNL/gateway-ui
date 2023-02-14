@@ -17,7 +17,7 @@ import {
 import clsx from "clsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import _ from "lodash";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { GitHubLogo } from "../../assets/svgs/GitHub";
@@ -33,7 +33,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
   const [currentRequire, setCurrentRequire] = React.useState<string>("");
   const [showmoreVersions, setShowmoreVersions] = React.useState<boolean>(false);
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _usePlugin = usePlugin(queryClient);
   const getPlugin = _usePlugin.getOne(pluginName.replace("_", "/"));
   const installPlugin = _usePlugin.install();

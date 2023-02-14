@@ -4,7 +4,7 @@ import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
 import { useObject } from "../../hooks/object";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +17,7 @@ export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useObject = useObject(queryClient);
   const getObjects = _useObject.getAll(currentPage, 30);
   const deleteSchema = _useObject.remove();

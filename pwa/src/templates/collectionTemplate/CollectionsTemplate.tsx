@@ -3,7 +3,7 @@ import * as styles from "./CollectionsTemplate.module.css";
 import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +14,7 @@ import { useCollection } from "../../hooks/collection";
 export const CollectionsTemplate: React.FC = () => {
   const { t } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useCollection = useCollection(queryClient);
   const getCollection = _useCollection.getAll();
 

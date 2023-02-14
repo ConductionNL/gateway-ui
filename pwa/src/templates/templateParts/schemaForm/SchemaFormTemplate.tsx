@@ -18,7 +18,7 @@ import {
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
 import { useObject } from "../../../hooks/object";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 
 export type SchemaInputType =
@@ -355,7 +355,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   multiple,
   schema,
 }) => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useObject = useObject(queryClient);
   const property = schema?.properties[name];
 
