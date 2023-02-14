@@ -1,3 +1,7 @@
+.container {
+  background: var(--gateway-ui-color-white);
+}
+
 .container > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-lg);
 }
@@ -11,7 +15,7 @@
 }
 
 .message {
-  max-width: 200px;
+  max-width: 250px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -55,4 +59,43 @@
 .emergency {
   background-color: var(--gateway-ui-color-log-level-emergency);
   color: var(--gateway-ui-color-white);
+}
+
+/* 
+ * Column filters
+ */
+.columnFiltersContainer,
+.columnFiltersToggle {
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+}
+
+.columnFiltersContainer {
+  display: flex;
+  user-select: none;
+  gap: var(--gateway-ui-size-sm);
+}
+
+.columnFiltersContainer input:hover,
+.columnFiltersContainer label:hover,
+.columnFiltersToggle:hover {
+  cursor: pointer;
+}
+
+.columnFiltersToggle {
+  display: flex;
+  user-select: none;
+  align-items: center;
+  gap: var(--gateway-ui-size-xs);
+  color: var(--gateway-ui-color-primary);
+}
+
+.columnFiltersToggle > svg {
+  transition: 200ms ease-in-out;
+}
+
+.columnFiltersToggle.isOpen > svg {
+  transform: rotate(180deg);
 }

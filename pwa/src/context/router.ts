@@ -14,9 +14,9 @@ export const useRouterContext = () => {
 
   const router: IRouterContext = globalContext.router;
 
-  const setCurrentTabs = (router: IRouterContext) => {
+  const setRouter = (router: IRouterContext) => {
     setGlobalContext({ ...globalContext, router });
   };
 
-  return { setCurrentTabs, router };
+  return { setRouter, router };
 };
