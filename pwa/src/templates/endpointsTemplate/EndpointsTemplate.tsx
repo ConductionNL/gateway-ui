@@ -62,7 +62,7 @@ export const EndpointsTemplate: React.FC = () => {
                   </div>
                 </TableCell>
 
-                <TableCell>{endpoint.pathRegex ?? "-"}</TableCell>
+                <TableCell>{endpoint.pathRegex?.length > 0 ? endpoint.pathRegex : "-"}</TableCell>
 
                 <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
 
