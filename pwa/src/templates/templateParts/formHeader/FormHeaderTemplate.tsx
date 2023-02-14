@@ -5,7 +5,6 @@ import { t } from "i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Heading1, Button } from "@gemeente-denhaag/components-react";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import clsx from "clsx";
 
 interface FormHeaderTemplateProps {
   title: string;
@@ -36,25 +35,21 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
         {customElements && customElements}
 
         {formId && (
-          <Button type="submit" form={formId} {...{ disabled }} className={styles.buttonContentWrap}>
+          <Button type="submit" form={formId} {...{ disabled }}>
             <FontAwesomeIcon icon={faFloppyDisk} />
             {t("Save")}
           </Button>
         )}
 
         {handleToggleDashboard && (
-          <Button {...{ disabled }} onClick={handleToggleDashboard.handleToggle} className={styles.buttonContentWrap}>
+          <Button {...{ disabled }} onClick={handleToggleDashboard.handleToggle}>
             <FontAwesomeIcon icon={handleToggleDashboard.isActive ? faMinus : faPlus} />
             {handleToggleDashboard.isActive ? t("Remove from dashboard") : t("Add to dashboard")}
           </Button>
         )}
 
         {handleDelete && (
-          <Button
-            {...{ disabled }}
-            onClick={handleDelete}
-            className={clsx(styles.deleteButton, styles.buttonContentWrap)}
-          >
+          <Button {...{ disabled }} onClick={handleDelete} className={styles.deleteButton}>
             <FontAwesomeIcon icon={faTrash} />
             {t("Delete")}
           </Button>

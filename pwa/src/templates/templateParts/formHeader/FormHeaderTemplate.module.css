@@ -28,7 +28,7 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.buttonContentWrap {
+.buttonsContainer > * {
   white-space: nowrap;
 }
 
