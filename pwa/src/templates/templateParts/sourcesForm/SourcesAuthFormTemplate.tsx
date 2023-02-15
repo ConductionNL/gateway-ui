@@ -5,8 +5,9 @@ import { InputText, Textarea } from "@conduction/components";
 import { useTranslation } from "react-i18next";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
-export type TSourcesAuthType = "jwt" | "apikey" | "username-password" | "none" | "vrijbrp-jwt";
+export type TSourcesAuthType = "jwt-HS256" | "apikey" | "username-password" | "none" | "vrijbrp-jwt";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -25,6 +26,7 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
   disabled,
 }) => {
   const { t } = useTranslation();
+  const { isLoading } = useIsLoadingContext();
 
   switch (selectedAuth) {
     case "none":
@@ -34,7 +36,12 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
         <FormField>
           <FormFieldInput>
             <FormFieldLabel>{t("Api key")}</FormFieldLabel>
-            <Textarea {...{ register, errors, disabled }} name="apikey" validation={{ maxLength: 225 }} />
+            <Textarea
+              {...{ register, errors, disabled }}
+              name="apikey"
+              validation={{ maxLength: 225 }}
+              disabled={isLoading.sourceForm}
+            />
             {errors["apikey"] && <ErrorMessage message={errors["apikey"].message} />}
           </FormFieldInput>
         </FormField>
@@ -50,6 +57,7 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
                 {...{ register, errors, disabled }}
                 name="username"
                 validation={{ required: true, maxLength: 225 }}
+                disabled={isLoading.sourceForm}
               />
               {errors["username"] && <ErrorMessage message={errors["username"].message} />}
             </FormFieldInput>
@@ -62,6 +70,7 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
                 {...{ register, errors, disabled }}
                 name="password"
                 validation={{ required: true, maxLength: 225 }}
+                disabled={isLoading.sourceForm}
               />
               {errors["password"] && <ErrorMessage message={errors["password"].message} />}
             </FormFieldInput>
@@ -69,12 +78,12 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
         </>
       );
 
-    case "jwt":
+    case "jwt-HS256":
       return (
         <FormField>
           <FormFieldInput>
-            <FormFieldLabel>{t("JWT")}</FormFieldLabel>
-            <Textarea {...{ register, errors, disabled }} name="jwt" />
+            <FormFieldLabel>{t("JWT-HS256")}</FormFieldLabel>
+            <Textarea {...{ register, errors, disabled }} name="jwt" disabled={isLoading.sourceForm} />
           </FormFieldInput>
         </FormField>
       );
@@ -89,6 +98,7 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
                 {...{ register, errors, disabled }}
                 name="username"
                 validation={{ required: true, maxLength: 225 }}
+                disabled={isLoading.sourceForm}
               />
               {errors["username"] && <ErrorMessage message={errors["username"].message} />}
             </FormFieldInput>
@@ -101,6 +111,7 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
                 {...{ register, errors, disabled }}
                 name="password"
                 validation={{ required: true, maxLength: 225 }}
+                disabled={isLoading.sourceForm}
               />
               {errors["password"] && <ErrorMessage message={errors["password"].message} />}
             </FormFieldInput>
