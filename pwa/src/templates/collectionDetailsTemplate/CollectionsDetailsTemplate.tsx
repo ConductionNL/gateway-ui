@@ -58,6 +58,7 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
             disabled={isLoading.collectionForm}
             handleDelete={handleDeleteAction}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
           />
 
           <CollectionFormTemplate collection={getCollection.data} />

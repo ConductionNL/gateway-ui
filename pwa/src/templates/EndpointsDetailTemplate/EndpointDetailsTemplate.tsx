@@ -59,6 +59,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
             disabled={isLoading.endpointForm}
             handleDelete={handleDeleteEndpoint}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
           />
 
           <EndpointFormTemplate endpoint={getEndpoint.data} />
