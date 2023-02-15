@@ -11,7 +11,7 @@
   flex: 1;
 }
 
-.title {
+.container > .title {
   font-size: var(--gateway-ui-font-size-2xl);
   text-overflow: ellipsis;
   overflow: hidden;
