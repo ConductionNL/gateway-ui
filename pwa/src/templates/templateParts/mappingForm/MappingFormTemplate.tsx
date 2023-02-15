@@ -27,9 +27,9 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
   const [_mapping, setMapping] = React.useState<any[]>([]);
   const [unset, setUnset] = React.useState<any[]>([]);
   const [cast, setCast] = React.useState<any[]>([]);
-  const [isOpenMapping, setIsOpenMapping] = React.useState<boolean>(true);
-  const [isOpenUnset, setIsOpenUnset] = React.useState<boolean>(true);
-  const [isOpenCast, setIsOpenCast] = React.useState<boolean>(true);
+  const [isOpenMapping, setIsOpenMapping] = React.useState<boolean>(false);
+  const [isOpenUnset, setIsOpenUnset] = React.useState<boolean>(false);
+  const [isOpenCast, setIsOpenCast] = React.useState<boolean>(false);
 
   const queryClient = useQueryClient();
   const createOrEditMapping = useMapping(queryClient).createOrEdit(mapping?.id);

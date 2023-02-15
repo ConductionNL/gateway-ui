@@ -4,6 +4,7 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
+import toast from "react-hot-toast";
 
 export const useMapping = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
@@ -40,7 +41,6 @@ export const useMapping = (queryClient: QueryClient) => {
       onSuccess: async (newMappings) => {
         if (mappingId) {
           updateItem(queryClient, "mapping", newMappings);
-          navigate("/mappings");
         }
 
         if (!mappingId) {
@@ -53,5 +53,21 @@ export const useMapping = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  const testSimpleMapping = (mappingId: string) =>
+    useMutation<any, Error, any>(API.Mapping.testSimpleMapping, {
+      onSuccess: async () => {
+        toast.success("Request succesfully tested");
+      },
+      onError: (error) => {
+        if (error.message === "Network Error") {
+          toast.error("Request failed due to a Network Error");
+        } else {
+          toast.error(error.message);
+        }
+
+        console.warn(error.message);
+      },
+    });
+
+  return { getAll, getOne, remove, createOrEdit, testSimpleMapping };
 };
