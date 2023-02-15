@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./AuthenticationFormTemplate.module.css";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { AuthenticationFormTemplate, formId } from "./AuthenticationFormTemplate";
@@ -16,7 +16,7 @@ export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProp
   const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useAuthentications = useAuthentication(queryClient);
   const getAuthentication = _useAuthentications.getOne(authenticationId);
   const deleteAuthentication = _useAuthentications.remove(authenticationId);

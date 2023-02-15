@@ -7,12 +7,11 @@ import FormField, {
   FormFieldInput,
   FormFieldLabel,
 } from "@gemeente-denhaag/form-field";
-import { Checkbox, FormControlLabel } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { useQueryClient } from "react-query";
 import { useEndpoint } from "../../../hooks/endpoint";
-import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, InputCheckbox } from "@conduction/components/lib/components/formFields";
 import { useSource } from "../../../hooks/source";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../../hooks/schema";
@@ -27,11 +26,12 @@ interface EndpointFormTemplateProps {
 export const formId: string = "endpoint-form";
 
 export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endpoint }) => {
+  const methods: string[] = ["GET", "PUT", "DELETE", "POST", "PATCH"];
+
   const { t } = useTranslation();
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const [pathParts, setPathParts] = React.useState<any[]>([]);
-  const [methods, setMethods] = React.useState<any[]>([]);
   const [throws, setThrows] = React.useState<any[]>([]);
 
   const queryClient = useQueryClient();
@@ -59,23 +59,11 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
       path: data.path.split("/"),
       throws: data.throws?.map((_throw: any) => _throw.value),
       proxy: data.source && `/admin/gateways/${data.source.value}`,
-      methods: methods,
+      methods: methods.filter((method) => data.methods[method]),
       entities: data.schemas && data.schemas.map((schema: any) => `/admin/entities/${schema.value}`),
     };
+
     createOrEditEndpoint.mutate({ payload, id: endpoint?.id });
-  };
-
-  const addToArray = (value: string) => {
-    !methods.includes(value) ? methods.push(value) : removeMethod(methods, value);
-
-    function removeMethod<T>(newMethodArray: Array<T>, value: T): Array<T> {
-      const index = newMethodArray.indexOf(value);
-      if (index > -1) {
-        newMethodArray.splice(index, 1);
-        setMethods(newMethodArray);
-      }
-      return newMethodArray;
-    }
   };
 
   const handleSetFormValues = (): void => {
@@ -92,8 +80,6 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
       "schemas",
       endpoint.entities?.map((schema: any) => ({ label: schema.name, value: schema.id })),
     );
-
-    setMethods(endpoint.methods);
 
     if (Array.isArray(endpoint.pathArray) || endpoint.pathArray === undefined) {
       setPathParts(endpoint.pathArray);
@@ -157,65 +143,18 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
             </FormFieldInput>
           </FormField>
 
-          <FormFieldGroup>
+          <FormFieldGroup className={styles.methods}>
             <FormFieldGroupLabel>Methods</FormFieldGroupLabel>
-            <FormFieldInput className={styles.grid}>
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    onChange={() => addToArray("GET")}
-                    checked={endpoint?.methods && endpoint.methods.includes("GET")}
-                    disabled={isLoading.endpointForm}
-                  />
-                }
-                label="GET"
+            {methods.map((method, idx) => (
+              <InputCheckbox
+                key={idx}
+                name={`methods.${method}`}
+                label={method}
+                disabled={isLoading.endpointForm}
+                defaultChecked={endpoint?.methods.includes(method)}
+                {...{ register, errors }}
               />
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    onChange={() => addToArray("POST")}
-                    checked={endpoint?.methods && endpoint.methods.includes("POST")}
-                    disabled={isLoading.endpointForm}
-                  />
-                }
-                label="POST"
-              />
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    onChange={() => addToArray("PUT")}
-                    checked={endpoint?.methods && endpoint.methods.includes("PUT")}
-                    disabled={isLoading.endpointForm}
-                  />
-                }
-                label="PUT"
-              />
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    onChange={() => addToArray("PATCH")}
-                    checked={endpoint?.methods && endpoint.methods.includes("PATCH")}
-                    disabled={isLoading.endpointForm}
-                  />
-                }
-                label="PATCH"
-              />
-              <FormControlLabel
-                input={
-                  <Checkbox
-                    name="checkbox"
-                    onChange={() => addToArray("DELETE")}
-                    checked={endpoint?.methods && endpoint.methods.includes("DELETE")}
-                    disabled={isLoading.endpointForm}
-                  />
-                }
-                label="DELETE"
-              />
-            </FormFieldInput>
+            ))}
           </FormFieldGroup>
 
           <FormField>
@@ -282,19 +221,17 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
         </FormField>
       </section>
 
-      <section>
-        <FormField>
-          <FormFieldInput>
-            <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>
-            <CreateKeyValue
-              name="pathArray"
-              {...{ register, errors, control }}
-              defaultValue={pathParts}
-              disabled={isLoading.endpointForm}
-            />
-          </FormFieldInput>
-        </FormField>
-      </section>
+      <FormField>
+        <FormFieldInput>
+          <FormFieldLabel>{t("Path Parts")}</FormFieldLabel>
+          <CreateKeyValue
+            name="pathArray"
+            {...{ register, errors, control }}
+            defaultValue={pathParts}
+            disabled={isLoading.endpointForm}
+          />
+        </FormFieldInput>
+      </FormField>
     </form>
   );
 };

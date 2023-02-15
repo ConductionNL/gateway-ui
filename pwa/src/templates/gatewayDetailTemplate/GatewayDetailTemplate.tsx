@@ -6,7 +6,7 @@ import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsRotate, faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import _ from "lodash";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
@@ -18,7 +18,7 @@ export const GatewayDetailTemplate: React.FC = () => {
   const [currentRequire, setCurrentRequire] = React.useState<string>("");
   const [showmoreVersions, setShowmoreVersions] = React.useState<boolean>(false);
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _usePlugin = usePlugin(queryClient);
   const getPlugins = _usePlugin.getView();
   const upgradePlugin = _usePlugin.upgrade();

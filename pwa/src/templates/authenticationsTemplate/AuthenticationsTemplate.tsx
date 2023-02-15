@@ -8,7 +8,7 @@ import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { translateDate } from "../../services/dateFormat";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
 import { useAuthentication } from "../../hooks/authentication";
@@ -16,7 +16,7 @@ import { useAuthentication } from "../../hooks/authentication";
 export const AuthenticationsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useAuthentication = useAuthentication(queryClient);
   const getAuthentication = _useAuthentication.getAll();
   const deleteAuthentication = _useAuthentication.remove("");

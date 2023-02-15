@@ -1,11 +1,9 @@
 import * as React from "react";
 import * as styles from "./PropertyFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Alert, Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, InputDate, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -195,8 +193,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
       "example",
       "pattern",
       "deprecated",
-      "minDate",
-      "maxDate",
       "maxFileSize",
       "minFileSize",
       "persistToGateway",
@@ -211,6 +207,10 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
       "schema",
     ];
     basicFields.forEach((field) => setValue(field, property[field]));
+
+    property.minDate && setValue("minDate", new Date(property.minDate));
+
+    property.maxDate && setValue("maxDate", new Date(property.maxDate));
 
     setValue(
       "type",
@@ -809,14 +809,22 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("minDate")}</FormFieldLabel>
-                        <InputDate {...{ register, errors }} name="minDate" disabled={loading || isImmutable} />
+                        <InputDate
+                          {...{ register, errors, control }}
+                          name="minDate"
+                          disabled={loading || isImmutable}
+                        />
                       </FormFieldInput>
                     </FormField>
 
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("maxDate")}</FormFieldLabel>
-                        <InputDate {...{ register, errors }} name="maxDate" disabled={loading || isImmutable} />
+                        <InputDate
+                          {...{ register, errors, control }}
+                          name="maxDate"
+                          disabled={loading || isImmutable}
+                        />
                       </FormFieldInput>
                     </FormField>
 

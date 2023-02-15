@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./EditUserTemplate.module.css";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useUser } from "../../../hooks/user";
 import { UserFormTemplate, formId } from "./UserFormTemplate";
@@ -30,7 +30,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useUsers = useUser(queryClient);
   const getUser = _useUsers.getOne(userId);
   const deleteUser = _useUsers.remove();

@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./OrganizationFormTemplate.module.css";
 import { OrganizationForm, formId } from "./OrganizationForm";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
 import Skeleton from "react-loading-skeleton";
 import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
@@ -31,7 +31,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
 
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useOrganizations = useOrganization(queryClient);
   const getOrganization = _useOrganizations.getOne(organizationId);
 

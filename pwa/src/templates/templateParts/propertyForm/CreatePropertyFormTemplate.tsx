@@ -6,11 +6,10 @@ import { Alert, Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "
 import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, Textarea, InputDate } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { faFloppyDisk, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useAttribute } from "../../../hooks/attribute";
 import { navigate } from "gatsby";
-import { ArrowLeftIcon } from "@gemeente-denhaag/icons";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { useSchema } from "../../../hooks/schema";
@@ -120,7 +119,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
   return (
     <div className={styles.container}>
       <div onClick={() => navigate(`/schemas/${schemaId}`)}>
-        <Link icon={<ArrowLeftIcon />} iconAlign="start">
+        <Link icon={<FontAwesomeIcon icon={faArrowLeft} />} iconAlign="start">
           {t("Back to schema")}
         </Link>
       </div>
@@ -532,14 +531,14 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("minDate")}</FormFieldLabel>
-                        <InputDate {...{ register, errors }} name="minDate" disabled={loading} />
+                        <InputDate {...{ register, errors, control }} name="minDate" disabled={loading} />
                       </FormFieldInput>
                     </FormField>
 
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("maxDate")}</FormFieldLabel>
-                        <InputDate {...{ register, errors }} name="maxDate" disabled={loading} />
+                        <InputDate {...{ register, errors, control }} name="maxDate" disabled={loading} />
                       </FormFieldInput>
                     </FormField>
 

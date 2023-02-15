@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useAction } from "../../hooks/action";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { Container, Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -16,7 +16,7 @@ import Skeleton from "react-loading-skeleton";
 export const ActionsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useActions = useAction(queryClient);
   const getActions = _useActions.getAll();
 

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { useEndpoint } from "../../hooks/endpoint";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { Container, Tag } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
@@ -16,7 +16,7 @@ import { translateDate } from "../../services/dateFormat";
 export const EndpointsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useEndpoints = useEndpoint(queryClient);
   const getEndpoints = _useEndpoints.getAll();
 
@@ -62,7 +62,7 @@ export const EndpointsTemplate: React.FC = () => {
                   </div>
                 </TableCell>
 
-                <TableCell>{endpoint.pathRegex ?? "-"}</TableCell>
+                <TableCell>{!!endpoint.pathRegex ? endpoint.pathRegex : "-"}</TableCell>
 
                 <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
 

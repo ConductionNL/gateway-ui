@@ -7,7 +7,7 @@ import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useOrganization } from "../../hooks/organization";
 import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
@@ -15,7 +15,7 @@ import Skeleton from "react-loading-skeleton";
 export const OrganizationsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useOrganizations = useOrganization(queryClient);
   const getOrganizations = _useOrganizations.getAll();
 

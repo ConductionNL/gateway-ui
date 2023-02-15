@@ -7,7 +7,7 @@ import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useMapping } from "../../hooks/mapping";
 import Skeleton from "react-loading-skeleton";
 import { translateDate } from "../../services/dateFormat";
@@ -16,7 +16,7 @@ import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTempla
 export const MappingTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const getMappings = useMapping(queryClient).getAll();
 
   return (

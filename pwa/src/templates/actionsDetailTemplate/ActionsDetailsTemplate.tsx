@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./ActionsDetailsTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { useAction } from "../../hooks/action";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
@@ -25,7 +25,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useAction = useAction(queryClient);
 
   const getAction = _useAction.getOne(actionId);

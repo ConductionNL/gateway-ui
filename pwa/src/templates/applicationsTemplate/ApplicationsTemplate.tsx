@@ -8,7 +8,7 @@ import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { translateDate } from "../../services/dateFormat";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useApplication } from "../../hooks/application";
 import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
@@ -16,7 +16,7 @@ import clsx from "clsx";
 export const ApplicationsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useApplication = useApplication(queryClient);
   const getApplication = _useApplication.getAll();
   const deleteApplication = _useApplication.remove();

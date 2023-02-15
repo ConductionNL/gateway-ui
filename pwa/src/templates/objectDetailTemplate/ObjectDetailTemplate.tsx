@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./ObjectDetailTemplate.module.css";
 import { Button, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useObject } from "../../hooks/object";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
@@ -26,7 +26,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useObject = useObject(queryClient);
   const getObject = _useObject.getOne(objectId);
 
