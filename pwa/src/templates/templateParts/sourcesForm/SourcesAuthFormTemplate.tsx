@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 
-export type TSourcesAuthType = "jwt" | "apikey" | "username-password" | "none";
+export type TSourcesAuthType = "jwt" | "apikey" | "username-password" | "none" | "vrijbrp-jwt";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -77,6 +77,35 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
             <Textarea {...{ register, errors, disabled }} name="jwt" />
           </FormFieldInput>
         </FormField>
+      );
+
+    case "vrijbrp-jwt":
+      return (
+        <>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Username")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors, disabled }}
+                name="username"
+                validation={{ required: true, maxLength: 225 }}
+              />
+              {errors["username"] && <ErrorMessage message={errors["username"].message} />}
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Password")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors, disabled }}
+                name="password"
+                validation={{ required: true, maxLength: 225 }}
+              />
+              {errors["password"] && <ErrorMessage message={errors["password"].message} />}
+            </FormFieldInput>
+          </FormField>
+        </>
       );
   }
 };

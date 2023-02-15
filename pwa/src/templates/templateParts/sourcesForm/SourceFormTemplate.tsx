@@ -751,4 +751,5 @@ const authSelectOptions = [
   { label: "API Key", value: "apikey" },
   { label: "JWT", value: "jwt" },
   { label: "Username and Password", value: "username-password" },
+  { label: "VrijBRP-JWT", value: "vrijbrp-jwt" },
 ];
