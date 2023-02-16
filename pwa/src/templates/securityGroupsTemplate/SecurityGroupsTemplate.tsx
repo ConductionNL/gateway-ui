@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./SecurityGroupsTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -11,6 +11,7 @@ import { useSecurityGroup } from "../../hooks/securityGroup";
 import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const SecurityGroupsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -21,17 +22,18 @@ export const SecurityGroupsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Security groups")}</Heading1>
-        <div className={styles.buttons}>
+      <OverviewPageHeaderTemplate
+        title={t("Security groups")}
+        size="md"
+        button={
           <Button
             variant="primary"
             icon={faPlus}
             label={t("Add Security group")}
             onClick={() => navigate(`/settings/securitygroups/new`)}
           />
-        </div>
-      </section>
+        }
+      />
 
       {getSecurityGroups.isSuccess && (
         <Table>
