@@ -3,32 +3,18 @@ import * as styles from "./SourcesDetailTemplate.module.css";
 import { useQueryClient } from "react-query";
 import _ from "lodash";
 import { useSource } from "../../hooks/source";
-import { Container, InputText, SelectSingle, Textarea } from "@conduction/components";
+import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import {
-  Button,
-  FormField,
-  FormFieldInput,
-  FormFieldLabel,
-  Tab,
-  TabContext,
-  TabPanel,
-  Tabs,
-} from "@gemeente-denhaag/components-react";
+import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import clsx from "clsx";
 import { useIsLoadingContext } from "../../context/isLoading";
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
-import { useForm } from "react-hook-form";
-import { validateStringAsJSON } from "../../services/validateJSON";
-import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { useCurrentTabContext } from "../../context/tabs";
 import { SourceFormTemplate, formId } from "../templateParts/sourcesForm/SourceFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
+import { TestSourceConnectionFormTemplate } from "./TestSourceConnectionForm/TestSourceConnectionFormTemplate";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -47,14 +33,6 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
   const getSource = _useSource.getOne(sourceId);
   const deleteSource = _useSource.remove();
-  const testProxy = _useSource.getProxy(sourceId);
-
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
@@ -70,18 +48,9 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
     confirmDeletion && deleteSource.mutateAsync({ id: sourceId });
   };
 
-  const onSubmit = (data: any) => {
-    const payload = {
-      ...data,
-      body: data.body ? JSON.parse(data.body) : [],
-    };
-
-    testProxy.mutate({ id: sourceId, payload: payload });
-  };
-
   React.useEffect(() => {
-    setIsLoading({ sourceForm: deleteSource.isLoading || testProxy.isLoading || dashboardLoading });
-  }, [deleteSource.isLoading, testProxy.isLoading, dashboardLoading]);
+    setIsLoading({ sourceForm: deleteSource.isLoading || dashboardLoading });
+  }, [deleteSource.isLoading, dashboardLoading]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -116,55 +85,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
           <TabPanel className={styles.tabPanel} value="0">
             {getSource.isLoading && <Skeleton height="200px" />}
-            {getSource.isSuccess && (
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Button
-                  className={clsx(styles.buttonIcon, styles.testConnectionButton)}
-                  disabled={isLoading.sourceForm}
-                  type="submit"
-                >
-                  <FontAwesomeIcon icon={faArrowsRotate} />
-                  {t("Test connection")}
-                </Button>
-
-                <div className={styles.gridContainer}>
-                  <div className={styles.grid}>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Method")}</FormFieldLabel>
-                        <SelectSingle
-                          validation={{ required: true }}
-                          {...{ register, errors, control }}
-                          name="method"
-                          options={methodSelectOptions}
-                          disabled={isLoading.sourceForm}
-                        />
-
-                        {errors["method"] && <ErrorMessage message="This field is required." />}
-                      </FormFieldInput>
-                    </FormField>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Endpoint")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="endpoint" disabled={isLoading.sourceForm} />
-                      </FormFieldInput>
-                    </FormField>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Body")}</FormFieldLabel>
-                        <Textarea
-                          {...{ register, errors }}
-                          name="body"
-                          validation={{ validate: validateStringAsJSON }}
-                          disabled={isLoading.sourceForm}
-                        />
-                        {errors["body"] && <ErrorMessage message={errors["body"].message} />}
-                      </FormFieldInput>
-                    </FormField>
-                  </div>
-                </div>
-              </form>
-            )}
+            {getSource.isSuccess && <TestSourceConnectionFormTemplate {...{ sourceId }} />}
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
@@ -186,12 +107,3 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
     </Container>
   );
 };
-
-const methodSelectOptions = [
-  { label: "POST", value: "POST" },
-  { label: "PUT", value: "PUT" },
-  { label: "PATCH", value: "PATCH" },
-  { label: "UPDATE", value: "UPDATE" },
-  { label: "GET", value: "GET" },
-  { label: "DELETE", value: "DELETE" },
-];
