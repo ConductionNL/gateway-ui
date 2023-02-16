@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./ActionsTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { useAction } from "../../hooks/action";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
@@ -13,6 +13,7 @@ import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const ActionsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -23,12 +24,12 @@ export const ActionsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Actions")}</Heading1>
-        <div className={styles.buttons}>
+      <OverviewPageHeaderTemplate
+        title={t("Actions")}
+        button={
           <Button label={t("Add Action")} icon={faPlus} variant="primary" onClick={() => navigate("/actions/new")} />
-        </div>
-      </section>
+        }
+      />
 
       {getActions.isError && "Error..."}
 
