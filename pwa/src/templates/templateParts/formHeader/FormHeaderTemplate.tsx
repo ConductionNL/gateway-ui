@@ -32,13 +32,15 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
 }) => {
   return (
     <section className={styles.container}>
-      {showTitleTooltip ? (
-        <ToolTip tooltip={title}>
-          <Heading1 className={styles.title}>{title}</Heading1>
-        </ToolTip>
-      ) : (
-        <Heading1 className={styles.title}>{title}</Heading1>
+      {showTitleTooltip && (
+        <div>
+          <ToolTip tooltip={title}>
+            <Heading1 className={styles.title}>{title}</Heading1>
+          </ToolTip>
+        </div>
       )}
+
+      {!showTitleTooltip && <Heading1 className={styles.title}>{title}</Heading1>}
 
       <div className={styles.buttonsContainer}>
         {customElements && customElements}
