@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./CollectionsTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useQueryClient } from "react-query";
@@ -11,6 +11,7 @@ import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { useCollection } from "../../hooks/collection";
 import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const CollectionsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -21,17 +22,17 @@ export const CollectionsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Collections")}</Heading1>
-        <div className={styles.buttons}>
+      <OverviewPageHeaderTemplate
+        title={t("Collections")}
+        button={
           <Button
             variant="primary"
             label={t("Add Collection")}
             onClick={() => navigate(`/collections/new`)}
             icon={faPlus}
           />
-        </div>
-      </section>
+        }
+      />
 
       {getCollection.isError && "Error..."}
 
