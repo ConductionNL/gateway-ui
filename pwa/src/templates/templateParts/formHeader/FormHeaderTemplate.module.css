@@ -11,10 +11,14 @@
   flex: 1;
 }
 
-.container > .title {
-  font-size: var(--gateway-ui-font-size-2xl);
-  text-overflow: ellipsis;
+.tooltipContainer,
+.container .title {
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.container .title {
+  font-size: var(--gateway-ui-font-size-2xl);
 }
 
 .buttonsContainer {
