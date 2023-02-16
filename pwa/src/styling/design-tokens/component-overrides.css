@@ -60,3 +60,7 @@
 .denhaag-button:disabled {
   cursor: not-allowed;
 }
+
+.denhaag-table__row:hover {
+  cursor: pointer;
+}

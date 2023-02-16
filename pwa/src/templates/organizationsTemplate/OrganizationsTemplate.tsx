@@ -47,11 +47,7 @@ export const OrganizationsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getOrganizations.data.map((organization) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/settings/organizations/${organization.id}`)}
-                key={organization.id}
-              >
+              <TableRow onClick={() => navigate(`/settings/organizations/${organization.id}`)} key={organization.id}>
                 <TableCell>{organization.name}</TableCell>
                 <TableCell>{organization.users.length ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, organization.dateCreated) ?? "-"}</TableCell>

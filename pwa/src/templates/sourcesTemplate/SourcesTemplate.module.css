@@ -27,10 +27,6 @@
   align-items: center;
 }
 
-.tableRow {
-  cursor: pointer;
-}
-
 .tableCellFullWidth > * {
   width: max-content;
 }

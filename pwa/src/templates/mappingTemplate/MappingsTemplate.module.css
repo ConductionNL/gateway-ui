@@ -23,10 +23,6 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.tableRow {
-  cursor: pointer;
-}
-
 .details {
   position: -webkit-sticky;
   position: sticky;

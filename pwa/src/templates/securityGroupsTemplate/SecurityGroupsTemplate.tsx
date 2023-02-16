@@ -45,11 +45,7 @@ export const SecurityGroupsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getSecurityGroups.data.map((securityGroup) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)}
-                key={securityGroup.id}
-              >
+              <TableRow onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)} key={securityGroup.id}>
                 <TableCell>{securityGroup.name}</TableCell>
                 <TableCell>{securityGroup.description ?? "-"}</TableCell>
                 <TableCell>{securityGroup.config ?? "-"}</TableCell>

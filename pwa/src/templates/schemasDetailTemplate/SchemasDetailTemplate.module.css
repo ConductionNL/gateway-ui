@@ -8,10 +8,6 @@
   margin-block-end: var(--gateway-ui-size-lg);
 }
 
-.tableRow {
-  cursor: pointer;
-}
-
 .contentContainer {
   background: var(--gateway-ui-color-white);
   margin-block-start: var(--gateway-ui-size-2xl);
