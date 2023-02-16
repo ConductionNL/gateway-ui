@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./ObjectDetailTemplate.module.css";
-import { Button, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { useObject } from "../../hooks/object";
@@ -16,6 +16,7 @@ import { useSync } from "../../hooks/synchronization";
 import { useCurrentTabContext } from "../../context/tabs";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
+import { Button } from "../../components/button/Button";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -94,11 +95,11 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             {getObject.isLoading && <Skeleton height="200px" />}
             {getObject.isSuccess && (
               <Button
-                className={clsx(styles.buttonIcon, styles.testConnectionButton)}
+                label={t("Add sync")}
+                variant="primary"
+                icon={faPlus}
                 onClick={() => navigate(`/objects/${objectId}/new`)}
-              >
-                <FontAwesomeIcon icon={faPlus} /> {t("Add Sync")}
-              </Button>
+              />
             )}
             {getSynchronizations.isSuccess && (
               <Table>
@@ -123,12 +124,11 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
                       <TableCell>{synchronization.endpoint ?? "-"}</TableCell>
                       <TableCell>
                         <Button
+                          variant="danger"
+                          label={t("Delete")}
+                          icon={faTrash}
                           onClick={(e) => handleDeleteObject(e, synchronization.id)}
-                          className={clsx(styles.buttonIcon, styles.deleteButton)}
-                        >
-                          <FontAwesomeIcon icon={faTrash} />
-                          {t("Delete")}
-                        </Button>
+                        />
                       </TableCell>
                       <TableCell onClick={() => navigate(`/objects/${objectId}/${synchronization.id}`)}>
                         <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">

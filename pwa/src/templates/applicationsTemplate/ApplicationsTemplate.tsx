@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./ApplicationsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -11,7 +11,7 @@ import { translateDate } from "../../services/dateFormat";
 import { useQueryClient } from "react-query";
 import { useApplication } from "../../hooks/application";
 import Skeleton from "react-loading-skeleton";
-import clsx from "clsx";
+import { Button } from "../../components/button/Button";
 
 export const ApplicationsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -39,10 +39,12 @@ export const ApplicationsTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Applications")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/applications/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Application")}
-          </Button>
+          <Button
+            variant="primary"
+            label={t("Add Application")}
+            onClick={() => navigate("/settings/applications/new")}
+            icon={faPlus}
+          />
         </div>
       </section>
 
@@ -71,12 +73,11 @@ export const ApplicationsTemplate: React.FC = () => {
                 <TableCell>{translateDate(i18n.language, application.dateModified)}</TableCell>
                 <TableCell>
                   <Button
+                    variant="danger"
+                    icon={faTrash}
+                    label={t("Delete")}
                     onClick={(e) => handleDeleteObject(e, application.id)}
-                    className={clsx(styles.buttonIcon, styles.deleteButton)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                    {t("Delete")}
-                  </Button>
+                  />
                 </TableCell>
                 <TableCell onClick={() => navigate(`/settings/applications/${application.id}`)}>
                   <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">

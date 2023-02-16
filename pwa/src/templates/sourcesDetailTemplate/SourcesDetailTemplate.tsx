@@ -6,7 +6,6 @@ import { useSource } from "../../hooks/source";
 import { Container, InputText, SelectSingle, Textarea } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import {
-  Button,
   FormField,
   FormFieldInput,
   FormFieldLabel,
@@ -16,8 +15,6 @@ import {
   Tabs,
 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import clsx from "clsx";
 import { useIsLoadingContext } from "../../context/isLoading";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
@@ -29,6 +26,7 @@ import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
+import { Button } from "../../components/button/Button";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -120,13 +118,13 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
             {getSource.isSuccess && (
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Button
-                  className={clsx(styles.buttonIcon, styles.testConnectionButton)}
+                  variant="primary"
+                  icon={faArrowsRotate}
+                  label={t("Test connection")}
+                  className={styles.testConnectionButton}
                   disabled={isLoading.sourceForm}
                   type="submit"
-                >
-                  <FontAwesomeIcon icon={faArrowsRotate} />
-                  {t("Test connection")}
-                </Button>
+                />
 
                 <div className={styles.gridContainer}>
                   <div className={styles.grid}>

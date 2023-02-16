@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./SecurityGroupsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -10,6 +10,7 @@ import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSecurityGroup } from "../../hooks/securityGroup";
 import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
+import { Button } from "../../components/button/Button";
 
 export const SecurityGroupsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -23,10 +24,12 @@ export const SecurityGroupsTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Security groups")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/securitygroups/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Security group")}
-          </Button>
+          <Button
+            variant="primary"
+            icon={faPlus}
+            label={t("Add Security group")}
+            onClick={() => navigate(`/settings/securitygroups/new`)}
+          />
         </div>
       </section>
 

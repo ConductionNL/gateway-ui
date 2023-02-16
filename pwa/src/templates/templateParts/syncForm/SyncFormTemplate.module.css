@@ -36,15 +36,3 @@
 .buttons *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
-
-.button {
-  width: max-content;
-}
-
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
-.testConnectionButton {
-  margin-block-end: var(--gateway-ui-size-lg);
-}

@@ -35,14 +35,6 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.button {
-  width: max-content;
-}
-
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
 .grid {
   display: grid;
   grid-gap: var(--gateway-ui-size-lg);
@@ -58,16 +50,6 @@
 
 .tab {
   max-width: unset !important;
-}
-
-.deleteButton {
-  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
-}
-
-.deleteButton:hover {
-  --denhaag-button-primary-action-hover-background-color: var(
-    --gateway-ui-color-dark-red
-  );
 }
 
 .advancedFormContainer > :not(:last-child) {

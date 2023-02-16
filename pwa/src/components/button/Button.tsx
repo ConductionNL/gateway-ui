@@ -7,11 +7,11 @@ import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string;
+  label: string | JSX.Element;
   variant: "primary" | "danger";
   icon: IconDefinition;
 
-  onClick?: () => any;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>) => any;
   disabled?: boolean;
 }
 
