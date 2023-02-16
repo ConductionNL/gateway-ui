@@ -6,27 +6,6 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.section {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--gateway-ui-size-lg);
-  margin-block-end: var(--gateway-ui-size-xl);
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: var(--gateway-ui-size-xs);
-}
-
-.buttons > * {
-  display: flex;
-  align-items: center;
-}
-
 .tableRow {
   cursor: pointer;
 }
