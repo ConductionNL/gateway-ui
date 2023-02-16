@@ -6,18 +6,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
-  type: "primary" | "danger";
+  variant: "primary" | "danger";
   icon: IconDefinition;
-  onClick: () => any;
 
+  onClick?: () => any;
   disabled?: boolean;
 }
 
-export const Button: React.FC<ButtonProps> = ({ label, type, icon, ...rest }) => {
+export const Button: React.FC<ButtonProps> = ({ label, variant, icon, ...rest }) => {
   return (
-    <DenHaagButton className={clsx(styles.button, styles[type])} {...rest}>
+    <DenHaagButton className={clsx(styles.button, styles[variant])} {...rest}>
       <FontAwesomeIcon {...{ icon }} />
 
       {label}
