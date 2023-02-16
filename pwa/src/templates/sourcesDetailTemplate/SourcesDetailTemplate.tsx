@@ -95,6 +95,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
             disabled={isLoading.sourceForm}
             title={`Edit ${getSource.data.name}`}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
           />
 
           <SourceFormTemplate source={getSource.data} />

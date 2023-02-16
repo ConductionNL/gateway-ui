@@ -57,6 +57,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
             disabled={isLoading.cronjobForm}
             handleDelete={handleDeleteCronjob}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
           />
 
           <CronjobFormTemplate cronjob={getCronjob.data} />

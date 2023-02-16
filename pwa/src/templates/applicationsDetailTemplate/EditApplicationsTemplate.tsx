@@ -40,6 +40,7 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
             {...{ formId }}
             disabled={isLoading.applicationForm}
             handleDelete={handleDeleteApplication}
+            showTitleTooltip
           />
 
           <ApplicationsFormTemplate application={getApplication.data} />

@@ -5,6 +5,7 @@ import { t } from "i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Heading1, Button } from "@gemeente-denhaag/components-react";
 import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { ToolTip } from "@conduction/components";
 
 interface FormHeaderTemplateProps {
   title: string;
@@ -17,6 +18,7 @@ interface FormHeaderTemplateProps {
   handleDelete?: () => any;
 
   customElements?: JSX.Element;
+  showTitleTooltip?: boolean;
 }
 
 export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
@@ -26,10 +28,19 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
   handleDelete,
   disabled,
   customElements,
+  showTitleTooltip,
 }) => {
   return (
     <section className={styles.container}>
-      <Heading1 className={styles.title}>{title}</Heading1>
+      {showTitleTooltip && (
+        <div>
+          <ToolTip tooltip={title}>
+            <Heading1 className={styles.title}>{title}</Heading1>
+          </ToolTip>
+        </div>
+      )}
+
+      {!showTitleTooltip && <Heading1 className={styles.title}>{title}</Heading1>}
 
       <div className={styles.buttonsContainer}>
         {customElements && customElements}

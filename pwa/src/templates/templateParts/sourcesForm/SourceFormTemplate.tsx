@@ -11,7 +11,6 @@ import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
 import { InputFloat, InputNumber } from "@conduction/components/lib/components/formFields/input";
 import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
-import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
@@ -215,10 +214,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   React.useEffect(() => {
     source && handleSetFormValues(source);
   }, [source]);
-
-  React.useEffect(() => {
-    ReactTooltip.rebuild();
-  }, [currentTab]);
 
   return (
     <div className={styles.container}>
@@ -732,8 +727,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           </TabPanel>
         </TabContext>
       </form>
-
-      <ReactTooltip className={styles.tooltip} />
     </div>
   );
 };

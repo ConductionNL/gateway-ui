@@ -9,7 +9,6 @@ import { CreateKeyValue, InputNumber } from "@conduction/components/lib/componen
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
 import { InputFloat, InputURL } from "@conduction/components/lib/components/formFields/input";
-import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -159,8 +158,6 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
           ),
         )}
       </div>
-
-      <ReactTooltip className={styles.tooltip} />
     </div>
   );
 };
