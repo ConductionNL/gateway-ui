@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./PluginsDetailTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { Container, Tag, ToolTip } from "@conduction/components";
-import { Button, Divider, Heading1, Heading3, Paragraph } from "@gemeente-denhaag/components-react";
+import { Divider, Heading1, Heading3, Paragraph } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowsRotate,
@@ -14,7 +14,6 @@ import {
   faScroll,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import clsx from "clsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import _ from "lodash";
 import { useQueryClient } from "react-query";
@@ -22,6 +21,7 @@ import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { GitHubLogo } from "../../assets/svgs/GitHub";
 import { VerticalMenu } from "../templateParts/verticalMenu/VerticalMenu";
+import { Button } from "../../components/button/Button";
 
 interface PluginsDetailPageProps {
   pluginName: string;
@@ -117,32 +117,33 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                 <div className={styles.buttons}>
                   {!!getPlugin.data.update && (
                     <Button
+                      variant="primary"
+                      label={`${t("Upgrade to")} ${getPlugin.data.update}`}
+                      icon={faArrowsRotate}
                       disabled={loading}
                       onClick={handleUpgradePlugin}
-                      className={styles.buttonIcon}
                       type="submit"
-                    >
-                      <FontAwesomeIcon icon={faArrowsRotate} />
-                      {t("Upgrade to")} {getPlugin.data.update}
-                    </Button>
+                    />
                   )}
 
                   <Button
+                    variant="danger"
+                    icon={faTrash}
+                    label={t("Remove")}
                     disabled={loading}
                     onClick={handleDeletePlugin}
-                    className={clsx(styles.buttonIcon, styles.deleteButton)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                    {t("Remove")}
-                  </Button>
+                  />
                 </div>
               )}
               {!installed && (
                 <div className={styles.buttons}>
-                  <Button disabled={loading} onClick={handleInstallPlugin} className={styles.buttonIcon}>
-                    <FontAwesomeIcon icon={faDownload} />
-                    {t("Install")}
-                  </Button>
+                  <Button
+                    variant="primary"
+                    label={t("Install")}
+                    icon={faDownload}
+                    disabled={loading}
+                    onClick={handleInstallPlugin}
+                  />
                 </div>
               )}
             </section>
@@ -266,27 +267,27 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                       <div>
                         {getPlugin.data.support?.source && (
                           <Button
-                            icon={<FontAwesomeIcon icon={faExternalLink} />}
+                            variant="primary"
+                            label="Source"
+                            icon={faExternalLink}
                             onClick={() => open(getPlugin.data.support.source)}
-                          >
-                            Source
-                          </Button>
+                          />
                         )}
                         {getPlugin.data.support?.issues && (
                           <Button
-                            icon={<FontAwesomeIcon icon={faExternalLink} />}
+                            variant="primary"
+                            label="Issues"
+                            icon={faExternalLink}
                             onClick={() => open(getPlugin.data.support.issues)}
-                          >
-                            Issues
-                          </Button>
+                          />
                         )}
                         {getPlugin.data.dist && (
                           <Button
-                            icon={<FontAwesomeIcon icon={faExternalLink} />}
+                            variant="primary"
+                            label="Download"
+                            icon={faExternalLink}
                             onClick={() => handleDownloadButton(getPlugin.data.dist.url)}
-                          >
-                            Download
-                          </Button>
+                          />
                         )}
                       </div>
                     </div>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./GatewayDetailTemplate.module.css";
-import { Button, Divider, Heading3, Paragraph } from "@gemeente-denhaag/components-react";
+import { Divider, Heading3, Paragraph } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,7 @@ import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { VerticalMenu } from "../templateParts/verticalMenu/VerticalMenu";
+import { Button } from "../../components/button/Button";
 
 export const GatewayDetailTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -78,11 +79,19 @@ export const GatewayDetailTemplate: React.FC = () => {
             </div>
 
             <div className={styles.buttons}>
-              <Button onClick={handleUpgradePlugin} className={styles.buttonIcon} type="submit" disabled={loading}>
-                <FontAwesomeIcon icon={faArrowsRotate} />
-                {t(getPlugins.data?.update ? "Upgrade to" : "Upgrade")}{" "}
-                {getPlugins.data?.update && getPlugins.data.update}
-              </Button>
+              <Button
+                variant="primary"
+                label={
+                  <>
+                    {t(getPlugins.data?.update ? "Upgrade to" : "Upgrade")}{" "}
+                    {getPlugins.data?.update && getPlugins.data.update}
+                  </>
+                }
+                icon={faArrowsRotate}
+                onClick={handleUpgradePlugin}
+                type="submit"
+                disabled={loading}
+              />
             </div>
           </section>
 

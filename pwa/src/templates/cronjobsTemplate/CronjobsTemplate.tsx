@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./CronjobsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useQueryClient } from "react-query";
@@ -13,6 +13,7 @@ import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
 import { dateTime } from "../../services/dateTime";
+import { Button } from "../../components/button/Button";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -26,10 +27,7 @@ export const CronjobsTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Cronjobs")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/cronjobs/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Cronjob")}
-          </Button>
+          <Button label={t("Add Cronjob")} variant="primary" icon={faPlus} onClick={() => navigate(`/cronjobs/new`)} />
         </div>
       </section>
 

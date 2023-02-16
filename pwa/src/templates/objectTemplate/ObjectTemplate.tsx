@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./ObjectTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
 import { useObject } from "../../hooks/object";
@@ -10,8 +10,8 @@ import Skeleton from "react-loading-skeleton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import clsx from "clsx";
 import { Paginate } from "../../components/paginate/Paginate";
+import { Button } from "../../components/button/Button";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -42,10 +42,7 @@ export const ObjectTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Objects")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate("/objects/new")}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Object")}
-          </Button>
+          <Button variant="primary" icon={faPlus} label={t("Add Object")} onClick={() => navigate("/objects/new")} />
         </div>
       </section>
 
@@ -73,12 +70,11 @@ export const ObjectTemplate: React.FC = () => {
                     <TableCell>{object._self?.sources ?? "-"}</TableCell>
                     <TableCell>
                       <Button
+                        variant="danger"
+                        label={t("Delete")}
+                        icon={faTrash}
                         onClick={(e) => handleDeleteObject(e, object.id)}
-                        className={clsx(styles.buttonIcon, styles.deleteButton)}
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                        {t("Delete")}
-                      </Button>
+                      />
                     </TableCell>
                     <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
                       <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
