@@ -4,14 +4,17 @@
   justify-content: space-between;
   gap: var(--gateway-ui-size-lg);
   margin-block-end: var(--gateway-ui-size-xl);
+  white-space: nowrap;
 }
 
 .container > * {
   flex: 1;
 }
 
-.title {
-  word-break: break-word;
+.container > .title {
+  font-size: var(--gateway-ui-font-size-2xl);
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .buttonsContainer {
