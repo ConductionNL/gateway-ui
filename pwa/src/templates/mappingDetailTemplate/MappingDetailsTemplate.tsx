@@ -3,7 +3,7 @@ import * as styles from "./MappingDetailsTemplate.module.css";
 import { Container } from "@conduction/components";
 import { MappingFormTemplate, formId } from "../templateParts/mappingForm/MappingFormTemplate";
 import { useMapping } from "../../hooks/mapping";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useIsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import Skeleton from "react-loading-skeleton";
@@ -17,7 +17,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const getMapping = useMapping(queryClient).getOne(mappingId);
   const deleteMapping = useMapping(queryClient).remove();
 

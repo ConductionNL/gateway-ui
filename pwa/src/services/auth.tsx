@@ -16,7 +16,6 @@ export const handleLogin = async (data: IUnvalidatedUser, API: APIService) => {
   return await toast.promise(
     API.Login.login(data).then((res) => {
       API.setAuthentication(res.data.jwtToken);
-      navigate("/");
     }),
     {
       loading: "Logging in...",

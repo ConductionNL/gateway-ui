@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./SourcesDetailTemplate.module.css";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import _ from "lodash";
 import { useSource } from "../../hooks/source";
 import { Container, InputText, SelectSingle, Textarea } from "@conduction/components";
@@ -40,7 +40,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useSource = useSource(queryClient);
 
   const getLogs = useLog(queryClient).getAllFromChannel("source", sourceId, currentLogsPage);

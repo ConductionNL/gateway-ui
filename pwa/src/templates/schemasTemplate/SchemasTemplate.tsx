@@ -3,7 +3,7 @@ import * as styles from "./SchemasTemplate.module.css";
 import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +16,7 @@ import { useObject } from "../../hooks/object";
 export const SchemasTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
 

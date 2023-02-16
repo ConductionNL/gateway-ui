@@ -193,8 +193,6 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
       "example",
       "pattern",
       "deprecated",
-      "minDate",
-      "maxDate",
       "maxFileSize",
       "minFileSize",
       "persistToGateway",
@@ -209,6 +207,10 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
       "schema",
     ];
     basicFields.forEach((field) => setValue(field, property[field]));
+
+    property.minDate && setValue("minDate", new Date(property.minDate));
+
+    property.maxDate && setValue("maxDate", new Date(property.maxDate));
 
     setValue(
       "type",
@@ -807,14 +809,22 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("minDate")}</FormFieldLabel>
-                        <InputDate {...{ register, errors }} name="minDate" disabled={loading || isImmutable} />
+                        <InputDate
+                          {...{ register, errors, control }}
+                          name="minDate"
+                          disabled={loading || isImmutable}
+                        />
                       </FormFieldInput>
                     </FormField>
 
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("maxDate")}</FormFieldLabel>
-                        <InputDate {...{ register, errors }} name="maxDate" disabled={loading || isImmutable} />
+                        <InputDate
+                          {...{ register, errors, control }}
+                          name="maxDate"
+                          disabled={loading || isImmutable}
+                        />
                       </FormFieldInput>
                     </FormField>
 

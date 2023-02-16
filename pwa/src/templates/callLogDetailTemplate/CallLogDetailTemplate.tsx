@@ -3,7 +3,7 @@ import * as styles from "./CallLogDetailTemplate.module.css";
 import { Heading1, Heading3, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import _ from "lodash";
 import Skeleton from "react-loading-skeleton";
 import { useCallLog } from "../../hooks/callLog";
@@ -23,7 +23,7 @@ interface CallLogDetailTemplateProps {
 export const CallLogDetailTemplate: React.FC<CallLogDetailTemplateProps> = ({ calllogId, sourceId }) => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useCallLogs = useCallLog(queryClient);
   const _getCallLog = _useCallLogs.getOne(calllogId);
 
