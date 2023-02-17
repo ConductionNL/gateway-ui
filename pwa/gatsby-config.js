@@ -40,10 +40,6 @@ module.exports = {
             crumbLabel: "Source",
           },
           {
-            pathname: "/sources/[sourceId]/[calllogId]",
-            crumbLabel: "CallLog",
-          },
-          {
             pathname: "/cronjobs/[cronjobId]",
             crumbLabel: "Cronjob",
           },
