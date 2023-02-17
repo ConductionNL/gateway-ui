@@ -7,7 +7,7 @@ import { FieldValues, UseFormRegister } from "react-hook-form";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useIsLoadingContext } from "../../../context/isLoading";
 
-export type TSourcesAuthType = "jwt-HS256" | "apikey" | "username-password" | "none" | "vrijbrp-jwt";
+export type TSourcesAuthType = "jwt-HS256" | "apikey" | "username-password" | "vrijbrp-jwt";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -25,98 +25,95 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
   errors,
   disabled,
 }) => {
+  switch (selectedAuth) {
+    case "apikey":
+      return <ApiKeyForm {...{ register, errors, disabled }} />;
+
+    case "jwt-HS256":
+      return <JwtForm {...{ register, errors, disabled }} />;
+
+    case "username-password":
+      return <UsernamePasswordForm {...{ register, errors, disabled }} />;
+
+    case "vrijbrp-jwt":
+      return <UsernamePasswordForm {...{ register, errors, disabled }} />;
+
+    default:
+      return <></>;
+  }
+};
+
+interface FormProps {
+  register: UseFormRegister<FieldValues>;
+  errors: { [x: string]: any };
+  disabled?: boolean;
+}
+
+const ApiKeyForm: React.FC<FormProps> = ({ register, errors, disabled }) => {
   const { t } = useTranslation();
   const { isLoading } = useIsLoadingContext();
 
-  switch (selectedAuth) {
-    case "none":
-      return <></>;
-    case "apikey":
-      return (
-        <FormField>
-          <FormFieldInput>
-            <FormFieldLabel>{t("Api key")}</FormFieldLabel>
-            <Textarea
-              {...{ register, errors, disabled }}
-              name="apikey"
-              validation={{ maxLength: 225 }}
-              disabled={isLoading.sourceForm}
-            />
-            {errors["apikey"] && <ErrorMessage message={errors["apikey"].message} />}
-          </FormFieldInput>
-        </FormField>
-      );
+  return (
+    <FormField>
+      <FormFieldInput>
+        <FormFieldLabel>{t("Api key")}</FormFieldLabel>
+        <Textarea
+          {...{ register, errors, disabled }}
+          name="apikey"
+          validation={{ maxLength: 225 }}
+          disabled={isLoading.sourceForm}
+        />
+        {errors["apikey"] && <ErrorMessage message={errors["apikey"].message} />}
+      </FormFieldInput>
+    </FormField>
+  );
+};
 
-    case "username-password":
-      return (
-        <>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Username")}</FormFieldLabel>
-              <InputText
-                {...{ register, errors, disabled }}
-                name="username"
-                validation={{ required: true, maxLength: 225 }}
-                disabled={isLoading.sourceForm}
-              />
-              {errors["username"] && <ErrorMessage message={errors["username"].message} />}
-            </FormFieldInput>
-          </FormField>
+const JwtForm: React.FC<FormProps> = ({ register, errors, disabled }) => {
+  const { t } = useTranslation();
+  const { isLoading } = useIsLoadingContext();
 
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Password")}</FormFieldLabel>
-              <InputText
-                {...{ register, errors, disabled }}
-                name="password"
-                validation={{ required: true, maxLength: 225 }}
-                disabled={isLoading.sourceForm}
-              />
-              {errors["password"] && <ErrorMessage message={errors["password"].message} />}
-            </FormFieldInput>
-          </FormField>
-        </>
-      );
+  return (
+    <FormField>
+      <FormFieldInput>
+        <FormFieldLabel>{t("JWT-HS256")}</FormFieldLabel>
+        <Textarea {...{ register, errors, disabled }} name="jwt" disabled={isLoading.sourceForm} />
+      </FormFieldInput>
+    </FormField>
+  );
+};
 
-    case "jwt-HS256":
-      return (
-        <FormField>
-          <FormFieldInput>
-            <FormFieldLabel>{t("JWT-HS256")}</FormFieldLabel>
-            <Textarea {...{ register, errors, disabled }} name="jwt" disabled={isLoading.sourceForm} />
-          </FormFieldInput>
-        </FormField>
-      );
+const UsernamePasswordForm: React.FC<FormProps> = ({ register, errors, disabled }) => {
+  const { t } = useTranslation();
+  const { isLoading } = useIsLoadingContext();
 
-    case "vrijbrp-jwt":
-      return (
-        <>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Username")}</FormFieldLabel>
-              <InputText
-                {...{ register, errors, disabled }}
-                name="username"
-                validation={{ required: true, maxLength: 225 }}
-                disabled={isLoading.sourceForm}
-              />
-              {errors["username"] && <ErrorMessage message={errors["username"].message} />}
-            </FormFieldInput>
-          </FormField>
+  return (
+    <>
+      <FormField>
+        <FormFieldInput>
+          <FormFieldLabel>{t("Username")}</FormFieldLabel>
+          <InputText
+            {...{ register, errors, disabled }}
+            name="username"
+            validation={{ required: true, maxLength: 225 }}
+            disabled={isLoading.sourceForm}
+          />
+          {errors["username"] && <ErrorMessage message={errors["username"].message} />}
+        </FormFieldInput>
+      </FormField>
 
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Password")}</FormFieldLabel>
-              <InputText
-                {...{ register, errors, disabled }}
-                name="password"
-                validation={{ required: true, maxLength: 225 }}
-                disabled={isLoading.sourceForm}
-              />
-              {errors["password"] && <ErrorMessage message={errors["password"].message} />}
-            </FormFieldInput>
-          </FormField>
-        </>
-      );
-  }
+      <FormField>
+        <FormFieldInput>
+          <FormFieldLabel>{t("Password")}</FormFieldLabel>
+          <InputText
+            {...{ register, errors, disabled }}
+            name="password"
+            validation={{ required: true, maxLength: 225 }}
+            disabled={isLoading.sourceForm}
+          />
+          {errors["password"] && <ErrorMessage message={errors["password"].message} />}
+        </FormFieldInput>
+      </FormField>
+    </>
+  );
 };
