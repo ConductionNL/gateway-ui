@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./OrganizationsTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -12,6 +12,7 @@ import { useOrganization } from "../../hooks/organization";
 import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const OrganizationsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -22,17 +23,18 @@ export const OrganizationsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Organizations")}</Heading1>
-        <div className={styles.buttons}>
+      <OverviewPageHeaderTemplate
+        title={t("Organizations")}
+        size="md"
+        button={
           <Button
             icon={faPlus}
             variant="primary"
             label={t("Add Organization")}
             onClick={() => navigate(`/settings/organizations/new`)}
           />
-        </div>
-      </section>
+        }
+      />
 
       {getOrganizations.isSuccess && (
         <Table>

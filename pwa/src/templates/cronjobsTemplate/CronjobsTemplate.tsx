@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./CronjobsTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useQueryClient } from "react-query";
@@ -14,6 +14,7 @@ import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
 import { dateTime } from "../../services/dateTime";
 import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -24,12 +25,12 @@ export const CronjobsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Cronjobs")}</Heading1>
-        <div className={styles.buttons}>
+      <OverviewPageHeaderTemplate
+        title={t("Cronjobs")}
+        button={
           <Button label={t("Add Cronjob")} variant="primary" icon={faPlus} onClick={() => navigate(`/cronjobs/new`)} />
-        </div>
-      </section>
+        }
+      />
 
       {getCronjobs.isError && "Error..."}
 
