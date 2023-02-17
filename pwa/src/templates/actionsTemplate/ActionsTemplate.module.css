@@ -23,14 +23,6 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
-.tableRow {
-  cursor: pointer;
-}
-
 .table {
   display: block;
   overflow-x: auto;

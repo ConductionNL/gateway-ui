@@ -2,12 +2,25 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--gateway-ui-size-xl);
 }
 
-.tableRow {
-  cursor: pointer;
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttons > * {
+  display: flex;
+  align-items: center;
+}
+
+.buttons *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
 }
 
 .details {

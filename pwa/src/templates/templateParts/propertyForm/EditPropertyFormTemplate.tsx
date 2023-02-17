@@ -2,18 +2,17 @@ import * as React from "react";
 import * as styles from "./PropertyFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Alert, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, InputDate, Textarea } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
-import clsx from "clsx";
 import { useAttribute } from "../../../hooks/attribute";
 import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
+import { Button } from "../../../components/button/Button";
 
 interface EditPropertyFormTemplateProps {
   property: any;
@@ -324,22 +323,20 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
 
             <div className={styles.buttons}>
               <Button
-                className={clsx(styles.buttonIcon, styles.button)}
+                variant="primary"
+                label={t("Save")}
+                icon={faSave}
                 type="submit"
                 disabled={loading || isImmutable}
-              >
-                <FontAwesomeIcon icon={faFloppyDisk} />
-                {t("Save")}
-              </Button>
+              />
 
               <Button
+                label={t("Delete")}
+                variant="danger"
+                icon={faTrash}
                 onClick={handleDeleteProperty}
-                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
                 disabled={loading}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Delete")}
-              </Button>
+              />
             </div>
           </section>
 

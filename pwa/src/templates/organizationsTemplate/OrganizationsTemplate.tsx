@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./OrganizationsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -11,6 +11,7 @@ import { useQueryClient } from "react-query";
 import { useOrganization } from "../../hooks/organization";
 import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
+import { Button } from "../../components/button/Button";
 
 export const OrganizationsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -24,10 +25,12 @@ export const OrganizationsTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Organizations")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/organizations/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Organization")}
-          </Button>
+          <Button
+            icon={faPlus}
+            variant="primary"
+            label={t("Add Organization")}
+            onClick={() => navigate(`/settings/organizations/new`)}
+          />
         </div>
       </section>
 
@@ -44,11 +47,7 @@ export const OrganizationsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getOrganizations.data.map((organization) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/settings/organizations/${organization.id}`)}
-                key={organization.id}
-              >
+              <TableRow onClick={() => navigate(`/settings/organizations/${organization.id}`)} key={organization.id}>
                 <TableCell>{organization.name}</TableCell>
                 <TableCell>{organization.users.length ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, organization.dateCreated) ?? "-"}</TableCell>

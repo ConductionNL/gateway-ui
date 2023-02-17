@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./AuthenticationsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -12,6 +12,7 @@ import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
 import { useAuthentication } from "../../hooks/authentication";
+import { Button } from "../../components/button/Button";
 
 export const AuthenticationsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -39,10 +40,12 @@ export const AuthenticationsTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Authentication Provider")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/authentication/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Authentication Provider")}
-          </Button>
+          <Button
+            variant="primary"
+            icon={faPlus}
+            label={t("Add Authentication Provider")}
+            onClick={() => navigate(`/settings/authentication/new`)}
+          />
         </div>
       </section>
 
@@ -61,7 +64,6 @@ export const AuthenticationsTemplate: React.FC = () => {
           <TableBody>
             {getAuthentication.data.map((authentication) => (
               <TableRow
-                className={styles.tableRow}
                 onClick={() => navigate(`/settings/authentication/${authentication.id}`)}
                 key={authentication.id}
               >
@@ -71,12 +73,11 @@ export const AuthenticationsTemplate: React.FC = () => {
                 <TableCell>{translateDate(i18n.language, authentication.dateModified)}</TableCell>
                 <TableCell>
                   <Button
+                    label={t("Delete")}
+                    variant="danger"
+                    icon={faTrash}
                     onClick={(e) => handleDeleteObject(e, authentication.id)}
-                    className={clsx(styles.buttonIcon, styles.deleteButton)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                    {t("Delete")}
-                  </Button>
+                  />
                 </TableCell>
                 <TableCell onClick={() => navigate(`/settings/authentication/${authentication.id}`)}>
                   <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">

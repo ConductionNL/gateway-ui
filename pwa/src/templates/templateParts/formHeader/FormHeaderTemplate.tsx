@@ -2,9 +2,10 @@ import * as React from "react";
 import * as styles from "./FormHeaderTemplate.module.css";
 
 import { t } from "i18next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Heading1, Button } from "@gemeente-denhaag/components-react";
-import { faFloppyDisk, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Heading1 } from "@gemeente-denhaag/components-react";
+import { faMinus, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { ToolTip } from "@conduction/components";
+import { Button } from "../../../components/button/Button";
 
 interface FormHeaderTemplateProps {
   title: string;
@@ -17,6 +18,7 @@ interface FormHeaderTemplateProps {
   handleDelete?: () => any;
 
   customElements?: JSX.Element;
+  showTitleTooltip?: boolean;
 }
 
 export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
@@ -26,33 +28,37 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
   handleDelete,
   disabled,
   customElements,
+  showTitleTooltip,
 }) => {
   return (
     <section className={styles.container}>
-      <Heading1 className={styles.title}>{title}</Heading1>
+      {showTitleTooltip && (
+        <ToolTip layoutClassName={styles.tooltipContainer} tooltip={title}>
+          <Heading1 className={styles.title}>{title}</Heading1>
+        </ToolTip>
+      )}
+
+      {!showTitleTooltip && <Heading1 className={styles.title}>{title}</Heading1>}
 
       <div className={styles.buttonsContainer}>
         {customElements && customElements}
 
         {formId && (
-          <Button type="submit" form={formId} {...{ disabled }}>
-            <FontAwesomeIcon icon={faFloppyDisk} />
-            {t("Save")}
-          </Button>
+          <Button variant="primary" type="submit" form={formId} label={t("Save")} icon={faSave} {...{ disabled }} />
         )}
 
         {handleToggleDashboard && (
-          <Button {...{ disabled }} onClick={handleToggleDashboard.handleToggle}>
-            <FontAwesomeIcon icon={handleToggleDashboard.isActive ? faMinus : faPlus} />
-            {handleToggleDashboard.isActive ? t("Remove from dashboard") : t("Add to dashboard")}
-          </Button>
+          <Button
+            variant="primary"
+            onClick={handleToggleDashboard.handleToggle}
+            icon={handleToggleDashboard.isActive ? faMinus : faPlus}
+            label={handleToggleDashboard.isActive ? t("Remove from dashboard") : t("Add to dashboard")}
+            {...{ disabled }}
+          />
         )}
 
         {handleDelete && (
-          <Button {...{ disabled }} onClick={handleDelete} className={styles.deleteButton}>
-            <FontAwesomeIcon icon={faTrash} />
-            {t("Delete")}
-          </Button>
+          <Button variant="danger" onClick={handleDelete} icon={faTrash} label={t("Delete")} {...{ disabled }} />
         )}
       </div>
     </section>

@@ -2,11 +2,11 @@ import * as React from "react";
 import * as styles from "./PropertyFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Alert, Heading1, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputNumber, InputText, SelectSingle, Textarea, InputDate } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { useAttribute } from "../../../hooks/attribute";
 import { navigate } from "gatsby";
@@ -14,7 +14,7 @@ import { SelectCreate } from "@conduction/components/lib/components/formFields/s
 import { CreateKeyValue } from "@conduction/components/lib/components/formFields";
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
-import clsx from "clsx";
+import { Button } from "../../../components/button/Button";
 
 interface CreatePropertyFormTemplateProps {
   schemaId: string;
@@ -139,10 +139,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
             <Heading1>{t("Create Property")}</Heading1>
 
             <div className={styles.buttons}>
-              <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
-                <FontAwesomeIcon icon={faFloppyDisk} />
-                {t("Save")}
-              </Button>
+              <Button label={t("Save")} variant="primary" icon={faSave} type="submit" disabled={loading} />
             </div>
           </section>
           <TabContext value={currentTab.toString()}>
