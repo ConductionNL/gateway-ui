@@ -26,6 +26,7 @@ import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
+import { TestSourceConnectionFormTemplate } from "./TestSourceConnectionFormTemplate/TestSourceConnectionFormTemplate";
 import { Button } from "../../components/button/Button";
 
 interface SourcesDetailTemplateProps {
@@ -115,55 +116,8 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
           <TabPanel className={styles.tabPanel} value="0">
             {getSource.isLoading && <Skeleton height="200px" />}
-            {getSource.isSuccess && (
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Button
-                  variant="primary"
-                  icon={faArrowsRotate}
-                  label={t("Test connection")}
-                  className={styles.testConnectionButton}
-                  disabled={isLoading.sourceForm}
-                  type="submit"
-                />
 
-                <div className={styles.gridContainer}>
-                  <div className={styles.grid}>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Method")}</FormFieldLabel>
-                        <SelectSingle
-                          validation={{ required: true }}
-                          {...{ register, errors, control }}
-                          name="method"
-                          options={methodSelectOptions}
-                          disabled={isLoading.sourceForm}
-                        />
-
-                        {errors["method"] && <ErrorMessage message="This field is required." />}
-                      </FormFieldInput>
-                    </FormField>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Endpoint")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="endpoint" disabled={isLoading.sourceForm} />
-                      </FormFieldInput>
-                    </FormField>
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Body")}</FormFieldLabel>
-                        <Textarea
-                          {...{ register, errors }}
-                          name="body"
-                          validation={{ validate: validateStringAsJSON }}
-                          disabled={isLoading.sourceForm}
-                        />
-                        {errors["body"] && <ErrorMessage message={errors["body"].message} />}
-                      </FormFieldInput>
-                    </FormField>
-                  </div>
-                </div>
-              </form>
-            )}
+            {getSource.isSuccess && <TestSourceConnectionFormTemplate {...{ sourceId }} />}
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">

@@ -53,7 +53,7 @@ export const SourcesTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getSources.data.map((source) => (
-                <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
+                <TableRow onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
                   <TableCell>{source.name}</TableCell>
                   <TableCell className={styles.tableCellFullWidth}>
                     <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>

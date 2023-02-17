@@ -2,10 +2,6 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.tableRow {
-  cursor: pointer;
-}
-
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);

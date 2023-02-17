@@ -51,11 +51,7 @@ export const CronjobsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getCronjobs.data.map((cronjob) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/cronjobs/${cronjob.id}`)}
-                key={cronjob.id}
-              >
+              <TableRow onClick={() => navigate(`/cronjobs/${cronjob.id}`)} key={cronjob.id}>
                 <TableCell>{cronjob.name}</TableCell>
 
                 <TableCell>

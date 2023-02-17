@@ -46,11 +46,7 @@ export const CollectionsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getCollection.data.map((collection: any) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/collections/${collection.id}`)}
-                key={collection.id}
-              >
+              <TableRow onClick={() => navigate(`/collections/${collection.id}`)} key={collection.id}>
                 <TableCell>{collection.name}</TableCell>
                 <TableCell onClick={() => navigate(`/collections/${collection.id}`)}>
                   <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">

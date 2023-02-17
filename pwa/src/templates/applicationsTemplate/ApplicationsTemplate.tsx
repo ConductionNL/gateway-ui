@@ -64,11 +64,7 @@ export const ApplicationsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getApplication.data.map((application) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/settings/applications/${application.id}`)}
-                key={application.id}
-              >
+              <TableRow onClick={() => navigate(`/settings/applications/${application.id}`)} key={application.id}>
                 <TableCell>{application.name}</TableCell>
                 <TableCell>{application.description ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, application.dateCreated)}</TableCell>

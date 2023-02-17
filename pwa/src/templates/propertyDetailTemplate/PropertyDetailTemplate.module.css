@@ -26,7 +26,3 @@
 .buttonIcon > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
-
-.tableRow {
-  cursor: pointer;
-}

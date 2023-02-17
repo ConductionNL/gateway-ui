@@ -65,7 +65,6 @@ export const AuthenticationsTemplate: React.FC = () => {
           <TableBody>
             {getAuthentication.data.map((authentication) => (
               <TableRow
-                className={styles.tableRow}
                 onClick={() => navigate(`/settings/authentication/${authentication.id}`)}
                 key={authentication.id}
               >

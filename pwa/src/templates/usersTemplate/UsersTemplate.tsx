@@ -50,11 +50,7 @@ export const UsersTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getUsers.data.map((user: any) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/settings/users/${user.id}`)}
-                key={user.id}
-              >
+              <TableRow onClick={() => navigate(`/settings/users/${user.id}`)} key={user.id}>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.organisation.name ?? "-"}</TableCell>
                 <TableCell>{user.securityGroups?.length ?? "-"}</TableCell>
