@@ -50,7 +50,7 @@ export const ActionsTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getActions.data.map((action) => (
-                <TableRow onClick={() => navigate(`/actions/${action.id}`)} key={action.id} className={styles.tableRow}>
+                <TableRow onClick={() => navigate(`/actions/${action.id}`)} key={action.id}>
                   <TableCell className={styles.actionName}>{action.name}</TableCell>
                   <TableCell>{action.priority}</TableCell>
                   <TableCell>

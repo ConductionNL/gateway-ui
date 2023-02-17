@@ -43,11 +43,7 @@ export const MappingTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getMappings.data.map((mapping) => (
-              <TableRow
-                key={mapping.id}
-                onClick={() => navigate(`/mappings/${mapping.id}`)}
-                className={styles.tableRow}
-              >
+              <TableRow key={mapping.id} onClick={() => navigate(`/mappings/${mapping.id}`)}>
                 <TableCell>{mapping.name ?? "-"}</TableCell>
                 <TableCell>{mapping.version ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, mapping.dateCreated) ?? "-"}</TableCell>

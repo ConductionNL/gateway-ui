@@ -23,10 +23,6 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.tableRow {
-  cursor: pointer;
-}
-
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);

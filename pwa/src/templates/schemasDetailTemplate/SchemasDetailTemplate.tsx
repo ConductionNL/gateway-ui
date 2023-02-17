@@ -160,11 +160,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                 <TableBody>
                   {getSchema.data.attributes &&
                     getSchema.data.attributes.map((property: any) => (
-                      <TableRow
-                        className={styles.tableRow}
-                        onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
-                        key={property.id}
-                      >
+                      <TableRow onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)} key={property.id}>
                         <TableCell>{property.name ?? "-"}</TableCell>
                         <TableCell>{property.type ?? "-"}</TableCell>
                         <TableCell>{property.function ?? "-"}</TableCell>
