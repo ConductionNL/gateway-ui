@@ -89,6 +89,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
             disabled={isLoading.mappingForm}
             handleDelete={handleDelete}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
           />
 
           <div className={styles.tabContainer}>

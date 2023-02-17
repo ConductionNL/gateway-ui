@@ -2,10 +2,6 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
 .extraContainer,
 .contextContainer {
   padding-inline-start: var(--gateway-ui-size-md);
@@ -32,12 +28,14 @@
   --denhaag-heading-color: var(--gateway-ui-color-black);
   --utrecht-paragraph-color: var(--gateway-ui-color-black);
 }
+
 .infoLevel {
   --denhaag-alert-info-background-color: var(--gateway-ui-color-log-level-info);
   --denhaag-alert-info-icon-color: var(--gateway-ui-color-black);
   --denhaag-heading-color: var(--gateway-ui-color-black);
   --utrecht-paragraph-color: var(--gateway-ui-color-black);
 }
+
 .noticeLevel {
   --denhaag-alert-info-background-color: var(
     --gateway-ui-color-log-level-notice
@@ -46,6 +44,7 @@
   --denhaag-heading-color: var(--gateway-ui-color-black);
   --utrecht-paragraph-color: var(--gateway-ui-color-black);
 }
+
 .warningLevel {
   --denhaag-alert-info-background-color: #var(
     --gateway-ui-color-log-level-warning
@@ -54,6 +53,7 @@
   --denhaag-heading-color: var(--gateway-ui-color-black);
   --utrecht-paragraph-color: var(--gateway-ui-color-black);
 }
+
 .errorLevel {
   --denhaag-alert-info-background-color: var(
     --gateway-ui-color-log-level-error
@@ -62,6 +62,7 @@
   --denhaag-heading-color: var(--gateway-ui-color-black);
   --utrecht-paragraph-color: var(--gateway-ui-color-black);
 }
+
 .criticalLevel {
   --denhaag-alert-info-background-color: var(
     --gateway-ui-color-log-level-critical
@@ -70,6 +71,7 @@
   --denhaag-heading-color: var(--gateway-ui-color-white);
   --utrecht-paragraph-color: var(--gateway-ui-color-white);
 }
+
 .alertLevel {
   --denhaag-alert-info-background-color: var(
     --gateway-ui-color-log-level-alert
@@ -78,6 +80,7 @@
   --denhaag-heading-color: var(--gateway-ui-color-white);
   --utrecht-paragraph-color: var(--gateway-ui-color-white);
 }
+
 .emergencyLevel {
   --denhaag-alert-info-background-color: var(
     --gateway-ui-color-log-level-emergency

@@ -2,14 +2,6 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
-.tableRow {
-  cursor: pointer;
-}
-
 .details {
   position: -webkit-sticky;
   position: sticky;
@@ -24,15 +16,4 @@
 
 .tagWidth {
   width: max-content !important;
-}
-
-/* Status colors */
-.statusOk {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
-  --conduction-tag-color: var(--gateway-ui-color-white);
-}
-
-.statusFailed {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-red);
-  --conduction-tag-color: var(--gateway-ui-color-white);
 }

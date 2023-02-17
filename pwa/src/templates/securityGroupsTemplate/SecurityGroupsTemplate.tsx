@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./SecurityGroupsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -10,6 +10,8 @@ import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSecurityGroup } from "../../hooks/securityGroup";
 import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
+import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const SecurityGroupsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -20,15 +22,18 @@ export const SecurityGroupsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Security groups")}</Heading1>
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/settings/securitygroups/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Security group")}
-          </Button>
-        </div>
-      </section>
+      <OverviewPageHeaderTemplate
+        title={t("Security groups")}
+        size="md"
+        button={
+          <Button
+            variant="primary"
+            icon={faPlus}
+            label={t("Add Security group")}
+            onClick={() => navigate(`/settings/securitygroups/new`)}
+          />
+        }
+      />
 
       {getSecurityGroups.isSuccess && (
         <Table>
@@ -42,11 +47,7 @@ export const SecurityGroupsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getSecurityGroups.data.map((securityGroup) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)}
-                key={securityGroup.id}
-              >
+              <TableRow onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)} key={securityGroup.id}>
                 <TableCell>{securityGroup.name}</TableCell>
                 <TableCell>{securityGroup.description ?? "-"}</TableCell>
                 <TableCell>{securityGroup.config ?? "-"}</TableCell>

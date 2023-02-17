@@ -1,17 +1,17 @@
 import * as React from "react";
 import * as styles from "./PluginsTemplate.module.css";
-import { Button, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
-import { Container, InputText } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { Container } from "@conduction/components";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { PluginCard } from "../../components/pluginCard/PluginCard";
 import _ from "lodash";
 import { useQueryClient } from "react-query";
 import { usePlugin } from "../../hooks/plugin";
 import Skeleton from "react-loading-skeleton";
 import { PluginsSearchBarTemplate } from "./PluginsSearchBarTemplate";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { Button } from "../../components/button/Button";
 
 export type TPluginTitle = "Search" | "";
 
@@ -40,14 +40,12 @@ export const PluginsTemplate: React.FC<PluginsPageProps> = ({ title }) => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t(`${title} Plugins`)}</Heading1>
-        {!!title || (
-          <Button icon={<FontAwesomeIcon icon={faSearch} />} onClick={() => navigate("/plugins/search")}>
-            {t("Search")}
-          </Button>
-        )}
-      </section>
+      <OverviewPageHeaderTemplate
+        title={t(`${title} Plugins`)}
+        button={
+          <Button variant="primary" icon={faSearch} label={t("Search")} onClick={() => navigate("/plugins/search")} />
+        }
+      />
 
       {title === "Search" && <PluginsSearchBarTemplate {...{ searchQuery, setSearchQuery }} />}
 

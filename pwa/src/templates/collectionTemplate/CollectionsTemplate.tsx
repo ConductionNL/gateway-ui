@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./CollectionsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useQueryClient } from "react-query";
@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { useCollection } from "../../hooks/collection";
+import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const CollectionsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -20,15 +22,17 @@ export const CollectionsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Collections")}</Heading1>
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/collections/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Collection")}
-          </Button>
-        </div>
-      </section>
+      <OverviewPageHeaderTemplate
+        title={t("Collections")}
+        button={
+          <Button
+            variant="primary"
+            label={t("Add Collection")}
+            onClick={() => navigate(`/collections/new`)}
+            icon={faPlus}
+          />
+        }
+      />
 
       {getCollection.isError && "Error..."}
 
@@ -42,11 +46,7 @@ export const CollectionsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getCollection.data.map((collection: any) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/collections/${collection.id}`)}
-                key={collection.id}
-              >
+              <TableRow onClick={() => navigate(`/collections/${collection.id}`)} key={collection.id}>
                 <TableCell>{collection.name}</TableCell>
                 <TableCell onClick={() => navigate(`/collections/${collection.id}`)}>
                   <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">

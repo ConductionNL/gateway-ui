@@ -65,6 +65,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
             disabled={isLoading.actionForm}
             handleDelete={handleDeleteAction}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
           />
 
           <ActionFormTemplate action={getAction.data} />

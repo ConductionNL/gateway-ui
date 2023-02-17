@@ -35,6 +35,7 @@ export const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessf
           <FontAwesomeIcon icon={faFloppyDisk} />
           {t("Save")}
         </Button>
+
         <Button
           onClick={(e) => {
             e.preventDefault();
