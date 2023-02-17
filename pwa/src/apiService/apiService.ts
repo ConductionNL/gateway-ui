@@ -16,7 +16,6 @@ import Schema from "./resources/schema";
 import Log from "./resources/log";
 import Collection from "./resources/collection";
 import DashboardCards from "./resources/dashboardCards";
-import CallLog from "./resources/callLog";
 import Attribute from "./resources/attribute";
 import Plugin from "./resources/plugin";
 import PluginReadMe from "./resources/pluginReadme";
@@ -140,10 +139,6 @@ export default class APIService {
 
   public get DashboardCards(): DashboardCards {
     return new DashboardCards(this.BaseClient);
-  }
-
-  public get CallLog(): CallLog {
-    return new CallLog(this.BaseClient);
   }
 
   public get Attribute(): Attribute {
