@@ -26,18 +26,3 @@
 .buttonIcon > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
-
-.tableRow {
-  cursor: pointer;
-}
-
-/* Status colors */
-.statusOk {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
-  --conduction-tag-color: var(--gateway-ui-color-white);
-}
-
-.statusFailed {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-red);
-  --conduction-tag-color: var(--gateway-ui-color-white);
-}

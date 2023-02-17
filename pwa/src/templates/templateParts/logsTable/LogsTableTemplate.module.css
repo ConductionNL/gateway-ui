@@ -6,10 +6,6 @@
   margin-block-end: var(--gateway-ui-size-lg);
 }
 
-.tableRow {
-  cursor: pointer;
-}
-
 .button > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }

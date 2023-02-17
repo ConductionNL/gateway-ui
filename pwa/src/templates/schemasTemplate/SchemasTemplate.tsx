@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as styles from "./SchemasTemplate.module.css";
-import { Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { useQueryClient } from "react-query";
@@ -12,6 +11,7 @@ import { useSchema } from "../../hooks/schema";
 import { translateDate } from "../../services/dateFormat";
 import { useObject } from "../../hooks/object";
 import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const SchemasTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -33,12 +33,12 @@ export const SchemasTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Schemas")}</Heading1>
-        <div className={styles.buttons}>
+      <OverviewPageHeaderTemplate
+        title={t("Schemas")}
+        button={
           <Button variant="primary" icon={faPlus} label={t("Add Schema")} onClick={() => navigate(`/schemas/new`)} />
-        </div>
-      </section>
+        }
+      />
 
       {getSchemas.isError && "Error..."}
 
