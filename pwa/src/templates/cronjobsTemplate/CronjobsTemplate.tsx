@@ -73,9 +73,9 @@ export const CronjobsTemplate: React.FC = () => {
 
                 <TableCell>{cronjob.crontab}</TableCell>
 
-                <TableCell>{dateTime(t(i18n.language), cronjob.lastRun) ?? "-"}</TableCell>
+                <TableCell>{cronjob.lastRun ? dateTime(t(i18n.language), cronjob.lastRun) : "-"}</TableCell>
 
-                <TableCell>{dateTime(t(i18n.language), cronjob.nextRun) ?? "-"}</TableCell>
+                <TableCell>{cronjob.nextRun ? dateTime(t(i18n.language), cronjob.nextRun) : "-"}</TableCell>
 
                 <TableCell>{translateDate(i18n.language, cronjob.dateCreated)}</TableCell>
 
