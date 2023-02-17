@@ -1,36 +1,20 @@
 apiVersion: v1
 entries:
-  commonground-gateway:
+  gateway-ui:
   - apiVersion: v2
-    appVersion: "2.2"
-    created: "2023-02-06T12:41:42.009595782+01:00"
-    dependencies:
-    - condition: postgresql.enabled
-      name: postgresql
-      repository: https://charts.bitnami.com/bitnami
-      version: 12.1.2
-    - condition: redis.enabled
-      name: redis
-      repository: https://charts.bitnami.com/bitnami
-      version: 17.3.11
-    - name: rabbitmq
-      repository: https://charts.bitnami.com/bitnami
-      version: 9.0.1
-    - condition: mongodb.enabled
-      name: mongodb
-      repository: https://charts.bitnami.com/bitnami
-      version: 13.4.4
-    description: A Helm chart for Kubernetes
-    digest: 92d891d1e69717a8c7350edaa3520962e210fead1c1d0d3982476f9097daa37d
-    name: commonground-gateway
+    appVersion: 0.1.0
+    created: "2023-02-17T13:29:15.8632703+01:00"
+    description: A Helm chart for the Skeleton Gatsby Application
+    digest: 69837b41bef6af8be7570475a1509b4585b88060f24cdb1d60c739753b88049e
+    name: gateway-ui
     type: application
     urls:
-    - charts/commonground-gateway-1.2.0.tgz
-    version: 1.2.0
+    - gateway-ui-0.1.0.tgz
+    version: 0.1.0
   skeleton-app:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-06T12:41:41.950199055+01:00"
+    created: "2023-02-17T13:29:15.9258712+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -46,7 +30,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-06T12:41:41.908837491+01:00"
+    created: "2023-02-17T13:29:15.9063566+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -62,7 +46,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-06T12:41:41.873503095+01:00"
+    created: "2023-02-17T13:29:15.8923547+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -78,7 +62,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-06T12:41:41.835440602+01:00"
+    created: "2023-02-17T13:29:15.8783502+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -95,7 +79,7 @@ entries:
   skeleton-pip:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-06T12:41:41.981370257+01:00"
+    created: "2023-02-17T13:29:15.9403806+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -109,4 +93,4 @@ entries:
     urls:
     - skeleton-pip-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-06T12:41:41.798429476+01:00"
+generated: "2023-02-17T13:29:15.8622706+01:00"
