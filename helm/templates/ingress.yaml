@@ -1,7 +1,6 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "api-platform.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
-{{- $gateway := include "commonground-gateway.fullname" . -}}
 {{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
@@ -38,66 +37,10 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    - host: {{ .Values.ingress.hostname }}
+    - host: {{ .Values.global.domain }}
       http:
         paths:
-          - path: {{ .Values.ingress.path }}/api
-            {{- if and .Values.ingress.pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .Values.ingress.pathType }}
-            {{- end }}
-            backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
-              service:
-                name: {{ $gateway }}
-                port:
-                  number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $gateway }}
-              servicePort: {{ $svcPort }}
-              {{- end }}
-          - path: {{ .Values.ingress.path }}/digid
-            {{- if and .Values.ingress.pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .Values.ingress.pathType }}
-            {{- end }}
-            backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
-              service:
-                name: {{ $gateway }}
-                port:
-                  number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $gateway }}
-              servicePort: {{ $svcPort }}
-              {{- end }}
-          - path: {{ .Values.ingress.path }}/saml
-            {{- if and .Values.ingress.pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .Values.ingress.pathType }}
-            {{- end }}
-            backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
-              service:
-                name: {{ $gateway }}
-                port:
-                  number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $gateway }}
-              servicePort: {{ $svcPort }}
-          {{- end }}
-          - path: {{ .Values.ingress.path }}/login
-            {{- if and .Values.ingress.pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .Values.ingress.pathType }}
-            {{- end }}
-            backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
-              service:
-                name: {{ $gateway }}
-                port:
-                  number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $gateway }}
-              servicePort: {{ $svcPort }}
-          {{- end }}
-          - path: {{ .Values.ingress.path }}/
+          - path: {{ .Values.ingress.path }}
             {{- if and .Values.ingress.pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
             pathType: {{ .Values.ingress.pathType }}
             {{- end }}
