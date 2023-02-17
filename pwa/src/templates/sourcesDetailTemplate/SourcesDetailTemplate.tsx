@@ -6,7 +6,6 @@ import { useSource } from "../../hooks/source";
 import { Container, InputText, SelectSingle, Textarea } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import {
-  Button,
   FormField,
   FormFieldInput,
   FormFieldLabel,
@@ -16,8 +15,6 @@ import {
   Tabs,
 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import clsx from "clsx";
 import { useIsLoadingContext } from "../../context/isLoading";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
@@ -30,6 +27,7 @@ import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTempla
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { TestSourceConnectionFormTemplate } from "./TestSourceConnectionFormTemplate/TestSourceConnectionFormTemplate";
+import { Button } from "../../components/button/Button";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -118,6 +116,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
 
           <TabPanel className={styles.tabPanel} value="0">
             {getSource.isLoading && <Skeleton height="200px" />}
+
             {getSource.isSuccess && <TestSourceConnectionFormTemplate {...{ sourceId }} />}
           </TabPanel>
 

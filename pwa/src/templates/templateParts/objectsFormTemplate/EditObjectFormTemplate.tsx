@@ -1,12 +1,10 @@
 import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import { Button, Divider, Heading1 } from "@gemeente-denhaag/components-react";
+import { Divider, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
-import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
@@ -14,6 +12,7 @@ import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 import Skeleton from "react-loading-skeleton";
 import { FormSaveButton, TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
+import { Button } from "../../../components/button/Button";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -92,22 +91,20 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
               <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
 
               <Button
-                className={clsx(styles.buttonIcon, styles.button)}
+                label={dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
+                variant="primary"
+                icon={dashboardCard ? faMinus : faPlus}
                 onClick={toggleFromDashboard}
                 disabled={loading}
-              >
-                <FontAwesomeIcon icon={dashboardCard ? faMinus : faPlus} />
-                {dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-              </Button>
+              />
 
               <Button
+                label={t("Delete")}
+                variant="danger"
+                icon={faTrash}
                 onClick={handleDeleteObject}
-                className={clsx(styles.buttonIcon, styles.button, styles.deleteButton)}
                 disabled={loading}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                {t("Delete")}
-              </Button>
+              />
             </div>
           </section>
 

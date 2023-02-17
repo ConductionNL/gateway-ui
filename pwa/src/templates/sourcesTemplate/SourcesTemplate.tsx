@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./SourcesTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Heading1, Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -16,6 +16,7 @@ import Skeleton from "react-loading-skeleton";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import TableWrapper from "../../components/tableWrapper/TableWrapper";
 import { dateTime } from "../../services/dateTime";
+import { Button } from "../../components/button/Button";
 
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -29,10 +30,7 @@ export const SourcesTemplate: React.FC = () => {
       <section className={styles.section}>
         <Heading1>{t("Sources")}</Heading1>
         <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/sources/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Source")}
-          </Button>
+          <Button variant="primary" icon={faPlus} label={t("Add Source")} onClick={() => navigate(`/sources/new`)} />
         </div>
       </section>
 
