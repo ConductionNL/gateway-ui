@@ -29,20 +29,6 @@
   max-width: unset !important;
 }
 
-.grid {
-  display: grid;
-  grid-gap: var(--gateway-ui-size-lg);
-  grid-template-columns: 1fr 1fr;
-}
-
-.gridContainer > *:not(:first-child) {
-  margin-block-start: var(--gateway-ui-size-sm);
-}
-
-.testConnectionButton {
-  margin-block-end: var(--gateway-ui-size-lg);
-}
-
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);
