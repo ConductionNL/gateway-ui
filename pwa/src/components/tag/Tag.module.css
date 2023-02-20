@@ -1,0 +1,48 @@
+.container {
+  white-space: nowrap;
+}
+
+.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.debug {
+  background-color: #fefefe;
+  color: #818182;
+}
+
+.info {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.notice {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.error {
+  background-color: #ffc061;
+  color: #59401a;
+}
+
+.critical {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.alert {
+  background-color: #ff959e;
+  color: #480f14;
+}
+
+.emergency {
+  background-color: #000000;
+  color: #ffffff;
+}
