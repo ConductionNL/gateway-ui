@@ -14,6 +14,7 @@ import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { dateTime } from "../../services/dateTime";
 
 export const ActionsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -66,7 +67,7 @@ export const ActionsTemplate: React.FC = () => {
                     </div>
                   </TableCell>
                   <TableCell>{action.isEnabled ? "On" : "Off"}</TableCell>
-                  <TableCell>{action.lastRun ?? "-"}</TableCell>
+                  <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>
                   <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
                   <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
                   <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
