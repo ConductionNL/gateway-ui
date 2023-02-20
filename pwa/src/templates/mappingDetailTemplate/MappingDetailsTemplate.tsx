@@ -41,7 +41,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const queryClient = useQueryClient();
   const getMapping = useMapping(queryClient).getOne(mappingId);
   const deleteMapping = useMapping(queryClient).remove();
-  const testSimpleMapping = useMapping(queryClient).testSimpleMapping(mappingId);
+  const testSimpleMapping = useMapping(queryClient).testMapping(mappingId);
 
   const dashboardCard = getDashboardCard(mappingId);
 

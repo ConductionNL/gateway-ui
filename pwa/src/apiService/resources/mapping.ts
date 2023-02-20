@@ -48,7 +48,7 @@ export default class Mapping {
     return data;
   };
 
-  public testSimpleMapping = async (variables: { payload: any; id: string }): Promise<any> => {
+  public testMapping = async (variables: { payload: any; id: string }): Promise<any> => {
     const { id, payload } = variables;
 
     const { data } = await Send(this._instance, "POST", `/admin/mappings/${id}/test`, payload, {

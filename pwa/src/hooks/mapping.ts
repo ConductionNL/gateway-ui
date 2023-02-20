@@ -53,8 +53,8 @@ export const useMapping = (queryClient: QueryClient) => {
       },
     });
 
-  const testSimpleMapping = (mappingId: string) =>
-    useMutation<any, Error, any>(API.Mapping.testSimpleMapping, {
+  const testMapping = (mappingId: string) =>
+    useMutation<any, Error, any>(API.Mapping.testMapping, {
       onSuccess: async () => {
         toast.success("Request succesfully tested");
       },
@@ -69,5 +69,5 @@ export const useMapping = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit, testSimpleMapping };
+  return { getAll, getOne, remove, createOrEdit, testMapping };
 };
