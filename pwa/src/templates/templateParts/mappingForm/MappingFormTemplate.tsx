@@ -39,10 +39,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
   const castRefBottom: any = React.useRef();
 
   const handleScrollToCreate = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, ref: any) => {
-    e.preventDefault();
     e.stopPropagation();
-
-    ref.current.sc;
 
     ref.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
   };
