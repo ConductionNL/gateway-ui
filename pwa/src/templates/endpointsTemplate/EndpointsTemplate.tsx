@@ -5,13 +5,13 @@ import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@
 import { navigate } from "gatsby";
 import { useEndpoint } from "../../hooks/endpoint";
 import { useQueryClient } from "react-query";
-import { Container, Tag } from "@conduction/components";
+import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import clsx from "clsx";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { translateDate } from "../../services/dateFormat";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { Tag } from "../../components/tag/Tag";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -53,15 +53,11 @@ export const EndpointsTemplate: React.FC = () => {
                 <TableCell>{endpoint.name}</TableCell>
 
                 <TableCell>
-                  <div
-                    className={clsx(
-                      endpoint.status === "Ok" ? styles.statusOk : "",
-                      endpoint.status === false ? styles.statusFailed : "",
-                      endpoint.status === null ? styles.statusUnknown : "",
-                    )}
-                  >
-                    <Tag label={endpoint.status?.toString() ?? "Unknown"} />
-                  </div>
+                  {endpoint.status && <Tag type="success" label={endpoint.status?.toString()} />}
+                  {endpoint.status === false && (
+                    <Tag type="critical" label={endpoint.status?.toString() ?? "No status"} />
+                  )}
+                  {endpoint.status === null && <Tag label={"No status"} />}
                 </TableCell>
 
                 <TableCell>{!!endpoint.pathRegex ? endpoint.pathRegex : "-"}</TableCell>

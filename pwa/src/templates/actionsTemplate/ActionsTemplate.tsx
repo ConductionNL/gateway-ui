@@ -6,15 +6,15 @@ import { useAction } from "../../hooks/action";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { useQueryClient } from "react-query";
-import { Container, Tag, ToolTip } from "@conduction/components";
+import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faCheck, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
-import clsx from "clsx";
+import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { dateTime } from "../../services/dateTime";
+import { Tag } from "../../components/tag/Tag";
 
 export const ActionsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -56,15 +56,7 @@ export const ActionsTemplate: React.FC = () => {
                   <TableCell className={styles.actionName}>{action.name}</TableCell>
                   <TableCell>{action.priority}</TableCell>
                   <TableCell>
-                    <div className={clsx(styles[action.status === true ? "statusOk" : "statusFailed"])}>
-                      <ToolTip tooltip="Status">
-                        <Tag
-                          layoutClassName={styles.tagWidth}
-                          icon={<FontAwesomeIcon icon={action.status === true ? faCheck : faXmark} />}
-                          label={action.status?.toString() ?? "no status"}
-                        />
-                      </ToolTip>
-                    </div>
+                    <Tag type={action.status && "success"} label={action.status ? "Success" : "No status"} />
                   </TableCell>
                   <TableCell>{action.isEnabled ? "On" : "Off"}</TableCell>
                   <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>

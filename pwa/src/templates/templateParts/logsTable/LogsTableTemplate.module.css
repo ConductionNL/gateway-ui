@@ -21,42 +21,6 @@
   width: 100%;
 }
 
-.debug {
-  background-color: var(--gateway-ui-color-log-level-debug);
-  color: darken(var(--gateway-ui-color-log-level-debug), 50%);
-}
-
-.info {
-  background-color: var(--gateway-ui-color-log-level-info);
-}
-
-.notice {
-  background-color: var(--gateway-ui-color-log-level-notice);
-}
-
-.warning {
-  background-color: var(--gateway-ui-color-log-level-warning);
-}
-
-.error {
-  background-color: var(--gateway-ui-color-log-level-error);
-}
-
-.critical {
-  background-color: var(--gateway-ui-color-log-level-critical);
-  color: var(--gateway-ui-color-white);
-}
-
-.alert {
-  background-color: var(--gateway-ui-color-log-level-alert);
-  color: var(--gateway-ui-color-white);
-}
-
-.emergency {
-  background-color: var(--gateway-ui-color-log-level-emergency);
-  color: var(--gateway-ui-color-white);
-}
-
 /* 
  * Column filters
  */
