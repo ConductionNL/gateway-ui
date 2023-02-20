@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./DashboardCard.module.css";
-import { Button, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { navigate } from "gatsby";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import { dateTime } from "../../services/dateTime";
 import { faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "../button/Button";
 
 export interface DashboardCardProps {
   title: {
@@ -45,6 +46,8 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags,
           </li>
         ))}
       </ul>
+
+      <Button variant="danger" icon={faTrash} label="Click me" onClick={() => alert("Clicked!")} />
     </div>
   );
 };
