@@ -2,7 +2,10 @@
   white-space: nowrap;
 }
 
-/* .debug { uses default values } */
+.debug {
+  background-color: var(--gateway-ui-color-status-background-debug);
+  color: var(--gateway-ui-color-status-debug);
+}
 
 .success {
   background-color: var(--gateway-ui-color-status-background-success);

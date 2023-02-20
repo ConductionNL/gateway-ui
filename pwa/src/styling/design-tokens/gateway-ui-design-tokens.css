@@ -75,15 +75,8 @@
   --gateway-ui-side-bar-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
   --gateway-ui-color-disabled: #c2c8cb;
 
-  --gateway-ui-color-log-level-debug: #f2f2f2;
-  --gateway-ui-color-log-level-info: #dbecfa;
-  --gateway-ui-color-log-level-notice: #6489de;
-  --gateway-ui-color-log-level-warning: #efd357;
-  --gateway-ui-color-log-level-error: #f4891f;
-  --gateway-ui-color-log-level-critical: #f52f2f;
-  --gateway-ui-color-log-level-alert: #d10707;
-  --gateway-ui-color-log-level-emergency: #990000;
-
+  --gateway-ui-color-status-background-debug: #f2f2f2;
+  --gateway-ui-color-status-debug: #4a4a4a;
   --gateway-ui-color-status-background-success: #d4edda;
   --gateway-ui-color-status-success: #155724;
   --gateway-ui-color-status-background-info: #cce5ff;
