@@ -43,11 +43,8 @@ export const HomeTemplate: React.FC = () => {
                 label: dashboardCard.object?.name ?? dashboardCard.object?.id,
                 href: `/${getPath(dashboardCard.type)}/${dashboardCard.object?.id}`,
               }}
+              tags={["status", "enabled", "item", "object", "one", "two", "three", "four", "five", "six"]}
               type={dashboardCard.type}
-              status={dashboardCard?.object?.status}
-              isEnabled={dashboardCard?.object?.isEnabled}
-              lastRun={dashboardCard?.object?.lastRun}
-              lastCall={dashboardCard?.object?.lastCall}
               onDelete={(e) => handleDeleteDashboardCard(e, dashboardCard.id)}
             />
           ))}

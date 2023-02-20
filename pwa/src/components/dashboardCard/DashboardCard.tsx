@@ -17,26 +17,38 @@ export interface DashboardCardProps {
     href: string;
   };
   type: string;
-  status?: string | boolean;
-  isEnabled?: boolean | undefined;
-  lastRun?: string;
-  lastCall?: string;
-  onDelete?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>) => void;
+  tags: string[];
+  // status?: string | boolean;
+  // isEnabled?: boolean | undefined;
+  // lastRun?: string;
+  // lastCall?: string;
+  onDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>) => void;
 }
 
-export const DashboardCard: React.FC<DashboardCardProps> = ({
-  title,
-  type,
-  status,
-  isEnabled,
-  lastRun,
-  lastCall,
-  onDelete,
-}) => {
+export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags, onDelete }) => {
   const { t, i18n } = useTranslation();
+  console.log(tags);
 
   return (
-    <div className={styles.container} onClick={() => navigate(title.href)}>
+    <div className={styles.container}>
+      <div className={styles.headerContainer}>
+        <span>{title.label}</span>
+        <span className={styles.cardType}>{type}</span>
+      </div>
+
+      <ul className={styles.tagsList}>
+        {tags.map((tag, idx) => (
+          <li key={idx}>
+            <Tag label={tag} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+{
+  /* <div className={styles.container} onClick={() => navigate(title.href)}>
       <div className={styles.titleLink}>
         <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
           {title.label}
@@ -79,6 +91,5 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({
 
         <div>{isEnabled !== undefined && <span>Enabled: {isEnabled ? "On" : "Off"}</span>}</div>
       </div>
-    </div>
-  );
-};
+    </div> */
+}

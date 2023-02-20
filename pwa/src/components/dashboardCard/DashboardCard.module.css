@@ -1,5 +1,4 @@
 .container {
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   border: var(--gateway-ui-card-border-color);
@@ -26,19 +25,6 @@
 .titleLink > :first-child {
   display: flex;
 }
-
-.tags {
-  margin-block-start: auto;
-}
-
-.tags > div {
-  margin-block-end: var(--gateway-ui-size-xs);
-}
-
-.tags > *:not(:last-child) {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
 .statusTypeContainer {
   display: flex;
   align-items: center;
@@ -49,7 +35,13 @@
 .date {
   display: flex;
 }
-
+.tagsList {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 .date :not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-sm);
 }
