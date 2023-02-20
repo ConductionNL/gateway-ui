@@ -20,6 +20,9 @@ metadata:
     {{- include "api-platform.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
+    {{- if .Values.global.tls }}
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    {{- end }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
