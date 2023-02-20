@@ -11,7 +11,7 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.content :not(:last-child) {
+.content > :not(:last-child) {
   margin-block-end: var(--gateway-ui-size-md);
 }
 
