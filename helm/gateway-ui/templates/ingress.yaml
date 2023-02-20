@@ -36,6 +36,12 @@ spec:
       secretName: {{ .secretName }}
     {{- end }}
   {{- end }}
+  {{- if .Values.global.tls }}
+  tls:
+    - hosts:
+        - {{ .Values.global.domain | quote }}
+      secretName: {{ $fullName }}-tls
+  {{- end }}
   rules:
     - host: admin.{{ .Values.global.domain }}
       http:

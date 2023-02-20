@@ -19,6 +19,7 @@ replicacount: 1
 
 global:
   domain: localhost
+  tls: true
 
 imagePullSecrets: []
 nameOverride: ""
