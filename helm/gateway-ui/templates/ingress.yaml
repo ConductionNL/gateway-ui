@@ -18,13 +18,14 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "api-platform.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+
   annotations:
     {{- if .Values.global.tls }}
     cert-manager.io/cluster-issuer: letsencrypt-prod
     {{- end }}
+    {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.className }}
