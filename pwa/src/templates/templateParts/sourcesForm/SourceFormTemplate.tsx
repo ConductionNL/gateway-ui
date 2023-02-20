@@ -15,9 +15,8 @@ import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
 import { useIsLoadingContext } from "../../../context/isLoading";
-import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
-import clsx from "clsx";
 import { translateDate } from "../../../services/dateFormat";
+import { getStatusTag } from "../../../services/getStatusTag";
 
 interface SourceTemplateProps {
   source?: any;
@@ -252,12 +251,8 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                   <>
                     <FormField>
                       <FormFieldLabel>{t("Status")}</FormFieldLabel>
-                      <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
-                        <Tag
-                          icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
-                          label={source.status?.toString() ?? "no known status"}
-                        />
-                      </div>
+
+                      <div>{getStatusTag(source.status)}</div>
                     </FormField>
 
                     <FormField>

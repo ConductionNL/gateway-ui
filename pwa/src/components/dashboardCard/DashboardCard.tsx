@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import { Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
+import { getStatusColor, getStatusIcon } from "../../services/getStatusTag";
 import { dateTime } from "../../services/dateTime";
 import { faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
 
