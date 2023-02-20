@@ -33,7 +33,7 @@
   max-width: unset !important;
 }
 
-.testConnectionButton {
+.testMappingButton {
   margin-block-end: var(--gateway-ui-size-lg);
 }
 

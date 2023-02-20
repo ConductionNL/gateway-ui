@@ -69,16 +69,3 @@
 .toggleIcon.isOpen {
   transform: rotate(90deg);
 }
-
-.toCollapsibleEnd,
-.toCollapsibleStart {
-  display: flex;
-  justify-content: flex-end;
-  cursor: pointer;
-  font-size: var(--gateway-ui-font-size-md);
-}
-
-.toCollapsibleEnd > svg,
-.toCollapsibleStart > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}

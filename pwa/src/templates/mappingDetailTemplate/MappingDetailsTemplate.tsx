@@ -11,7 +11,6 @@ import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTempla
 import { useCurrentTabContext } from "../../context/tabs";
 import { useTranslation } from "react-i18next";
 import {
-  Button,
   FormField,
   FormFieldInput,
   FormFieldLabel,
@@ -22,10 +21,10 @@ import {
 } from "@gemeente-denhaag/components-react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { validateStringAsJSON } from "../../services/validateJSON";
+import { Button } from "../../components/button/Button";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -112,13 +111,13 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
               <TabPanel className={styles.tabPanel} value="1">
                 <form onSubmit={handleSubmit(onSubmitTest)}>
                   <Button
-                    className={clsx(styles.buttonIcon, styles.testConnectionButton)}
+                    label={t("Test mapping")}
+                    icon={faArrowsRotate}
+                    variant="primary"
+                    className={clsx(styles.buttonIcon, styles.testMappingButton)}
                     disabled={isLoading.mappingForm}
                     type="submit"
-                  >
-                    <FontAwesomeIcon icon={faArrowsRotate} />
-                    {t("Test mapping")}
-                  </Button>
+                  ></Button>
 
                   <div className={styles.content}>
                     <FormField>
