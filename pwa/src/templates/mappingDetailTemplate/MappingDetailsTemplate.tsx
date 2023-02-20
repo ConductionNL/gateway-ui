@@ -41,7 +41,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const queryClient = useQueryClient();
   const getMapping = useMapping(queryClient).getOne(mappingId);
   const deleteMapping = useMapping(queryClient).remove();
-  const testSimpleMapping = useMapping(queryClient).testMapping(mappingId);
+  const testMapping = useMapping(queryClient).testMapping(mappingId);
 
   const dashboardCard = getDashboardCard(mappingId);
 
@@ -68,15 +68,15 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
       ...jsonData,
     };
 
-    testSimpleMapping.mutate({ payload: payload, id: mappingId });
+    testMapping.mutate({ payload: payload, id: mappingId });
   };
 
   React.useEffect(() => {
     setIsLoading({
       ...isLoading,
-      mappingForm: deleteMapping.isLoading || testSimpleMapping.isLoading || dashboardLoading,
+      mappingForm: deleteMapping.isLoading || testMapping.isLoading || dashboardLoading,
     });
-  }, [deleteMapping.isLoading, testSimpleMapping.isLoading, dashboardLoading]);
+  }, [deleteMapping.isLoading, testMapping.isLoading, dashboardLoading]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -117,7 +117,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                     type="submit"
                   >
                     <FontAwesomeIcon icon={faArrowsRotate} />
-                    {t("Test simple mapping")}
+                    {t("Test mapping")}
                   </Button>
 
                   <div className={styles.content}>
@@ -135,7 +135,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                     </FormField>
                     <FormField>
                       <FormFieldLabel>{t("Output")}</FormFieldLabel>
-                      <pre>{JSON.stringify(testSimpleMapping.data, null, 2)}</pre>
+                      <pre>{JSON.stringify(testMapping.data, null, 2)}</pre>
                     </FormField>
                   </div>
                 </form>
