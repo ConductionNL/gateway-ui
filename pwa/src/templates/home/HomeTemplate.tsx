@@ -46,6 +46,7 @@ export const HomeTemplate: React.FC = () => {
               tags={["status", "enabled", "item", "object", "one", "two", "three", "four", "five", "six"]}
               type={dashboardCard.type}
               onDelete={(e) => handleDeleteDashboardCard(e, dashboardCard.id)}
+              isEnabled
             />
           ))}
         </div>

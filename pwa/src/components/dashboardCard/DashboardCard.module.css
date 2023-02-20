@@ -25,6 +25,22 @@
 .titleLink > :first-child {
   display: flex;
 }
+
+.enabledIndicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  display: block;
+}
+
+.enabledIndicator.enabled {
+  background-color: green;
+}
+
+.enabledIndicator.disabled {
+  background-color: red;
+}
+
 .statusTypeContainer {
   display: flex;
   align-items: center;

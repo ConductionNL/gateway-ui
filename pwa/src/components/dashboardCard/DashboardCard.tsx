@@ -18,22 +18,24 @@ export interface DashboardCardProps {
   };
   type: string;
   tags: string[];
+  isEnabled?: boolean; // true false undefined
+
   // status?: string | boolean;
-  // isEnabled?: boolean | undefined;
   // lastRun?: string;
   // lastCall?: string;
   onDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>) => void;
 }
 
-export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags, onDelete }) => {
-  const { t, i18n } = useTranslation();
-  console.log(tags);
-
+export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags, isEnabled, onDelete }) => {
   return (
     <div className={styles.container}>
       <div className={styles.headerContainer}>
         <span>{title.label}</span>
         <span className={styles.cardType}>{type}</span>
+
+        <ToolTip tooltip="Is enabled">
+          <span className={clsx(styles.enabledIndicator, isEnabled ? styles.enabled : styles.disabled)} />
+        </ToolTip>
       </div>
 
       <ul className={styles.tagsList}>
