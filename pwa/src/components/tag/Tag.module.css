@@ -2,14 +2,11 @@
   white-space: nowrap;
 }
 
+/* .debug { uses default values } */
+
 .success {
   background-color: #d4edda;
   color: #155724;
-}
-
-.debug {
-  background-color: #fefefe;
-  color: #818182;
 }
 
 .info {

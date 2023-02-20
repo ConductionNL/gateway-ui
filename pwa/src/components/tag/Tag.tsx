@@ -4,9 +4,20 @@ import * as styles from "./Tag.module.css";
 import clsx from "clsx";
 import { Tag as ConductionTag, ToolTip } from "@conduction/components";
 
+export type TTagType =
+  | "success"
+  | "debug"
+  | "info"
+  | "notice"
+  | "warning"
+  | "error"
+  | "critical"
+  | "alert"
+  | "emergency";
+
 interface TagProps {
   label: string;
-  type?: "success" | "debug" | "info" | "notice" | "warning" | "error" | "critical" | "alert" | "emergency";
+  type?: TTagType;
   toolTipContent?: string;
 }
 
