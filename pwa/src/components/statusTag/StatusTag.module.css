@@ -5,41 +5,41 @@
 /* .debug { uses default values } */
 
 .success {
-  background-color: #d4edda;
-  color: #155724;
+  background-color: var(--gateway-ui-color-status-background-success);
+  color: var(--gateway-ui-color-status-success);
 }
 
 .info {
-  background-color: #cce5ff;
-  color: #004085;
+  background-color: var(--gateway-ui-color-status-background-info);
+  color: var(--gateway-ui-color-status-info);
 }
 
 .notice {
-  background-color: #d1ecf1;
-  color: #0c5460;
+  background-color: var(--gateway-ui-color-status-background-notice);
+  color: var(--gateway-ui-color-status-notice);
 }
 
 .warning {
-  background-color: #fff3cd;
-  color: #856404;
+  background-color: var(--gateway-ui-color-status-background-warning);
+  color: var(--gateway-ui-color-status-warning);
 }
 
 .error {
-  background-color: #ffc061;
-  color: #59401a;
+  background-color: var(--gateway-ui-color-status-background-error);
+  color: var(--gateway-ui-color-status-error);
 }
 
 .critical {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: var(--gateway-ui-color-status-background-critical);
+  color: var(--gateway-ui-color-status-critical);
 }
 
 .alert {
-  background-color: #ff959e;
-  color: #480f14;
+  background-color: var(--gateway-ui-color-status-background-alert);
+  color: var(--gateway-ui-color-status-alert);
 }
 
 .emergency {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--gateway-ui-color-status-background-emergency);
+  color: var(--gateway-ui-color-status-emergency);
 }

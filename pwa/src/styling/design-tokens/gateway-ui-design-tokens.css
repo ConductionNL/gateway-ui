@@ -84,6 +84,23 @@
   --gateway-ui-color-log-level-alert: #d10707;
   --gateway-ui-color-log-level-emergency: #990000;
 
+  --gateway-ui-color-status-background-success: #d4edda;
+  --gateway-ui-color-status-success: #155724;
+  --gateway-ui-color-status-background-info: #cce5ff;
+  --gateway-ui-color-status-info: #004085;
+  --gateway-ui-color-status-background-notice: #d1ecf1;
+  --gateway-ui-color-status-notice: #0c5460;
+  --gateway-ui-color-status-background-warning: #fff3cd;
+  --gateway-ui-color-status-warning: #856404;
+  --gateway-ui-color-status-background-error: #ffc061;
+  --gateway-ui-color-status-error: #59401a;
+  --gateway-ui-color-status-background-critical: #f8d7da;
+  --gateway-ui-color-status-critical: #721c24;
+  --gateway-ui-color-status-background-alert: #ff959e;
+  --gateway-ui-color-status-alert: #480f14;
+  --gateway-ui-color-status-background-emergency: #000000;
+  --gateway-ui-color-status-emergency: #ffffff;
+
   /* Components */
   --gateway-ui-container-max-width: 2440px;
   --gateway-ui-card-border-color: 1px solid var(--gateway-ui-color-primary);
