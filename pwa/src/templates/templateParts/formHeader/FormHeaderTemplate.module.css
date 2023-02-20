@@ -30,3 +30,8 @@
 .buttonsContainer > *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
+@media only screen and (min-width: 992px) {
+  .container {
+    flex-direction: row;
+  }
+}
