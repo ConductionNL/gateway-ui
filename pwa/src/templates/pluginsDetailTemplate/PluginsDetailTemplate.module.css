@@ -27,10 +27,6 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
 .gatewayDetailContainer > *:has(> *):not(:last-child) {
   margin-block-end: var(--gateway-ui-size-lg);
 }
@@ -98,16 +94,6 @@
   max-width: 100px;
   display: block;
   margin-inline: auto;
-}
-
-.deleteButton {
-  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
-}
-
-.deleteButton:hover {
-  --denhaag-button-primary-action-hover-background-color: var(
-    --gateway-ui-color-dark-red
-  );
 }
 
 .sectionContainer {

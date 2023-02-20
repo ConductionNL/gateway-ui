@@ -8,8 +8,7 @@ import { FieldValues, UseFormRegister } from "react-hook-form";
 import { CreateKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
-import { InputDateTime, InputFloat, InputURL } from "@conduction/components/lib/components/formFields/input";
-import { ReactTooltip } from "@conduction/components/lib/components/toolTip/ToolTip";
+import { InputFloat, InputURL } from "@conduction/components/lib/components/formFields/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -18,7 +17,7 @@ import {
   SelectSingle,
 } from "@conduction/components/lib/components/formFields/select/select";
 import { useObject } from "../../../hooks/object";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 
 export type SchemaInputType =
@@ -159,8 +158,6 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
           ),
         )}
       </div>
-
-      <ReactTooltip className={styles.tooltip} />
     </div>
   );
 };
@@ -297,15 +294,16 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           <InputDate
             validation={{ required }}
             disabled={disabled || readOnly}
-            {...{ register, errors, placeholder, name, defaultValue }}
+            {...{ register, errors, placeholder, name, control, defaultValue }}
           />
         )}
 
         {type === "datetime" && (
-          <InputDateTime
+          <InputDate
             validation={{ required }}
             disabled={disabled || readOnly}
-            {...{ register, errors, placeholder, name, defaultValue }}
+            showTimeSelect
+            {...{ register, errors, placeholder, name, control, defaultValue }}
           />
         )}
 
@@ -355,7 +353,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   multiple,
   schema,
 }) => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useObject = useObject(queryClient);
   const property = schema?.properties[name];
 

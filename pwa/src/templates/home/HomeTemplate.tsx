@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./HomeTemplate.module.css";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useDashboardCards } from "../../hooks/dashboardCards";
 import Skeleton from "react-loading-skeleton";
 import { DashboardCard } from "../../components/dashboardCard/DashboardCard";
@@ -13,7 +13,7 @@ import { Container } from "@conduction/components";
 export const HomeTemplate: React.FC = () => {
   const { t } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useDashboardCards = useDashboardCards(queryClient);
   const getDashboardCards = _useDashboardCards.getAll();
   const deleteDashboardCard = _useDashboardCards.createOrDelete();

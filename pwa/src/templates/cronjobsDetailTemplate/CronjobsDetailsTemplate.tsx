@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./CronjobsDetailsTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useCronjob } from "../../hooks/cronjob";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
@@ -24,7 +24,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useCronjob = useCronjob(queryClient);
   const getCronjob = _useCronjob.getOne(cronjobId);
   const deleteCronjob = _useCronjob.remove();
@@ -57,6 +57,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
             disabled={isLoading.cronjobForm}
             handleDelete={handleDeleteCronjob}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
           />
 
           <CronjobFormTemplate cronjob={getCronjob.data} />

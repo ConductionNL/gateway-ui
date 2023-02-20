@@ -82,7 +82,3 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
-
-{{- define "commonground-gateway.fullname" -}}
-{{- printf "%s-%s" .Release.Name "commonground-gateway" | trunc 63 | trimSuffix "-" -}}
-{{- end -}}

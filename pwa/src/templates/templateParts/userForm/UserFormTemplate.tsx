@@ -4,7 +4,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { useTranslation } from "react-i18next";
 import { InputPassword, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useUser } from "../../../hooks/user";
 import Skeleton from "react-loading-skeleton";
 import { validatePassword } from "../../../services/stringValidations";
@@ -22,7 +22,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const { t } = useTranslation();
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useUsers = useUser(queryClient);
   const createOrEditUser = _useUsers.createOrEdit(user?.id);
 

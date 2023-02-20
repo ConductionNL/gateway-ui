@@ -1,14 +1,13 @@
 import * as React from "react";
 import * as styles from "./LogsDetailTemplate.module.css";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Alert, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import Skeleton from "react-loading-skeleton";
 import { useApplication } from "../../hooks/application";
 import { navigate } from "gatsby";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faFilter, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useEndpoint } from "../../hooks/endpoint";
 import { useSchema } from "../../hooks/schema";
@@ -20,6 +19,8 @@ import clsx from "clsx";
 import _ from "lodash";
 import { useLog } from "../../hooks/log";
 import { useLogFiltersContext } from "../../context/logs";
+import { Button } from "../../components/button/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface LogsDetailTemplateProps {
   logId: string;
@@ -29,7 +30,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
   const { t } = useTranslation();
   const { setLogFilters } = useLogFiltersContext();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const getLog = useLog(queryClient).getOne(logId);
   const getApplication = useApplication(queryClient).getOne(getLog.data?.context?.application);
@@ -105,13 +106,12 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
 
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
                       disabled={!getLog.data.context?.session}
                       onClick={() => handleSetContextFilter("session", getLog.data.context?.session)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faFilter} />
-                      {t("Set filter")}
-                    </Button>
+                    />
                   </TableCell>
                   <TableCell>-</TableCell>
                 </TableRow>
@@ -122,13 +122,12 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
 
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
                       disabled={!getLog.data.context?.process}
                       onClick={() => handleSetContextFilter("process", getLog.data.context?.process)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faFilter} />
-                      {t("Set filter")}
-                    </Button>
+                    />
                   </TableCell>
                   <TableCell>-</TableCell>
                 </TableRow>
@@ -148,23 +147,21 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   )}
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
                       disabled={!getEndpoint.data?.id}
                       onClick={() => handleSetContextFilter("endpoint", getEndpoint.data.id)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faFilter} />
-                      {t("Set filter")}
-                    </Button>
+                    />
                   </TableCell>
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
                       disabled={!getLog.data.context?.endpoint}
                       onClick={() => navigate(`/endpoints/${getLog.data.context?.endpoint}`)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faArrowRight} />
-                      {t("Details")}
-                    </Button>
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -181,23 +178,21 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   )}
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
                       disabled={!getEndpoint.data?.id}
                       onClick={() => handleSetContextFilter("schema", getEndpoint.data.id)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faFilter} />
-                      {t("Set filter")}
-                    </Button>
+                    />
                   </TableCell>
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
                       disabled={!getLog.data.context?.schema}
                       onClick={() => navigate(`/schemas/${getLog.data.context?.schema}`)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faArrowRight} />
-                      {t("Details")}
-                    </Button>
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -216,23 +211,21 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   )}
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
                       disabled={!getCronjob.data?.id}
                       onClick={() => handleSetContextFilter("cronjob", getCronjob.data.id)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faFilter} />
-                      {t("Set filter")}
-                    </Button>
+                    />
                   </TableCell>
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
                       disabled={!getLog.data.context?.cronjob}
                       onClick={() => navigate(`/cronjobs/${getLog.data.context?.cronjob}`)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faArrowRight} />
-                      {t("Details")}
-                    </Button>
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -249,23 +242,21 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   )}
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
                       disabled={!getAction.data?.id}
                       onClick={() => handleSetContextFilter("action", getAction.data.id)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faFilter} />
-                      {t("Set filter")}
-                    </Button>
+                    />
                   </TableCell>
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
                       disabled={!getLog.data.context?.action}
                       onClick={() => navigate(`/actions/${getLog.data.context?.action}`)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faArrowRight} />
-                      {t("Details")}
-                    </Button>
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -293,23 +284,21 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   )}
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
                       disabled={!getUser.data?.id}
                       onClick={() => handleSetContextFilter("user", getUser.data.id)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faFilter} />
-                      {t("Set filter")}
-                    </Button>
+                    />
                   </TableCell>
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
                       disabled={!getLog.data.context?.user}
                       onClick={() => navigate(`/settings/users/${getLog.data.context?.user}`)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faArrowRight} />
-                      {t("Details")}
-                    </Button>
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -328,23 +317,21 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   )}
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
                       disabled={!getOrganization.data?.id}
                       onClick={() => handleSetContextFilter("organization", getOrganization.data.id)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faFilter} />
-                      {t("Set filter")}
-                    </Button>
+                    />
                   </TableCell>
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
                       disabled={!getLog.data.context?.organization}
                       onClick={() => navigate(`/settings/organizations/${getLog.data.context?.organization}`)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faArrowRight} />
-                      {t("Details")}
-                    </Button>
+                    />
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -363,23 +350,21 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                   )}
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
                       disabled={!getApplication.data?.id}
                       onClick={() => handleSetContextFilter("application", getApplication.data.id)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faFilter} />
-                      {t("Set filter")}
-                    </Button>
+                    />
                   </TableCell>
                   <TableCell>
                     <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
                       disabled={!getLog.data.context?.application}
                       onClick={() => navigate(`/settings/applications/${getLog.data.context?.application}`)}
-                      className={styles.buttonIcon}
-                    >
-                      <FontAwesomeIcon icon={faArrowRight} />
-                      {t("Details")}
-                    </Button>
+                    />
                   </TableCell>
                 </TableRow>
               </TableBody>

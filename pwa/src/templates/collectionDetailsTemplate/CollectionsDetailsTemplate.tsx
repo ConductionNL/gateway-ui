@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./CollectionsDetailsTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
@@ -25,7 +25,7 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useCollection = useCollection(queryClient);
   const getCollection = _useCollection.getOne(collectionId);
   const deleteCollection = _useCollection.remove();
@@ -58,6 +58,7 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
             disabled={isLoading.collectionForm}
             handleDelete={handleDeleteAction}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
           />
 
           <CollectionFormTemplate collection={getCollection.data} />

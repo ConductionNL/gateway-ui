@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./SchemasDetailTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../hooks/schema";
@@ -33,7 +33,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useSchema = useSchema(queryClient);
   const getSchema = _useSchema.getOne(schemaId);
   const deleteSchema = _useSchema.remove();
@@ -160,11 +160,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                 <TableBody>
                   {getSchema.data.attributes &&
                     getSchema.data.attributes.map((property: any) => (
-                      <TableRow
-                        className={styles.tableRow}
-                        onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)}
-                        key={property.id}
-                      >
+                      <TableRow onClick={() => navigate(`/schemas/${schemaId}/${property.id}`)} key={property.id}>
                         <TableCell>{property.name ?? "-"}</TableCell>
                         <TableCell>{property.type ?? "-"}</TableCell>
                         <TableCell>{property.function ?? "-"}</TableCell>

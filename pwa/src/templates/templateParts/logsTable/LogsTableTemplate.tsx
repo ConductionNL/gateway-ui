@@ -57,7 +57,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
 
         <TableBody>
           {logs.map((log: any) => (
-            <TableRow className={styles.tableRow} onClick={() => navigate(`/logs/${log._id.$oid}`)} key={log._id.$oid}>
+            <TableRow onClick={() => navigate(`/logs/${log._id.$oid}`)} key={log._id.$oid}>
               {logTableColumns.level && (
                 <TableCell>
                   <Tag

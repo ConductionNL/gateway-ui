@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./EndpointDetailsTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useEndpoint } from "../../hooks/endpoint";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
@@ -26,7 +26,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useEndpoints = useEndpoint(queryClient);
   const getEndpoint = _useEndpoints.getOne(endpointId);
   const deleteEndpoint = _useEndpoints.remove();
@@ -59,6 +59,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
             disabled={isLoading.endpointForm}
             handleDelete={handleDeleteEndpoint}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
           />
 
           <EndpointFormTemplate endpoint={getEndpoint.data} />

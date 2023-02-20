@@ -3,12 +3,13 @@ import * as styles from "./ObjectsTable.module.css";
 import { t } from "i18next";
 import { navigate } from "gatsby";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { Button, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 import { useObject } from "../../../hooks/object";
 import { useQueryClient } from "react-query";
+import { Button } from "../../../components/button/Button";
 
 interface ObjectsTableProps {
   objects: any[];
@@ -55,12 +56,11 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, schemaId })
               <TableCell>{object._self.sources ?? "-"}</TableCell>
               <TableCell>
                 <Button
+                  variant="danger"
+                  icon={faTrash}
+                  label={t("Delete")}
                   onClick={(e) => handleDeleteObject(e, object._self.id)}
-                  className={clsx(styles.buttonIcon, styles.deleteButton)}
-                >
-                  <FontAwesomeIcon icon={faTrash} />
-                  {t("Delete")}
-                </Button>
+                />
               </TableCell>
               <TableCell onClick={() => navigate(`/objects/${object._self.id}`)}>
                 <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">

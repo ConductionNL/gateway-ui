@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as styles from "./CronjobsTemplate.module.css";
-import { Button, Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import { useCronjob } from "../../hooks/cronjob";
 import { navigate } from "gatsby";
 import { Container, Tag } from "@conduction/components";
@@ -13,25 +13,24 @@ import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
 import { dateTime } from "../../services/dateTime";
+import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Cronjobs")}</Heading1>
-        <div className={styles.buttons}>
-          <Button className={styles.buttonIcon} onClick={() => navigate(`/cronjobs/new`)}>
-            <FontAwesomeIcon icon={faPlus} />
-            {t("Add Cronjob")}
-          </Button>
-        </div>
-      </section>
+      <OverviewPageHeaderTemplate
+        title={t("Cronjobs")}
+        button={
+          <Button label={t("Add Cronjob")} variant="primary" icon={faPlus} onClick={() => navigate(`/cronjobs/new`)} />
+        }
+      />
 
       {getCronjobs.isError && "Error..."}
 
@@ -52,11 +51,7 @@ export const CronjobsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getCronjobs.data.map((cronjob) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/cronjobs/${cronjob.id}`)}
-                key={cronjob.id}
-              >
+              <TableRow onClick={() => navigate(`/cronjobs/${cronjob.id}`)} key={cronjob.id}>
                 <TableCell>{cronjob.name}</TableCell>
 
                 <TableCell>
@@ -75,9 +70,9 @@ export const CronjobsTemplate: React.FC = () => {
 
                 <TableCell>{cronjob.crontab}</TableCell>
 
-                <TableCell>{dateTime(t(i18n.language), cronjob.lastRun) ?? "-"}</TableCell>
+                <TableCell>{cronjob.lastRun ? dateTime(t(i18n.language), cronjob.lastRun) : "-"}</TableCell>
 
-                <TableCell>{dateTime(t(i18n.language), cronjob.nextRun) ?? "-"}</TableCell>
+                <TableCell>{cronjob.nextRun ? dateTime(t(i18n.language), cronjob.nextRun) : "-"}</TableCell>
 
                 <TableCell>{translateDate(i18n.language, cronjob.dateCreated)}</TableCell>
 

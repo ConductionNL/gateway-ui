@@ -3,7 +3,7 @@ import * as styles from "./PropertyDetailTemplate.module.css";
 import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
-import { QueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import _ from "lodash";
 import Skeleton from "react-loading-skeleton";
 import { useAttribute } from "../../hooks/attribute";
@@ -20,7 +20,7 @@ interface PropertyDetailTemplateProps {
 export const PropertyDetailTemplate: React.FC<PropertyDetailTemplateProps> = ({ propertyId, schemaId }) => {
   const { t } = useTranslation();
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const _useAttribute = useAttribute(queryClient);
   const _getAttribute = _useAttribute.getOne(propertyId);
 

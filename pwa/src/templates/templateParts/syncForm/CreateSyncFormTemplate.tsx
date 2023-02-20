@@ -2,18 +2,17 @@ import * as React from "react";
 import * as styles from "./SyncFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Alert, Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Alert, Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, SelectSingle } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useSource } from "../../../hooks/source";
 import Skeleton from "react-loading-skeleton";
 import { useAction } from "../../../hooks/action";
 import { useSync } from "../../../hooks/synchronization";
-import clsx from "clsx";
+import { Button } from "../../../components/button/Button";
 
 interface CreateSyncFormTemplateProps {
   objectId: string;
@@ -51,7 +50,7 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
     };
     const sourceId = data.source.value;
 
-    const sync = syncObject.mutate({ payload, objectId, sourceId });
+    syncObject.mutate({ payload, objectId, sourceId });
   };
 
   return (
@@ -61,11 +60,7 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
           <Heading1>{t("Create Synchronization")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-
-              {t("Save")}
-            </Button>
+            <Button label={t("Save")} variant="primary" icon={faSave} type="submit" disabled={loading} />
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}

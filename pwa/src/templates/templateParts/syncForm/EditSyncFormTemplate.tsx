@@ -2,18 +2,17 @@ import * as React from "react";
 import * as styles from "./SyncFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Button, Heading1 } from "@gemeente-denhaag/components-react";
+import { Heading1 } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputText, SelectSingle } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useSource } from "../../../hooks/source";
 import { useAction } from "../../../hooks/action";
 import Skeleton from "react-loading-skeleton";
 import { useSync } from "../../../hooks/synchronization";
-import clsx from "clsx";
+import { Button } from "../../../components/button/Button";
 
 interface EditSyncFormTemplateProps {
   objectId: string;
@@ -58,7 +57,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
 
     const sourceId = data.source.value;
 
-    const _syncObject = syncObject.mutate({ objectId, sourceId, payload, syncId });
+    syncObject.mutate({ objectId, sourceId, payload, syncId });
   };
 
   const handleSetFormValues = (sync: any): void => {
@@ -93,11 +92,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
           <Heading1>{`Edit ${sync?.name}`}</Heading1>
 
           <div className={styles.buttons}>
-            <Button className={clsx(styles.buttonIcon, styles.button)} type="submit" disabled={loading}>
-              <FontAwesomeIcon icon={faFloppyDisk} />
-
-              {t("Save")}
-            </Button>
+            <Button label={t("Save")} variant="primary" icon={faSave} type="submit" disabled={loading} />
           </div>
         </section>
         <div className={styles.gridContainer}>
