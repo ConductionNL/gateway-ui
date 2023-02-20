@@ -13,7 +13,7 @@ import { Paginate } from "../../../components/paginate/Paginate";
 import { useLogTableColumnsContext } from "../../../context/logs";
 import Collapsible from "react-collapsible";
 import clsx from "clsx";
-import { Tag, TTagType } from "../../../components/tag/Tag";
+import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusTag";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -61,8 +61,8 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
             <TableRow onClick={() => navigate(`/logs/${log._id.$oid}`)} key={log._id.$oid}>
               {logTableColumns.level && (
                 <TableCell>
-                  <Tag
-                    type={_.lowerCase(log.level_name) as TTagType}
+                  <StatusTag
+                    type={_.lowerCase(log.level_name) as TStatusTagType}
                     label={_.upperFirst(_.lowerCase(log.level_name))}
                   />
                 </TableCell>

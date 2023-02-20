@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import { Tag, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getStatusColor, getStatusIcon } from "../../services/getStatusTag";
 import { dateTime } from "../../services/dateTime";
 import { faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { getStatusTag } from "../../services/getStatusTag";
 
 export interface DashboardCardProps {
   title: {
@@ -53,14 +53,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({
       <div className={styles.statusTypeContainer}>
         <div>{_.upperFirst(type)}</div>
 
-        <div className={clsx(styles[getStatusColor(status ?? "no known status")])}>
-          <ToolTip tooltip="Status">
-            <Tag
-              icon={<FontAwesomeIcon icon={getStatusIcon(status ?? "no known status")} />}
-              label={status?.toString() ?? "no known status"}
-            />
-          </ToolTip>
-        </div>
+        {getStatusTag(status)}
       </div>
 
       <div className={styles.sectionDivider}>

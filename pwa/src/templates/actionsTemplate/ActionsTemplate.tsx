@@ -14,7 +14,7 @@ import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { dateTime } from "../../services/dateTime";
-import { Tag } from "../../components/tag/Tag";
+import { StatusTag } from "../../components/statusTag/StatusTag";
 
 export const ActionsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -56,7 +56,7 @@ export const ActionsTemplate: React.FC = () => {
                   <TableCell className={styles.actionName}>{action.name}</TableCell>
                   <TableCell>{action.priority}</TableCell>
                   <TableCell>
-                    <Tag type={action.status && "success"} label={action.status ? "Success" : "No status"} />
+                    <StatusTag type={action.status && "success"} label={action.status ? "Success" : "No status"} />
                   </TableCell>
                   <TableCell>{action.isEnabled ? "On" : "Off"}</TableCell>
                   <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>

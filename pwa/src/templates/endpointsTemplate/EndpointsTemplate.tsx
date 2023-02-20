@@ -11,7 +11,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { translateDate } from "../../services/dateFormat";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
-import { Tag } from "../../components/tag/Tag";
+import { StatusTag } from "../../components/statusTag/StatusTag";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -53,11 +53,11 @@ export const EndpointsTemplate: React.FC = () => {
                 <TableCell>{endpoint.name}</TableCell>
 
                 <TableCell>
-                  {endpoint.status && <Tag type="success" label={endpoint.status?.toString()} />}
+                  {endpoint.status && <StatusTag type="success" label={endpoint.status?.toString()} />}
                   {endpoint.status === false && (
-                    <Tag type="critical" label={endpoint.status?.toString() ?? "No status"} />
+                    <StatusTag type="critical" label={endpoint.status?.toString() ?? "No status"} />
                   )}
-                  {endpoint.status === null && <Tag label={"No status"} />}
+                  {endpoint.status === null && <StatusTag label={"No status"} />}
                 </TableCell>
 
                 <TableCell>{!!endpoint.pathRegex ? endpoint.pathRegex : "-"}</TableCell>

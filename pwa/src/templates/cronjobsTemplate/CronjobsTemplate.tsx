@@ -14,7 +14,7 @@ import { translateDate } from "../../services/dateFormat";
 import { dateTime } from "../../services/dateTime";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
-import { Tag } from "../../components/tag/Tag";
+import { StatusTag } from "../../components/statusTag/StatusTag";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -55,9 +55,11 @@ export const CronjobsTemplate: React.FC = () => {
                 <TableCell>{cronjob.name}</TableCell>
 
                 <TableCell>
-                  {cronjob.status && <Tag type="success" label={cronjob.status?.toString()} />}
-                  {cronjob.status === false && <Tag type="critical" label={cronjob.status?.toString() ?? "False"} />}
-                  {cronjob.status === undefined && <Tag label="No status" />}
+                  {cronjob.status && <StatusTag type="success" label={cronjob.status?.toString()} />}
+                  {cronjob.status === false && (
+                    <StatusTag type="critical" label={cronjob.status?.toString() ?? "False"} />
+                  )}
+                  {cronjob.status === undefined && <StatusTag label="No status" />}
                 </TableCell>
 
                 <TableCell>{cronjob.isEnabled ? "Yes" : "No"}</TableCell>

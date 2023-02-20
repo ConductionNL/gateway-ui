@@ -1,8 +1,8 @@
-import { Tag } from "../components/tag/Tag";
+import { StatusTag } from "../components/statusTag/StatusTag";
 
 export const getStatusTag = (value: unknown): JSX.Element => {
   if (value === "200" || value === true) {
-    return <Tag type="success" label="Success" />;
+    return <StatusTag type="success" label="Success" />;
   }
 
   if (
@@ -11,8 +11,8 @@ export const getStatusTag = (value: unknown): JSX.Element => {
     value === undefined ||
     value === null
   ) {
-    return <Tag label="No status" />;
+    return <StatusTag label="No status" />;
   }
 
-  return <Tag type="critical" label="Error" />;
+  return <StatusTag type="critical" label="Error" />;
 };
