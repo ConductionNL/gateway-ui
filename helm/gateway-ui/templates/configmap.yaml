@@ -7,27 +7,27 @@ metadata:
 data:
   properties: |-
     {{- if contains "useDomain" .Values.pwa.meUrl }}
-    window.sessionStorage.setItem("GATSBY_ME_URL", "{{ printf "https://%s/api/users/me" .Values.global.domain | quote }}");
+    window.sessionStorage.setItem("GATSBY_ME_URL", "{{ printf "https://api.%s/api/users/me" .Values.global.domain }}");
     {{ else }}
     window.sessionStorage.setItem("GATSBY_ME_URL", "{{ .Values.pwa.meUrl }}");
     {{- end }}
     {{- if contains "useDomain" .Values.pwa.apiUrl }}
-    window.sessionStorage.setItem("GATSBY_API_URL", "{{ printf "https://%s/api" .Values.global.domain | quote }}");
+    window.sessionStorage.setItem("GATSBY_API_URL", "{{ printf "https://api.%s/api" .Values.global.domain }}");
     {{ else }}
     window.sessionStorage.setItem("GATSBY_API_URL", "{{ .Values.pwa.apiUrl }}");
     {{- end }}
     {{- if contains "useDomain" .Values.pwa.adminUrl }}
-    window.sessionStorage.setItem("GATSBY_ADMIN_URL", "{{ printf "https://%s/admin" .Values.global.domain | quote }}");
+    window.sessionStorage.setItem("GATSBY_ADMIN_URL", "{{ printf "https://api.%s/admin" .Values.global.domain }}");
     {{ else }}
     window.sessionStorage.setItem("GATSBY_ADMIN_URL", "{{ .Values.pwa.adminUrl }}");
     {{- end }}
     {{- if contains "useDomain" .Values.pwa.baseUrl }}
-    window.sessionStorage.setItem("GATSBY_BASE_URL", "{{ printf "https://%s" .Values.global.domain | quote }}");
+    window.sessionStorage.setItem("GATSBY_BASE_URL", "{{ printf "https://%s" .Values.global.domain }}");
     {{ else }}
     window.sessionStorage.setItem("GATSBY_BASE_URL", "{{ .Values.pwa.baseUrl }}");
     {{- end }}
     {{- if contains "useDomain" .Values.pwa.frontendUrl }}
-    window.sessionStorage.setItem("GATSBY_FRONTEND_URL", "{{ printf "https://%s" .Values.global.domain | quote }}");
+    window.sessionStorage.setItem("GATSBY_FRONTEND_URL", "{{ printf "https://%s" .Values.global.domain }}");
     {{ else }}
     window.sessionStorage.setItem("GATSBY_FRONTEND_URL", "{{ .Values.pwa.frontendUrl }}");
     {{- end }}

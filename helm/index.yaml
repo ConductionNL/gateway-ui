@@ -3,7 +3,27 @@ entries:
   gateway-ui:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-17T13:29:15.8632703+01:00"
+    created: "2023-02-20T10:55:48.559915172+01:00"
+    description: A Helm chart for the Skeleton Gatsby Application
+    digest: 312511653b21adfbd99f442c3d6ce71cb9f8de563eb193a26e33fb958ceae880
+    name: gateway-ui
+    type: application
+    urls:
+    - gateway-ui-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-02-20T10:55:48.552868369+01:00"
+    description: A Helm chart for the Skeleton Gatsby Application
+    digest: a6b998d70570f343fbda56fe0f4b685b6e4901b90b64284c489b7ee4e2dc24ad
+    name: gateway-ui
+    type: application
+    urls:
+    - gateway-ui-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2023-02-20T10:55:48.546540565+01:00"
     description: A Helm chart for the Skeleton Gatsby Application
     digest: 69837b41bef6af8be7570475a1509b4585b88060f24cdb1d60c739753b88049e
     name: gateway-ui
@@ -14,7 +34,7 @@ entries:
   skeleton-app:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-17T13:29:15.9258712+01:00"
+    created: "2023-02-20T10:55:48.764611462+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -30,7 +50,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-17T13:29:15.9063566+01:00"
+    created: "2023-02-20T10:55:48.713059166+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -46,7 +66,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-17T13:29:15.8923547+01:00"
+    created: "2023-02-20T10:55:48.668797477+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -62,7 +82,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-17T13:29:15.8783502+01:00"
+    created: "2023-02-20T10:55:48.615236551+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -79,7 +99,7 @@ entries:
   skeleton-pip:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2023-02-17T13:29:15.9403806+01:00"
+    created: "2023-02-20T10:55:48.815143377+01:00"
     dependencies:
     - alias: gateway
       condition: gateway.enabled
@@ -93,4 +113,4 @@ entries:
     urls:
     - skeleton-pip-0.1.0.tgz
     version: 0.1.0
-generated: "2023-02-17T13:29:15.8622706+01:00"
+generated: "2023-02-20T10:55:48.537129928+01:00"
