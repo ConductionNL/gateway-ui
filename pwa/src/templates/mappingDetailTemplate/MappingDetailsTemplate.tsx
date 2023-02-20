@@ -36,6 +36,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+  const [testMappingData, setTestMappingData] = React.useState<object>();
 
   const queryClient = useQueryClient();
   const getMapping = useMapping(queryClient).getOne(mappingId);
@@ -76,6 +77,10 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
       mappingForm: deleteMapping.isLoading || testMapping.isLoading || dashboardLoading,
     });
   }, [deleteMapping.isLoading, testMapping.isLoading, dashboardLoading]);
+
+  React.useEffect(() => {
+    testMapping.isSuccess && setTestMappingData(testMapping.data);
+  }, [testMapping.isSuccess]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -134,7 +139,10 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                     </FormField>
                     <FormField>
                       <FormFieldLabel>{t("Output")}</FormFieldLabel>
-                      <pre>{JSON.stringify(testMapping.data, null, 2)}</pre>
+                      {testMappingData && <pre>{JSON.stringify(testMappingData, null, 2)}</pre>}
+                      {!testMappingData && (
+                        <div>When the mapping has been succesfully tested the output will be shown here.</div>
+                      )}
                     </FormField>
                   </div>
                 </form>
