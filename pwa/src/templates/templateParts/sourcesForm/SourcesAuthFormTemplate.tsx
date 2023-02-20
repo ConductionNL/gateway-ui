@@ -21,22 +21,20 @@ interface SourcesAuthFormTemplateProps {
 
 export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & ReactHookFormProps> = ({
   selectedAuth,
-  register,
-  errors,
-  disabled,
+  ...rest
 }) => {
   switch (selectedAuth) {
     case "apikey":
-      return <ApiKeyForm {...{ register, errors, disabled }} />;
+      return <ApiKeyForm {...rest} />;
 
     case "jwt-HS256":
-      return <JwtForm {...{ register, errors, disabled }} />;
+      return <JwtForm {...rest} />;
 
     case "username-password":
-      return <UsernamePasswordForm {...{ register, errors, disabled }} />;
+      return <UsernamePasswordForm {...rest} />;
 
     case "vrijbrp-jwt":
-      return <UsernamePasswordForm {...{ register, errors, disabled }} />;
+      return <UsernamePasswordForm {...rest} />;
 
     default:
       return <></>;
@@ -49,7 +47,7 @@ interface FormProps {
   disabled?: boolean;
 }
 
-const ApiKeyForm: React.FC<FormProps> = ({ register, errors, disabled }) => {
+const ApiKeyForm: React.FC<FormProps> = ({ ...rest }) => {
   const { t } = useTranslation();
   const { isLoading } = useIsLoadingContext();
 
@@ -57,19 +55,14 @@ const ApiKeyForm: React.FC<FormProps> = ({ register, errors, disabled }) => {
     <FormField>
       <FormFieldInput>
         <FormFieldLabel>{t("Api key")}</FormFieldLabel>
-        <Textarea
-          {...{ register, errors, disabled }}
-          name="apikey"
-          validation={{ maxLength: 225 }}
-          disabled={isLoading.sourceForm}
-        />
-        {errors["apikey"] && <ErrorMessage message={errors["apikey"].message} />}
+        <Textarea {...rest} name="apikey" validation={{ maxLength: 225 }} disabled={isLoading.sourceForm} />
+        {rest.errors["apikey"] && <ErrorMessage message={rest.errors["apikey"].message} />}
       </FormFieldInput>
     </FormField>
   );
 };
 
-const JwtForm: React.FC<FormProps> = ({ register, errors, disabled }) => {
+const JwtForm: React.FC<FormProps> = ({ ...rest }) => {
   const { t } = useTranslation();
   const { isLoading } = useIsLoadingContext();
 
@@ -77,13 +70,13 @@ const JwtForm: React.FC<FormProps> = ({ register, errors, disabled }) => {
     <FormField>
       <FormFieldInput>
         <FormFieldLabel>{t("JWT-HS256")}</FormFieldLabel>
-        <Textarea {...{ register, errors, disabled }} name="jwt" disabled={isLoading.sourceForm} />
+        <Textarea {...rest} name="jwt" disabled={isLoading.sourceForm} />
       </FormFieldInput>
     </FormField>
   );
 };
 
-const UsernamePasswordForm: React.FC<FormProps> = ({ register, errors, disabled }) => {
+const UsernamePasswordForm: React.FC<FormProps> = ({ ...rest }) => {
   const { t } = useTranslation();
   const { isLoading } = useIsLoadingContext();
 
@@ -93,12 +86,12 @@ const UsernamePasswordForm: React.FC<FormProps> = ({ register, errors, disabled 
         <FormFieldInput>
           <FormFieldLabel>{t("Username")}</FormFieldLabel>
           <InputText
-            {...{ register, errors, disabled }}
+            {...rest}
             name="username"
             validation={{ required: true, maxLength: 225 }}
             disabled={isLoading.sourceForm}
           />
-          {errors["username"] && <ErrorMessage message={errors["username"].message} />}
+          {rest.errors["username"] && <ErrorMessage message={rest.errors["username"].message} />}
         </FormFieldInput>
       </FormField>
 
@@ -106,12 +99,12 @@ const UsernamePasswordForm: React.FC<FormProps> = ({ register, errors, disabled 
         <FormFieldInput>
           <FormFieldLabel>{t("Password")}</FormFieldLabel>
           <InputText
-            {...{ register, errors, disabled }}
+            {...rest}
             name="password"
             validation={{ required: true, maxLength: 225 }}
             disabled={isLoading.sourceForm}
           />
-          {errors["password"] && <ErrorMessage message={errors["password"].message} />}
+          {rest.errors["password"] && <ErrorMessage message={rest.errors["password"].message} />}
         </FormFieldInput>
       </FormField>
     </>
