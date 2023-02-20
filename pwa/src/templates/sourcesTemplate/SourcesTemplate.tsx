@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./SourcesTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -17,6 +17,7 @@ import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndI
 import TableWrapper from "../../components/tableWrapper/TableWrapper";
 import { dateTime } from "../../services/dateTime";
 import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -27,12 +28,12 @@ export const SourcesTemplate: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Sources")}</Heading1>
-        <div className={styles.buttons}>
+      <OverviewPageHeaderTemplate
+        title={t("Sources")}
+        button={
           <Button variant="primary" icon={faPlus} label={t("Add Source")} onClick={() => navigate(`/sources/new`)} />
-        </div>
-      </section>
+        }
+      />
 
       {getSources.isError && "Error..."}
 
@@ -52,7 +53,7 @@ export const SourcesTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getSources.data.map((source) => (
-                <TableRow className={styles.tableRow} onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
+                <TableRow onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
                   <TableCell>{source.name}</TableCell>
                   <TableCell className={styles.tableCellFullWidth}>
                     <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>

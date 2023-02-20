@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./ApplicationsTemplate.module.css";
-import { Heading1, Link } from "@gemeente-denhaag/components-react";
+import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
@@ -12,6 +12,7 @@ import { useQueryClient } from "react-query";
 import { useApplication } from "../../hooks/application";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/button/Button";
+import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 
 export const ApplicationsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -36,17 +37,18 @@ export const ApplicationsTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <section className={styles.section}>
-        <Heading1>{t("Applications")}</Heading1>
-        <div className={styles.buttons}>
+      <OverviewPageHeaderTemplate
+        title={t("Applications")}
+        size="md"
+        button={
           <Button
             variant="primary"
             label={t("Add Application")}
             onClick={() => navigate("/settings/applications/new")}
             icon={faPlus}
           />
-        </div>
-      </section>
+        }
+      />
 
       {getApplication.isSuccess && (
         <Table>
@@ -62,11 +64,7 @@ export const ApplicationsTemplate: React.FC = () => {
           </TableHead>
           <TableBody>
             {getApplication.data.map((application) => (
-              <TableRow
-                className={styles.tableRow}
-                onClick={() => navigate(`/settings/applications/${application.id}`)}
-                key={application.id}
-              >
+              <TableRow onClick={() => navigate(`/settings/applications/${application.id}`)} key={application.id}>
                 <TableCell>{application.name}</TableCell>
                 <TableCell>{application.description ?? "-"}</TableCell>
                 <TableCell>{translateDate(i18n.language, application.dateCreated)}</TableCell>
