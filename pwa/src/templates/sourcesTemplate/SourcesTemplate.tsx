@@ -67,7 +67,7 @@ export const SourcesTemplate: React.FC = () => {
                   </TableCell>
                   <TableCell>{source.sync ?? "-"}</TableCell>
                   <TableCell className={styles.tableCellFullWidth}>
-                    {dateTime(t(i18n.language), source.lastCall) ?? "-"}
+                    {source.lastCall ? dateTime(t(i18n.language), source.lastCall) : "-"}
                   </TableCell>
                   <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
                   <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
