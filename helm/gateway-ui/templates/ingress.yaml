@@ -42,7 +42,7 @@ spec:
   {{- if .Values.global.tls }}
   tls:
     - hosts:
-        - {{ .Values.global.domain | quote }}
+        - admin.{{ .Values.global.domain }}
       secretName: {{ $fullName }}-tls
   {{- end }}
   rules:
