@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./UserFormTemplate.module.css";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { useTranslation } from "react-i18next";
-import { InputPassword, InputText, SelectSingle, Textarea } from "@conduction/components";
+import { InputPassword, InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useUser } from "../../../hooks/user";
@@ -11,6 +11,8 @@ import { validatePassword } from "../../../services/stringValidations";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useOrganization } from "../../../hooks/organization";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { useApplication } from "../../../hooks/application";
+import { IKeyValue } from "@conduction/components/lib/components/formFields";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -23,15 +25,19 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = useQueryClient();
-  const _useUsers = useUser(queryClient);
-  const createOrEditUser = _useUsers.createOrEdit(user?.id);
+  const createOrEditUser = useUser(queryClient).createOrEdit(user?.id);
 
-  const _useOrganizations = useOrganization(queryClient);
-  const getOrganization = _useOrganizations.getAll();
+  const getOrganization = useOrganization(queryClient).getAll();
+  const getApplications = useApplication(queryClient).getAll();
 
   const organisationOptions = getOrganization.data?.map((_organisation: any) => ({
     label: _organisation.name,
     value: _organisation.id,
+  }));
+
+  const applicationOptions = getApplications.data?.map((application: any) => ({
+    label: application.name,
+    value: application.id,
   }));
 
   const {
@@ -49,12 +55,18 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const handleSetFormValues = (user: any): void => {
     const basicFields: string[] = ["name", "description", "email", "password", "locale", "person"];
     basicFields.forEach((field) => setValue(field, user[field]));
+
+    setValue(
+      "applications",
+      user.applications.map((application: any) => ({ label: application.name, value: application.id })),
+    );
   };
 
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
       organisation: data.organization && `/admin/organisations/${data.organization.value}`,
+      applications: data.applications?.map((application: IKeyValue) => `/admin/applications/${application.value}`),
     };
 
     delete payload.organization;
@@ -97,18 +109,20 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
 
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("Description")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="description" disabled={isLoading.userForm} />
-            </FormFieldInput>
-          </FormField>
-
-          <FormField>
-            <FormFieldInput>
               <FormFieldLabel>{t("Email")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="email" disabled={isLoading.userForm} />
             </FormFieldInput>
           </FormField>
+        </div>
 
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>{t("Description")}</FormFieldLabel>
+            <Textarea {...{ register, errors }} name="description" disabled={isLoading.userForm} />
+          </FormFieldInput>
+        </FormField>
+
+        <div className={styles.grid}>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Locale")}</FormFieldLabel>
@@ -136,6 +150,22 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                 />
               )}
               {getOrganization.isLoading && <Skeleton height={50} />}
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Applications")}</FormFieldLabel>
+              {getApplications.isSuccess && (
+                <SelectMultiple
+                  options={applicationOptions ?? []}
+                  {...{ register, errors, control }}
+                  name="applications"
+                  validation={{ required: true }}
+                  disabled={isLoading.userForm}
+                />
+              )}
+              {getApplications.isLoading && <Skeleton height={50} />}
             </FormFieldInput>
           </FormField>
 

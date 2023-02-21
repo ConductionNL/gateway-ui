@@ -6,27 +6,6 @@
   margin-block-end: var(--gateway-ui-size-2xl);
 }
 
-.section {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--gateway-ui-size-lg);
-  margin-block-end: var(--gateway-ui-size-xl);
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  gap: var(--gateway-ui-size-xs);
-}
-
-.buttons > * {
-  display: flex;
-  align-items: center;
-}
-
 .tableCellFullWidth > * {
   width: max-content;
 }
@@ -40,14 +19,4 @@
 .statusFailed {
   --conduction-tag-background-color: var(--gateway-ui-color-status-red);
   --conduction-tag-color: var(--gateway-ui-color-white);
-}
-
-@media only screen and (min-width: 992px) {
-  .section {
-    flex-direction: row;
-  }
-
-  .buttons {
-    justify-content: flex-end;
-  }
 }

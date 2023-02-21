@@ -59,4 +59,15 @@ export default class Action {
     });
     return data;
   };
+
+  public runAction = async (variables: { payload: any; id: string }): Promise<any> => {
+    const { id, payload } = variables;
+
+    const { data } = await Send(this._instance, "POST", `/admin/run_action/${id}`, payload, {
+      loading: "Running Action...",
+      success: "Run succesful.",
+    });
+
+    return data;
+  };
 }

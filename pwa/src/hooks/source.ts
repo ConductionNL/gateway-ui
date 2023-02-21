@@ -38,13 +38,11 @@ export const useSource = (queryClient: QueryClient) => {
           toast.error(error.message);
         }
 
-        _queryClient.invalidateQueries(["callLogs", sourceId]);
         _queryClient.invalidateQueries(["sources", sourceId]);
 
         console.warn(error.message);
       },
       onSettled: () => {
-        _queryClient.invalidateQueries(["callLogs", sourceId]);
         _queryClient.invalidateQueries(["sources", sourceId]);
       },
     });

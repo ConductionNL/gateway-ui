@@ -1,24 +1,3 @@
 .container > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-2xl);
 }
-
-.section {
-  display: flex;
-  justify-content: space-between;
-  margin-block-end: var(--gateway-ui-size-xl);
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.buttons > * {
-  display: flex;
-  align-items: center;
-}
-
-.buttons *:not(:last-child) {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}

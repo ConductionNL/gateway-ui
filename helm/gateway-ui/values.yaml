@@ -5,22 +5,21 @@ pwa:
   image:
     image: "ghcr.io/conductionnl/gateway-ui"
     pullPolicy: Always
-    tag: "dev"
+    tag: "stag"
     # Overrides the image tag whose default is the chart appVersion.
-  apiUrl: "https://gateway.local/api"
-  meUrl: "https://gateway.local/api/users/me"
-  baseUrl: "https://gateway.local"
-  frontendUrl: "https://pip.local"
+  meUrl: "useDomain"
+  apiUrl: "useDomain"
+  adminUrl: "useDomain"
+  baseUrl: "useDomain"
+  frontendUrl: "useDomain"
   organization: ""
   redirectUrl: "vault"
-  adminUrl: "https://gateway.local/admin"
 
 replicacount: 1
 
-gateway:
-  enabled: false
-  fixtures: {}
-  location: "example"
+global:
+  domain: localhost
+  tls: true
 
 imagePullSecrets: []
 nameOverride: ""
@@ -55,15 +54,12 @@ service:
 
 ingress:
   enabled: true
-  hostname: pip.local
-  path: ""
+  className: "nginx"
+  path: /
   pathType: ImplementationSpecific
-  className: nginx
-  annotations:
-    {}
+  annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  hosts:
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
