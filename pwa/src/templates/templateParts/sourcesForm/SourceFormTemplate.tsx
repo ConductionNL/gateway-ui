@@ -742,6 +742,7 @@ const typeSelectOptions = [
 const authSelectOptions = [
   { label: "No Auth", value: "none" },
   { label: "API Key", value: "apikey" },
-  { label: "JWT", value: "jwt" },
+  { label: "JWT-HS256", value: "jwt-HS256" },
   { label: "Username and Password", value: "username-password" },
+  { label: "VrijBRP-JWT", value: "vrijbrp-jwt" },
 ];
