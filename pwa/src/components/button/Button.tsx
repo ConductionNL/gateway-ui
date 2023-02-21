@@ -8,7 +8,7 @@ import clsx from "clsx";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string | JSX.Element;
-  variant: "primary" | "danger";
+  variant: "primary" | "danger" | "runAction";
   icon: IconDefinition;
 
   onClick?: (event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>) => any;

@@ -6,6 +6,18 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
+.runAction {
+  --denhaag-button-primary-action-background-color: var(
+    --gateway-ui-color-green
+  );
+}
+
+.runAction:hover {
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-green
+  );
+}
+
 .danger {
   --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
 }
