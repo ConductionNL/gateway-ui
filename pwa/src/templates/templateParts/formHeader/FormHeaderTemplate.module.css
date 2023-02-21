@@ -2,7 +2,6 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  flex-direction: column-reverse;
   gap: var(--gateway-ui-size-lg);
   margin-block-end: var(--gateway-ui-size-xl);
   white-space: nowrap;
@@ -14,7 +13,6 @@
 
 .tooltipContainer,
 .container .title {
-  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -31,9 +29,4 @@
 
 .buttonsContainer > *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-xs);
-}
-@media only screen and (min-width: 992px) {
-  .container {
-    flex-direction: row;
-  }
 }
