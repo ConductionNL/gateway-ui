@@ -35,9 +35,4 @@
   .container {
     flex-direction: row;
   }
-
-  .content {
-    overflow-y: auto;
-    width: 100%;
-  }
 }
