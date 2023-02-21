@@ -12,6 +12,7 @@ import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useOrganization } from "../../../hooks/organization";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { useApplication } from "../../../hooks/application";
+import { IKeyValue } from "@conduction/components/lib/components/formFields";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -54,13 +55,18 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const handleSetFormValues = (user: any): void => {
     const basicFields: string[] = ["name", "description", "email", "password", "locale", "person"];
     basicFields.forEach((field) => setValue(field, user[field]));
+
+    setValue(
+      "applications",
+      user.applications.map((application: any) => ({ label: application.name, value: application.id })),
+    );
   };
 
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
       organisation: data.organization && `/admin/organisations/${data.organization.value}`,
-      applications: data.applications?.map((application: any) => `/admin/applications/${application.value}`),
+      applications: data.applications?.map((application: IKeyValue) => `/admin/applications/${application.value}`),
     };
 
     delete payload.organization;
@@ -82,13 +88,6 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
     setValue(
       "organization",
       organisationOptions?.find((_organisation) => _organisation.value === user?.organisation.id),
-    );
-  }, [getOrganization.isSuccess]);
-
-  React.useEffect(() => {
-    setValue(
-      "applications",
-      user["applications"].map((application: any) => ({ label: application.name, value: application.id })),
     );
   }, [getOrganization.isSuccess]);
 
