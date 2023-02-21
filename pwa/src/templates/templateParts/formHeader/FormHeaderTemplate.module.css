@@ -30,3 +30,37 @@
 .buttonsContainer > *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
+
+.popup {
+  position: fixed;
+  width: 500px; /* this should be a design token */
+  top: var(--gateway-ui-size-md);
+  left: calc(
+    50% - (500px / 2)
+  ); /* this should be based on above design token */
+  z-index: 2;
+  outline: 0;
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3); /* this should be a design token */
+  z-index: 1;
+  display: block;
+}
+
+.confirmDeleteButton {
+  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
+}
+
+.confirmDeleteButton:hover {
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-red
+  );
+}

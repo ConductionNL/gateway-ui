@@ -42,9 +42,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
   };
 
   const handleDeleteAction = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this action?");
-
-    confirmDeletion && deleteAction.mutate({ id: actionId });
+    deleteAction.mutate({ id: actionId });
   };
 
   React.useEffect(() => {}, []);
