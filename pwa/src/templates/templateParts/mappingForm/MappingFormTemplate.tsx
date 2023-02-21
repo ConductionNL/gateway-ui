@@ -34,11 +34,17 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
   const queryClient = useQueryClient();
   const createOrEditMapping = useMapping(queryClient).createOrEdit(mapping?.id);
 
-  const mappingRefBottom: any = React.useRef();
-  const unsetRefBottom: any = React.useRef();
-  const castRefBottom: any = React.useRef();
+  const mappingRefBottom = React.useRef<HTMLDivElement>(null);
+  const unsetRefBottom = React.useRef<HTMLDivElement>(null);
+  const castRefBottom = React.useRef<HTMLDivElement>(null);
 
-  const handleScrollToCreate = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, ref: any) => {
+  const handleScrollToCreate = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    ref: React.RefObject<HTMLDivElement>,
+  ) => {
+    if (!ref.current) {
+      return;
+    }
     e.stopPropagation();
 
     ref.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
