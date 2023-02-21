@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./MappingDetailsTemplate.module.css";
-import { Container, Textarea } from "@conduction/components";
+import { Container, Textarea, ToolTip } from "@conduction/components";
 import { MappingFormTemplate, formId } from "../templateParts/mappingForm/MappingFormTemplate";
 import { useMapping } from "../../hooks/mapping";
 import { useQueryClient } from "react-query";
@@ -21,10 +21,11 @@ import {
 } from "@gemeente-denhaag/components-react";
 import { useForm } from "react-hook-form";
 import clsx from "clsx";
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { validateStringAsJSON } from "../../services/validateJSON";
 import { Button } from "../../components/button/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -127,7 +128,13 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                   <div className={styles.content}>
                     <FormField>
                       <FormFieldInput>
-                        <FormFieldLabel>{t("Input")}</FormFieldLabel>
+                        <div className={styles.formFieldInfoHeader}>
+                          <FormFieldLabel>{t("Input")}</FormFieldLabel>
+                          <ToolTip tooltip="The input is the JSON code you want to test the mapping with.">
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                          </ToolTip>
+                        </div>
+
                         <Textarea
                           {...{ register, errors }}
                           name="input"

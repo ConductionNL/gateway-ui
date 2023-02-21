@@ -40,3 +40,9 @@
 .buttonIcon > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
+
+.formFieldInfoHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--gateway-ui-size-xs);
+}
