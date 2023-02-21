@@ -65,7 +65,7 @@ export default class Action {
 
     const { data } = await Send(this._instance, "POST", `/admin/run_action/${id}`, payload, {
       loading: "Running Action...",
-      success: "Run succesful.",
+      success: "Action succesfully ran.",
     });
 
     return data;
