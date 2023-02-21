@@ -47,7 +47,9 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
+      source: `/admin/gateways/${data.source.value}`,
     };
+
     const sourceId = data.source.value;
 
     syncObject.mutate({ payload, objectId, sourceId });
