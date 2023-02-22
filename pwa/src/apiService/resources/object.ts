@@ -24,10 +24,10 @@ export default class Sources {
     return data;
   };
 
-  public getAllFromEntity = async (entityId: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/objects?_self.schema.id=${entityId}&limit=200`);
+  public getAllFromEntity = async (entityId: string, page: number): Promise<any> => {
+    const { data } = await Send(this._instance, "GET", `/admin/objects?_self.schema.id=${entityId}&page=${page}`);
 
-    return data.results;
+    return data;
   };
 
   public getAllFromList = async (list: string): Promise<any> => {
