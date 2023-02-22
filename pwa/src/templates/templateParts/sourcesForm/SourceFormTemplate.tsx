@@ -158,6 +158,8 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
       "username",
       "password",
       "apikey",
+      "jwtId",
+      "secret",
       "jwt",
       "connect_timeout",
     ];
