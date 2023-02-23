@@ -5,10 +5,11 @@ import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
 import toast from "react-hot-toast";
+import { useDeletedItemsContext } from "../context/deletedItems";
 
 export const useSync = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
-  const _queryClient = useQueryClient();
+  const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
   const getAll = () =>
     useQuery<any[], Error>("synchronizations", API.Synchroniation.getAll, {
@@ -24,20 +25,22 @@ export const useSync = (queryClient: QueryClient) => {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!syncId,
+      enabled: !!syncId && !isDeleted(syncId),
     });
 
   const remove = () =>
     useMutation<any, Error, any>(API.Synchroniation.delete, {
+      onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "object", variables.id);
-        _queryClient.invalidateQueries(["synchronizations"]);
+        queryClient.invalidateQueries(["synchronizations"]);
       },
-      onError: (error) => {
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
         console.warn(error.message);
       },
       onSettled: () => {
-        setTimeout(() => _queryClient.invalidateQueries(["synchronizations"]), 500);
+        setTimeout(() => queryClient.invalidateQueries(["synchronizations"]), 500);
       },
     });
 
