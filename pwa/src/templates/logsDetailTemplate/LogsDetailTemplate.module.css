@@ -22,70 +22,72 @@
 
 .debugLevel {
   --denhaag-alert-info-background-color: var(
-    --gateway-ui-color-log-level-debug
+    --gateway-ui-color-status-background-debug
   );
-  --denhaag-alert-info-icon-color: var(--gateway-ui-color-black);
-  --denhaag-heading-color: var(--gateway-ui-color-black);
-  --utrecht-paragraph-color: var(--gateway-ui-color-black);
+  --denhaag-alert-info-icon-color: var(--gateway-ui-color-status-debug);
+  --denhaag-heading-color: var(--gateway-ui-color-status-debug);
+  --utrecht-paragraph-color: var(--gateway-ui-color-status-debug);
 }
 
 .infoLevel {
-  --denhaag-alert-info-background-color: var(--gateway-ui-color-log-level-info);
-  --denhaag-alert-info-icon-color: var(--gateway-ui-color-black);
-  --denhaag-heading-color: var(--gateway-ui-color-black);
-  --utrecht-paragraph-color: var(--gateway-ui-color-black);
+  --denhaag-alert-info-background-color: var(
+    --gateway-ui-color-status-background-info
+  );
+  --denhaag-alert-info-icon-color: var(--gateway-ui-color-status-info);
+  --denhaag-heading-color: var(--gateway-ui-color-status-info);
+  --utrecht-paragraph-color: var(--gateway-ui-color-status-info);
 }
 
 .noticeLevel {
   --denhaag-alert-info-background-color: var(
-    --gateway-ui-color-log-level-notice
+    --gateway-ui-color-status-background-notice
   );
-  --denhaag-alert-info-icon-color: var(--gateway-ui-color-black);
-  --denhaag-heading-color: var(--gateway-ui-color-black);
-  --utrecht-paragraph-color: var(--gateway-ui-color-black);
+  --denhaag-alert-info-icon-color: var(--gateway-ui-color-status-notice);
+  --denhaag-heading-color: var(--gateway-ui-color-status-notice);
+  --utrecht-paragraph-color: var(--gateway-ui-color-status-notice);
 }
 
 .warningLevel {
   --denhaag-alert-info-background-color: #var(
-    --gateway-ui-color-log-level-warning
+    --gateway-ui-color-status-background-warning
   );
-  --denhaag-alert-info-icon-color: var(--gateway-ui-color-black);
-  --denhaag-heading-color: var(--gateway-ui-color-black);
-  --utrecht-paragraph-color: var(--gateway-ui-color-black);
+  --denhaag-alert-info-icon-color: var(--gateway-ui-color-status-warning);
+  --denhaag-heading-color: var(--gateway-ui-color-status-warning);
+  --utrecht-paragraph-color: var(--gateway-ui-color-status-warning);
 }
 
 .errorLevel {
   --denhaag-alert-info-background-color: var(
-    --gateway-ui-color-log-level-error
+    --gateway-ui-color-status-background-error
   );
-  --denhaag-alert-info-icon-color: var(--gateway-ui-color-black);
-  --denhaag-heading-color: var(--gateway-ui-color-black);
-  --utrecht-paragraph-color: var(--gateway-ui-color-black);
+  --denhaag-alert-info-icon-color: var(--gateway-ui-color-status-error);
+  --denhaag-heading-color: var(--gateway-ui-color-status-error);
+  --utrecht-paragraph-color: var(--gateway-ui-color-status-error);
 }
 
 .criticalLevel {
   --denhaag-alert-info-background-color: var(
-    --gateway-ui-color-log-level-critical
+    --gateway-ui-color-status-background-critical
   );
-  --denhaag-alert-info-icon-color: var(--gateway-ui-color-white);
-  --denhaag-heading-color: var(--gateway-ui-color-white);
-  --utrecht-paragraph-color: var(--gateway-ui-color-white);
+  --denhaag-alert-info-icon-color: var(--gateway-ui-color-status-critical);
+  --denhaag-heading-color: var(--gateway-ui-color-status-critical);
+  --utrecht-paragraph-color: var(--gateway-ui-color-status-critical);
 }
 
 .alertLevel {
   --denhaag-alert-info-background-color: var(
-    --gateway-ui-color-log-level-alert
+    --gateway-ui-color-status-background-alert
   );
-  --denhaag-alert-info-icon-color: var(--gateway-ui-color-white);
-  --denhaag-heading-color: var(--gateway-ui-color-white);
-  --utrecht-paragraph-color: var(--gateway-ui-color-white);
+  --denhaag-alert-info-icon-color: var(--gateway-ui-color-status-alert);
+  --denhaag-heading-color: var(--gateway-ui-color-status-alert);
+  --utrecht-paragraph-color: var(--gateway-ui-color-status-alert);
 }
 
 .emergencyLevel {
   --denhaag-alert-info-background-color: var(
-    --gateway-ui-color-log-level-emergency
+    --gateway-ui-color-status-background-emergency
   );
-  --denhaag-alert-info-icon-color: var(--gateway-ui-color-white);
-  --denhaag-heading-color: var(--gateway-ui-color-white);
-  --utrecht-paragraph-color: var(--gateway-ui-color-white);
+  --denhaag-alert-info-icon-color: var(--gateway-ui-color-status-emergency);
+  --denhaag-heading-color: var(--gateway-ui-color-status-emergency);
+  --utrecht-paragraph-color: var(--gateway-ui-color-status-emergency);
 }
