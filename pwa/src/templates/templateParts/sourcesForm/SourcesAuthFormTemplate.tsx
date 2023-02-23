@@ -67,12 +67,30 @@ const JwtForm: React.FC<FormProps> = ({ ...rest }) => {
   const { isLoading } = useIsLoadingContext();
 
   return (
-    <FormField>
-      <FormFieldInput>
-        <FormFieldLabel>{t("JWT-HS256")}</FormFieldLabel>
-        <Textarea {...rest} name="jwt" disabled={isLoading.sourceForm} />
-      </FormFieldInput>
-    </FormField>
+    <>
+      <FormField>
+        <FormFieldInput>
+          <FormFieldLabel>{t("JWT-HS256")}</FormFieldLabel>
+          <Textarea {...rest} name="jwt" disabled={isLoading.sourceForm} />
+          {rest.errors["jwt"] && <ErrorMessage message={rest.errors["jwt"].message} />}
+        </FormFieldInput>
+      </FormField>
+
+      <FormField>
+        <FormFieldInput>
+          <FormFieldLabel>{t("Secret")}</FormFieldLabel>
+          <Textarea {...rest} name="secret" disabled={isLoading.sourceForm} />
+          {rest.errors["secret"] && <ErrorMessage message={rest.errors["secret"].message} />}
+        </FormFieldInput>
+      </FormField>
+
+      <FormField>
+        <FormFieldInput>
+          <FormFieldLabel>{t("JWT Id")}</FormFieldLabel>
+          <InputText {...rest} name="jwtId" disabled={isLoading.sourceForm} />
+        </FormFieldInput>
+      </FormField>
+    </>
   );
 };
 

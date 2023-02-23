@@ -21,57 +21,36 @@
   width: 100%;
 }
 
-.debug {
-  background-color: var(--gateway-ui-color-log-level-debug);
-  color: darken(var(--gateway-ui-color-log-level-debug), 50%);
-}
-
-.info {
-  background-color: var(--gateway-ui-color-log-level-info);
-}
-
-.notice {
-  background-color: var(--gateway-ui-color-log-level-notice);
-}
-
-.warning {
-  background-color: var(--gateway-ui-color-log-level-warning);
-}
-
-.error {
-  background-color: var(--gateway-ui-color-log-level-error);
-}
-
-.critical {
-  background-color: var(--gateway-ui-color-log-level-critical);
-  color: var(--gateway-ui-color-white);
-}
-
-.alert {
-  background-color: var(--gateway-ui-color-log-level-alert);
-  color: var(--gateway-ui-color-white);
-}
-
-.emergency {
-  background-color: var(--gateway-ui-color-log-level-emergency);
-  color: var(--gateway-ui-color-white);
-}
-
 /* 
  * Column filters
  */
-.columnFiltersContainer,
+.columnFiltersWrapper {
+  border-block: var(--utrecht-table-border-width) solid
+    var(--utrecht-table-border-color);
+}
+
 .columnFiltersToggle {
   padding-inline-start: var(--gateway-ui-size-md);
   padding-inline-end: var(--gateway-ui-size-md);
   padding-block-start: var(--gateway-ui-size-md);
-  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.columnFiltersToggle:hover {
+  background-color: var(
+    --denhaag-table-row-hover-background-color,
+    transparent
+  );
 }
 
 .columnFiltersContainer {
   display: flex;
   user-select: none;
   gap: var(--gateway-ui-size-sm);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
 }
 
 .columnFiltersContainer input:hover,
@@ -85,7 +64,7 @@
   user-select: none;
   align-items: center;
   gap: var(--gateway-ui-size-xs);
-  color: var(--gateway-ui-color-primary);
+  color: var(--gateway-ui-color-black);
 }
 
 .columnFiltersToggle > svg {
@@ -93,5 +72,5 @@
 }
 
 .columnFiltersToggle.isOpen > svg {
-  transform: rotate(180deg);
+  transform: rotate(90deg);
 }

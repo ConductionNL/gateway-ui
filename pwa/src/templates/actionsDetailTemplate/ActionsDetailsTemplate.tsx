@@ -72,7 +72,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
             customElements={
-              <Button label={t("Run")} icon={faPlay} variant="runAction" onClick={() => handleRunAction({})} />
+              <Button label={t("Run")} icon={faPlay} variant="success" onClick={() => handleRunAction({})} />
             }
           />
 

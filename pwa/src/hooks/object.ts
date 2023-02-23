@@ -1,5 +1,5 @@
 import * as React from "react";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
@@ -68,7 +68,6 @@ export const useObject = (queryClient: QueryClient) => {
       onSuccess: async (newObject) => {
         if (objectId) {
           updateItem(queryClient, "object", newObject);
-          queryClient.invalidateQueries(["objects", objectId]);
         }
 
         if (!objectId) {
@@ -81,7 +80,8 @@ export const useObject = (queryClient: QueryClient) => {
         console.warn(error.message);
       },
       onSettled: () => {
-        queryClient.invalidateQueries(["object", objectId]);
+        queryClient.resetQueries(["object", objectId]);
+        queryClient.resetQueries(["object_schema", objectId]);
       },
     });
 

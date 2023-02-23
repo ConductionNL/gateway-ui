@@ -6,13 +6,13 @@
   margin-inline-end: var(--gateway-ui-size-xs);
 }
 
-.runAction {
+.success {
   --denhaag-button-primary-action-background-color: var(
     --gateway-ui-color-green
   );
 }
 
-.runAction:hover {
+.success:hover {
   --denhaag-button-primary-action-hover-background-color: var(
     --gateway-ui-color-dark-green
   );

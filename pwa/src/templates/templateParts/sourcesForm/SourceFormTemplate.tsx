@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputText, SelectSingle, Tag, Textarea } from "@conduction/components";
+import { InputCheckbox, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useSource } from "../../../hooks/source";
@@ -15,9 +15,9 @@ import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
 import { useIsLoadingContext } from "../../../context/isLoading";
-import { getStatusColor, getStatusIcon } from "../../../services/getStatusColorAndIcon";
-import clsx from "clsx";
 import { translateDate } from "../../../services/dateFormat";
+import { getStatusTag } from "../../../services/getStatusTag";
+import { StatusTag } from "../../../components/statusTag/StatusTag";
 
 interface SourceTemplateProps {
   source?: any;
@@ -158,6 +158,8 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
       "username",
       "password",
       "apikey",
+      "jwtId",
+      "secret",
       "jwt",
       "connect_timeout",
     ];
@@ -252,25 +254,21 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                   <>
                     <FormField>
                       <FormFieldLabel>{t("Status")}</FormFieldLabel>
-                      <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
-                        <Tag
-                          icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
-                          label={source.status?.toString() ?? "no known status"}
-                        />
-                      </div>
+
+                      <div>{getStatusTag(source.status)}</div>
                     </FormField>
 
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Created")}</FormFieldLabel>
-                        <Tag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
+                        <StatusTag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
                       </FormFieldInput>
                     </FormField>
 
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("Modified")}</FormFieldLabel>
-                        <Tag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
+                        <StatusTag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
                       </FormFieldInput>
                     </FormField>
                   </>
@@ -340,22 +338,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                   <FormFieldInput>
                     <div className={styles.formFieldHeader}>
                       <FormFieldLabel>{t("Connect timeout")}</FormFieldLabel>
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#connect-timeout");
-                        }}
-                        data-tip={
-                          "Float describing the number of seconds to wait while trying to connect to a server. Use 0 to wait indefinitely (the default behavior)."
-                        }
-                      >
-                        <FontAwesomeIcon
-                          data-tip={
-                            "Float describing the number of seconds to wait while trying to connect to a server. Use 0 to wait indefinitely (the default behavior)."
-                          }
-                          icon={faInfoCircle}
-                        />
-                      </a>
+                      <ToolTip tooltip="Float describing the number of seconds to wait while trying to connect to a server. Use 0 to wait indefinitely (the default behavior).">
+                        <a
+                          className={styles.infoButton}
+                          onClick={() => {
+                            open("https://docs.guzzlephp.org/en/stable/request-options.html#connect-timeout");
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faInfoCircle}></FontAwesomeIcon>
+                        </a>
+                      </ToolTip>
                     </div>
                     <InputFloat disabled={isLoading.sourceForm} {...{ register, errors }} name="connect_timeout" />
                   </FormFieldInput>
@@ -364,22 +356,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormField>
                   <div className={styles.formFieldHeader}>
                     <FormFieldLabel>{t("Debug")}</FormFieldLabel>
-                    <a
-                      className={styles.infoButton}
-                      onClick={() => {
-                        open("https://docs.guzzlephp.org/en/stable/request-options.html#debug");
-                      }}
-                      data-tip={
-                        "Set to true or set to a PHP stream returned by fopen() to enable debug output with the handler used to send a request. For example, when using cURL to transfer requests, cURL's verbose of CURLOPT_VERBOSE will be emitted. When using the PHP stream wrapper, stream wrapper notifications will be emitted. If set to true, the output is written to PHP's STDOUT. If a PHP stream is provided, output is written to the stream."
-                      }
-                    >
-                      <FontAwesomeIcon
-                        data-tip={
-                          "Set to true or set to a PHP stream returned by fopen() to enable debug output with the handler used to send a request. For example, when using cURL to transfer requests, cURL's verbose of CURLOPT_VERBOSE will be emitted. When using the PHP stream wrapper, stream wrapper notifications will be emitted. If set to true, the output is written to PHP's STDOUT. If a PHP stream is provided, output is written to the stream."
-                        }
-                        icon={faInfoCircle}
-                      />
-                    </a>
+                    <ToolTip tooltip="Set to true or set to a PHP stream returned by fopen() to enable debug output with the handler used to send a request. For example, when using cURL to transfer requests, cURL's verbose of CURLOPT_VERBOSE will be emitted. When using the PHP stream wrapper, stream wrapper notifications will be emitted. If set to true, the output is written to PHP's STDOUT. If a PHP stream is provided, output is written to the stream.">
+                      <a
+                        className={styles.infoButton}
+                        onClick={() => {
+                          open("https://docs.guzzlephp.org/en/stable/request-options.html#debug");
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faInfoCircle}></FontAwesomeIcon>
+                      </a>
+                    </ToolTip>
                   </div>
                   <InputCheckbox name="debug" disabled={isLoading.sourceForm} label="True" {...{ register, errors }} />
                 </FormField>
@@ -387,22 +373,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormField>
                   <div className={styles.formFieldHeader}>
                     <FormFieldLabel>{t("Decode content")}</FormFieldLabel>
-                    <a
-                      className={styles.infoButton}
-                      onClick={() => {
-                        open("https://docs.guzzlephp.org/en/stable/request-options.html#decode-content");
-                      }}
-                      data-tip={
-                        "Specify whether or not Content-Encoding responses (gzip, deflate, etc.) are automatically decoded."
-                      }
-                    >
-                      <FontAwesomeIcon
-                        data-tip={
-                          "Specify whether or not Content-Encoding responses (gzip, deflate, etc.) are automatically decoded."
-                        }
-                        icon={faInfoCircle}
-                      />
-                    </a>
+                    <ToolTip tooltip="Specify whether or not Content-Encoding responses (gzip, deflate, etc.) are automatically decoded.">
+                      <a
+                        className={styles.infoButton}
+                        onClick={() => {
+                          open("https://docs.guzzlephp.org/en/stable/request-options.html#decode-content");
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                      </a>
+                    </ToolTip>
                   </div>
                   <ToggleButton
                     disabled={isLoading.sourceForm}
@@ -431,18 +411,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormField>
                   <div className={styles.formFieldHeader}>
                     <FormFieldLabel>{t("Delay")}</FormFieldLabel>
-                    <a
-                      className={styles.infoButton}
-                      onClick={() => {
-                        open("https://docs.guzzlephp.org/en/stable/request-options.html#delay");
-                      }}
-                      data-tip={"The number of milliseconds to delay before sending the request."}
-                    >
-                      <FontAwesomeIcon
-                        data-tip={"The number of milliseconds to delay before sending the request."}
-                        icon={faInfoCircle}
-                      />
-                    </a>
+                    <ToolTip tooltip="The number of milliseconds to delay before sending the request.">
+                      <a
+                        className={styles.infoButton}
+                        onClick={() => {
+                          open("https://docs.guzzlephp.org/en/stable/request-options.html#delay");
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                      </a>
+                    </ToolTip>
                   </div>
                   <ToggleButton
                     disabled={isLoading.sourceForm}
@@ -469,18 +447,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormField>
                   <div className={styles.formFieldHeader}>
                     <FormFieldLabel>{t("Expect")}</FormFieldLabel>
-                    <a
-                      className={styles.infoButton}
-                      onClick={() => {
-                        open("https://docs.guzzlephp.org/en/stable/request-options.html#expect");
-                      }}
-                      data-tip={'Controls the behavior of the "Expect: 100-Continue" header.'}
-                    >
-                      <FontAwesomeIcon
-                        data-tip={'Controls the behavior of the "Expect: 100-Continue" header.'}
-                        icon={faInfoCircle}
-                      />
-                    </a>
+                    <ToolTip tooltip='Controls the behavior of the "Expect: 100-Continue" header."'>
+                      <a
+                        className={styles.infoButton}
+                        onClick={() => {
+                          open("https://docs.guzzlephp.org/en/stable/request-options.html#expect");
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                      </a>
+                    </ToolTip>
                   </div>
                   <ToggleButton
                     disabled={isLoading.sourceForm}
@@ -510,18 +486,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                   <FormFieldInput>
                     <div className={styles.formFieldHeader}>
                       <FormFieldLabel>{t("Force ip resolve")}</FormFieldLabel>
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#force-ip-resolve");
-                        }}
-                        data-tip={`Set to "v4" if you want the HTTP handlers to use only ipv4 protocol or "v6" for ipv6 protocol.`}
-                      >
-                        <FontAwesomeIcon
-                          data-tip={`Set to "v4" if you want the HTTP handlers to use only ipv4 protocol or "v6" for ipv6 protocol.`}
-                          icon={faInfoCircle}
-                        />
-                      </a>
+                      <ToolTip tooltip='Set to "v4" if you want the HTTP handlers to use only ipv4 protocol or "v6" for ipv6 protocol.'>
+                        <a
+                          className={styles.infoButton}
+                          onClick={() => {
+                            open("https://docs.guzzlephp.org/en/stable/request-options.html#force-ip-resolve");
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faInfoCircle} />
+                        </a>
+                      </ToolTip>
                     </div>
                     <InputText disabled={isLoading.sourceForm} {...{ register, errors }} name="force_ip_resolve" />
                   </FormFieldInput>
@@ -530,22 +504,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormField>
                   <div className={styles.formFieldHeader}>
                     <FormFieldLabel>{t("Verify")}</FormFieldLabel>
-                    <a
-                      className={styles.infoButton}
-                      onClick={() => {
-                        open("https://docs.guzzlephp.org/en/stable/request-options.html#verify");
-                      }}
-                      data-tip={
-                        "Describes the SSL certificate verification behavior of a request. \n Set to true to enable SSL certificate verification and use the default CA bundle provided by operating system.\nSet to false to disable certificate verification (this is insecure!). \n Set to a string to provide the path to a CA bundle to enable verification using a custom certificate."
-                      }
-                    >
-                      <FontAwesomeIcon
-                        data-tip={
-                          "Describes the SSL certificate verification behavior of a request. \n Set to true to enable SSL certificate verification and use the default CA bundle provided by operating system.\nSet to false to disable certificate verification (this is insecure!). \n Set to a string to provide the path to a CA bundle to enable verification using a custom certificate."
-                        }
-                        icon={faInfoCircle}
-                      />
-                    </a>
+                    <ToolTip tooltip="Describes the SSL certificate verification behavior of a request. \n Set to true to enable SSL certificate verification and use the default CA bundle provided by operating system.\nSet to false to disable certificate verification (this is insecure!). \n Set to a string to provide the path to a CA bundle to enable verification using a custom certificate.">
+                      <a
+                        className={styles.infoButton}
+                        onClick={() => {
+                          open("https://docs.guzzlephp.org/en/stable/request-options.html#verify");
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                      </a>
+                    </ToolTip>
                   </div>
                   <ToggleButton
                     disabled={isLoading.sourceForm}
@@ -580,15 +548,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                   <FormFieldInput>
                     <div className={styles.formFieldHeader}>
                       <FormFieldLabel>{t("Version")}</FormFieldLabel>
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#version");
-                        }}
-                        data-tip={"Protocol version to use with the request."}
-                      >
-                        <FontAwesomeIcon data-tip={"Protocol version to use with the request."} icon={faInfoCircle} />
-                      </a>
+                      <ToolTip tooltip="Protocol version to use with the request.">
+                        <a
+                          className={styles.infoButton}
+                          onClick={() => {
+                            open("https://docs.guzzlephp.org/en/stable/request-options.html#version");
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faInfoCircle} />
+                        </a>
+                      </ToolTip>
                     </div>
                     <InputText disabled={isLoading.sourceForm} {...{ register, errors }} name="version" />
                   </FormFieldInput>
@@ -598,18 +567,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                   <FormFieldInput>
                     <div className={styles.formFieldHeader}>
                       <FormFieldLabel>{t("Read timeout")}</FormFieldLabel>
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#read-timeout");
-                        }}
-                        data-tip={"Float describing the timeout to use when reading a streamed body"}
-                      >
-                        <FontAwesomeIcon
-                          data-tip={"Float describing the timeout to use when reading a streamed body"}
-                          icon={faInfoCircle}
-                        />
-                      </a>
+                      <ToolTip tooltip="Float describing the timeout to use when reading a streamed body">
+                        <a
+                          className={styles.infoButton}
+                          onClick={() => {
+                            open("https://docs.guzzlephp.org/en/stable/request-options.html#read-timeout");
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faInfoCircle} />
+                        </a>
+                      </ToolTip>
                     </div>
                     <InputFloat disabled={isLoading.sourceForm} {...{ register, errors }} name="read_timeout" />
                   </FormFieldInput>
@@ -620,22 +587,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormFieldInput>
                   <div className={styles.formFieldHeader}>
                     <FormFieldLabel>{t("Proxy")}</FormFieldLabel>
-                    <a
-                      className={styles.infoButton}
-                      onClick={() => {
-                        open("https://docs.guzzlephp.org/en/stable/request-options.html#proxy");
-                      }}
-                      data-tip={
-                        "Pass a string to specify an HTTP proxy, or an array to specify different proxies for different protocols."
-                      }
-                    >
-                      <FontAwesomeIcon
-                        data-tip={
-                          "Pass a string to specify an HTTP proxy, or an array to specify different proxies for different protocols."
-                        }
-                        icon={faInfoCircle}
-                      />
-                    </a>
+                    <ToolTip tooltip="Pass a string to specify an HTTP proxy, or an array to specify different proxies for different protocols.">
+                      <a
+                        className={styles.infoButton}
+                        onClick={() => {
+                          open("https://docs.guzzlephp.org/en/stable/request-options.html#proxy");
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                      </a>
+                    </ToolTip>
                   </div>
                   <Textarea disabled={isLoading.sourceForm} {...{ register, errors }} name="proxy" />
                 </FormFieldInput>
@@ -645,22 +606,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormField>
                   <div className={styles.formFieldHeader}>
                     <FormFieldLabel>{t("Idn conversion")}</FormFieldLabel>
-                    <a
-                      className={styles.infoButton}
-                      onClick={() => {
-                        open("https://docs.guzzlephp.org/en/stable/request-options.html#idn-conversion");
-                      }}
-                      data-tip={
-                        "Internationalized Domain Name (IDN) support (enabled by default if intl extension is available)."
-                      }
-                    >
-                      <FontAwesomeIcon
-                        data-tip={
-                          "Internationalized Domain Name (IDN) support (enabled by default if intl extension is available)."
-                        }
-                        icon={faInfoCircle}
-                      />
-                    </a>
+                    <ToolTip tooltip="Internationalized Domain Name (IDN) support (enabled by default if intl extension is available).">
+                      <a
+                        className={styles.infoButton}
+                        onClick={() => {
+                          open("https://docs.guzzlephp.org/en/stable/request-options.html#idn-conversion");
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                      </a>
+                    </ToolTip>
                   </div>
                   <ToggleButton
                     disabled={isLoading.sourceForm}
@@ -698,22 +653,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormField>
                   <div className={styles.formFieldHeader}>
                     <FormFieldLabel>{t("Http errors")}</FormFieldLabel>
-                    <a
-                      className={styles.infoButton}
-                      onClick={() => {
-                        open("https://docs.guzzlephp.org/en/stable/request-options.html#http-errors");
-                      }}
-                      data-tip={
-                        "Set to false to disable throwing exceptions on an HTTP protocol errors (i.e., 4xx and 5xx responses). Exceptions are thrown by default when HTTP protocol errors are encountered."
-                      }
-                    >
-                      <FontAwesomeIcon
-                        data-tip={
-                          "Set to false to disable throwing exceptions on an HTTP protocol errors (i.e., 4xx and 5xx responses). Exceptions are thrown by default when HTTP protocol errors are encountered."
-                        }
-                        icon={faInfoCircle}
-                      />
-                    </a>
+                    <ToolTip tooltip="Set to false to disable throwing exceptions on an HTTP protocol errors (i.e., 4xx and 5xx responses). Exceptions are thrown by default when HTTP protocol errors are encountered.">
+                      <a
+                        className={styles.infoButton}
+                        onClick={() => {
+                          open("https://docs.guzzlephp.org/en/stable/request-options.html#http-errors");
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                      </a>
+                    </ToolTip>
                   </div>
                   <InputCheckbox
                     disabled={isLoading.sourceForm}
