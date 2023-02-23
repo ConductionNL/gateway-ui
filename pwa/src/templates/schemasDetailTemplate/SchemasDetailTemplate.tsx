@@ -48,11 +48,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const getObjectsFromEntity = _useObject.getAllFromEntity(schemaId);
 
   const handleDeleteSchema = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this schema?");
-
-    if (confirmDeletion) {
-      deleteSchema.mutate({ id: schemaId });
-    }
+    deleteSchema.mutate({ id: schemaId });
   };
 
   const toggleFromDashboard = () => {

@@ -64,9 +64,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
   };
 
   const handleDelete = (): void => {
-    const confirmDeletion = confirm("Are you sure you want to delete this source?");
-
-    confirmDeletion && deleteSource.mutateAsync({ id: sourceId });
+    deleteSource.mutateAsync({ id: sourceId });
   };
 
   const onSubmit = (data: any) => {

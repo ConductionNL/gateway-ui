@@ -39,9 +39,7 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
   };
 
   const handleDeleteAction = (): void => {
-    const confirmDeletion = confirm("Are you sure you want to delete this collection?");
-
-    confirmDeletion && deleteCollection.mutateAsync({ id: collectionId });
+    deleteCollection.mutateAsync({ id: collectionId });
   };
 
   React.useEffect(() => {

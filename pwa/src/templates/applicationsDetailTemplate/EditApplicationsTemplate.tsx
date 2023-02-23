@@ -22,9 +22,7 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
   const deleteApplication = _useApplication.remove();
 
   const handleDeleteApplication = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this application?");
-
-    confirmDeletion && deleteApplication.mutate({ id: applicationId });
+    deleteApplication.mutate({ id: applicationId });
   };
 
   React.useEffect(() => {

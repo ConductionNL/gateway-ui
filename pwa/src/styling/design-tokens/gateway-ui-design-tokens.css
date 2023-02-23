@@ -96,4 +96,6 @@
   --gateway-ui-objects-save-button-triangle-position-from-right: 16px;
   --gateway-ui-objects-save-button-options-border-radius: 4px;
   --gateway-ui-objects-save-button-options-button-border-radius: 4px;
+  --gateway-ui-popup-overlay-background-color: rgba(0, 0, 0, 0.3);
+  --gateway-ui-popup-width: 500px;
 }

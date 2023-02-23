@@ -40,9 +40,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
   };
 
   const handleDeleteEndpoint = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this endpoint?");
-
-    confirmDeletion && deleteEndpoint.mutate({ id: endpointId });
+    deleteEndpoint.mutate({ id: endpointId });
   };
 
   React.useEffect(() => {

@@ -38,9 +38,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
   };
 
   const handleDeleteCronjob = (): void => {
-    const confirmDeletion = confirm("Are you sure you want to delete this cronjob?");
-
-    confirmDeletion && deleteCronjob.mutateAsync({ id: cronjobId });
+    deleteCronjob.mutateAsync({ id: cronjobId });
   };
 
   React.useEffect(() => {

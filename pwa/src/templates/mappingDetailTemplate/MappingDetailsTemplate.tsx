@@ -28,9 +28,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   };
 
   const handleDelete = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this mapping?");
-
-    confirmDeletion && deleteMapping.mutate({ id: mappingId });
+    deleteMapping.mutate({ id: mappingId });
   };
 
   React.useEffect(() => {

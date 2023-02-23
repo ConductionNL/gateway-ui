@@ -22,9 +22,7 @@ export const SecurityGroupsDetailsTemplate: React.FC<SecurityGroupsDetailPagePro
   const deleteSecurityGroup = _useSecurityGroups.remove();
 
   const handleDeleteSecurityGroup = (): void => {
-    const confirmDeletion = confirm("Are you sure you want to delete this security group?");
-
-    confirmDeletion && deleteSecurityGroup.mutate({ id: securityGroupId });
+    deleteSecurityGroup.mutate({ id: securityGroupId });
   };
 
   React.useEffect(() => {
