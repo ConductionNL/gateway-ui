@@ -42,15 +42,13 @@ export const useAction = (queryClient: QueryClient) => {
 
   const remove = () =>
     useMutation<any, Error, any>(API.Action.delete, {
-      onMutate: (variables) => {
-        addDeletedItem(variables.id);
-      },
+      onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "actions", variables.id);
         navigate("/actions");
       },
-      onError: (error, variables) => {
-        removeDeletedItem(variables.id);
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
         console.warn(error.message);
       },
     });
