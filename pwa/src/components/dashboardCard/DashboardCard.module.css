@@ -9,7 +9,7 @@
 }
 
 .container > *:not(:last-child) {
-  margin-block-end: var(--gateway-ui-size-md);
+  margin-block-end: var(--gateway-ui-size-2xs);
 }
 
 .titleLink {
@@ -25,20 +25,28 @@
 .titleLink > :first-child {
   display: flex;
 }
-
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+}
+.headerContainer > :first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .enabledIndicator {
+  display: block;
   width: 14px;
   height: 14px;
   border-radius: 7px;
-  display: block;
 }
 
 .enabledIndicator.enabled {
-  background-color: green;
+  background-color: var(--gateway-ui-color-green);
 }
 
-.enabledIndicator.disabled {
-  background-color: red;
+.enabledIndicator:not(.enabled) {
+  background-color: var(--gateway-ui-color-red);
 }
 
 .statusTypeContainer {
@@ -47,7 +55,13 @@
   justify-content: space-between;
   gap: var(--gateway-ui-size-sm);
 }
-
+.cardType {
+  font-style: italic;
+  font-size: var(--gateway-ui-font-size-md);
+  font-weight: var(--gateway-ui-font-weight-light);
+  color: gray;
+  order: 5;
+}
 .date {
   display: flex;
 }
@@ -57,6 +71,8 @@
   padding: 0;
   gap: 12px;
   flex-wrap: wrap;
+  padding-block-end: var(--gateway-ui-size-sm);
+  margin-top: var(--gateway-ui-size-xs);
 }
 .date :not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-sm);
@@ -74,7 +90,16 @@
   display: flex;
   gap: var(--gateway-ui-size-md);
 }
-
+.buttonContainer {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 15px;
+  align-items: flex-end;
+}
+.buttonContainer Button {
+  display: flex;
+  flex-grow: 4;
+}
 .deleteButton {
   --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
 }
@@ -84,7 +109,6 @@
     --gateway-ui-color-dark-red
   );
 }
-
 .deleteButton > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }

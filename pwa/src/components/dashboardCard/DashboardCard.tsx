@@ -18,36 +18,45 @@ export interface DashboardCardProps {
     href: string;
   };
   type: string;
-  tags: string[];
-  isEnabled?: boolean; // true false undefined
-
-  // status?: string | boolean;
-  // lastRun?: string;
-  // lastCall?: string;
+  tags: {
+    label: string;
+    tooltip: string;
+  }[];
   onDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>) => void;
+
+  isEnabled?: boolean;
 }
 
 export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags, isEnabled, onDelete }) => {
   return (
     <div className={styles.container}>
       <div className={styles.headerContainer}>
-        <span>{title.label}</span>
-        <span className={styles.cardType}>{type}</span>
+        <div>
+          <span>{title.label}</span>
 
-        <ToolTip tooltip="Is enabled">
-          <span className={clsx(styles.enabledIndicator, isEnabled ? styles.enabled : styles.disabled)} />
-        </ToolTip>
+          {isEnabled !== undefined && (
+            <ToolTip tooltip="Is enabled">
+              <span className={clsx(styles.enabledIndicator, isEnabled && styles.enabled)} />
+            </ToolTip>
+          )}
+        </div>
+        <span className={styles.cardType}>{type}</span>
       </div>
 
       <ul className={styles.tagsList}>
         {tags.map((tag, idx) => (
           <li key={idx}>
-            <Tag label={tag} />
+            <ToolTip tooltip={tag.tooltip}>
+              <Tag label={tag.label} />
+            </ToolTip>
           </li>
         ))}
       </ul>
 
-      <Button variant="danger" icon={faTrash} label="Click me" onClick={() => alert("Clicked!")} />
+      <div className={styles.buttonContainer}>
+        <Button variant="primary" icon={faArrowRight} label="Details" onClick={() => navigate(title.href)} />
+        <Button variant="danger" icon={faTrash} label="Delete" onClick={onDelete} />
+      </div>
     </div>
   );
 };

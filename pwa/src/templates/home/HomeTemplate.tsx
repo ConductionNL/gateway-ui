@@ -9,9 +9,10 @@ import { DashboardCard } from "../../components/dashboardCard/DashboardCard";
 import _ from "lodash";
 import { getPath } from "../../services/getPath";
 import { Container } from "@conduction/components";
+import { formatDateTime } from "../../services/dateTime";
 
 export const HomeTemplate: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const queryClient = useQueryClient();
   const _useDashboardCards = useDashboardCards(queryClient);
@@ -31,6 +32,18 @@ export const HomeTemplate: React.FC = () => {
     }
   };
 
+  const createTags = (dashboardCard: any): { label: string; tooltip: string }[] => {
+    const tagsArray: { label: string; tooltip: string }[] = [];
+
+    if (dashboardCard.object?.status) tagsArray.push({ label: dashboardCard.object.status, tooltip: "Status" });
+    if (dashboardCard.object?.lastCall)
+      tagsArray.push({ label: formatDateTime(t(i18n.language), dashboardCard.object.lastCall), tooltip: "Last call" });
+    if (dashboardCard.object?.lastRun)
+      tagsArray.push({ label: formatDateTime(t(i18n.language), dashboardCard.object.lastRun), tooltip: "Last run" });
+
+    return tagsArray;
+  };
+
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Dashboard")}</Heading1>
@@ -43,10 +56,10 @@ export const HomeTemplate: React.FC = () => {
                 label: dashboardCard.object?.name ?? dashboardCard.object?.id,
                 href: `/${getPath(dashboardCard.type)}/${dashboardCard.object?.id}`,
               }}
-              tags={["status", "enabled", "item", "object", "one", "two", "three", "four", "five", "six"]}
+              tags={createTags(dashboardCard)}
               type={dashboardCard.type}
               onDelete={(e) => handleDeleteDashboardCard(e, dashboardCard.id)}
-              isEnabled
+              isEnabled={dashboardCard.object?.isEnabled}
             />
           ))}
         </div>
