@@ -16,6 +16,7 @@
 .container .title {
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .container .title {
