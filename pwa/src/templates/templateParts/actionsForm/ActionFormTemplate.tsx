@@ -86,7 +86,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
       delete payload[key];
     }
 
-    createOrEditAction.mutate({ payload });
+    createOrEditAction.mutate({ payload, id: action?.id });
 
     action && queryClient.setQueryData(["actions", action.id], payload);
   };
