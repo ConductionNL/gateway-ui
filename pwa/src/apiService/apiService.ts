@@ -214,7 +214,7 @@ export const Send = (
     case "GET":
       const response = instance.get(endpoint);
 
-      response.catch((err) => toast.error(err.message + endpoint));
+      response.catch((err) => toast.error(err.message));
 
       return response;
 
