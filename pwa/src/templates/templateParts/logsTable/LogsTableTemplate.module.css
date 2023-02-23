@@ -60,18 +60,33 @@
 /* 
  * Column filters
  */
-.columnFiltersContainer,
+.columnFiltersWrapper {
+  border-block: var(--utrecht-table-border-width) solid
+    var(--utrecht-table-border-color);
+}
+
 .columnFiltersToggle {
   padding-inline-start: var(--gateway-ui-size-md);
   padding-inline-end: var(--gateway-ui-size-md);
   padding-block-start: var(--gateway-ui-size-md);
-  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.columnFiltersToggle:hover {
+  background-color: var(
+    --denhaag-table-row-hover-background-color,
+    transparent
+  );
 }
 
 .columnFiltersContainer {
   display: flex;
   user-select: none;
   gap: var(--gateway-ui-size-sm);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
 }
 
 .columnFiltersContainer input:hover,
@@ -85,7 +100,7 @@
   user-select: none;
   align-items: center;
   gap: var(--gateway-ui-size-xs);
-  color: var(--gateway-ui-color-primary);
+  color: var(--gateway-ui-color-black);
 }
 
 .columnFiltersToggle > svg {
@@ -93,5 +108,5 @@
 }
 
 .columnFiltersToggle.isOpen > svg {
-  transform: rotate(180deg);
+  transform: rotate(90deg);
 }
