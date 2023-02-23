@@ -75,6 +75,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
     { label: "Phone", value: "phone" },
     { label: "Json", value: "json" },
     { label: "Dutch_pc4", value: "dutch_pc4" },
+    { label: "Text", value: "text" },
   ];
 
   const functionSelectOptions = [
