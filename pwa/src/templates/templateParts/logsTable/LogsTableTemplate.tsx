@@ -189,8 +189,6 @@ const LogsTableColumnFilters: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const { setLogTableColumns, logTableColumns } = useLogTableColumnsContext();
 
-  console.log({ logTableColumns });
-
   return (
     <div className={styles.columnFiltersWrapper}>
       <Collapsible
