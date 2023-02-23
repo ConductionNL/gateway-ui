@@ -33,16 +33,12 @@
   max-width: unset !important;
 }
 
-.testMappingButton {
-  margin-block-end: var(--gateway-ui-size-lg);
-}
-
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
 .formFieldInfoHeader {
   display: flex;
   align-items: center;
   gap: var(--gateway-ui-size-xs);
+}
+
+.testMappingForm > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
 }

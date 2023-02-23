@@ -4,7 +4,6 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
-import toast from "react-hot-toast";
 
 export const useMapping = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
@@ -59,6 +58,5 @@ export const useMapping = (queryClient: QueryClient) => {
         console.warn(error.message);
       },
     });
-
   return { getAll, getOne, remove, createOrEdit, testMapping };
 };

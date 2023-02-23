@@ -115,15 +115,14 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
               </TabPanel>
 
               <TabPanel className={styles.tabPanel} value="1">
-                <form onSubmit={handleSubmit(onSubmitTest)}>
+                <form onSubmit={handleSubmit(onSubmitTest)} className={styles.testMappingForm}>
                   <Button
                     label={t("Test mapping")}
                     icon={faArrowsRotate}
                     variant="primary"
-                    className={clsx(styles.buttonIcon, styles.testMappingButton)}
                     disabled={isLoading.mappingForm}
                     type="submit"
-                  ></Button>
+                  />
 
                   <div className={styles.content}>
                     <FormField>

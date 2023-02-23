@@ -42,9 +42,8 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     ref: React.RefObject<HTMLDivElement>,
   ) => {
-    if (!ref.current) {
-      return;
-    }
+    if (!ref.current) return;
+
     e.stopPropagation();
 
     ref.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
