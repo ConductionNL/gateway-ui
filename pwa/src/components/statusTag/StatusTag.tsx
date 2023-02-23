@@ -13,7 +13,8 @@ export type TStatusTagType =
   | "error"
   | "critical"
   | "alert"
-  | "emergency";
+  | "emergency"
+  | "default";
 
 interface StatusTagProps {
   label: string;
@@ -23,7 +24,7 @@ interface StatusTagProps {
 
 export const StatusTag: React.FC<StatusTagProps> = ({ label, type = "default", toolTipContent = "" }) => {
   return (
-    <ToolTip tooltip={toolTipContent}>
+    <ToolTip layoutClassName={styles.tooltip} tooltip={toolTipContent}>
       <Tag layoutClassName={clsx(styles.container, styles[type])} {...{ label }} />
     </ToolTip>
   );

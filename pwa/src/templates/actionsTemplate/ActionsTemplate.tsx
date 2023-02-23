@@ -56,7 +56,10 @@ export const ActionsTemplate: React.FC = () => {
                   <TableCell className={styles.actionName}>{action.name}</TableCell>
                   <TableCell>{action.priority}</TableCell>
                   <TableCell>
-                    <StatusTag type={action.status && "success"} label={action.status ? "Success" : "No status"} />
+                    <StatusTag
+                      type={action.status ? "success" : "default"}
+                      label={action.status ? "Success" : "No status"}
+                    />
                   </TableCell>
                   <TableCell>{action.isEnabled ? "On" : "Off"}</TableCell>
                   <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>
