@@ -21,7 +21,7 @@ export const SchemasTemplate: React.FC = () => {
   const getSchemas = _useSchema.getAll();
 
   const _useObject = useObject(queryClient);
-  const getObjects = _useObject.getAll(1);
+  const getObjects = _useObject.getAll(1, 200);
 
   const goToCreateObject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,

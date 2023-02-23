@@ -5,7 +5,7 @@ pwa:
   image:
     image: "ghcr.io/conductionnl/gateway-ui"
     pullPolicy: Always
-    tag: "dev"
+    tag: "stag"
     # Overrides the image tag whose default is the chart appVersion.
   meUrl: "useDomain"
   apiUrl: "useDomain"

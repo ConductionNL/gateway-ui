@@ -6,7 +6,7 @@ import { t } from "i18next";
 import { navigate } from "gatsby";
 import { ToolTip } from "@conduction/components";
 import { Button } from "@gemeente-denhaag/components-react";
-import { faArrowRight, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { Paginate } from "../../../components/paginate/Paginate";
@@ -191,31 +191,33 @@ const LogsTableColumnFilters: React.FC = () => {
   const { setLogTableColumns, logTableColumns } = useLogTableColumnsContext();
 
   return (
-    <Collapsible
-      trigger={
-        <div className={clsx(styles.columnFiltersToggle, isOpen && styles.isOpen)}>
-          Filter columns <FontAwesomeIcon icon={faChevronDown} />
-        </div>
-      }
-      open={isOpen}
-      transitionTime={200}
-      onOpening={() => setIsOpen(true)}
-      onClosing={() => setIsOpen(false)}
-    >
-      <div className={styles.columnFiltersContainer}>
-        {Object.entries(logTableColumns).map(([key, value]) => (
-          <div {...{ key }}>
-            <label htmlFor={key}>{_.upperFirst(key)}</label>
-            <input
-              id={key}
-              name={key}
-              checked={value}
-              type="checkbox"
-              onChange={() => setLogTableColumns({ [key]: !value })}
-            />
+    <div className={styles.columnFiltersWrapper}>
+      <Collapsible
+        trigger={
+          <div className={clsx(styles.columnFiltersToggle, isOpen && styles.isOpen)}>
+            Filter log table columns <FontAwesomeIcon icon={faChevronRight} />
           </div>
-        ))}
-      </div>
-    </Collapsible>
+        }
+        open={isOpen}
+        transitionTime={200}
+        onOpening={() => setIsOpen(true)}
+        onClosing={() => setIsOpen(false)}
+      >
+        <div className={styles.columnFiltersContainer}>
+          {Object.entries(logTableColumns).map(([key, value]) => (
+            <div {...{ key }}>
+              <label htmlFor={key}>{_.upperFirst(key)}</label>
+              <input
+                id={key}
+                name={key}
+                checked={value}
+                type="checkbox"
+                onChange={() => setLogTableColumns({ [key]: !value })}
+              />
+            </div>
+          ))}
+        </div>
+      </Collapsible>
+    </div>
   );
 };

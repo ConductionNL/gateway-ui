@@ -14,6 +14,8 @@ import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
+import { Button } from "../../components/button/Button";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
 interface ActionsDetailsTemplateProps {
   actionId: string;
@@ -30,6 +32,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
 
   const getAction = _useAction.getOne(actionId);
   const deleteAction = _useAction.remove();
+  const runAction = _useAction.runAction(actionId);
 
   const getLogs = useLog(queryClient).getAllFromChannel("action", actionId, currentLogsPage);
 
@@ -47,7 +50,9 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
     confirmDeletion && deleteAction.mutate({ id: actionId });
   };
 
-  React.useEffect(() => {}, []);
+  const handleRunAction = (data: any) => {
+    runAction.mutate({ payload: data, id: actionId });
+  };
 
   React.useEffect(() => {
     setIsLoading({ ...isLoading, actionForm: deleteAction.isLoading || dashboardToggleLoading });
@@ -66,6 +71,9 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
             handleDelete={handleDeleteAction}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
+            customElements={
+              <Button label={t("Run")} icon={faPlay} variant="success" onClick={() => handleRunAction({})} />
+            }
           />
 
           <ActionFormTemplate action={getAction.data} />

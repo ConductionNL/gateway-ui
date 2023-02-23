@@ -59,7 +59,8 @@
   --gateway-ui-color-darkgrey: rgb(204, 204, 204);
   --gateway-ui-color-red: red;
   --gateway-ui-color-dark-red: rgb(146, 2, 2);
-  --gateway-ui-color-green: green;
+  --gateway-ui-color-green: #28a745;
+  --gateway-ui-color-dark-green: #218838;
   --gateway-ui-color-orange: orange;
   --gateway-ui-color-status-green: #69b090;
   --gateway-ui-color-status-red: #dd3c49;
