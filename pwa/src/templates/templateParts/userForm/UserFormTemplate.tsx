@@ -13,6 +13,7 @@ import { useOrganization } from "../../../hooks/organization";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { useApplication } from "../../../hooks/application";
 import { IKeyValue } from "@conduction/components/lib/components/formFields";
+import { useSecurityGroup } from "../../../hooks/securityGroup";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -29,6 +30,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
 
   const getOrganization = useOrganization(queryClient).getAll();
   const getApplications = useApplication(queryClient).getAll();
+  const getSecurityGroups = useSecurityGroup(queryClient).getAll();
 
   const organisationOptions = getOrganization.data?.map((_organisation: any) => ({
     label: _organisation.name,
@@ -38,6 +40,11 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const applicationOptions = getApplications.data?.map((application: any) => ({
     label: application.name,
     value: application.id,
+  }));
+
+  const securityGroupOptions = getSecurityGroups.data?.map((securityGroup: any) => ({
+    label: securityGroup.name,
+    value: securityGroup.id,
   }));
 
   const {
@@ -60,6 +67,11 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
       "applications",
       user.applications.map((application: any) => ({ label: application.name, value: application.id })),
     );
+
+    setValue(
+      "securityGroups",
+      user.securityGroups.map((securityGroup: any) => ({ label: securityGroup.name, value: securityGroup.id })),
+    );
   };
 
   const onSubmit = (data: any): void => {
@@ -67,6 +79,9 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
       ...data,
       organisation: data.organization && `/admin/organisations/${data.organization.value}`,
       applications: data.applications?.map((application: IKeyValue) => `/admin/applications/${application.value}`),
+      securityGroups: data.securityGroups?.map(
+        (securityGroup: IKeyValue) => `admin/user_groups/${securityGroup.value}`,
+      ),
     };
 
     delete payload.organization;
@@ -169,6 +184,24 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
             </FormFieldInput>
           </FormField>
 
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Security Groups")}</FormFieldLabel>
+              {getSecurityGroups.isSuccess && (
+                <SelectMultiple
+                  options={securityGroupOptions ?? []}
+                  {...{ register, errors, control }}
+                  name="securityGroups"
+                  validation={{ required: true }}
+                  disabled={isLoading.userForm}
+                />
+              )}
+              {getSecurityGroups.isLoading && <Skeleton height={50} />}
+            </FormFieldInput>
+          </FormField>
+        </div>
+
+        <div className={styles.grid}>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Password")}</FormFieldLabel>
