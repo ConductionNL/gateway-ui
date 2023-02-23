@@ -4,7 +4,7 @@ import * as styles from "./LogsTableTemplate.module.css";
 import _ from "lodash";
 import { t } from "i18next";
 import { navigate } from "gatsby";
-import { Tag, ToolTip } from "@conduction/components";
+import { ToolTip } from "@conduction/components";
 import { Button } from "@gemeente-denhaag/components-react";
 import { faArrowRight, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +13,7 @@ import { Paginate } from "../../../components/paginate/Paginate";
 import { useLogTableColumnsContext } from "../../../context/logs";
 import Collapsible from "react-collapsible";
 import clsx from "clsx";
+import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusTag";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -60,8 +61,8 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
             <TableRow onClick={() => navigate(`/logs/${log._id.$oid}`)} key={log._id.$oid}>
               {logTableColumns.level && (
                 <TableCell>
-                  <Tag
-                    layoutClassName={styles[_.lowerCase(log.level_name)]}
+                  <StatusTag
+                    type={_.lowerCase(log.level_name) as TStatusTagType}
                     label={_.upperFirst(_.lowerCase(log.level_name))}
                   />
                 </TableCell>
