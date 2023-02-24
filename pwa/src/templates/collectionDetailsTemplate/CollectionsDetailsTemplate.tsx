@@ -38,10 +38,6 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
     toggleDashboardCard(getCollection.data.name, "collection", "CollectionEntity", collectionId, dashboardCard?.id);
   };
 
-  const handleDeleteAction = (): void => {
-    deleteCollection.mutateAsync({ id: collectionId });
-  };
-
   React.useEffect(() => {
     setIsLoading({ collectionForm: deleteCollection.isLoading || dashboardLoading });
   }, [deleteCollection.isLoading, dashboardLoading]);
@@ -54,7 +50,7 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
             title={`Edit ${getCollection.data.name}`}
             {...{ formId }}
             disabled={isLoading.collectionForm}
-            handleDelete={handleDeleteAction}
+            handleDelete={() => deleteCollection.mutateAsync({ id: collectionId })}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
           />

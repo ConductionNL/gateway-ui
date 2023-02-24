@@ -37,10 +37,6 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
     toggleDashboardCard(getCronjob.data.name, "cronjob", "Cronjob", cronjobId, dashboardCard?.id);
   };
 
-  const handleDeleteCronjob = (): void => {
-    deleteCronjob.mutateAsync({ id: cronjobId });
-  };
-
   React.useEffect(() => {
     setIsLoading({ cronjobForm: deleteCronjob.isLoading || dashboardLoading });
   }, [deleteCronjob.isLoading, dashboardLoading]);
@@ -53,7 +49,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
             title={`Edit ${getCronjob.data.name}`}
             {...{ formId }}
             disabled={isLoading.cronjobForm}
-            handleDelete={handleDeleteCronjob}
+            handleDelete={() => deleteCronjob.mutateAsync({ id: cronjobId })}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
           />

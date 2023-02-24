@@ -39,10 +39,6 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
     toggleDashboardCard(getEndpoint.data.name, "endpoint", "Endpoint", endpointId, dashboardCard?.id);
   };
 
-  const handleDeleteEndpoint = () => {
-    deleteEndpoint.mutate({ id: endpointId });
-  };
-
   React.useEffect(() => {
     setIsLoading({ endpointForm: deleteEndpoint.isLoading || dashboardLoading });
   }, [deleteEndpoint.isLoading, dashboardLoading]);
@@ -55,7 +51,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
             title={`Edit ${getEndpoint.data.name}`}
             {...{ formId }}
             disabled={isLoading.endpointForm}
-            handleDelete={handleDeleteEndpoint}
+            handleDelete={() => deleteEndpoint.mutate({ id: endpointId })}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
           />

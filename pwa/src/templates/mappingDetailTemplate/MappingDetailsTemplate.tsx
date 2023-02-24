@@ -27,10 +27,6 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
     toggleDashboardCard(getMapping.data.name, "mapping", "Mapping", mappingId, dashboardCard?.id);
   };
 
-  const handleDelete = () => {
-    deleteMapping.mutate({ id: mappingId });
-  };
-
   React.useEffect(() => {
     setIsLoading({ ...isLoading, mappingForm: deleteMapping.isLoading || dashboardLoading });
   }, [deleteMapping.isLoading, dashboardLoading]);
@@ -44,7 +40,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
             title={`Edit ${getMapping.data.name}`}
             {...{ formId }}
             disabled={isLoading.mappingForm}
-            handleDelete={handleDelete}
+            handleDelete={() => deleteMapping.mutate({ id: mappingId })}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
           />

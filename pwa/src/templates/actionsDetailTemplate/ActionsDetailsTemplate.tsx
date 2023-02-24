@@ -41,10 +41,6 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
     toggleDashboardCard(action.name, "action", "Action", actionId, dashboardCard?.id);
   };
 
-  const handleDeleteAction = () => {
-    deleteAction.mutate({ id: actionId });
-  };
-
   React.useEffect(() => {}, []);
 
   React.useEffect(() => {
@@ -61,7 +57,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
             title={`Edit ${getAction.data.name}`}
             {...{ formId }}
             disabled={isLoading.actionForm}
-            handleDelete={handleDeleteAction}
+            handleDelete={() => deleteAction.mutate({ id: actionId })}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
           />
