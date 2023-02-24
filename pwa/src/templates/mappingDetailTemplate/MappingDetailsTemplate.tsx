@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./MappingDetailsTemplate.module.css";
-import { Container } from "@conduction/components";
+import { Container, Textarea, ToolTip } from "@conduction/components";
 import { MappingFormTemplate, formId } from "../templateParts/mappingForm/MappingFormTemplate";
 import { useMapping } from "../../hooks/mapping";
 import { useQueryClient } from "react-query";
@@ -8,20 +8,49 @@ import { useIsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import Skeleton from "react-loading-skeleton";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
+import { useCurrentTabContext } from "../../context/tabs";
+import { useTranslation } from "react-i18next";
+import {
+  FormField,
+  FormFieldInput,
+  FormFieldLabel,
+  Tab,
+  TabContext,
+  TabPanel,
+  Tabs,
+} from "@gemeente-denhaag/components-react";
+import { useForm } from "react-hook-form";
+import clsx from "clsx";
+import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
+import { validateStringAsJSON } from "../../services/validateJSON";
+import { Button } from "../../components/button/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
 }
 
 export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ mappingId }) => {
+  const { t } = useTranslation();
+
+  const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+  const [testMappingData, setTestMappingData] = React.useState<object>();
 
   const queryClient = useQueryClient();
   const getMapping = useMapping(queryClient).getOne(mappingId);
   const deleteMapping = useMapping(queryClient).remove();
+  const testMapping = useMapping(queryClient).testMapping(mappingId);
 
   const dashboardCard = getDashboardCard(mappingId);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const toggleFromDashboard = () => {
     toggleDashboardCard(getMapping.data.name, "mapping", "Mapping", mappingId, dashboardCard?.id);
@@ -33,9 +62,26 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
     confirmDeletion && deleteMapping.mutate({ id: mappingId });
   };
 
+  const onSubmitTest = (data: any) => {
+    const jsonData = data.input ? JSON.parse(data.input) : [];
+
+    const payload = {
+      ...jsonData,
+    };
+
+    testMapping.mutate({ payload: payload, id: mappingId });
+  };
+
   React.useEffect(() => {
-    setIsLoading({ ...isLoading, mappingForm: deleteMapping.isLoading || dashboardLoading });
-  }, [deleteMapping.isLoading, dashboardLoading]);
+    setIsLoading({
+      ...isLoading,
+      mappingForm: deleteMapping.isLoading || testMapping.isLoading || dashboardLoading,
+    });
+  }, [deleteMapping.isLoading, testMapping.isLoading, dashboardLoading]);
+
+  React.useEffect(() => {
+    testMapping.isSuccess && setTestMappingData(testMapping.data);
+  }, [testMapping.isSuccess]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -51,7 +97,64 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
             showTitleTooltip
           />
 
-          <MappingFormTemplate mapping={getMapping.data} />
+          <div className={styles.tabContainer}>
+            <TabContext value={currentTabs.mappingDetailTabs.toString()}>
+              <Tabs
+                value={currentTabs.mappingDetailTabs}
+                onChange={(_, newValue: number) => {
+                  setCurrentTabs({ ...currentTabs, mappingDetailTabs: newValue });
+                }}
+                variant="scrollable"
+              >
+                <Tab className={styles.tab} label={t("General")} value={0} />
+                <Tab className={styles.tab} label={t("Test Mappings")} value={1} />
+              </Tabs>
+
+              <TabPanel className={styles.tabPanel} value="0">
+                <MappingFormTemplate mapping={getMapping.data} />
+              </TabPanel>
+
+              <TabPanel className={styles.tabPanel} value="1">
+                <form onSubmit={handleSubmit(onSubmitTest)} className={styles.testMappingForm}>
+                  <Button
+                    label={t("Test mapping")}
+                    icon={faArrowsRotate}
+                    variant="primary"
+                    disabled={isLoading.mappingForm}
+                    type="submit"
+                  />
+
+                  <div className={styles.content}>
+                    <FormField>
+                      <FormFieldInput>
+                        <div className={styles.formFieldInfoHeader}>
+                          <FormFieldLabel>{t("Input")}</FormFieldLabel>
+                          <ToolTip tooltip="The input is the JSON code you want to test the mapping with.">
+                            <FontAwesomeIcon icon={faInfoCircle} />
+                          </ToolTip>
+                        </div>
+
+                        <Textarea
+                          {...{ register, errors }}
+                          name="input"
+                          validation={{ validate: validateStringAsJSON }}
+                          disabled={isLoading.mappingForm}
+                        />
+                        {errors["input"] && <ErrorMessage message={errors["input"].message} />}
+                      </FormFieldInput>
+                    </FormField>
+                    <FormField>
+                      <FormFieldLabel>{t("Output")}</FormFieldLabel>
+                      {testMappingData && <pre>{JSON.stringify(testMappingData, null, 2)}</pre>}
+                      {!testMappingData && (
+                        <div>When the mapping has been succesfully tested the output will be shown here.</div>
+                      )}
+                    </FormField>
+                  </div>
+                </form>
+              </TabPanel>
+            </TabContext>
+          </div>
         </>
       )}
     </Container>

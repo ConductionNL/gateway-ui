@@ -58,6 +58,7 @@
 .expectFormField > :not(:last-child) {
   padding-inline-end: var(--gateway-ui-size-lg) !important;
 }
+
 .infoButton:hover {
   cursor: pointer;
 }
