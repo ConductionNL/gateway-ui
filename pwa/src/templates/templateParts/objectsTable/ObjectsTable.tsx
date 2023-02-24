@@ -92,7 +92,9 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, pagination,
         </TableBody>
       </Table>
 
-      <Paginate {...pagination} />
+      <div className="paginationContainer">
+        <Paginate {...pagination} />
+      </div>
     </>
   );
 };

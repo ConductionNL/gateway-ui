@@ -1,3 +1,7 @@
+.paginationContainer {
+  margin-block-start: var(--gateawy-ui-size-lg);
+}
+
 .deleteButton {
   --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
 }
