@@ -56,12 +56,6 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
     toggleDashboardCard(getMapping.data.name, "mapping", "Mapping", mappingId, dashboardCard?.id);
   };
 
-  const handleDelete = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this mapping?");
-
-    confirmDeletion && deleteMapping.mutate({ id: mappingId });
-  };
-
   const onSubmitTest = (data: any) => {
     const jsonData = data.input ? JSON.parse(data.input) : [];
 
@@ -71,7 +65,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
 
     testMapping.mutate({ payload: payload, id: mappingId });
   };
-
+    
   React.useEffect(() => {
     setIsLoading({
       ...isLoading,
@@ -92,7 +86,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
             title={`Edit ${getMapping.data.name}`}
             {...{ formId }}
             disabled={isLoading.mappingForm}
-            handleDelete={handleDelete}
+            handleDelete={() => deleteMapping.mutate({ id: mappingId })}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
           />

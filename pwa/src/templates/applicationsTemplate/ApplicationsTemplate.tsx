@@ -27,7 +27,6 @@ export const ApplicationsTemplate: React.FC = () => {
     objectId: string,
   ) => {
     e.stopPropagation();
-
     const confirmDeletion = confirm("Are you sure you want to delete this object?");
 
     if (confirmDeletion) {

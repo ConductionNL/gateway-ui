@@ -21,12 +21,6 @@ export const SecurityGroupsDetailsTemplate: React.FC<SecurityGroupsDetailPagePro
   const getSecurityGroup = _useSecurityGroups.getOne(securityGroupId);
   const deleteSecurityGroup = _useSecurityGroups.remove();
 
-  const handleDeleteSecurityGroup = (): void => {
-    const confirmDeletion = confirm("Are you sure you want to delete this security group?");
-
-    confirmDeletion && deleteSecurityGroup.mutate({ id: securityGroupId });
-  };
-
   React.useEffect(() => {
     setIsLoading({ securityGroupForm: deleteSecurityGroup.isLoading });
   }, [deleteSecurityGroup.isLoading]);
@@ -42,7 +36,7 @@ export const SecurityGroupsDetailsTemplate: React.FC<SecurityGroupsDetailPagePro
             title={`Edit ${getSecurityGroup.data.name}`}
             {...{ formId }}
             disabled={isLoading.securityGroupForm}
-            handleDelete={handleDeleteSecurityGroup}
+            handleDelete={() => deleteSecurityGroup.mutate({ id: securityGroupId })}
           />
 
           <SecurityGroupFormTemplate securityGroup={getSecurityGroup.data} />
