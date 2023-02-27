@@ -6,18 +6,16 @@ import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@
 import { navigate } from "gatsby";
 import { useSource } from "../../hooks/source";
 import { useQueryClient } from "react-query";
-import { Tag, ToolTip } from "@conduction/components";
 import _ from "lodash";
-import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
-import { getStatusColor, getStatusIcon } from "../../services/getStatusColorAndIcon";
 import TableWrapper from "../../components/tableWrapper/TableWrapper";
 import { dateTime } from "../../services/dateTime";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { getStatusTag } from "../../services/getStatusTag";
 
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -56,14 +54,7 @@ export const SourcesTemplate: React.FC = () => {
                 <TableRow onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
                   <TableCell>{source.name}</TableCell>
                   <TableCell className={styles.tableCellFullWidth}>
-                    <div className={clsx(styles[getStatusColor(source.status ?? "no known status")])}>
-                      <ToolTip tooltip="Status">
-                        <Tag
-                          icon={<FontAwesomeIcon icon={getStatusIcon(source.status ?? "no known status")} />}
-                          label={source.status?.toString() ?? "no known status"}
-                        />
-                      </ToolTip>
-                    </div>
+                    <div>{getStatusTag(source.status)}</div>
                   </TableCell>
                   <TableCell>{source.sync ?? "-"}</TableCell>
                   <TableCell className={styles.tableCellFullWidth}>
