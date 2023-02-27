@@ -59,7 +59,8 @@
   --gateway-ui-color-darkgrey: rgb(204, 204, 204);
   --gateway-ui-color-red: red;
   --gateway-ui-color-dark-red: rgb(146, 2, 2);
-  --gateway-ui-color-green: green;
+  --gateway-ui-color-green: #28a745;
+  --gateway-ui-color-dark-green: #218838;
   --gateway-ui-color-orange: orange;
   --gateway-ui-color-status-green: #69b090;
   --gateway-ui-color-status-red: #dd3c49;
@@ -74,15 +75,27 @@
   --gateway-ui-background-color: #fafafa;
   --gateway-ui-side-bar-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
   --gateway-ui-color-disabled: #c2c8cb;
+  --gateway-ui-mapping-header-border-color: 1px solid rgb(209, 209, 209);
+  --gateway-ui-mapping-header-background-color: #f9f8f6;
 
-  --gateway-ui-color-log-level-debug: #f2f2f2;
-  --gateway-ui-color-log-level-info: #dbecfa;
-  --gateway-ui-color-log-level-notice: #6489de;
-  --gateway-ui-color-log-level-warning: #efd357;
-  --gateway-ui-color-log-level-error: #f4891f;
-  --gateway-ui-color-log-level-critical: #f52f2f;
-  --gateway-ui-color-log-level-alert: #d10707;
-  --gateway-ui-color-log-level-emergency: #990000;
+  --gateway-ui-color-status-background-debug: #f2f2f2;
+  --gateway-ui-color-status-debug: #4a4a4a;
+  --gateway-ui-color-status-background-success: #d4edda;
+  --gateway-ui-color-status-success: #155724;
+  --gateway-ui-color-status-background-info: #cce5ff;
+  --gateway-ui-color-status-info: #004085;
+  --gateway-ui-color-status-background-notice: #d1ecf1;
+  --gateway-ui-color-status-notice: #0c5460;
+  --gateway-ui-color-status-background-warning: #fff3cd;
+  --gateway-ui-color-status-warning: #856404;
+  --gateway-ui-color-status-background-error: #ffc061;
+  --gateway-ui-color-status-error: #59401a;
+  --gateway-ui-color-status-background-critical: #f8d7da;
+  --gateway-ui-color-status-critical: #721c24;
+  --gateway-ui-color-status-background-alert: #ff959e;
+  --gateway-ui-color-status-alert: #480f14;
+  --gateway-ui-color-status-background-emergency: #000000;
+  --gateway-ui-color-status-emergency: #ffffff;
 
   /* Components */
   --gateway-ui-container-max-width: 2440px;
@@ -96,4 +109,6 @@
   --gateway-ui-objects-save-button-triangle-position-from-right: 16px;
   --gateway-ui-objects-save-button-options-border-radius: 4px;
   --gateway-ui-objects-save-button-options-button-border-radius: 4px;
+  --gateway-ui-confirm-popup-overlay-background-color: rgba(0, 0, 0, 0.3);
+  --gateway-ui-confirm-popup-width: 500px;
 }

@@ -8,6 +8,7 @@ export interface ITabsContext {
   objectDetailTabs: number;
   userDetailTabs: number;
   organizationDetailTabs: number;
+  mappingDetailTabs: number;
 }
 
 export const defaultTabsContext = {
@@ -17,6 +18,7 @@ export const defaultTabsContext = {
   objectDetailTabs: 0,
   userDetailTabs: 0,
   organizationDetailTabs: 0,
+  mappingDetailTabs: 0,
 } as ITabsContext;
 
 export const useCurrentTabContext = () => {

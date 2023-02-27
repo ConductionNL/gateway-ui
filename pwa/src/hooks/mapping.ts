@@ -40,7 +40,6 @@ export const useMapping = (queryClient: QueryClient) => {
       onSuccess: async (newMappings) => {
         if (mappingId) {
           updateItem(queryClient, "mapping", newMappings);
-          navigate("/mappings");
         }
 
         if (!mappingId) {
@@ -53,5 +52,11 @@ export const useMapping = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  const testMapping = (mappingId: string) =>
+    useMutation<any, Error, any>(API.Mapping.testMapping, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+  return { getAll, getOne, remove, createOrEdit, testMapping };
 };

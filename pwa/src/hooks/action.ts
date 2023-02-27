@@ -67,5 +67,12 @@ export const useAction = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getAllSelectOptions, getAllHandlers, getOne, remove, createOrEdit };
+  const runAction = (actionId: string) =>
+    useMutation<any, Error, any>(API.Action.runAction, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
+  return { getAll, getAllSelectOptions, getAllHandlers, getOne, remove, createOrEdit, runAction };
 };

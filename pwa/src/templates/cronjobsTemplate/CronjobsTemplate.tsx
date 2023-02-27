@@ -6,15 +6,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useQueryClient } from "react-query";
 import { useCronjob } from "../../hooks/cronjob";
 import { navigate } from "gatsby";
-import { Container, Tag } from "@conduction/components";
+import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
-import clsx from "clsx";
 import { translateDate } from "../../services/dateFormat";
 import { dateTime } from "../../services/dateTime";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { StatusTag } from "../../components/statusTag/StatusTag";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -55,24 +55,20 @@ export const CronjobsTemplate: React.FC = () => {
                 <TableCell>{cronjob.name}</TableCell>
 
                 <TableCell>
-                  <div
-                    className={clsx(
-                      cronjob.status ? styles.statusOk : "",
-                      cronjob.status === false ? styles.statusFailed : "",
-                      cronjob.status === undefined ? styles.statusUnknown : "",
-                    )}
-                  >
-                    <Tag label={cronjob.status?.toString() ?? "Unknown"} />
-                  </div>
+                  {cronjob.status && <StatusTag type="success" label={cronjob.status?.toString()} />}
+                  {cronjob.status === false && (
+                    <StatusTag type="critical" label={cronjob.status?.toString() ?? "False"} />
+                  )}
+                  {cronjob.status === undefined && <StatusTag label="No status" />}
                 </TableCell>
 
                 <TableCell>{cronjob.isEnabled ? "Yes" : "No"}</TableCell>
 
                 <TableCell>{cronjob.crontab}</TableCell>
 
-                <TableCell>{dateTime(t(i18n.language), cronjob.lastRun) ?? "-"}</TableCell>
+                <TableCell>{cronjob.lastRun ? dateTime(t(i18n.language), cronjob.lastRun) : "-"}</TableCell>
 
-                <TableCell>{dateTime(t(i18n.language), cronjob.nextRun) ?? "-"}</TableCell>
+                <TableCell>{cronjob.nextRun ? dateTime(t(i18n.language), cronjob.nextRun) : "-"}</TableCell>
 
                 <TableCell>{translateDate(i18n.language, cronjob.dateCreated)}</TableCell>
 

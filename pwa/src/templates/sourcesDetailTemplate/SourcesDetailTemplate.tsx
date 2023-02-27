@@ -3,23 +3,12 @@ import * as styles from "./SourcesDetailTemplate.module.css";
 import { useQueryClient } from "react-query";
 import _ from "lodash";
 import { useSource } from "../../hooks/source";
-import { Container, InputText, SelectSingle, Textarea } from "@conduction/components";
+import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import {
-  FormField,
-  FormFieldInput,
-  FormFieldLabel,
-  Tab,
-  TabContext,
-  TabPanel,
-  Tabs,
-} from "@gemeente-denhaag/components-react";
+import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { useIsLoadingContext } from "../../context/isLoading";
-import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
-import { validateStringAsJSON } from "../../services/validateJSON";
-import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { useCurrentTabContext } from "../../context/tabs";
 import { SourceFormTemplate, formId } from "../templateParts/sourcesForm/SourceFormTemplate";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
@@ -27,7 +16,6 @@ import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTempla
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { TestSourceConnectionFormTemplate } from "./TestSourceConnectionFormTemplate/TestSourceConnectionFormTemplate";
-import { Button } from "../../components/button/Button";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -63,12 +51,6 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
     toggleDashboardCard(getSource.data.name, "source", "Gateway", sourceId, dashboardCard?.id);
   };
 
-  const handleDelete = (): void => {
-    const confirmDeletion = confirm("Are you sure you want to delete this source?");
-
-    confirmDeletion && deleteSource.mutateAsync({ id: sourceId });
-  };
-
   const onSubmit = (data: any) => {
     const payload = {
       ...data,
@@ -90,10 +72,11 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
       {getSource.isSuccess && (
         <>
           <FormHeaderTemplate
-            {...{ formId, handleDelete }}
+            {...{ formId }}
             disabled={isLoading.sourceForm}
             title={`Edit ${getSource.data.name}`}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            handleDelete={() => deleteSource.mutateAsync({ id: sourceId })}
             showTitleTooltip
           />
 
