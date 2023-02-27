@@ -45,7 +45,11 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
   ) => {
     e.stopPropagation();
 
-    deleteSync.mutate({ id: syncId });
+    const confirmDeletion = confirm("Are you sure you want to delete this object?");
+
+    if (confirmDeletion) {
+      deleteSync.mutate({ id: syncId });
+    }
   };
 
   return (

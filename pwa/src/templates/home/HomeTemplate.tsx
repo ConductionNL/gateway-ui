@@ -24,7 +24,11 @@ export const HomeTemplate: React.FC = () => {
   ) => {
     e.stopPropagation();
 
-    deleteDashboardCard.mutate({ id: dashboardCardId });
+    const confirmDeletion = confirm("Are you sure you want to delete this object?");
+
+    if (confirmDeletion) {
+      deleteDashboardCard.mutate({ id: dashboardCardId });
+    }
   };
 
   return (
