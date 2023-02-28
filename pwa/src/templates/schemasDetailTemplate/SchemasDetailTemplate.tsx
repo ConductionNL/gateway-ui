@@ -32,6 +32,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
+  const [currentObjectsPage, setCurrentObjectsPage] = React.useState<number>(1);
 
   const queryClient = useQueryClient();
   const _useSchema = useSchema(queryClient);
@@ -45,7 +46,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const dashboardCard = getDashboardCard(getSchema.data?.id);
 
   const _useObject = useObject(queryClient);
-  const getObjectsFromEntity = _useObject.getAllFromEntity(schemaId);
+  const getObjectsFromEntity = _useObject.getAllFromEntity(schemaId, currentObjectsPage);
 
   const toggleFromDashboard = () => {
     toggleDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
@@ -102,7 +103,18 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
-            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} {...{ schemaId }} />}
+            {getObjectsFromEntity.isSuccess && (
+              <ObjectsTable
+                objects={getObjectsFromEntity.data.results}
+                pagination={{
+                  totalPages: getObjectsFromEntity.data.pages,
+                  currentPage: currentObjectsPage,
+                  changePage: setCurrentObjectsPage,
+                }}
+                {...{ schemaId }}
+              />
+            )}
+
             {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
           </TabPanel>
 

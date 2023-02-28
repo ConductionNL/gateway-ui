@@ -2,7 +2,6 @@ import * as React from "react";
 import * as styles from "./LogsTableTemplate.module.css";
 
 import _ from "lodash";
-import { t } from "i18next";
 import { navigate } from "gatsby";
 import { ToolTip } from "@conduction/components";
 import { Button } from "@gemeente-denhaag/components-react";
@@ -13,6 +12,7 @@ import { Paginate } from "../../../components/paginate/Paginate";
 import { useLogTableColumnsContext } from "../../../context/logs";
 import Collapsible from "react-collapsible";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusTag";
 
 interface LogsTableTemplateProps {
@@ -25,6 +25,7 @@ interface LogsTableTemplateProps {
 }
 
 export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagination }) => {
+  const { t } = useTranslation();
   const { logTableColumns } = useLogTableColumnsContext();
 
   const handleResourceClick = (

@@ -23,8 +23,8 @@ export const useObject = (queryClient: QueryClient) => {
       enabled: !!objectId,
     });
 
-  const getAllFromEntity = (entityId: string) =>
-    useQuery<any[], Error>(["objects", entityId], () => API.Object.getAllFromEntity(entityId), {
+  const getAllFromEntity = (entityId: string, currentPage: number) =>
+    useQuery<any, Error>(["objects", entityId, currentPage], () => API.Object.getAllFromEntity(entityId, currentPage), {
       onError: (error) => {
         console.warn(error.message);
       },

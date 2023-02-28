@@ -12,7 +12,7 @@ export default class Sources {
     const { data } = await Send(
       this._instance,
       "GET",
-      `/admin/objects?extend[]=all&page=${currentPage}${limit ? `&limit=${limit}` : ""}`,
+      `/admin/objects?extend[]=all&page=${currentPage}${limit ? `&_limit=${limit}` : ""}`,
     );
 
     return data;
@@ -24,10 +24,14 @@ export default class Sources {
     return data;
   };
 
-  public getAllFromEntity = async (entityId: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/objects?_self.schema.id=${entityId}&limit=200`);
+  public getAllFromEntity = async (entityId: string, currentPage: number): Promise<any> => {
+    const { data } = await Send(
+      this._instance,
+      "GET",
+      `/admin/objects?_self.schema.id=${entityId}&page=${currentPage}&_limit=10`,
+    );
 
-    return data.results;
+    return data;
   };
 
   public getAllFromList = async (list: string): Promise<any> => {
