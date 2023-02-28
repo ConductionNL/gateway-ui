@@ -13,6 +13,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Paginate } from "../../components/paginate/Paginate";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { useBulkSelect } from "../../hooks/useBulkSelect";
+import { BulkActionForm } from "../../components/bulkAction/BulkActionForm";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -22,6 +24,8 @@ export const ObjectTemplate: React.FC = () => {
   const _useObject = useObject(queryClient);
   const getObjects = _useObject.getAll(currentPage, 30);
   const deleteSchema = _useObject.remove();
+
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(currentPage);
 
   if (getObjects.isError) return <>Oops, something went wrong...</>;
 
@@ -49,9 +53,13 @@ export const ObjectTemplate: React.FC = () => {
 
       {getObjects.isSuccess && (
         <>
+          <BulkActionForm actions={[]} />
           <Table>
             <TableHead>
               <TableRow>
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
                 <TableHeader>{t("Id")}</TableHeader>
                 <TableHeader>{t("Name")}</TableHeader>
                 <TableHeader>{t("Schema")}</TableHeader>
@@ -64,7 +72,8 @@ export const ObjectTemplate: React.FC = () => {
             <TableBody>
               {!!getObjects.data.results.length &&
                 getObjects.data.results.map((object: any) => (
-                  <TableRow onClick={() => navigate(`/objects/${object.id}`)} key={object.id}>
+                  <TableRow key={object.id}>
+                    <TableCell>{<CheckboxBulkSelectOne id={object.id} />}</TableCell>
                     <TableCell>{object._self?.id ?? "-"}</TableCell>
                     <TableCell>{object._self?.name ?? "NVT"}</TableCell>
                     <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>
