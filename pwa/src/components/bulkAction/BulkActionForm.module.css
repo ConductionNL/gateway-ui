@@ -1,0 +1,49 @@
+.container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--gateway-ui-size-md);
+  background-color: var(--gateway-ui-color-white);
+}
+
+.form {
+  display: flex;
+  max-width: 500px;
+  gap: var(--gateway-ui-size-md);
+}
+
+.form > * {
+  flex: 1;
+}
+
+.toolTip > div {
+  width: fit-content;
+}
+
+.form > :first-child > div {
+  padding-block: 0 !important;
+}
+
+.button {
+  padding-block: var(--gateway-ui-size-2xs) !important;
+}
+
+.amountIndicator {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  color: var(--gateway-ui-color-black);
+  border-radius: var(--gateway-ui-size-sm);
+  font-size: var(--gateway-ui-font-size-sm);
+  background: var(--gateway-ui-color-white);
+  line-height: var(--gateway-ui-font-size-sm);
+  width: var(--gateway-ui-size-lg);
+  height: var(--gateway-ui-size-lg);
+}
+
+.amountIndicator.disabled {
+  opacity: 0.8;
+}
+
+.form > :first-child > div {
+  padding: var(--gateway-ui-size-2xs); /* select padding overwrite */
+}
