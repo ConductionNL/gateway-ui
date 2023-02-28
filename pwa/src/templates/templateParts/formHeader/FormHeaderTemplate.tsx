@@ -66,8 +66,13 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
 
             <ConfirmPopUp
               title="Are you sure you want to delete this item?"
-              description="This action cannot be reversed."
-              variant="danger"
+              description="Deletion of an item can not be reversed."
+              confirmButton={{
+                variant: "danger",
+                label: "Delete item",
+                icon: faTrash,
+              }}
+              handleConfirm={handleDelete}
               {...{ isVisible, hide }}
             />
           </>

@@ -3,7 +3,7 @@ import * as styles from "./ConfirmPopUp.module.css";
 
 import { NotificationPopUp as _NotificationPopUp } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faClose, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
 
 interface ConfirmPopUpProps {
@@ -11,28 +11,34 @@ interface ConfirmPopUpProps {
   description: string;
   hide: () => void;
   isVisible: boolean;
-  variant: "primary" | "danger" | "success";
+  confirmButton: {
+    variant: "primary" | "danger" | "success";
+    label: string;
+    icon: IconDefinition;
+  };
+  handleConfirm: () => any;
 }
 
-export const ConfirmPopUp: React.FC<ConfirmPopUpProps> = ({ title, description, hide, isVisible, variant }) => {
+export const ConfirmPopUp: React.FC<ConfirmPopUpProps> = ({
+  title,
+  description,
+  hide,
+  isVisible,
+  confirmButton,
+  handleConfirm,
+}) => {
   const NotificationPopUp = _NotificationPopUp.NotificationPopUp;
-
-  const handleDelete = () => undefined;
 
   if (!isVisible) return <></>;
 
   return (
     <div className={styles.overlay}>
       <NotificationPopUp
-        title={title}
-        description={description}
-        isVisible={isVisible}
-        hide={hide}
         primaryButton={{
-          label: "Delete item", // Property worden
-          icon: <FontAwesomeIcon icon={faTrash} />, // Icon moet een prop worden type = IconDefinition
-          handleClick: handleDelete, // handle delete werkt nu niet
-          layoutClassName: clsx(styles.button, styles[variant]),
+          label: confirmButton.label,
+          icon: <FontAwesomeIcon icon={confirmButton.icon} />,
+          handleClick: handleConfirm,
+          layoutClassName: clsx(styles.button, styles[confirmButton.variant]),
         }}
         secondaryButton={{
           label: "Cancel",
@@ -40,6 +46,7 @@ export const ConfirmPopUp: React.FC<ConfirmPopUpProps> = ({ title, description, 
           handleClick: () => {},
         }}
         layoutClassName={styles.popup}
+        {...{ title, description, isVisible, hide }}
       />
     </div>
   );
