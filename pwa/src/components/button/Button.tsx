@@ -13,11 +13,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
   onClick?: (event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>) => any;
   disabled?: boolean;
+  layoutClassName?: string;
 }
 
-export const Button: React.FC<ButtonProps> = ({ label, variant, icon, ...rest }) => {
+export const Button: React.FC<ButtonProps> = ({ label, variant, icon, layoutClassName, ...rest }) => {
   return (
-    <DenHaagButton className={clsx(styles.button, styles[variant])} {...rest}>
+    <DenHaagButton className={clsx(styles.button, styles[variant], layoutClassName && layoutClassName)} {...rest}>
       <FontAwesomeIcon {...{ icon }} />
 
       {label}
