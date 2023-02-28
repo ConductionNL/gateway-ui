@@ -3,10 +3,10 @@ import * as styles from "./FormHeaderTemplate.module.css";
 
 import { t } from "i18next";
 import { Heading1 } from "@gemeente-denhaag/components-react";
-import { faClose, faMinus, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { ToolTip, NotificationPopUp as _NotificationPopUp } from "@conduction/components";
+import { faMinus, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { ToolTip, NotificationPopUp } from "@conduction/components";
 import { Button } from "../../../components/button/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ConfirmPopUp } from "../../../components/confirmPopUp/ConfirmPopUp";
 
 interface FormHeaderTemplateProps {
   title: string;
@@ -31,8 +31,7 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
   customElements,
   showTitleTooltip,
 }) => {
-  const { isVisible, show, hide } = _NotificationPopUp.controller();
-  const NotificationPopUp = _NotificationPopUp.NotificationPopUp;
+  const { isVisible, show, hide } = NotificationPopUp.controller();
 
   return (
     <section className={styles.container}>
@@ -65,28 +64,17 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
           <>
             <Button variant="danger" onClick={() => show()} icon={faTrash} label={t("Delete")} {...{ disabled }} />
 
-            {isVisible && (
-              <div className={styles.overlay}>
-                <NotificationPopUp
-                  title="Are you sure you want to delete this item?"
-                  description="This action cannot be reversed."
-                  isVisible={isVisible}
-                  hide={hide}
-                  primaryButton={{
-                    label: "Delete item",
-                    icon: <FontAwesomeIcon icon={faTrash} />,
-                    handleClick: handleDelete,
-                    layoutClassName: styles.confirmDeleteButton,
-                  }}
-                  secondaryButton={{
-                    label: t("Cancel"),
-                    icon: <FontAwesomeIcon icon={faClose} />,
-                    handleClick: () => {},
-                  }}
-                  layoutClassName={styles.popup}
-                />
-              </div>
-            )}
+            <ConfirmPopUp
+              title="Are you sure you want to delete this item?"
+              description="Deletion of an item can not be reversed."
+              confirmButton={{
+                variant: "danger",
+                label: "Delete item",
+                icon: faTrash,
+              }}
+              handleConfirm={handleDelete}
+              {...{ isVisible, hide }}
+            />
           </>
         )}
       </div>
