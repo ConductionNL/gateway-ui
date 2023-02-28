@@ -2,6 +2,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex-direction: column-reverse;
   gap: var(--gateway-ui-size-lg);
   margin-block-end: var(--gateway-ui-size-xl);
   white-space: nowrap;
@@ -15,6 +16,7 @@
 .container .title {
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .container .title {
@@ -29,4 +31,42 @@
 
 .buttonsContainer > *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+@media only screen and (min-width: 992px) {
+  .container {
+    flex-direction: row;
+  }
+ }
+
+.popup {
+  position: fixed;
+  width: var(--gateway-ui-confirm-popup-width);
+  top: var(--gateway-ui-size-md);
+  left: calc(50% - (var(--gateway-ui-confirm-popup-width) / 2));
+  z-index: 2;
+  outline: 0;
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gateway-ui-confirm-popup-overlay-background-color);
+  z-index: 1;
+  display: block;
+}
+
+.confirmDeleteButton {
+  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
+}
+
+.confirmDeleteButton:hover {
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-red
+  );
 }

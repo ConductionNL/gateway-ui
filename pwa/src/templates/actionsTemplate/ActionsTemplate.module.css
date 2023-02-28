@@ -18,18 +18,3 @@
   word-break: break-word;
   min-width: 250px;
 }
-
-.tagWidth {
-  width: max-content !important;
-}
-
-/* Status colors */
-.statusOk {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
-  --conduction-tag-color: var(--gateway-ui-color-white);
-}
-
-.statusFailed {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-red);
-  --conduction-tag-color: var(--gateway-ui-color-white);
-}

@@ -3,3 +3,4 @@
 pwa/.cache
 pwa/node_modules
 pwa/public
+pwa/.DS_Store

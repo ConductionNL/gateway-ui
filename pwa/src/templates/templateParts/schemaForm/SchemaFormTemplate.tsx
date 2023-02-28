@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, Paragraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { CreateKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, InputNumber, Textarea } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
 import { InputFloat, InputURL } from "@conduction/components/lib/components/formFields/input";
@@ -213,9 +213,17 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           )}
         </div>
 
-        {type === "string" && !_enum && !multiple && !(format === "url") && (
+        {type === "string" && !_enum && !multiple && !(format === "url" || format === "text") && (
           <InputText
             validation={{ required, maxLength, minLength }}
+            disabled={disabled || readOnly}
+            {...{ register, errors, control, placeholder, name, defaultValue }}
+          />
+        )}
+
+        {type === "string" && !_enum && !multiple && format === "text" && (
+          <Textarea
+            validation={{ required }}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
           />

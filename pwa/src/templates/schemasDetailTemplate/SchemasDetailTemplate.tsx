@@ -48,14 +48,6 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const _useObject = useObject(queryClient);
   const getObjectsFromEntity = _useObject.getAllFromEntity(schemaId, currentObjectsPage);
 
-  const handleDeleteSchema = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this schema?");
-
-    if (confirmDeletion) {
-      deleteSchema.mutate({ id: schemaId });
-    }
-  };
-
   const toggleFromDashboard = () => {
     toggleDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
   };
@@ -70,7 +62,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
         <FormHeaderTemplate
           title={`Edit ${getSchema.data?.name || "Schema"}`}
           disabled={isLoading.schemaForm}
-          handleDelete={handleDeleteSchema}
+          handleDelete={() => deleteSchema.mutate({ id: schemaId })}
           handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
           customElements={
             <a

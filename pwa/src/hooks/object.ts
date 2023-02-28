@@ -1,12 +1,11 @@
 import * as React from "react";
-import { QueryClient, useMutation, useQuery, useQueryClient } from "react-query";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 
 export const useObject = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
-  const _queryClient = useQueryClient();
 
   const getAll = (currentPage: number, limit?: number) =>
     useQuery<any, Error>(["objects", currentPage], () => API.Object.getAll(currentPage, limit), {
@@ -56,7 +55,7 @@ export const useObject = (queryClient: QueryClient) => {
         console.warn(error.message);
       },
       onSettled: () => {
-        setTimeout(() => _queryClient.invalidateQueries(["objects"]), 100);
+        setTimeout(() => queryClient.invalidateQueries(["objects"]), 100);
       },
     });
 
@@ -65,7 +64,6 @@ export const useObject = (queryClient: QueryClient) => {
       onSuccess: async (newObject) => {
         if (objectId) {
           updateItem(queryClient, "object", newObject);
-          queryClient.invalidateQueries(["objects", objectId]);
         }
 
         if (!objectId) {
@@ -73,12 +71,11 @@ export const useObject = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
-        _queryClient.invalidateQueries(["object", objectId]);
-
         console.warn(error.message);
       },
       onSettled: () => {
-        _queryClient.invalidateQueries(["object", objectId]);
+        queryClient.resetQueries(["object", objectId]);
+        queryClient.resetQueries(["object_schema", objectId]);
       },
     });
 

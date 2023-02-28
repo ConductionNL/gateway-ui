@@ -53,14 +53,6 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
     upgradePlugin.mutate({ name: getPlugin.data.name });
   };
 
-  const handleDeletePlugin = () => {
-    const confirmDeletion = confirm("Are you sure you want to unInstall this plugin?");
-
-    if (confirmDeletion) {
-      deletePlugin.mutate({ name: getPlugin.data.name });
-    }
-  };
-
   const handleDownloadButton = (data: string) => {
     const confirmDeletion = confirm(
       t(
@@ -131,7 +123,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                     icon={faTrash}
                     label={t("Remove")}
                     disabled={loading}
-                    onClick={handleDeletePlugin}
+                    onClick={() => deletePlugin.mutate({ name: getPlugin.data.name })}
                   />
                 </div>
               )}
