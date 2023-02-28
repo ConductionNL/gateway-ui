@@ -5,9 +5,13 @@ export const useBulkSelect = (currentPage: number) => {
   const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
 
   React.useEffect(() => {
+    reset();
+  }, [currentPage]);
+
+  const reset = () => {
     setItems([]);
     setSelectedItems([]);
-  }, [currentPage]);
+  };
 
   const CheckboxBulkSelectAll: React.FC = () => (
     <input
@@ -34,5 +38,5 @@ export const useBulkSelect = (currentPage: number) => {
     return <input type="checkbox" onChange={(e) => toggleItem(e, id)} checked={selectedItems.includes(id)} />;
   };
 
-  return { selectedItems, CheckboxBulkSelectAll, CheckboxBulkSelectOne };
+  return { selectedItems, reset, CheckboxBulkSelectAll, CheckboxBulkSelectOne };
 };
