@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./MappingDetailsTemplate.module.css";
-import { Container, Textarea, ToolTip } from "@conduction/components";
+import { Container, ToolTip } from "@conduction/components";
 import { MappingFormTemplate, formId } from "../templateParts/mappingForm/MappingFormTemplate";
 import { useMapping } from "../../hooks/mapping";
 import { useQueryClient } from "react-query";
@@ -20,12 +20,11 @@ import {
   Tabs,
 } from "@gemeente-denhaag/components-react";
 import { useForm } from "react-hook-form";
-import clsx from "clsx";
 import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
-import { validateStringAsJSON } from "../../services/validateJSON";
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CodeEditor from "@uiw/react-textarea-code-editor";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -39,6 +38,8 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [testMappingData, setTestMappingData] = React.useState<object>();
 
+  const [code, setCode] = React.useState<string>("");
+
   const queryClient = useQueryClient();
   const getMapping = useMapping(queryClient).getOne(mappingId);
   const deleteMapping = useMapping(queryClient).remove();
@@ -47,7 +48,6 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const dashboardCard = getDashboardCard(mappingId);
 
   const {
-    register,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -128,12 +128,22 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                           </ToolTip>
                         </div>
 
-                        <Textarea
-                          {...{ register, errors }}
-                          name="input"
-                          validation={{ validate: validateStringAsJSON }}
+                        <CodeEditor
+                          value={code}
+                          language="json"
+                          placeholder="Type or paste the JSON code you want to test the mapping with."
+                          onChange={(evn) => setCode(evn.target.value)}
+                          padding={14}
+                          style={{
+                            fontSize: 16,
+                            backgroundColor: "#ffffff",
+                            fontFamily: "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
+                          }}
+                          minHeight={150}
+                          className={styles.testMappingInputField}
                           disabled={isLoading.mappingForm}
                         />
+
                         {errors["input"] && <ErrorMessage message={errors["input"].message} />}
                       </FormFieldInput>
                     </FormField>

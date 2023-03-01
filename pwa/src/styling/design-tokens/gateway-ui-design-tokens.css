@@ -77,6 +77,7 @@
   --gateway-ui-color-disabled: #c2c8cb;
   --gateway-ui-mapping-header-border-color: 1px solid rgb(209, 209, 209);
   --gateway-ui-mapping-header-background-color: #f9f8f6;
+  --gateway-ui-mapping-code-editor-border-color: 1px solid rgb(118, 118, 118);
 
   --gateway-ui-color-status-background-debug: #f2f2f2;
   --gateway-ui-color-status-debug: #4a4a4a;
