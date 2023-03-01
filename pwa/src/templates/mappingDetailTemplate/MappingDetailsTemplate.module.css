@@ -42,3 +42,7 @@
 .testMappingForm > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-lg);
 }
+
+.testMappingInputField {
+  border: var(--gateway-ui-mapping-code-editor-border-color) !important;
+}
