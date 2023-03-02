@@ -24,7 +24,6 @@ import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CodeEditor from "@uiw/react-textarea-code-editor";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -65,7 +64,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
 
     testMapping.mutate({ payload: payload, id: mappingId });
   };
-    
+
   React.useEffect(() => {
     setIsLoading({
       ...isLoading,
@@ -128,21 +127,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                           </ToolTip>
                         </div>
 
-                        <CodeEditor
-                          value={code}
-                          language="json"
-                          placeholder="Type or paste the JSON code you want to test the mapping with."
-                          onChange={(evn) => setCode(evn.target.value)}
-                          padding={14}
-                          style={{
-                            fontSize: 16,
-                            backgroundColor: "#ffffff",
-                            fontFamily: "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
-                          }}
-                          minHeight={150}
-                          className={styles.testMappingInputField}
-                          disabled={isLoading.mappingForm}
-                        />
+                        <CodeEditor />
 
                         {errors["input"] && <ErrorMessage message={errors["input"].message} />}
                       </FormFieldInput>
@@ -162,5 +147,36 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
         </>
       )}
     </Container>
+  );
+};
+
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-yaml";
+import "ace-builds/src-noconflict/mode-json";
+import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/ext-language_tools";
+
+const CodeEditor: React.FC = () => {
+  const [code, setCode] = React.useState<string>("");
+
+  return (
+    <AceEditor
+      mode="json"
+      theme="github"
+      onChange={(value) => setCode(value)}
+      fontSize={14}
+      showPrintMargin={true}
+      showGutter={true}
+      highlightActiveLine={true}
+      value={code}
+      setOptions={{
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        enableSnippets: false,
+        showLineNumbers: true,
+        tabSize: 2,
+      }}
+    />
   );
 };
