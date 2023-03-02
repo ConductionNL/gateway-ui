@@ -12,6 +12,8 @@ import { translateDate } from "../../services/dateFormat";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { StatusTag } from "../../components/statusTag/StatusTag";
+import { useBulkSelect } from "../../hooks/useBulkSelect";
+import { BulkActionForm } from "../../components/bulkAction/BulkActionForm";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -19,6 +21,14 @@ export const EndpointsTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const _useEndpoints = useEndpoint(queryClient);
   const getEndpoints = _useEndpoints.getAll();
+  const deleteEndpoint = _useEndpoints.remove();
+
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, reset } = useBulkSelect(0);
+
+  const handleBulkDelete = () => {
+    selectedItems.forEach((item) => deleteEndpoint.mutate({ id: item }));
+    reset();
+  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -37,47 +47,60 @@ export const EndpointsTemplate: React.FC = () => {
       {getEndpoints.isError && "Error..."}
 
       {getEndpoints.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>Name</TableHeader>
-              <TableHeader>Status</TableHeader>
-              <TableHeader>Path regex</TableHeader>
-              <TableHeader>Date Created</TableHeader>
-              <TableHeader>Date Modified</TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getEndpoints.data.map((endpoint: any) => (
-              <TableRow onClick={() => navigate(`/endpoints/${endpoint.id}`)} key={endpoint.id}>
-                <TableCell>{endpoint.name}</TableCell>
+        <>
+          <BulkActionForm
+            actions={[{ label: "Delete", onSubmit: handleBulkDelete }]}
+            selectedItemsCount={selectedItems.length}
+          />
 
-                <TableCell>
-                  {endpoint.status && <StatusTag type="success" label={endpoint.status?.toString()} />}
-                  {endpoint.status === false && (
-                    <StatusTag type="critical" label={endpoint.status?.toString() ?? "No status"} />
-                  )}
-                  {endpoint.status === null && <StatusTag label={"No status"} />}
-                </TableCell>
-
-                <TableCell>{!!endpoint.pathRegex ? endpoint.pathRegex : "-"}</TableCell>
-
-                <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
-
-                <TableCell>{translateDate(i18n.language, endpoint.dateModified)}</TableCell>
-              </TableRow>
-            ))}
-            {!getEndpoints.data.length && (
+          <Table>
+            <TableHead>
               <TableRow>
-                <TableCell>{t("No endpoints found")}</TableCell>
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
+                <TableHeader>Name</TableHeader>
+                <TableHeader>Status</TableHeader>
+                <TableHeader>Path regex</TableHeader>
+                <TableHeader>Date Created</TableHeader>
+                <TableHeader>Date Modified</TableHeader>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getEndpoints.data.map((endpoint: any) => (
+                <TableRow key={endpoint.id}>
+                  <TableCell>{<CheckboxBulkSelectOne id={endpoint.id} />}</TableCell>
+
+                  <TableCell>{endpoint.name}</TableCell>
+
+                  <TableCell>
+                    {endpoint.status && <StatusTag type="success" label={endpoint.status?.toString()} />}
+                    {endpoint.status === false && (
+                      <StatusTag type="critical" label={endpoint.status?.toString() ?? "No status"} />
+                    )}
+                    {endpoint.status === null && <StatusTag label={"No status"} />}
+                  </TableCell>
+
+                  <TableCell>{!!endpoint.pathRegex ? endpoint.pathRegex : "-"}</TableCell>
+
+                  <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
+
+                  <TableCell>{translateDate(i18n.language, endpoint.dateModified)}</TableCell>
+                </TableRow>
+              ))}
+              {!getEndpoints.data.length && (
+                <TableRow>
+                  <TableCell>{t("No endpoints found")}</TableCell>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </>
       )}
 
       {getEndpoints.isLoading && <Skeleton height="200px" />}

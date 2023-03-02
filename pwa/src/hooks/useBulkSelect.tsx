@@ -16,7 +16,7 @@ export const useBulkSelect = (currentPage: number) => {
   const CheckboxBulkSelectAll: React.FC = () => (
     <input
       type="checkbox"
-      checked={items.length === selectedItems.length}
+      checked={items.length > 0 && items.length === selectedItems.length}
       onChange={(e) => setSelectedItems(e.target.checked ? items : [])}
     />
   );

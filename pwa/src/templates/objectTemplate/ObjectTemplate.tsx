@@ -23,9 +23,9 @@ export const ObjectTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const _useObject = useObject(queryClient);
   const getObjects = _useObject.getAll(currentPage, 30);
-  const deleteSchema = _useObject.remove();
+  const deleteObject = _useObject.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(currentPage);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, reset } = useBulkSelect(currentPage);
 
   if (getObjects.isError) return <>Oops, something went wrong...</>;
 
@@ -38,8 +38,13 @@ export const ObjectTemplate: React.FC = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this object?");
 
     if (confirmDeletion) {
-      deleteSchema.mutate({ id: objectId });
+      deleteObject.mutate({ id: objectId });
     }
+  };
+
+  const handleBulkDelete = () => {
+    selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
+    reset();
   };
 
   return (
@@ -52,8 +57,12 @@ export const ObjectTemplate: React.FC = () => {
       />
 
       {getObjects.isSuccess && (
-        <>
-          <BulkActionForm actions={[]} />
+        <div>
+          <BulkActionForm
+            actions={[{ label: "Delete", onSubmit: handleBulkDelete }]}
+            selectedItemsCount={selectedItems.length}
+          />
+
           <Table>
             <TableHead>
               <TableRow>
@@ -107,7 +116,7 @@ export const ObjectTemplate: React.FC = () => {
             </TableBody>
           </Table>
           <Paginate totalPages={getObjects.data.pages} currentPage={currentPage} changePage={setCurrentPage} />
-        </>
+        </div>
       )}
       {getObjects.isLoading && <Skeleton height="200px" />}
     </Container>
