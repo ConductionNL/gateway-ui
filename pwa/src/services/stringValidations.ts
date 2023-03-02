@@ -20,13 +20,19 @@ export const validateThrowsArray = (rawString: string): boolean | string => {
   }
 };
 
-export const validatePassword = (value: string, validationValue: string, user?: any): string | boolean => {
-  if (user) {
-    if (value === validationValue || (!value && !validationValue)) return true;
-  } else {
-    if (!value && !validationValue) return "Password is required";
-    if (value && validationValue && value === validationValue) return true;
+export const validatePassword = (
+  primaryPassword: string,
+  validationPassword: string,
+  required?: boolean,
+): string | boolean => {
+  const value = primaryPassword === undefined ? "" : primaryPassword;
+  const validationValue = validationPassword === undefined ? "" : validationPassword;
+
+  if (required) {
+    if (!value || !validationValue) return "Password is required.";
   }
 
-  return "Passwords do not match";
+  if (value !== validationValue) return "Passwords do not match.";
+
+  return true;
 };

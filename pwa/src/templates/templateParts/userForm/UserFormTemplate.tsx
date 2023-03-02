@@ -51,13 +51,21 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     control,
     watch,
+    trigger,
   } = useForm();
 
-  const pwd = watch("password");
-  const pwd_verify = watch("password_verify");
+  const password = watch("password");
+  const validationPassword = watch("validation_password");
+
+  React.useEffect(() => {
+    if (isSubmitted) {
+      trigger("password");
+      trigger("validation_password");
+    }
+  }, [password, validationPassword]);
 
   const handleSetFormValues = (user: any): void => {
     const basicFields: string[] = ["name", "description", "email", "password", "locale", "person"];
@@ -208,7 +216,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
               <InputPassword
                 {...{ register, errors }}
                 name="password"
-                validation={{ validate: () => validatePassword(pwd, pwd_verify) }}
+                validation={{ validate: (value) => validatePassword(value, validationPassword, !user) }}
                 disabled={isLoading.userForm}
               />
 
@@ -221,12 +229,12 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
               <FormFieldLabel>{t("Retype Password")}</FormFieldLabel>
               <InputPassword
                 {...{ register, errors }}
-                name="password_verify"
-                validation={{ validate: () => validatePassword(pwd_verify, pwd) }}
+                name="validation_password"
+                validation={{ validate: (value) => validatePassword(password, value, !user) }}
                 disabled={isLoading.userForm}
               />
 
-              {errors["password_verify"] && <ErrorMessage message={errors["password_verify"].message} />}
+              {errors["validation_password"] && <ErrorMessage message={errors["validation_password"].message} />}
             </FormFieldInput>
           </FormField>
         </div>
