@@ -45,7 +45,6 @@
 
 .actionsContainer > ul > li {
   display: flex;
-  align-items: center;
   gap: var(--gateway-ui-size-xs);
   font-size: var(--gateway-ui-font-size-md);
   padding-inline: var(--gateway-ui-size-sm);

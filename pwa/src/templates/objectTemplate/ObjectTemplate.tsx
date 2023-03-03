@@ -14,7 +14,7 @@ import { Paginate } from "../../components/paginate/Paginate";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
-import { BulkActionForm } from "../../components/bulkAction/BulkActionForm";
+import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -58,8 +58,8 @@ export const ObjectTemplate: React.FC = () => {
 
       {getObjects.isSuccess && (
         <div>
-          <BulkActionForm
-            actions={[{ label: "Delete", onSubmit: handleBulkDelete }]}
+          <BulkActionButton
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
             selectedItemsCount={selectedItems.length}
           />
 

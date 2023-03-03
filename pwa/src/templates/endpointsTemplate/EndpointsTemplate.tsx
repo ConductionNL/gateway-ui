@@ -13,7 +13,7 @@ import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { StatusTag } from "../../components/statusTag/StatusTag";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
-import { BulkActionForm } from "../../components/bulkAction/BulkActionForm";
+import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -48,8 +48,13 @@ export const EndpointsTemplate: React.FC = () => {
 
       {getEndpoints.isSuccess && (
         <>
-          <BulkActionForm
-            actions={[{ label: "Delete", onSubmit: handleBulkDelete }]}
+          <BulkActionButton
+            actions={[
+              { type: "delete", onSubmit: handleBulkDelete },
+              { type: "download", onSubmit: () => alert("Download") },
+              { type: "delete", onSubmit: handleBulkDelete },
+              { type: "download", onSubmit: () => alert("Download") },
+            ]}
             selectedItemsCount={selectedItems.length}
           />
 
