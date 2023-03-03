@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as styles from "./BulkActionForm.module.css";
-
-import { SelectSingle, ToolTip } from "@conduction/components";
-import { useForm } from "react-hook-form";
-import { Button } from "../button/Button";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import clsx from "clsx";
+
+import { faEllipsisH, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "../button/Button";
+import { ToolTip } from "@conduction/components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type TBulkAction = {
   label: "Delete" | "Download";
@@ -18,64 +18,50 @@ interface BulkActionFormProps {
 }
 
 export const BulkActionForm: React.FC<BulkActionFormProps> = ({ actions, selectedItemsCount }) => {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [disabled, setDisabled] = React.useState<boolean>(!selectedItemsCount);
-  const [actionOptions, setActionOptions] = React.useState<{ label: string; value: string }[]>([]);
 
-  const {
-    register,
-    control,
-    watch,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const selectedAction = watch("action");
-
-  const onSubmit = (data: any) => {
-    const action = actions.find((action) => action.label === data.action.value);
-
-    action?.onSubmit(); // execute the passed submit function
-  };
-
-  React.useEffect(() => {
-    setActionOptions([defaultOption, ...actions.map((action) => ({ label: action.label, value: action.label }))]);
-  }, [actions]);
-
-  React.useEffect(() => {
-    setDisabled(!selectedItemsCount || selectedAction?.value === "");
-  }, [selectedItemsCount, selectedAction]);
+  React.useEffect(() => setDisabled(!selectedItemsCount), [selectedItemsCount]);
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        <SelectSingle
-          options={actionOptions}
-          name="action"
-          {...{ register, control, errors }}
-          validation={{ required: true }}
-          defaultValue={defaultOption}
-        />
+      <ToolTip tooltip={disabled ? "Select one or more rows" : ""}>
+        <Button
+          variant="primary"
+          label={
+            <span className={clsx(styles.buttonContainer, disabled && styles.disabled)}>
+              <span className={styles.label}>Bulk actions</span>
 
-        <ToolTip layoutClassName={styles.toolTip} tooltip={disabled ? "Select an action and item(s)" : ""}>
-          <Button
-            type="submit"
-            label={
-              <>
-                Apply{" "}
-                <span className={clsx(styles.amountIndicator, disabled && styles.disabled)}>
-                  {Math.min(selectedItemsCount, 99)}
-                </span>
-              </>
-            }
-            variant="primary"
-            icon={faArrowRight}
-            layoutClassName={styles.button}
-            {...{ disabled }}
-          />
-        </ToolTip>
-      </form>
+              <span className={styles.amountIndicator}>{Math.min(selectedItemsCount, 99)}</span>
+            </span>
+          }
+          onBlur={() => setTimeout(() => setIsOpen(false), 100)}
+          onClick={() => setIsOpen((isOpen) => !isOpen)}
+          icon={faEllipsisH}
+          {...{ disabled }}
+        />
+      </ToolTip>
+
+      <div className={clsx(styles.actionsContainer, isOpen && styles.isOpen)}>
+        <ul>
+          {actions.map((action, idx) => (
+            <li key={idx} onClick={action.onSubmit}>
+              <FontAwesomeIcon icon={getIconFromBulkAction(action)} /> {action.label}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
 
-const defaultOption = { label: "Select bulk action...", value: "" };
+const getIconFromBulkAction = (action: TBulkAction) => {
+  const { label } = action;
+
+  switch (label) {
+    case "Delete":
+      return faTrash;
+    case "Download":
+      return faSave;
+  }
+};
