@@ -74,7 +74,6 @@ export const ObjectTemplate: React.FC = () => {
                 <TableHeader>{t("Schema")}</TableHeader>
                 <TableHeader>{t("Sources")}</TableHeader>
                 <TableHeader></TableHeader>
-                <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
 
@@ -87,14 +86,6 @@ export const ObjectTemplate: React.FC = () => {
                     <TableCell>{object._self?.name ?? "NVT"}</TableCell>
                     <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>
                     <TableCell>{object._self?.sources ?? "-"}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="danger"
-                        label={t("Delete")}
-                        icon={faTrash}
-                        onClick={(e) => handleDeleteObject(e, object.id)}
-                      />
-                    </TableCell>
                     <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
                       <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                         {t("Details")}
@@ -106,7 +97,6 @@ export const ObjectTemplate: React.FC = () => {
               {!getObjects.data.results.length && (
                 <TableRow>
                   <TableCell>{t("No objects found")}</TableCell>
-                  <TableCell />
                   <TableCell />
                   <TableCell />
                   <TableCell />

@@ -7,13 +7,15 @@ import { useEndpoint } from "../../hooks/endpoint";
 import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { translateDate } from "../../services/dateFormat";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { StatusTag } from "../../components/statusTag/StatusTag";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { Link } from "@gemeente-denhaag/components-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -65,6 +67,7 @@ export const EndpointsTemplate: React.FC = () => {
                 <TableHeader>Path regex</TableHeader>
                 <TableHeader>Date Created</TableHeader>
                 <TableHeader>Date Modified</TableHeader>
+                <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -87,6 +90,12 @@ export const EndpointsTemplate: React.FC = () => {
                   <TableCell>{translateDate(i18n.language, endpoint.dateCreated)}</TableCell>
 
                   <TableCell>{translateDate(i18n.language, endpoint.dateModified)}</TableCell>
+
+                  <TableCell onClick={() => navigate(`/endpoints/${endpoint.id}`)}>
+                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
                 </TableRow>
               ))}
               {!getEndpoints.data.length && (
