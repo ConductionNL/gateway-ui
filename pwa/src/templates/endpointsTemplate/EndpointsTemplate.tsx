@@ -47,15 +47,11 @@ export const EndpointsTemplate: React.FC = () => {
       {getEndpoints.isError && "Error..."}
 
       {getEndpoints.isSuccess && (
-        <>
+        <div>
           <BulkActionButton
-            actions={[
-              { type: "delete", onSubmit: handleBulkDelete },
-              { type: "download", onSubmit: () => alert("Download") },
-              { type: "delete", onSubmit: handleBulkDelete },
-              { type: "download", onSubmit: () => alert("Download") },
-            ]}
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
             selectedItemsCount={selectedItems.length}
+            layoutClassName={styles.bulkActionButton}
           />
 
           <Table>
@@ -105,7 +101,7 @@ export const EndpointsTemplate: React.FC = () => {
               )}
             </TableBody>
           </Table>
-        </>
+        </div>
       )}
 
       {getEndpoints.isLoading && <Skeleton height="200px" />}

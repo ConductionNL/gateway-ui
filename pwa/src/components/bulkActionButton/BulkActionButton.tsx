@@ -16,9 +16,10 @@ type TBulkAction = {
 interface BulkActionButtonProps {
   actions: TBulkAction[];
   selectedItemsCount: number;
+  layoutClassName?: string;
 }
 
-export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, selectedItemsCount }) => {
+export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, selectedItemsCount, layoutClassName }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [disabled, setDisabled] = React.useState<boolean>(!selectedItemsCount);
 
@@ -41,7 +42,7 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, sel
   };
 
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, layoutClassName && layoutClassName)}>
       <ToolTip tooltip={disabled ? "Select one or more rows" : ""}>
         <Button
           variant="primary"

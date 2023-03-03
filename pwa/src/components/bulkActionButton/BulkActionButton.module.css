@@ -1,6 +1,7 @@
 .container {
   position: relative;
   width: fit-content;
+  padding-block-end: var(--gateway-ui-size-sm);
 }
 
 .buttonContainer {
