@@ -1,14 +1,21 @@
 import * as React from "react";
 
-export const useBulkSelect = (currentPage: number, data: any) => {
+export const useBulkSelect = (data: any) => {
   const [items, setItems] = React.useState<string[]>([]);
   const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
 
-  React.useEffect(() => reset(), [currentPage, data]);
+  React.useEffect(() => reset(), [data]);
 
   const reset = () => {
     setItems([]);
     setSelectedItems([]);
+  };
+
+  const toggleItem = (id: string) => {
+    const shouldCheck = !selectedItems.includes(id);
+
+    shouldCheck && setSelectedItems((oldSelectedItems) => [...oldSelectedItems, id]);
+    !shouldCheck && setSelectedItems((oldSelectedItems) => oldSelectedItems.filter((item) => item !== id));
   };
 
   const CheckboxBulkSelectAll: React.FC = () => (
@@ -26,15 +33,8 @@ export const useBulkSelect = (currentPage: number, data: any) => {
       setItems((items) => [...items, id]);
     }, [id]);
 
-    const toggleItem = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
-      const checked = e.target.checked;
-
-      checked && setSelectedItems((oldSelectedItems) => [...oldSelectedItems, id]);
-      !checked && setSelectedItems((oldSelectedItems) => oldSelectedItems.filter((item) => item !== id));
-    };
-
-    return <input type="checkbox" onChange={(e) => toggleItem(e, id)} checked={selectedItems.includes(id)} />;
+    return <input type="checkbox" onChange={() => toggleItem(id)} checked={selectedItems.includes(id)} />;
   };
 
-  return { selectedItems, CheckboxBulkSelectAll, CheckboxBulkSelectOne };
+  return { selectedItems, CheckboxBulkSelectAll, CheckboxBulkSelectOne, toggleItem };
 };
