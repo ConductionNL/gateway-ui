@@ -1,12 +1,10 @@
 import * as React from "react";
 
-export const useBulkSelect = (currentPage: number) => {
+export const useBulkSelect = (currentPage: number, data: any) => {
   const [items, setItems] = React.useState<string[]>([]);
   const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
 
-  React.useEffect(() => {
-    reset();
-  }, [currentPage]);
+  React.useEffect(() => reset(), [currentPage, data]);
 
   const reset = () => {
     setItems([]);
@@ -38,5 +36,5 @@ export const useBulkSelect = (currentPage: number) => {
     return <input type="checkbox" onChange={(e) => toggleItem(e, id)} checked={selectedItems.includes(id)} />;
   };
 
-  return { selectedItems, reset, CheckboxBulkSelectAll, CheckboxBulkSelectOne };
+  return { selectedItems, CheckboxBulkSelectAll, CheckboxBulkSelectOne };
 };

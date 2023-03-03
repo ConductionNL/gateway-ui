@@ -25,13 +25,12 @@ export const ObjectTemplate: React.FC = () => {
   const getObjects = _useObject.getAll(currentPage, 30);
   const deleteObject = _useObject.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, reset } = useBulkSelect(currentPage);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(currentPage, getObjects.data);
 
   if (getObjects.isError) return <>Oops, something went wrong...</>;
 
   const handleBulkDelete = () => {
     selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
-    reset();
   };
 
   return (

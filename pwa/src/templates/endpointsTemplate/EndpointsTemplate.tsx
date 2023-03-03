@@ -25,11 +25,10 @@ export const EndpointsTemplate: React.FC = () => {
   const getEndpoints = _useEndpoints.getAll();
   const deleteEndpoint = _useEndpoints.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, reset } = useBulkSelect(0);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(0, getEndpoints.data);
 
   const handleBulkDelete = () => {
     selectedItems.forEach((item) => deleteEndpoint.mutate({ id: item }));
-    reset();
   };
 
   return (
