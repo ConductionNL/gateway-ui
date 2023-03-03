@@ -51,7 +51,12 @@ export const EndpointsTemplate: React.FC = () => {
       {getEndpoints.isSuccess && (
         <div>
           <BulkActionButton
-            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+            actions={[
+              { type: "delete", onSubmit: handleBulkDelete },
+              { type: "download", onSubmit: () => alert("Handle download 1") },
+              { type: "download", onSubmit: () => alert("Handle download 2") },
+              { type: "delete", onSubmit: handleBulkDelete },
+            ]}
             selectedItemsCount={selectedItems.length}
             layoutClassName={styles.bulkActionButton}
           />
@@ -101,6 +106,7 @@ export const EndpointsTemplate: React.FC = () => {
               {!getEndpoints.data.length && (
                 <TableRow>
                   <TableCell>{t("No endpoints found")}</TableCell>
+                  <TableCell />
                   <TableCell />
                   <TableCell />
                   <TableCell />
