@@ -3,9 +3,11 @@ import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { deleteItem, updateItem } from "../services/mutateQueries";
+import { useDeletedItemsContext } from "../context/deletedItems";
 
 export const usePlugin = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
   const getAllInstalled = () =>
     useQuery<any[], Error>("plugins_installed", API.Plugin.getAllInstalled, {
@@ -41,7 +43,7 @@ export const usePlugin = (queryClient: QueryClient) => {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!pluginName,
+      enabled: !!pluginName && !isDeleted(pluginName),
     });
 
   const install = () =>
@@ -66,10 +68,12 @@ export const usePlugin = (queryClient: QueryClient) => {
 
   const remove = () =>
     useMutation<any, Error, any>(API.Plugin.delete, {
+      onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "plugin", variables.name);
       },
-      onError: (error) => {
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
         console.warn(error.message);
       },
     });

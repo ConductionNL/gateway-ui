@@ -4,9 +4,11 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
+import { useDeletedItemsContext } from "../context/deletedItems";
 
 export const useSecurityGroup = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
   const getAll = () =>
     useQuery<any[], Error>("securitygroups", API.SecurityGroup.getAll, {
@@ -24,16 +26,18 @@ export const useSecurityGroup = (queryClient: QueryClient) => {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!securityGroupId,
+      enabled: !!securityGroupId && !isDeleted(securityGroupId),
     });
 
   const remove = () =>
     useMutation<any, Error, any>(API.SecurityGroup.delete, {
+      onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "securitygroups", variables.id);
         navigate("/settings/securitygroups");
       },
-      onError: (error) => {
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
         console.warn(error.message);
       },
     });

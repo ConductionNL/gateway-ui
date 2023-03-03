@@ -4,9 +4,11 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
+import { useDeletedItemsContext } from "../context/deletedItems";
 
 export const useAttribute = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
   const getAll = () =>
     useQuery<any[], Error>("attributes", API.Attribute.getAll, {
@@ -22,16 +24,18 @@ export const useAttribute = (queryClient: QueryClient) => {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!attributeId,
+      enabled: !!attributeId && !isDeleted(attributeId),
     });
 
   const remove = (schemaId: string) =>
     useMutation<any, Error, any>(API.Attribute.delete, {
+      onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "attributes", variables.id);
         navigate(`/schemas/${schemaId}`);
       },
-      onError: (error) => {
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
         console.warn(error.message);
       },
     });
