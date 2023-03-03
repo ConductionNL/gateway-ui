@@ -55,12 +55,12 @@ export const UsersTemplate: React.FC = () => {
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.organisation.name ?? "-"}</TableCell>
                 <TableCell>
-                  <ToolTip tooltip={user.applications.map((application: any) => application.name)}>
+                  <ToolTip tooltip={user.applications.map((application: any) => application.name).join(", ")}>
                     {user.applications?.length ?? "-"}
                   </ToolTip>
                 </TableCell>
                 <TableCell>
-                  <ToolTip tooltip={user.securityGroups.map((securityGroup: any) => securityGroup.name)}>
+                  <ToolTip tooltip={user.securityGroups.map((securityGroup: any) => securityGroup.name).join(", ")}>
                     {user.securityGroups?.length ?? "-"}
                   </ToolTip>
                 </TableCell>
