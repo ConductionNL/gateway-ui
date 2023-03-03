@@ -29,19 +29,6 @@ export const ObjectTemplate: React.FC = () => {
 
   if (getObjects.isError) return <>Oops, something went wrong...</>;
 
-  const handleDeleteObject = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
-    objectId: string,
-  ) => {
-    e.stopPropagation();
-
-    const confirmDeletion = confirm("Are you sure you want to delete this object?");
-
-    if (confirmDeletion) {
-      deleteObject.mutate({ id: objectId });
-    }
-  };
-
   const handleBulkDelete = () => {
     selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
     reset();
