@@ -44,6 +44,7 @@ export const useEndpoint = (queryClient: QueryClient) => {
         removeDeletedItem(id);
         console.warn(error.message);
       },
+      onSettled: () => queryClient.invalidateQueries("endpoints"),
     });
 
   const createOrEdit = (endpointId?: string) =>
