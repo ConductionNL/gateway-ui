@@ -48,7 +48,10 @@ export const CollectionsTemplate: React.FC = () => {
       {getCollection.isSuccess && (
         <div>
           <BulkActionButton
-            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+            actions={[
+              { type: "delete", onSubmit: () => alert("1") },
+              { type: "delete", onSubmit: () => alert("2") },
+            ]}
             selectedItemsCount={selectedItems.length}
           />
 
@@ -76,15 +79,15 @@ export const CollectionsTemplate: React.FC = () => {
                   </TableCell>
                 </TableRow>
               ))}
-            </TableBody>
 
-            {!getCollection.data.length && (
-              <TableRow>
-                <TableCell>{t("No collections found")}</TableCell>
-                <TableCell />
-                <TableCell />
-              </TableRow>
-            )}
+              {!getCollection.data.length && (
+                <TableRow>
+                  <TableCell>{t("No collections found")}</TableCell>
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              )}
+            </TableBody>
           </Table>
         </div>
       )}

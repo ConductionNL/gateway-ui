@@ -4,9 +4,10 @@ import clsx from "clsx";
 
 import { faEllipsisH, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
-import { ToolTip } from "@conduction/components";
+import { NotificationPopUp, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _ from "lodash";
+import { ConfirmPopUp } from "../confirmPopUp/ConfirmPopUp";
 
 type TBulkAction = {
   type: "delete" | "download";
@@ -22,6 +23,8 @@ interface BulkActionButtonProps {
 export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, selectedItemsCount, layoutClassName }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [disabled, setDisabled] = React.useState<boolean>(!selectedItemsCount);
+  const [action, setAction] = React.useState<any>(null);
+  const { isVisible, show, hide } = NotificationPopUp.controller();
 
   React.useEffect(() => setDisabled(!selectedItemsCount), [selectedItemsCount]);
 
@@ -29,11 +32,14 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, sel
     const { type, onSubmit } = action;
 
     if (type === "delete") {
-      const confirmDeletion = confirm(
-        `Are you sure you want to delete ${selectedItemsCount > 1 ? "these items" : "this item"}?`,
-      );
+      console.log("hi");
+      setAction(onSubmit);
+      show();
+      // const confirmDeletion = confirm(
+      //   `Are you sure you want to delete ${selectedItemsCount > 1 ? "these items" : "this item"}?`,
+      // );
 
-      confirmDeletion && onSubmit();
+      // confirmDeletion && onSubmit();
 
       return;
     }
@@ -68,6 +74,17 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, sel
           ))}
         </ul>
       </div>
+      <ConfirmPopUp
+        title="Are you sure you want to delete this item?"
+        description="Deletion of an item can not be reversed."
+        confirmButton={{
+          variant: "danger",
+          label: "Delete",
+          icon: faTrash,
+        }}
+        handleConfirm={action}
+        {...{ isVisible, hide }}
+      />
     </div>
   );
 };
