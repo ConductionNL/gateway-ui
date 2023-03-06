@@ -92,7 +92,7 @@ export const ActionsTemplate: React.FC = () => {
 
                   <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
 
-                  <TableCell className={styles.details} onClick={() => navigate(`/actions/${action.id}`)}>
+                  <TableCell onClick={() => navigate(`/actions/${action.id}`)}>
                     <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                       {t("Details")}
                     </Link>
