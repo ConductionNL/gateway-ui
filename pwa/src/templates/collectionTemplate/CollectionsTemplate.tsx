@@ -48,10 +48,7 @@ export const CollectionsTemplate: React.FC = () => {
       {getCollection.isSuccess && (
         <div>
           <BulkActionButton
-            actions={[
-              { type: "delete", onSubmit: () => alert("1") },
-              { type: "delete", onSubmit: () => alert("2") },
-            ]}
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
             selectedItemsCount={selectedItems.length}
           />
 

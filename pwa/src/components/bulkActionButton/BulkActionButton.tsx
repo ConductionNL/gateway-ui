@@ -23,7 +23,7 @@ interface BulkActionButtonProps {
 export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, selectedItemsCount, layoutClassName }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [disabled, setDisabled] = React.useState<boolean>(!selectedItemsCount);
-  const [action, setAction] = React.useState<any>(null);
+  const [action, setAction] = React.useState<() => any>(() => actions[0].onSubmit);
   const { isVisible, show, hide } = NotificationPopUp.controller();
 
   React.useEffect(() => setDisabled(!selectedItemsCount), [selectedItemsCount]);
@@ -32,14 +32,8 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, sel
     const { type, onSubmit } = action;
 
     if (type === "delete") {
-      console.log("hi");
-      setAction(onSubmit);
+      setAction(() => onSubmit);
       show();
-      // const confirmDeletion = confirm(
-      //   `Are you sure you want to delete ${selectedItemsCount > 1 ? "these items" : "this item"}?`,
-      // );
-
-      // confirmDeletion && onSubmit();
 
       return;
     }
@@ -74,6 +68,7 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, sel
           ))}
         </ul>
       </div>
+
       <ConfirmPopUp
         title="Are you sure you want to delete this item?"
         description="Deletion of an item can not be reversed."
