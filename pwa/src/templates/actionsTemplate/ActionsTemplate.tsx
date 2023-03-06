@@ -71,19 +71,28 @@ export const ActionsTemplate: React.FC = () => {
               {getActions.data.map((action) => (
                 <TableRow key={action.id}>
                   <TableCell>{<CheckboxBulkSelectOne id={action.id} />}</TableCell>
+
                   <TableCell className={styles.actionName}>{action.name}</TableCell>
+
                   <TableCell>{action.priority}</TableCell>
+
                   <TableCell>
                     <StatusTag
                       type={action.status ? "success" : "default"}
                       label={action.status ? "Success" : "No status"}
                     />
                   </TableCell>
+
                   <TableCell>{action.isEnabled ? "On" : "Off"}</TableCell>
+
                   <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>
+
                   <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
+
                   <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
+
                   <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
+
                   <TableCell className={styles.details} onClick={() => navigate(`/actions/${action.id}`)}>
                     <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                       {t("Details")}
