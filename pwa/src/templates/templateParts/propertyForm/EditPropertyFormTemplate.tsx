@@ -107,6 +107,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
   React.useEffect(() => {
     if (!getSchemas.isSuccess) return;
 
+    if (property.object === null) return;
+
     setValue("object", () => {
       const schema = getSchemas.data?.find((schema) => schema.id === property.object.id);
 
@@ -151,6 +153,8 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
       object: data?.object?.value,
       inversedBy: data.inversedBy && `/admin/attributes/${data.inversedBy.value}`,
     };
+
+    payload.inversedBy === `/admin/attributes/undefined` && delete payload.inversedBy;
 
     createOrEditProperty.mutate({ payload, id: propertyId });
     queryClient.setQueryData(["attributes", propertyId], payload);
@@ -692,6 +696,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         name="inversedBy"
                         options={getProperties.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                         disabled={loading || isImmutable}
+                        isClearable
                       />
                     )}
                   </FormFieldInput>
