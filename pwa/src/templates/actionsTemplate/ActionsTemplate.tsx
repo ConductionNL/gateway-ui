@@ -64,7 +64,6 @@ export const ActionsTemplate: React.FC = () => {
                 <TableHeader>Last run time</TableHeader>
                 <TableHeader>Date Created</TableHeader>
                 <TableHeader>Date Modified</TableHeader>
-                <TableHeader className={styles.details} />
               </TableRow>
             </TableHead>
             <TableBody>
