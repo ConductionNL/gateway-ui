@@ -64,7 +64,6 @@ export const SourcesTemplate: React.FC = () => {
                   <TableHeader>{t("Last call")}</TableHeader>
                   <TableHeader>{t("Created")}</TableHeader>
                   <TableHeader>{t("Modified")}</TableHeader>
-                  <TableHeader />
                 </TableRow>
               </TableHead>
               <TableBody>
