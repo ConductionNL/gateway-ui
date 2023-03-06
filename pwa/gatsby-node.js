@@ -1,3 +1,6 @@
+const fs = require("fs-extra");
+const env = require("./static/build");
+
 exports.onCreateBabelConfig = ({ actions }) => {
   actions.setBabelPlugin({
     name: "@babel/plugin-transform-react-jsx",
@@ -18,4 +21,12 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
     }
     actions.replaceWebpackConfig(config);
   }
+};
+
+exports.onPostBuild = () => {
+  fs.emptyDirSync("builds"); // remove older builds
+
+  fs.mkdirSync(`builds/${env.BUILD_VERSION}`);
+
+  fs.copySync("public", `builds/${env.BUILD_VERSION}`);
 };

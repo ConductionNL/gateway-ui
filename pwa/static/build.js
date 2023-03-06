@@ -1,0 +1,3 @@
+module.exports = {
+  BUILD_VERSION: "UNIQUE_BUILD_VERSION_GOES_HERE",
+};
