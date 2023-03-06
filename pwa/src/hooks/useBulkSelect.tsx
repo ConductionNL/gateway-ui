@@ -23,6 +23,7 @@ export const useBulkSelect = (data: any) => {
       type="checkbox"
       checked={items.length > 0 && items.length === selectedItems.length}
       onChange={(e) => setSelectedItems(e.target.checked ? items : [])}
+      disabled={!items.length}
     />
   );
 

@@ -27,7 +27,7 @@ export const EndpointsTemplate: React.FC = () => {
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getEndpoints.data);
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteEndpoint.mutate({ id: item }));
   };
 
@@ -52,7 +52,6 @@ export const EndpointsTemplate: React.FC = () => {
           <BulkActionButton
             actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
             selectedItemsCount={selectedItems.length}
-            layoutClassName={styles.bulkActionButton}
           />
 
           <Table>
