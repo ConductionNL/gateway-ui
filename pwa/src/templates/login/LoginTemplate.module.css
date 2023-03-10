@@ -12,3 +12,7 @@
 .header {
   margin-block-end: var(--gateway-ui-size-lg);
 }
+
+.externalButton {
+  margin-block-start: var(--gateway-ui-size-lg);
+}
