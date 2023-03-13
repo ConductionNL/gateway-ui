@@ -12,7 +12,7 @@ export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
 
-  const fullURL = new URL(typeof window !== "undefined" ? window.location.href : "");
+  const fullURL = new URL(typeof window !== "undefined" ? window.location.href : "localhost:8000");
   fullURL.port = "";
 
   const url = fullURL.toString();
