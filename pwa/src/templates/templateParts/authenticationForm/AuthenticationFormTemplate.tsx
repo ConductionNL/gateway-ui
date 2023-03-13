@@ -35,7 +35,7 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
   } = useForm();
 
   const handleSetFormValues = (authentication: any): void => {
-    const basicFields: string[] = ["name", "authenticateUrl", "tokenUrl", "secret", "clientId"];
+    const basicFields: string[] = ["name", "authenticateUrl", "tokenUrl", "secret", "clientId", "keysUrl"];
     basicFields.forEach((field) => setValue(field, authentication[field]));
 
     setValue(
@@ -96,8 +96,8 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
 
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("Secret")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="secret" disabled={isLoading.authenticationForm} />
+              <FormFieldLabel>{t("Keys Url")}</FormFieldLabel>
+              <InputURL name="keysUrl" {...{ register, errors }} disabled={isLoading.authenticationForm} />
             </FormFieldInput>
           </FormField>
 
@@ -127,6 +127,12 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
             </FormFieldInput>
           </FormField>
         </div>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>{t("Secret")}</FormFieldLabel>
+            <Textarea {...{ register, errors }} name="secret" disabled={isLoading.authenticationForm} />
+          </FormFieldInput>
+        </FormField>
       </div>
     </form>
   );
