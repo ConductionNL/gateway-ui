@@ -25,6 +25,21 @@ export const handleLogin = async (data: IUnvalidatedUser, API: APIService) => {
   );
 };
 
+export const handleRenewToken = async (API: APIService) => {
+  if (!isBrowser()) return;
+
+  return await toast.promise(
+    API.Login.renewToken().then((res) => {
+      API.setAuthentication(res.data.jwtToken);
+    }),
+    {
+      loading: "Testing if token isn't chocolate...",
+      success: "Succes it is a real token!",
+      error: (err) => err.message,
+    },
+  );
+};
+
 export const isLoggedIn = (): boolean => {
   if (!isBrowser()) return false;
 
