@@ -14,18 +14,15 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
   const { handleExternalLogin } = useAuthentication();
-  const [dexCallback, setDexCallback] = React.useState<boolean>(false);
   const { isLoading } = useIsLoadingContext();
+
+  const [redirectedFromDex, setRedirectedFromDex] = React.useState<boolean>(false); // is set when the user was redirected BACK to this LoginTemplate from DEX
+  const [dexRedirectURL, setDexRedirectURL] = React.useState<string>("");
 
   const queryClient = useQueryClient();
 
-  const fullURL = new URL(typeof window !== "undefined" ? window.location.href : "localhost:8000");
-  fullURL.port = "";
-
-  const url = fullURL.toString();
-
   const handleDexLogin = () => {
-    navigate(`${url}login/oidc/dex`);
+    navigate(dexRedirectURL);
     toast.loading("Redirecting to ADFS...");
   };
 
@@ -34,14 +31,17 @@ export const LoginTemplate: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    setDexCallback(document.referrer !== "" && document.referrer !== window.location.href);
+    const baseURL: URL = new URL(location.href);
+    baseURL.port = "";
+
+    setDexRedirectURL(`${baseURL.toString()}login/oidc/dex`);
+
+    setRedirectedFromDex(document.referrer !== "" && document.referrer !== window.location.href);
   }, []);
 
   React.useEffect(() => {
-    if (dexCallback) {
-      handleExternalLogin();
-    }
-  }, [dexCallback]);
+    redirectedFromDex && handleExternalLogin();
+  }, [redirectedFromDex]);
 
   return (
     <div className={styles.container}>

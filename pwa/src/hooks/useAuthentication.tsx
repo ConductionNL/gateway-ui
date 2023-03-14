@@ -47,6 +47,7 @@ export const useAuthentication = () => {
       API.Login.renewToken()
         .then((res) => {
           API.setAuthentication(res.data.jwtToken);
+          location.href = "/"; // Required to reset referrer
         })
         .finally(() => setIsLoading({ loginForm: false })),
       {
