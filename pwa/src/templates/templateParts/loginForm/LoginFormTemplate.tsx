@@ -1,10 +1,8 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import APIContext from "../../../apiService/apiContext";
 import { Button, FormField, FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/components-react";
 import * as styles from "./LoginFormTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputText, InputPassword } from "@conduction/components";
 import { navigate } from "gatsby";
 import { useGatsbyContext } from "../../../context/gatsby";
@@ -17,8 +15,6 @@ export const LoginFormTemplate: React.FC = () => {
   const { isLoading } = useIsLoadingContext();
   const { handleInternalLogin } = useAuthentication();
 
-  const API: APIService | null = React.useContext(APIContext);
-
   const {
     register,
     handleSubmit,
@@ -26,10 +22,9 @@ export const LoginFormTemplate: React.FC = () => {
   } = useForm();
 
   const onSubmit = (data: any) => {
-    API &&
-      handleInternalLogin(data, API).then(() => {
-        navigate(gatsbyContext.previousPath ?? "/");
-      });
+    handleInternalLogin(data).then(() => {
+      navigate(gatsbyContext.previousPath ?? "/");
+    });
   };
 
   return (

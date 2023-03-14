@@ -4,6 +4,7 @@ import APIService from "../apiService/apiService";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import toast from "react-hot-toast";
 import { useIsLoadingContext } from "../context/isLoading";
+import APIContext from "../apiService/apiContext";
 
 export interface IUnvalidatedUser {
   username: string;
@@ -14,9 +15,10 @@ const isBrowser = (): boolean => typeof window !== "undefined";
 
 export const useAuthentication = () => {
   const { setIsLoading } = useIsLoadingContext();
+  const API: APIService | null = React.useContext(APIContext);
 
   // Login using gateway users
-  const handleInternalLogin = async (data: IUnvalidatedUser, API: APIService) => {
+  const handleInternalLogin = async (data: IUnvalidatedUser) => {
     if (!isBrowser()) return;
 
     setIsLoading({ loginForm: true });
@@ -36,7 +38,7 @@ export const useAuthentication = () => {
   };
 
   // e.g. ADFS
-  const handleExternalLogin = async (API: APIService) => {
+  const handleExternalLogin = async () => {
     if (!isBrowser()) return;
 
     setIsLoading({ loginForm: true });
@@ -61,7 +63,7 @@ export const useAuthentication = () => {
     return !!window.sessionStorage.getItem("JWT");
   };
 
-  const handleLogout = (API: APIService): void => {
+  const handleLogout = (): void => {
     if (!isBrowser()) return;
 
     API.removeAuthentication();

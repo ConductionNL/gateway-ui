@@ -7,8 +7,6 @@ import { useQueryClient } from "react-query";
 import { navigate } from "gatsby";
 import { Button } from "../../components/button/Button";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
-import APIContext from "../../apiService/apiContext";
-import APIService from "../../apiService/apiService";
 import { useIsLoadingContext } from "../../context/isLoading";
 import toast from "react-hot-toast";
 import { useAuthentication } from "../../hooks/useAuthentication";
@@ -19,7 +17,6 @@ export const LoginTemplate: React.FC = () => {
   const [dexCallback, setDexCallback] = React.useState<boolean>(false);
   const { isLoading } = useIsLoadingContext();
 
-  const API: APIService | null = React.useContext(APIContext);
   const queryClient = useQueryClient();
 
   const fullURL = new URL(typeof window !== "undefined" ? window.location.href : "localhost:8000");
@@ -42,10 +39,7 @@ export const LoginTemplate: React.FC = () => {
 
   React.useEffect(() => {
     if (dexCallback) {
-      handleExternalLogin(API).then(() => {
-        // location.href = "/";
-        setDexCallback(false);
-      });
+      handleExternalLogin();
     }
   }, [dexCallback]);
 
