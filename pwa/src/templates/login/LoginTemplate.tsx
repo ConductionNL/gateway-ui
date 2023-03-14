@@ -17,7 +17,7 @@ export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
   const { handleRenewToken } = useAuthentication();
   const [dexCallback, setDexCallback] = React.useState<boolean>(false);
-  const { setIsLoading, isLoading } = useIsLoadingContext();
+  const { isLoading } = useIsLoadingContext();
 
   const API: APIService | null = React.useContext(APIContext);
   const queryClient = useQueryClient();
@@ -29,7 +29,6 @@ export const LoginTemplate: React.FC = () => {
 
   const handleDexLogin = () => {
     navigate(`${url}login/oidc/dex`);
-    // setIsLoading({ loginForm: true });
     toast.loading("Redirecting to ADFS...");
   };
 
@@ -43,16 +42,10 @@ export const LoginTemplate: React.FC = () => {
 
   React.useEffect(() => {
     if (dexCallback) {
-      // setIsLoading({ loginForm: true });
-
-      handleRenewToken(API)
-        .then(() => {
-          location.href = "/";
-          setDexCallback(false);
-        })
-        .finally(() => {
-          // setIsLoading({ loginForm: false });
-        });
+      handleRenewToken(API).then(() => {
+        location.href = "/";
+        setDexCallback(false);
+      });
     }
   }, [dexCallback]);
 
@@ -69,7 +62,7 @@ export const LoginTemplate: React.FC = () => {
             label={t("Login using ADFS")}
             icon={faArrowUpRightFromSquare}
             onClick={handleDexLogin}
-            // disabled={isLoading.loginForm}
+            disabled={isLoading?.loginForm}
           />
         </div>
       </div>

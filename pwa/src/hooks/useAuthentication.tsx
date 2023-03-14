@@ -37,10 +37,14 @@ export const useAuthentication = () => {
   const handleRenewToken = async (API: APIService) => {
     if (!isBrowser()) return;
 
+    setIsLoading({ loginForm: true });
+
     return await toast.promise(
-      API.Login.renewToken().then((res) => {
-        API.setAuthentication(res.data.jwtToken);
-      }),
+      API.Login.renewToken()
+        .then((res) => {
+          API.setAuthentication(res.data.jwtToken);
+        })
+        .finally(() => setIsLoading({ loginForm: false })),
       {
         loading: "Logging in using external provider...",
         success: "Welcome back",

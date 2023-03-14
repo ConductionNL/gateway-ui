@@ -32,10 +32,6 @@ export const LoginFormTemplate: React.FC = () => {
       });
   };
 
-  React.useEffect(() => {
-    console.log({ isLoading });
-  }, [isLoading]);
-
   return (
     <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
       <FormField>
@@ -61,7 +57,7 @@ export const LoginFormTemplate: React.FC = () => {
         </FormFieldInput>
       </FormField>
 
-      <Button size="large" type="submit">
+      <Button disabled={isLoading?.loginForm} size="large" type="submit">
         {t("Send")}
       </Button>
     </form>
