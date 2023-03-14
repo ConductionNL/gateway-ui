@@ -15,4 +15,8 @@ export default class Login {
   public login = (data: IUser): Promise<AxiosResponse> => {
     return this._instance.post("/users/login", JSON.stringify(data));
   };
+
+  public renewToken = (): Promise<AxiosResponse> => {
+    return this._instance.get("/users/reset_token", { withCredentials: true });
+  };
 }

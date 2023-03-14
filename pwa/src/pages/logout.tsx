@@ -1,14 +1,12 @@
 import * as React from "react";
 import { navigate } from "gatsby";
-import { handleLogout } from "../services/auth";
-import APIContext from "../apiService/apiContext";
-import APIService from "../apiService/apiService";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 const Logout: React.FC = () => {
-  const API: APIService | null = React.useContext(APIContext);
+  const { handleLogout } = useAuthentication();
 
   React.useEffect(() => {
-    API && handleLogout(API);
+    handleLogout();
     navigate("/");
   });
 

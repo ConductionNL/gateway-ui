@@ -1,13 +1,14 @@
 import * as React from "react";
 import * as styles from "./DashboardTemplate.module.css";
 import { Breadcrumbs, Container, PrivateRoute } from "@conduction/components";
-import { isLoggedIn } from "../../services/auth";
 import { Sidebar } from "../sidebar/Sidebar";
 import _ from "lodash";
 import { Topbar } from "../topbar/Topbar";
 import { useGatsbyContext } from "../../context/gatsby";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 export const DashboardTemplate: React.FC = ({ children }) => {
+  const { isLoggedIn } = useAuthentication();
   const { gatsbyContext } = useGatsbyContext();
   const [translatedCrumbs, setTranslatedCrumbs] = React.useState<any>(null);
 
