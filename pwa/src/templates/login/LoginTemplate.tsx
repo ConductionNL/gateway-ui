@@ -10,11 +10,14 @@ import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import APIContext from "../../apiService/apiContext";
 import APIService from "../../apiService/apiService";
 import { handleRenewToken } from "../../services/auth";
-import { useGatsbyContext } from "../../context/gatsby";
+import { useIsLoadingContext } from "../../context/isLoading";
+import toast from "react-hot-toast";
 
 export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const { gatsbyContext } = useGatsbyContext();
+  const [dexCallback, setDexCallback] = React.useState<boolean>(false);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
+
   const API: APIService | null = React.useContext(APIContext);
   const queryClient = useQueryClient();
 
@@ -23,19 +26,34 @@ export const LoginTemplate: React.FC = () => {
 
   const url = fullURL.toString();
 
-  console.log(document.referrer);
+  const handleDexLogin = () => {
+    navigate(`${url}login/oidc/dex`);
+    // setIsLoading({ loginForm: true });
+    toast.loading("Redirecting to ADFS...");
+  };
+
   React.useEffect(() => {
     queryClient.removeQueries();
   }, []);
 
-  // React.useEffect(() => {
-  //   if (document.referrer === "http://localhost:5556/") {
-  //     API &&
-  //       handleRenewToken(API).then(() => {
-  //         navigate(gatsbyContext.previousPath ?? "/");
-  //       });
-  //   }
-  // }, [document.referrer === "http://localhost:5556/"]);
+  React.useEffect(() => {
+    setDexCallback(document.referrer !== "" && document.referrer !== window.location.href);
+  }, []);
+
+  React.useEffect(() => {
+    if (dexCallback) {
+      // setIsLoading({ loginForm: true });
+
+      handleRenewToken(API)
+        .then(() => {
+          location.href = "/";
+          setDexCallback(false);
+        })
+        .finally(() => {
+          // setIsLoading({ loginForm: false });
+        });
+    }
+  }, [dexCallback]);
 
   return (
     <div className={styles.container}>
@@ -49,7 +67,8 @@ export const LoginTemplate: React.FC = () => {
             variant="primary"
             label={t("Login using ADFS")}
             icon={faArrowUpRightFromSquare}
-            onClick={() => navigate(`/adfs`)}
+            onClick={handleDexLogin}
+            // disabled={isLoading.loginForm}
           />
         </div>
       </div>

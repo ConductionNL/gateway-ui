@@ -9,12 +9,15 @@ import APIService from "../../../apiService/apiService";
 import { InputText, InputPassword } from "@conduction/components";
 import { navigate } from "gatsby";
 import { useGatsbyContext } from "../../../context/gatsby";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 export const LoginFormTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const API: APIService | null = React.useContext(APIContext);
-  const [loading, setLoading] = React.useState<boolean>(false);
   const { gatsbyContext } = useGatsbyContext();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
+  // const [loading, setLoading] = React.useState<boolean>(false);
+
+  const API: APIService | null = React.useContext(APIContext);
 
   const {
     register,
@@ -23,16 +26,20 @@ export const LoginFormTemplate: React.FC = () => {
   } = useForm();
 
   const onSubmit = async (data: any) => {
-    setLoading(true);
+    setIsLoading({ loginForm: true });
+    // setLoading(true);
 
     API &&
-      handleLogin(data, API)
+      (await handleLogin(data, API)
         .then(() => {
           navigate(gatsbyContext.previousPath ?? "/");
         })
-        .finally(() => {
-          setLoading(false);
-        });
+        .catch(() => {
+          // setIsLoading({ loginForm: false });
+          // setLoading(false);
+        }));
+
+    setIsLoading({ loginForm: false });
   };
 
   return (
@@ -40,17 +47,29 @@ export const LoginFormTemplate: React.FC = () => {
       <FormField>
         <FormFieldInput>
           <FormFieldLabel>{t("Username")}</FormFieldLabel>
-          <InputText {...{ register, errors }} name="username" validation={{ required: true }} disabled={loading} />
+          <InputText
+            {...{ register, errors }}
+            name="username"
+            validation={{ required: true }}
+            disabled={isLoading.loginForm}
+            // disabled={loading}
+          />
         </FormFieldInput>
       </FormField>
       <FormField>
         <FormFieldLabel>{t("Password")}</FormFieldLabel>
         <FormFieldInput>
-          <InputPassword {...{ register, errors }} name="password" validation={{ required: true }} disabled={loading} />
+          <InputPassword
+            {...{ register, errors }}
+            name="password"
+            validation={{ required: true }}
+            disabled={isLoading.loginForm}
+            // disabled={loading}
+          />
         </FormFieldInput>
       </FormField>
 
-      <Button size="large" type="submit" disabled={loading}>
+      <Button size="large" type="submit">
         {t("Send")}
       </Button>
     </form>

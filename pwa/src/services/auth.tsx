@@ -33,8 +33,8 @@ export const handleRenewToken = async (API: APIService) => {
       API.setAuthentication(res.data.jwtToken);
     }),
     {
-      loading: "Testing if token isn't chocolate...",
-      success: "Succes it is a real token!",
+      loading: "Logging in using external provider...",
+      success: "Welcome back",
       error: (err) => err.message,
     },
   );
