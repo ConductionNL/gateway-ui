@@ -15,7 +15,7 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 
 export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const { handleRenewToken } = useAuthentication();
+  const { handleExternalLogin } = useAuthentication();
   const [dexCallback, setDexCallback] = React.useState<boolean>(false);
   const { isLoading } = useIsLoadingContext();
 
@@ -42,8 +42,8 @@ export const LoginTemplate: React.FC = () => {
 
   React.useEffect(() => {
     if (dexCallback) {
-      handleRenewToken(API).then(() => {
-        location.href = "/";
+      handleExternalLogin(API).then(() => {
+        // location.href = "/";
         setDexCallback(false);
       });
     }

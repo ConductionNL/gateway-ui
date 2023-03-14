@@ -15,7 +15,7 @@ export const LoginFormTemplate: React.FC = () => {
   const { t } = useTranslation();
   const { gatsbyContext } = useGatsbyContext();
   const { isLoading } = useIsLoadingContext();
-  const { handleLogin } = useAuthentication();
+  const { handleInternalLogin } = useAuthentication();
 
   const API: APIService | null = React.useContext(APIContext);
 
@@ -27,7 +27,7 @@ export const LoginFormTemplate: React.FC = () => {
 
   const onSubmit = (data: any) => {
     API &&
-      handleLogin(data, API).then(() => {
+      handleInternalLogin(data, API).then(() => {
         navigate(gatsbyContext.previousPath ?? "/");
       });
   };

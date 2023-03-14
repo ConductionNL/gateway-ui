@@ -15,7 +15,8 @@ const isBrowser = (): boolean => typeof window !== "undefined";
 export const useAuthentication = () => {
   const { setIsLoading } = useIsLoadingContext();
 
-  const handleLogin = async (data: IUnvalidatedUser, API: APIService) => {
+  // Login using gateway users
+  const handleInternalLogin = async (data: IUnvalidatedUser, API: APIService) => {
     if (!isBrowser()) return;
 
     setIsLoading({ loginForm: true });
@@ -34,7 +35,8 @@ export const useAuthentication = () => {
     );
   };
 
-  const handleRenewToken = async (API: APIService) => {
+  // e.g. ADFS
+  const handleExternalLogin = async (API: APIService) => {
     if (!isBrowser()) return;
 
     setIsLoading({ loginForm: true });
@@ -66,7 +68,7 @@ export const useAuthentication = () => {
     navigate("/");
   };
 
-  return { handleLogin, handleRenewToken, isLoggedIn, handleLogout };
+  return { handleInternalLogin, handleExternalLogin, isLoggedIn, handleLogout };
 };
 
 export const handleAutomaticLogout = () => {
