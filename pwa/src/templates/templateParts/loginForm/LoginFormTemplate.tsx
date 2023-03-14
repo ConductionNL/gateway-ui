@@ -6,14 +6,14 @@ import { useTranslation } from "react-i18next";
 import { InputText, InputPassword } from "@conduction/components";
 import { navigate } from "gatsby";
 import { useGatsbyContext } from "../../../context/gatsby";
-import { useIsLoadingContext } from "../../../context/isLoading";
 import { useAuthentication } from "../../../hooks/useAuthentication";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 export const LoginFormTemplate: React.FC = () => {
   const { t } = useTranslation();
   const { gatsbyContext } = useGatsbyContext();
-  const { isLoading } = useIsLoadingContext();
-  const { handleInternalLogin } = useAuthentication();
+  const { handleInternalLogin, isLoading: authenticationIsLoading } = useAuthentication();
+  const { isLoading, setIsLoading } = useIsLoadingContext();
 
   const {
     register,
@@ -26,6 +26,8 @@ export const LoginFormTemplate: React.FC = () => {
       navigate(gatsbyContext.previousPath ?? "/");
     });
   };
+
+  React.useEffect(() => setIsLoading({ loginForm: authenticationIsLoading }), [authenticationIsLoading]);
 
   return (
     <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>

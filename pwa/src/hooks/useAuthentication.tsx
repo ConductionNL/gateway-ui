@@ -3,7 +3,6 @@ import { navigate } from "gatsby-link";
 import APIService from "../apiService/apiService";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import toast from "react-hot-toast";
-import { useIsLoadingContext } from "../context/isLoading";
 import APIContext from "../apiService/apiContext";
 
 export interface IUnvalidatedUser {
@@ -14,21 +13,21 @@ export interface IUnvalidatedUser {
 const isBrowser = (): boolean => typeof window !== "undefined";
 
 export const useAuthentication = () => {
-  const { setIsLoading } = useIsLoadingContext();
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const API: APIService | null = React.useContext(APIContext);
 
   // Login using gateway users
   const handleInternalLogin = async (data: IUnvalidatedUser) => {
     if (!isBrowser()) return;
 
-    setIsLoading({ loginForm: true });
+    setIsLoading(true);
 
     return await toast.promise(
       API.Login.login(data)
         .then((res) => {
           API.setAuthentication(res.data.jwtToken);
         })
-        .finally(() => setIsLoading({ loginForm: false })),
+        .finally(() => setIsLoading(false)),
       {
         loading: "Logging in...",
         success: "Welcome back",
@@ -41,7 +40,7 @@ export const useAuthentication = () => {
   const handleExternalLogin = async () => {
     if (!isBrowser()) return;
 
-    setIsLoading({ loginForm: true });
+    setIsLoading(true);
 
     return await toast.promise(
       API.Login.renewToken()
@@ -49,7 +48,7 @@ export const useAuthentication = () => {
           API.setAuthentication(res.data.jwtToken);
           location.href = "/"; // Required to reset referrer
         })
-        .finally(() => setIsLoading({ loginForm: false })),
+        .finally(() => setIsLoading(false)),
       {
         loading: "Logging in using external provider...",
         success: "Welcome back",
@@ -71,7 +70,7 @@ export const useAuthentication = () => {
     navigate("/");
   };
 
-  return { handleInternalLogin, handleExternalLogin, isLoggedIn, handleLogout };
+  return { handleInternalLogin, handleExternalLogin, isLoggedIn, handleLogout, isLoading };
 };
 
 export const handleAutomaticLogout = () => {

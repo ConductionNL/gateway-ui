@@ -7,14 +7,14 @@ import { useQueryClient } from "react-query";
 import { navigate } from "gatsby";
 import { Button } from "../../components/button/Button";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
-import { useIsLoadingContext } from "../../context/isLoading";
 import toast from "react-hot-toast";
 import { useAuthentication } from "../../hooks/useAuthentication";
+import { useIsLoadingContext } from "../../context/isLoading";
 
 export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const { handleExternalLogin } = useAuthentication();
-  const { isLoading } = useIsLoadingContext();
+  const { handleExternalLogin, isLoading: authenticationIsLoading } = useAuthentication();
+  const { isLoading, setIsLoading } = useIsLoadingContext();
 
   const [redirectedFromDex, setRedirectedFromDex] = React.useState<boolean>(false); // is set when the user was redirected BACK to this LoginTemplate from DEX
   const [dexRedirectURL, setDexRedirectURL] = React.useState<string>("");
@@ -25,6 +25,8 @@ export const LoginTemplate: React.FC = () => {
     navigate(dexRedirectURL);
     toast.loading("Redirecting to ADFS...");
   };
+
+  React.useEffect(() => setIsLoading({ loginForm: authenticationIsLoading }), [authenticationIsLoading]);
 
   React.useEffect(() => {
     queryClient.removeQueries();
