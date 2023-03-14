@@ -11,7 +11,6 @@ import { ThemeProvider } from "../templates/themeProvider/ThemeProvider";
 import { getScreenSize } from "../services/getScreenSize";
 import { Toaster } from "react-hot-toast";
 import { defaultGlobalContext, GlobalProvider, IGlobalContext } from "../context/global";
-import { useAuthentication } from "../hooks/useAuthentication";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -23,21 +22,18 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
   const [API, setAPI] = React.useState<APIService>(React.useContext(APIContext));
   const [screenSize, setScreenSize] = React.useState<TScreenSize>("mobile");
   const [globalContext, setGlobalContext] = React.useState<IGlobalContext>(defaultGlobalContext);
-  const { isLoggedIn } = useAuthentication();
 
   React.useEffect(() => {
     setAPI(new APIService());
   }, []);
 
   React.useEffect(() => {
-    if (isLoggedIn()) {
-      setGlobalContext((context) => ({
-        ...context,
-        gatsby: {
-          ...{ pageContext, location, screenSize: getScreenSize(window.innerWidth), previousPath: location.pathname },
-        },
-      }));
-    }
+    setGlobalContext((context) => ({
+      ...context,
+      gatsby: {
+        ...{ pageContext, location, screenSize: getScreenSize(window.innerWidth), previousPath: location.pathname },
+      },
+    }));
 
     const JWT = sessionStorage.getItem("JWT");
 
