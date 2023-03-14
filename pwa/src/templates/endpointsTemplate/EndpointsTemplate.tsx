@@ -52,7 +52,6 @@ export const EndpointsTemplate: React.FC = () => {
           <BulkActionButton
             actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
             selectedItemsCount={selectedItems.length}
-            layoutClassName={styles.bulkActionButton}
           />
 
           <Table>

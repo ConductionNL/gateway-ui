@@ -9,12 +9,13 @@ import { Button } from "../../components/button/Button";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import APIContext from "../../apiService/apiContext";
 import APIService from "../../apiService/apiService";
-import { handleRenewToken } from "../../services/auth";
 import { useIsLoadingContext } from "../../context/isLoading";
 import toast from "react-hot-toast";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const { handleRenewToken } = useAuthentication();
   const [dexCallback, setDexCallback] = React.useState<boolean>(false);
   const { setIsLoading, isLoading } = useIsLoadingContext();
 

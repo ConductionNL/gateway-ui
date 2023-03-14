@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { handleLogin } from "../../../services/auth";
 import APIContext from "../../../apiService/apiContext";
 import { Button, FormField, FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/components-react";
 import * as styles from "./LoginFormTemplate.module.css";
@@ -10,12 +9,13 @@ import { InputText, InputPassword } from "@conduction/components";
 import { navigate } from "gatsby";
 import { useGatsbyContext } from "../../../context/gatsby";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { useAuthentication } from "../../../hooks/useAuthentication";
 
 export const LoginFormTemplate: React.FC = () => {
   const { t } = useTranslation();
   const { gatsbyContext } = useGatsbyContext();
-  const { setIsLoading, isLoading } = useIsLoadingContext();
-  // const [loading, setLoading] = React.useState<boolean>(false);
+  const { isLoading } = useIsLoadingContext();
+  const { handleLogin } = useAuthentication();
 
   const API: APIService | null = React.useContext(APIContext);
 
@@ -25,22 +25,16 @@ export const LoginFormTemplate: React.FC = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data: any) => {
-    setIsLoading({ loginForm: true });
-    // setLoading(true);
-
+  const onSubmit = (data: any) => {
     API &&
-      (await handleLogin(data, API)
-        .then(() => {
-          navigate(gatsbyContext.previousPath ?? "/");
-        })
-        .catch(() => {
-          // setIsLoading({ loginForm: false });
-          // setLoading(false);
-        }));
-
-    setIsLoading({ loginForm: false });
+      handleLogin(data, API).then(() => {
+        navigate(gatsbyContext.previousPath ?? "/");
+      });
   };
+
+  React.useEffect(() => {
+    console.log({ isLoading });
+  }, [isLoading]);
 
   return (
     <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
@@ -51,8 +45,7 @@ export const LoginFormTemplate: React.FC = () => {
             {...{ register, errors }}
             name="username"
             validation={{ required: true }}
-            disabled={isLoading.loginForm}
-            // disabled={loading}
+            disabled={isLoading?.loginForm}
           />
         </FormFieldInput>
       </FormField>
@@ -63,8 +56,7 @@ export const LoginFormTemplate: React.FC = () => {
             {...{ register, errors }}
             name="password"
             validation={{ required: true }}
-            disabled={isLoading.loginForm}
-            // disabled={loading}
+            disabled={isLoading?.loginForm}
           />
         </FormFieldInput>
       </FormField>
