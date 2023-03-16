@@ -33,17 +33,17 @@ export const LoginTemplate: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    const baseURL: URL = new URL(location.href);
-    baseURL.port = "";
-
-    setDexRedirectURL(`${baseURL.toString()}login/oidc/dex`);
-
     setRedirectedFromDex(document.referrer !== "" && document.referrer !== window.location.href);
   }, []);
 
   React.useEffect(() => {
     redirectedFromDex && handleExternalLogin();
   }, [redirectedFromDex]);
+
+  React.useEffect(() => {
+    window.sessionStorage.getItem("GATSBY_BASE_URL") &&
+      setDexRedirectURL(`${window.sessionStorage.getItem("GATSBY_BASE_URL")}/login/oidc/dex`);
+  });
 
   return (
     <div className={styles.container}>
