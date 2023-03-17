@@ -1,11 +1,11 @@
 import { AxiosInstance } from "axios";
+import { TSendFunction } from "../apiService";
 
 export default class PluginReadMe {
   private _instance: AxiosInstance;
-  private _send: any; // TODO: add type
+  private _send: TSendFunction;
 
-  constructor(instance: AxiosInstance, send: any) {
-    // TODO: add type
+  constructor(instance: AxiosInstance, send: TSendFunction) {
     this._instance = instance;
     this._send = send;
   }

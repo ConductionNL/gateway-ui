@@ -1,4 +1,5 @@
 import { AxiosInstance } from "axios";
+import { TSendFunction } from "../apiService";
 
 export type TEntity =
   | "Action"
@@ -15,10 +16,9 @@ export type TEntity =
 
 export default class DashboardCards {
   private _instance: AxiosInstance;
-  private _send: any; // TODO: add type
+  private _send: TSendFunction;
 
-  constructor(instance: AxiosInstance, send: any) {
-    // TODO: add type
+  constructor(instance: AxiosInstance, send: TSendFunction) {
     this._instance = instance;
     this._send = send;
   }
