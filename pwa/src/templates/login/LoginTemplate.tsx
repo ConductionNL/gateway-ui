@@ -24,7 +24,11 @@ export const LoginTemplate: React.FC = () => {
   const handleDexLogin = () => {
     document.cookie = "redirected_to_adfs=true";
     navigate(dexRedirectURL);
-    // toast.loading("Redirecting to ADFS...");
+    toast.loading("Redirecting to ADFS...");
+    setIsLoading({ loginForm: true });
+    window.addEventListener("unload", (event) => {
+      setIsLoading({ loginForm: false });
+    });
   };
 
   const backToLogin = () => {
