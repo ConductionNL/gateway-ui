@@ -15,6 +15,8 @@ import { dateTime } from "../../services/dateTime";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { StatusTag } from "../../components/statusTag/StatusTag";
+import { useBulkSelect } from "../../hooks/useBulkSelect";
+import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -22,6 +24,13 @@ export const CronjobsTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
+  const deleteCronjob = _useCronjob.remove();
+
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getCronjobs.data);
+
+  const handleBulkDelete = (): void => {
+    selectedItems.forEach((item) => deleteCronjob.mutate({ id: item }));
+  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -35,67 +44,78 @@ export const CronjobsTemplate: React.FC = () => {
       {getCronjobs.isError && "Error..."}
 
       {getCronjobs.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Status")}</TableHeader>
-              <TableHeader>{t("Enabled")}</TableHeader>
-              <TableHeader>CronTab</TableHeader>
-              <TableHeader>{t("Last run")}</TableHeader>
-              <TableHeader>{t("Next run")}</TableHeader>
-              <TableHeader>{t("Date created")}</TableHeader>
-              <TableHeader>{t("Date modified")}</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getCronjobs.data.map((cronjob) => (
-              <TableRow onClick={() => navigate(`/cronjobs/${cronjob.id}`)} key={cronjob.id}>
-                <TableCell>{cronjob.name}</TableCell>
+        <div>
+          <BulkActionButton
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+            selectedItemsCount={selectedItems.length}
+          />
 
-                <TableCell>
-                  {cronjob.status && <StatusTag type="success" label={cronjob.status?.toString()} />}
-                  {cronjob.status === false && (
-                    <StatusTag type="critical" label={cronjob.status?.toString() ?? "False"} />
-                  )}
-                  {cronjob.status === undefined && <StatusTag label="No status" />}
-                </TableCell>
-
-                <TableCell>{cronjob.isEnabled ? "Yes" : "No"}</TableCell>
-
-                <TableCell>{cronjob.crontab}</TableCell>
-
-                <TableCell>{cronjob.lastRun ? dateTime(t(i18n.language), cronjob.lastRun) : "-"}</TableCell>
-
-                <TableCell>{cronjob.nextRun ? dateTime(t(i18n.language), cronjob.nextRun) : "-"}</TableCell>
-
-                <TableCell>{translateDate(i18n.language, cronjob.dateCreated)}</TableCell>
-
-                <TableCell>{translateDate(i18n.language, cronjob.dateMo)}</TableCell>
-
-                <TableCell onClick={() => navigate(`/cronjobs/${cronjob.id}`)}>
-                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
-            {!getCronjobs.data.length && (
+          <Table>
+            <TableHead>
               <TableRow>
-                <TableCell>{t("No cronjobs found")}</TableCell>
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Status")}</TableHeader>
+                <TableHeader>{t("Enabled")}</TableHeader>
+                <TableHeader>CronTab</TableHeader>
+                <TableHeader>{t("Last run")}</TableHeader>
+                <TableHeader>{t("Next run")}</TableHeader>
+                <TableHeader>{t("Date created")}</TableHeader>
+                <TableHeader>{t("Date modified")}</TableHeader>
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getCronjobs.data.map((cronjob) => (
+                <TableRow key={cronjob.id}>
+                  <TableCell>{<CheckboxBulkSelectOne id={cronjob.id} />}</TableCell>
+
+                  <TableCell>{cronjob.name}</TableCell>
+
+                  <TableCell>
+                    {cronjob.status && <StatusTag type="success" label={cronjob.status?.toString()} />}
+                    {cronjob.status === false && (
+                      <StatusTag type="critical" label={cronjob.status?.toString() ?? "False"} />
+                    )}
+                    {cronjob.status === undefined && <StatusTag label="No status" />}
+                  </TableCell>
+
+                  <TableCell>{cronjob.isEnabled ? "Yes" : "No"}</TableCell>
+
+                  <TableCell>{cronjob.crontab}</TableCell>
+
+                  <TableCell>{cronjob.lastRun ? dateTime(t(i18n.language), cronjob.lastRun) : "-"}</TableCell>
+
+                  <TableCell>{cronjob.nextRun ? dateTime(t(i18n.language), cronjob.nextRun) : "-"}</TableCell>
+
+                  <TableCell>{translateDate(i18n.language, cronjob.dateCreated)}</TableCell>
+
+                  <TableCell>{translateDate(i18n.language, cronjob.dateMo)}</TableCell>
+
+                  <TableCell onClick={() => navigate(`/cronjobs/${cronjob.id}`)}>
+                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {!getCronjobs.data.length && (
+                <TableRow>
+                  <TableCell>{t("No cronjobs found")}</TableCell>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       )}
 
       {getCronjobs.isLoading && <Skeleton height="200px" />}

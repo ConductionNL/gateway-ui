@@ -12,6 +12,8 @@ import { translateDate } from "../../services/dateFormat";
 import { useObject } from "../../hooks/object";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { useBulkSelect } from "../../hooks/useBulkSelect";
+import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 
 export const SchemasTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -19,9 +21,16 @@ export const SchemasTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
+  const deleteSchema = _useSchema.remove();
 
   const _useObject = useObject(queryClient);
   const getObjects = _useObject.getAll(1, 200);
+
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getSchemas.data);
+
+  const handleBulkDelete = (): void => {
+    selectedItems.forEach((item) => deleteSchema.mutate({ id: item }));
+  };
 
   const goToCreateObject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
@@ -43,62 +52,76 @@ export const SchemasTemplate: React.FC = () => {
       {getSchemas.isError && "Error..."}
 
       {getSchemas.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Objects")}</TableHeader>
-              <TableHeader>{t("Date Created")}</TableHeader>
-              <TableHeader>{t("Date Modified")}</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getSchemas.data.map((schema) => (
-              <TableRow key={schema.id}>
-                <TableCell>{schema.name}</TableCell>
+        <div>
+          <BulkActionButton
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+            selectedItemsCount={selectedItems.length}
+          />
 
-                {getObjects.isSuccess && (
-                  <TableCell>
-                    {getObjects.data.results?.filter((object: any) => object._self.schema.id === schema.id).length}
-                  </TableCell>
-                )}
-
-                {getObjects.isLoading && <TableCell>Loading...</TableCell>}
-                {getObjects.isError && <TableCell>Error</TableCell>}
-                <TableCell>{translateDate(i18n.language, schema.dateCreated)}</TableCell>
-
-                <TableCell>{translateDate(i18n.language, schema.dateModified)}</TableCell>
-
-                <TableCell className={styles.callsToAction}>
-                  <Button
-                    onClick={(e) => goToCreateObject(e, schema.id)}
-                    variant="primary"
-                    icon={faPlus}
-                    label={t("Add Object")}
-                  />
-
-                  <Button
-                    onClick={() => navigate(`/schemas/${schema.id}`)}
-                    variant="primary"
-                    icon={faGear}
-                    label={t("Edit Schema")}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
-            {!getSchemas.data.length && (
+          <Table>
+            <TableHead>
               <TableRow>
-                <TableCell>{t("No schemas found")}</TableCell>
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
-                <TableCell />
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Objects")}</TableHeader>
+                <TableHeader>{t("Date Created")}</TableHeader>
+                <TableHeader>{t("Date Modified")}</TableHeader>
+                <TableHeader />
               </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getSchemas.data.map((schema) => (
+                <TableRow key={schema.id}>
+                  <TableCell>{<CheckboxBulkSelectOne id={schema.id} />}</TableCell>
+
+                  <TableCell>{schema.name}</TableCell>
+
+                  {getObjects.isSuccess && (
+                    <TableCell>
+                      {getObjects.data.results?.filter((object: any) => object._self.schema.id === schema.id).length}
+                    </TableCell>
+                  )}
+
+                  {getObjects.isLoading && <TableCell>Loading...</TableCell>}
+                  {getObjects.isError && <TableCell>Error</TableCell>}
+                  <TableCell>{translateDate(i18n.language, schema.dateCreated)}</TableCell>
+
+                  <TableCell>{translateDate(i18n.language, schema.dateModified)}</TableCell>
+
+                  <TableCell className={styles.callsToAction}>
+                    <Button
+                      onClick={(e) => goToCreateObject(e, schema.id)}
+                      variant="primary"
+                      icon={faPlus}
+                      label={t("Add Object")}
+                    />
+
+                    <Button
+                      onClick={() => navigate(`/schemas/${schema.id}`)}
+                      variant="primary"
+                      icon={faGear}
+                      label={t("Edit Schema")}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+
+              {!getSchemas.data.length && (
+                <TableRow>
+                  <TableCell>{t("No schemas found")}</TableCell>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       )}
 
       {getSchemas.isLoading && <Skeleton height="200px" />}

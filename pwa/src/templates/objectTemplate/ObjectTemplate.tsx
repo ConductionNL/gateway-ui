@@ -87,11 +87,15 @@ export const ObjectTemplate: React.FC = () => {
                   <TableCell />
                   <TableCell />
                   <TableCell />
+                  <TableCell />
                 </TableRow>
               )}
             </TableBody>
           </Table>
-          <Paginate totalPages={getObjects.data.pages} currentPage={currentPage} changePage={setCurrentPage} />
+
+          {getObjects.data.results.length > 0 && (
+            <Paginate totalPages={getObjects.data.pages} currentPage={currentPage} changePage={setCurrentPage} />
+          )}
         </div>
       )}
       {getObjects.isLoading && <Skeleton height="200px" />}

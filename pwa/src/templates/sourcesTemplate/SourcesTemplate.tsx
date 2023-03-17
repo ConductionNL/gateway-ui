@@ -16,6 +16,8 @@ import { dateTime } from "../../services/dateTime";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { getStatusTag } from "../../services/getStatusTag";
+import { useBulkSelect } from "../../hooks/useBulkSelect";
+import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 
 export const SourcesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -23,6 +25,13 @@ export const SourcesTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
   const getSources = _useSources.getAll();
+  const deleteSource = _useSources.remove();
+
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getSources.data);
+
+  const handleBulkDelete = (): void => {
+    selectedItems.forEach((item) => deleteSource.mutate({ id: item }));
+  };
 
   return (
     <div className={styles.container}>
@@ -36,53 +45,72 @@ export const SourcesTemplate: React.FC = () => {
       {getSources.isError && "Error..."}
 
       {getSources.isSuccess && (
-        <TableWrapper>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader>{t("Status")}</TableHeader>
-                <TableHeader>{t("Related Sync objects")}</TableHeader>
-                <TableHeader>{t("Last call")}</TableHeader>
-                <TableHeader>{t("Created")}</TableHeader>
-                <TableHeader>{t("Modified")}</TableHeader>
-                <TableHeader />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {getSources.data.map((source) => (
-                <TableRow onClick={() => navigate(`/sources/${source.id}`)} key={source.id}>
-                  <TableCell>{source.name}</TableCell>
-                  <TableCell className={styles.tableCellFullWidth}>
-                    <div>{getStatusTag(source.status)}</div>
-                  </TableCell>
-                  <TableCell>{source.sync ?? "-"}</TableCell>
-                  <TableCell className={styles.tableCellFullWidth}>
-                    {source.lastCall ? dateTime(t(i18n.language), source.lastCall) : "-"}
-                  </TableCell>
-                  <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
-                  <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
-                  <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
-                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                      {t("Details")}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {!getSources.data.length && (
+        <div>
+          <BulkActionButton
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+            selectedItemsCount={selectedItems.length}
+          />
+
+          <TableWrapper>
+            <Table>
+              <TableHead>
                 <TableRow>
-                  <TableCell>{t("No sources found")}</TableCell>
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
+                  <TableHeader>
+                    <CheckboxBulkSelectAll />
+                  </TableHeader>
+                  <TableHeader>{t("Name")}</TableHeader>
+                  <TableHeader>{t("Status")}</TableHeader>
+                  <TableHeader>{t("Related sync objects")}</TableHeader>
+                  <TableHeader>{t("Last call")}</TableHeader>
+                  <TableHeader>{t("Created")}</TableHeader>
+                  <TableHeader>{t("Modified")}</TableHeader>
+                  <TableHeader />
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableWrapper>
+              </TableHead>
+              <TableBody>
+                {getSources.data.map((source) => (
+                  <TableRow key={source.id}>
+                    <TableCell>{<CheckboxBulkSelectOne id={source.id} />}</TableCell>
+
+                    <TableCell>{source.name}</TableCell>
+
+                    <TableCell className={styles.tableCellFullWidth}>
+                      <div>{getStatusTag(source.status)}</div>
+                    </TableCell>
+
+                    <TableCell>{source.sync ?? "-"}</TableCell>
+
+                    <TableCell className={styles.tableCellFullWidth}>
+                      {source.lastCall ? dateTime(t(i18n.language), source.lastCall) : "-"}
+                    </TableCell>
+
+                    <TableCell>{translateDate(i18n.language, source.dateCreated)}</TableCell>
+
+                    <TableCell>{translateDate(i18n.language, source.dateModified)}</TableCell>
+
+                    <TableCell onClick={() => navigate(`/sources/${source.id}`)}>
+                      <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                        {t("Details")}
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {!getSources.data.length && (
+                  <TableRow>
+                    <TableCell>{t("No sources found")}</TableCell>
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableWrapper>
+        </div>
       )}
 
       {getSources.isLoading && <Skeleton height="200px" />}

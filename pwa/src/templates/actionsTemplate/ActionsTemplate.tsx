@@ -15,6 +15,8 @@ import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { dateTime } from "../../services/dateTime";
 import { StatusTag } from "../../components/statusTag/StatusTag";
+import { useBulkSelect } from "../../hooks/useBulkSelect";
+import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 
 export const ActionsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -22,6 +24,13 @@ export const ActionsTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const _useActions = useAction(queryClient);
   const getActions = _useActions.getAll();
+  const deleteAction = _useActions.remove();
+
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getActions.data);
+
+  const handleBulkDelete = (): void => {
+    selectedItems.forEach((item) => deleteAction.mutate({ id: item }));
+  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -36,9 +45,17 @@ export const ActionsTemplate: React.FC = () => {
 
       {getActions.isSuccess && (
         <div>
-          <Table className={styles.table}>
+          <BulkActionButton
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+            selectedItemsCount={selectedItems.length}
+          />
+
+          <Table>
             <TableHead>
               <TableRow>
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
                 <TableHeader>Name</TableHeader>
                 <TableHeader>Priority</TableHeader>
                 <TableHeader>Status</TableHeader>
@@ -47,26 +64,36 @@ export const ActionsTemplate: React.FC = () => {
                 <TableHeader>Last run time</TableHeader>
                 <TableHeader>Date Created</TableHeader>
                 <TableHeader>Date Modified</TableHeader>
-                <TableHeader className={styles.details} />
+                <TableHeader />
               </TableRow>
             </TableHead>
             <TableBody>
               {getActions.data.map((action) => (
-                <TableRow onClick={() => navigate(`/actions/${action.id}`)} key={action.id}>
+                <TableRow key={action.id}>
+                  <TableCell>{<CheckboxBulkSelectOne id={action.id} />}</TableCell>
+
                   <TableCell className={styles.actionName}>{action.name}</TableCell>
+
                   <TableCell>{action.priority}</TableCell>
+
                   <TableCell>
                     <StatusTag
                       type={action.status ? "success" : "default"}
                       label={action.status ? "Success" : "No status"}
                     />
                   </TableCell>
+
                   <TableCell>{action.isEnabled ? "On" : "Off"}</TableCell>
+
                   <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>
+
                   <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
+
                   <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
+
                   <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
-                  <TableCell className={styles.details} onClick={() => navigate(`/actions/${action.id}`)}>
+
+                  <TableCell onClick={() => navigate(`/actions/${action.id}`)}>
                     <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                       {t("Details")}
                     </Link>
@@ -76,6 +103,7 @@ export const ActionsTemplate: React.FC = () => {
               {!getActions.data.length && (
                 <TableRow>
                   <TableCell>{t("No actions found")}</TableCell>
+                  <TableCell />
                   <TableCell />
                   <TableCell />
                   <TableCell />

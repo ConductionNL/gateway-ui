@@ -52,7 +52,7 @@ export const useSource = (queryClient: QueryClient) => {
     useMutation<any, Error, any>(API.Sources.delete, {
       onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
-        deleteItem(queryClient, "gateways", variables.id);
+        deleteItem(queryClient, "sources", variables.id);
         navigate("/sources");
       },
       onError: (error, { id }) => {
@@ -69,7 +69,7 @@ export const useSource = (queryClient: QueryClient) => {
         }
 
         if (!sourceId) {
-          addItem(queryClient, "gateways", newSource);
+          addItem(queryClient, "sources", newSource);
           navigate(`/sources/${newSource.id}`);
         }
       },
