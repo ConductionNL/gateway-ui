@@ -43,7 +43,7 @@ export const useAuthentication = () => {
     setIsLoading(true);
 
     return await toast.promise(
-      API.Login.renewToken()
+      API.Login.getExternalToken()
         .then((res) => {
           API.setAuthentication(res.data.jwtToken);
           location.href = "/"; // Required to reset referrer

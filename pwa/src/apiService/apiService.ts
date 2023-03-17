@@ -178,6 +178,10 @@ export default class APIService {
     return new Login(this.LoginClient);
   }
 
+  public get RenewToken(): RenewToken {
+    return new RenewToken(this.apiClient);
+  }
+
   public get Me(): Me {
     return new Me(this.BaseClient);
   }
@@ -197,6 +201,7 @@ export const Send = (
 ): Promise<AxiosResponse> => {
   const _payload = JSON.stringify(payload);
 
+
   if (!validateSession()) {
     handleAutomaticLogout();
 
@@ -209,6 +214,8 @@ export const Send = (
       headers: {},
     });
   }
+
+  this.apiClient.get("/users/reset_token");
 
   switch (method) {
     case "GET":
@@ -239,4 +246,5 @@ export const Send = (
         error: (err) => err.message,
       });
   }
+
 };
