@@ -178,10 +178,6 @@ export default class APIService {
     return new Login(this.LoginClient);
   }
 
-  public get RenewToken(): RenewToken {
-    return new RenewToken(this.apiClient);
-  }
-
   public get Me(): Me {
     return new Me(this.BaseClient);
   }
@@ -201,7 +197,6 @@ export const Send = (
 ): Promise<AxiosResponse> => {
   const _payload = JSON.stringify(payload);
 
-
   if (!validateSession()) {
     handleAutomaticLogout();
 
@@ -215,7 +210,7 @@ export const Send = (
     });
   }
 
-  this.apiClient.get("/users/reset_token");
+  renewJWT();
 
   switch (method) {
     case "GET":
@@ -246,5 +241,23 @@ export const Send = (
         error: (err) => err.message,
       });
   }
+};
 
+const renewJWT = () => {
+  const JWT = window.sessionStorage.getItem("JWT");
+
+  if (!JWT) return;
+
+  const instance = axios.create({
+    baseURL: window.sessionStorage.getItem("GATSBY_API_URL") ?? "",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + JWT,
+    },
+  });
+
+  instance.get("/users/reset_token").then((res) => {
+    window.sessionStorage.setItem("JWT", res.data.jwtToken);
+  });
 };
