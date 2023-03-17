@@ -13,17 +13,18 @@ import { useIsLoadingContext } from "../../context/isLoading";
 
 export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const [redirectedFromADFS, setRedirectedFromADFS] = React.useState<boolean>(false);
   const { handleExternalLogin, isLoading: authenticationIsLoading } = useAuthentication();
   const { isLoading, setIsLoading } = useIsLoadingContext();
 
-  const [redirectedFromDex, setRedirectedFromDex] = React.useState<boolean>(false); // is set when the user was redirected BACK to this LoginTemplate from DEX
   const [dexRedirectURL, setDexRedirectURL] = React.useState<string>("");
 
   const queryClient = useQueryClient();
 
   const handleDexLogin = () => {
+    document.cookie = "redirected_to_adfs=true";
     navigate(dexRedirectURL);
-    toast.loading("Redirecting to ADFS...");
+    // toast.loading("Redirecting to ADFS...");
   };
 
   React.useEffect(() => setIsLoading({ loginForm: authenticationIsLoading }), [authenticationIsLoading]);
@@ -32,13 +33,11 @@ export const LoginTemplate: React.FC = () => {
     queryClient.removeQueries();
   }, []);
 
-  React.useEffect(() => {
-    setRedirectedFromDex(document.referrer !== "" && document.referrer !== window.location.href);
-  }, []);
+  React.useEffect(() => setRedirectedFromADFS(getCookieValueByName("redirected_to_adfs") === "true"), []);
 
   React.useEffect(() => {
-    redirectedFromDex && handleExternalLogin();
-  }, [redirectedFromDex]);
+    redirectedFromADFS && handleExternalLogin();
+  }, [redirectedFromADFS]);
 
   React.useEffect(() => {
     window.sessionStorage.getItem("GATSBY_BASE_URL") &&
@@ -48,20 +47,43 @@ export const LoginTemplate: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <Heading1 className={styles.header}>{t("Login")}</Heading1>
+        {!redirectedFromADFS && (
+          <>
+            <Heading1 className={styles.header}>{t("Login")}</Heading1>
 
-        <LoginFormTemplate />
+            <LoginFormTemplate />
 
-        <div className={styles.externalButton}>
-          <Button
-            variant="primary"
-            label={t("Login using ADFS")}
-            icon={faArrowUpRightFromSquare}
-            onClick={handleDexLogin}
-            disabled={isLoading?.loginForm}
-          />
-        </div>
+            <div className={styles.externalButton}>
+              <Button
+                variant="primary"
+                label={t("Login using ADFS")}
+                icon={faArrowUpRightFromSquare}
+                onClick={handleDexLogin}
+                disabled={isLoading?.loginForm}
+              />
+            </div>
+          </>
+        )}
+
+        {redirectedFromADFS && <>Hoi</>}
       </div>
     </div>
   );
+};
+
+const getCookieValueByName = (name: string): string | null => {
+  const cookieString = document.cookie;
+  const cookies = cookieString.split(";");
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    const [cookieName, cookieValue] = cookie.split("=");
+
+    if (cookieName === name) {
+      return decodeURIComponent(cookieValue);
+    }
+  }
+
+  // Cookie not found
+  return null;
 };
