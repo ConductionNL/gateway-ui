@@ -19,7 +19,7 @@ export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProp
   const queryClient = useQueryClient();
   const _useAuthentications = useAuthentication(queryClient);
   const getAuthentication = _useAuthentications.getOne(authenticationId);
-  const deleteAuthentication = _useAuthentications.remove(authenticationId);
+  const deleteAuthentication = _useAuthentications.remove();
 
   const dashboardCard = getDashboardCard(authenticationId);
 
@@ -27,7 +27,7 @@ export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProp
     toggleDashboardCard(
       getAuthentication.data.name,
       "authentication",
-      "Authentication Provider",
+      "Authentication",
       getAuthentication.data.id,
       dashboardCard?.id,
     );
@@ -38,9 +38,7 @@ export const EditAuthenticationTemplate: React.FC<EditAuthenticationTemplateProp
   }, [deleteAuthentication.isLoading, dashboardToggleLoading]);
 
   const handleDeleteAuthentication = (): void => {
-    const confirmDeletion = confirm("Are you sure you want to delete this authentication provider?");
-
-    confirmDeletion && deleteAuthentication.mutateAsync({ id: authenticationId });
+    deleteAuthentication.mutateAsync({ id: authenticationId });
   };
 
   return (
