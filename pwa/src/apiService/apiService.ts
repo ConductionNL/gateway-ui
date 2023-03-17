@@ -111,75 +111,75 @@ export default class APIService {
   }
 
   public get Plugin(): Plugin {
-    return new Plugin(this.BaseClient);
+    return new Plugin(this.BaseClient, this.Send);
   }
 
   public get PluginReadMe(): PluginReadMe {
-    return new PluginReadMe(this.gitClient);
+    return new PluginReadMe(this.gitClient, this.Send);
   }
 
   public get Sources(): Source {
-    return new Source(this.BaseClient);
+    return new Source(this.BaseClient, this.Send);
   }
 
   public get Cronjob(): Cronjob {
-    return new Cronjob(this.BaseClient);
+    return new Cronjob(this.BaseClient, this.Send);
   }
 
   public get Endpoints(): Endpoint {
-    return new Endpoint(this.BaseClient);
+    return new Endpoint(this.BaseClient, this.Send);
   }
 
   public get Object(): Object {
-    return new Object(this.BaseClient);
+    return new Object(this.BaseClient, this.Send);
   }
 
   public get Schema(): Schema {
-    return new Schema(this.BaseClient);
+    return new Schema(this.BaseClient, this.Send);
   }
 
   public get Log(): Log {
-    return new Log(this.BaseClient);
+    return new Log(this.BaseClient, this.Send);
   }
 
   public get Collection(): Collection {
-    return new Collection(this.BaseClient);
+    return new Collection(this.BaseClient, this.Send);
   }
 
   public get DashboardCards(): DashboardCards {
-    return new DashboardCards(this.BaseClient);
+    return new DashboardCards(this.BaseClient, this.Send);
   }
 
   public get Attribute(): Attribute {
-    return new Attribute(this.BaseClient);
+    return new Attribute(this.BaseClient, this.Send);
   }
 
   public get Synchroniation(): Synchroniation {
-    return new Synchroniation(this.BaseClient);
+    return new Synchroniation(this.BaseClient, this.Send);
   }
 
   public get Application(): Application {
-    return new Application(this.BaseClient);
+    return new Application(this.BaseClient, this.Send);
   }
 
   public get Organization(): Organization {
-    return new Organization(this.BaseClient);
+    return new Organization(this.BaseClient, this.Send);
   }
 
   public get User(): User {
-    return new User(this.BaseClient);
+    return new User(this.BaseClient, this.Send);
   }
 
   public get Authentication(): Authentication {
-    return new Authentication(this.BaseClient);
+    return new Authentication(this.BaseClient, this.Send);
   }
 
   public get SecurityGroup(): SecurityGroup {
-    return new SecurityGroup(this.BaseClient);
+    return new SecurityGroup(this.BaseClient, this.Send);
   }
 
   public get Mapping(): Mapping {
-    return new Mapping(this.BaseClient);
+    return new Mapping(this.BaseClient, this.Send);
   }
 
   // Services
@@ -188,7 +188,7 @@ export default class APIService {
   }
 
   public get Me(): Me {
-    return new Me(this.BaseClient);
+    return new Me(this.BaseClient, this.Send);
   }
 
   // Send method

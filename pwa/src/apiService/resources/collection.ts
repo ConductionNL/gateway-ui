@@ -1,21 +1,23 @@
-import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
 export default class Collection {
   private _instance: AxiosInstance;
+  private _send: any; // TODO: add type
 
-  constructor(_instance: AxiosInstance) {
-    this._instance = _instance;
+  constructor(instance: AxiosInstance, send: any) {
+    // TODO: add type
+    this._instance = instance;
+    this._send = send;
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/collections");
+    const { data } = await this._send(this._instance, "GET", "/admin/collections");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/collections/${id}`);
+    const { data } = await this._send(this._instance, "GET", `/admin/collections/${id}`);
 
     return data;
   };
@@ -23,7 +25,7 @@ export default class Collection {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/collections/${id}`);
+    const { data } = await this._send(this._instance, "DELETE", `/admin/collections/${id}`);
     return data;
   };
 
@@ -31,11 +33,11 @@ export default class Collection {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/collections/${id}`, payload);
+      const { data } = await this._send(this._instance, "PUT", `/admin/collections/${id}`, payload);
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/collections", payload);
+    const { data } = await this._send(this._instance, "POST", "/admin/collections", payload);
     return data;
   };
 }

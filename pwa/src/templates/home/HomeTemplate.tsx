@@ -9,11 +9,9 @@ import { DashboardCard } from "../../components/dashboardCard/DashboardCard";
 import _ from "lodash";
 import { getPath } from "../../services/getPath";
 import { Container } from "@conduction/components";
-import { useAuthentication } from "../../hooks/useAuthentication";
 
 export const HomeTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const { renewToken } = useAuthentication();
 
   const queryClient = useQueryClient();
   const _useDashboardCards = useDashboardCards(queryClient);
@@ -33,16 +31,9 @@ export const HomeTemplate: React.FC = () => {
     }
   };
 
-  const getNewToken = () => {
-    const oldToken = window.sessionStorage.getItem("JWT");
-    console.log("OldToken:", oldToken);
-    renewToken();
-  };
-
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Dashboard")}</Heading1>
-      <button onClick={getNewToken}>renewToken</button>
 
       {getDashboardCards.isSuccess && (
         <div className={styles.cardsGrid}>

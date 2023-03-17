@@ -1,11 +1,13 @@
-import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
 export default class PluginReadMe {
   private _instance: AxiosInstance;
+  private _send: any; // TODO: add type
 
-  constructor(_instance: AxiosInstance) {
-    this._instance = _instance;
+  constructor(instance: AxiosInstance, send: any) {
+    // TODO: add type
+    this._instance = instance;
+    this._send = send;
   }
 
   public getReadMe = async (url: string): Promise<any> => {
@@ -18,7 +20,7 @@ export default class PluginReadMe {
 
     const repo = url.replace("https://github.com/", "");
 
-    const { data } = await Send(this._instance, "GET", `https://api.github.com/repos/${repo}/readme`);
+    const { data } = await this._send(this._instance, "GET", `https://api.github.com/repos/${repo}/readme`);
 
     return data;
   };

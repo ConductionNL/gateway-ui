@@ -1,15 +1,17 @@
-import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
 export default class Sources {
   private _instance: AxiosInstance;
+  private _send: any; // TODO: add type
 
-  constructor(_instance: AxiosInstance) {
-    this._instance = _instance;
+  constructor(instance: AxiosInstance, send: any) {
+    // TODO: add type
+    this._instance = instance;
+    this._send = send;
   }
 
   public getAll = async (currentPage: number, limit?: number): Promise<any> => {
-    const { data } = await Send(
+    const { data } = await this._send(
       this._instance,
       "GET",
       `/admin/objects?extend[]=all&page=${currentPage}${limit ? `&_limit=${limit}` : ""}`,
@@ -19,13 +21,13 @@ export default class Sources {
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/objects/${id}`);
+    const { data } = await this._send(this._instance, "GET", `/admin/objects/${id}`);
 
     return data;
   };
 
   public getAllFromEntity = async (entityId: string, currentPage: number): Promise<any> => {
-    const { data } = await Send(
+    const { data } = await this._send(
       this._instance,
       "GET",
       `/admin/objects?_self.schema.id=${entityId}&page=${currentPage}&_limit=10`,
@@ -35,7 +37,7 @@ export default class Sources {
   };
 
   public getAllFromList = async (list: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", list);
+    const { data } = await this._send(this._instance, "GET", list);
 
     return data.results;
   };
@@ -47,7 +49,7 @@ export default class Sources {
       return { ...config, headers: { ...config.headers, Accept: "application/json+schema" } };
     });
 
-    const { data } = await Send(this._instance, "GET", `admin/objects/${id}`);
+    const { data } = await this._send(this._instance, "GET", `admin/objects/${id}`);
 
     return data;
   };
@@ -55,7 +57,7 @@ export default class Sources {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/objects/${id}`, undefined, {
+    const { data } = await this._send(this._instance, "DELETE", `/admin/objects/${id}`, undefined, {
       loading: "Removing object...",
       success: "Object successfully removed.",
     });
@@ -66,14 +68,14 @@ export default class Sources {
     const { payload, entityId, objectId } = variables;
 
     if (objectId) {
-      const { data } = await Send(this._instance, "PUT", `/admin/objects/${objectId}`, payload, {
+      const { data } = await this._send(this._instance, "PUT", `/admin/objects/${objectId}`, payload, {
         loading: "Updating object...",
         success: "Object successfully updated.",
       });
       return data;
     }
 
-    const { data } = await Send(
+    const { data } = await this._send(
       this._instance,
       "POST",
       "/admin/objects",

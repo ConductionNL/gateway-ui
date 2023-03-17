@@ -1,22 +1,24 @@
-import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 import { paramsToQueryParams } from "../../services/paramsToQueryParams";
 
 export default class Synchroniation {
   private _instance: AxiosInstance;
+  private _send: any; // TODO: add type
 
-  constructor(_instance: AxiosInstance) {
-    this._instance = _instance;
+  constructor(instance: AxiosInstance, send: any) {
+    // TODO: add type
+    this._instance = instance;
+    this._send = send;
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/synchronizations");
+    const { data } = await this._send(this._instance, "GET", "/admin/synchronizations");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/synchronizations/${id}`);
+    const { data } = await this._send(this._instance, "GET", `/admin/synchronizations/${id}`);
 
     return data;
   };
@@ -24,7 +26,7 @@ export default class Synchroniation {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/synchronizations/${id}`);
+    const { data } = await this._send(this._instance, "DELETE", `/admin/synchronizations/${id}`);
     return data;
   };
 
@@ -50,11 +52,11 @@ export default class Synchroniation {
     };
 
     if (syncId) {
-      const { data } = await Send(this._instance, "PUT", `/admin/synchronizations/${syncId}`, _payload);
+      const { data } = await this._send(this._instance, "PUT", `/admin/synchronizations/${syncId}`, _payload);
       return data;
     }
 
-    const { data } = await Send(
+    const { data } = await this._send(
       this._instance,
       "POST",
       `/admin/object_entities/${objectId}/sync/${sourceId}${paramsToQueryParams(params, true)}`,

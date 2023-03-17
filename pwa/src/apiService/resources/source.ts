@@ -1,21 +1,23 @@
-import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 
 export default class Source {
   private _instance: AxiosInstance;
+  private _send: any; // TODO: add type
 
-  constructor(_instance: AxiosInstance) {
-    this._instance = _instance;
+  constructor(instance: AxiosInstance, send: any) {
+    // TODO: add type
+    this._instance = instance;
+    this._send = send;
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/gateways?order[name]=ASC");
+    const { data } = await this._send(this._instance, "GET", "/admin/gateways?order[name]=ASC");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/gateways/${id}`);
+    const { data } = await this._send(this._instance, "GET", `/admin/gateways/${id}`);
 
     return data;
   };
@@ -34,7 +36,7 @@ export default class Source {
       };
     });
 
-    const { data } = await Send(this._instance, "POST", `/admin/sources/${id}/proxy`, payload.body, {
+    const { data } = await this._send(this._instance, "POST", `/admin/sources/${id}/proxy`, payload.body, {
       loading: "Testing connection...",
       success: "Connection successful.",
     });
@@ -45,7 +47,7 @@ export default class Source {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/gateways/${id}`, undefined, {
+    const { data } = await this._send(this._instance, "DELETE", `/admin/gateways/${id}`, undefined, {
       loading: "Removing source...",
       success: "Source successfully removed.",
     });
@@ -56,14 +58,14 @@ export default class Source {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/gateways/${id}`, payload, {
+      const { data } = await this._send(this._instance, "PUT", `/admin/gateways/${id}`, payload, {
         loading: "Updating source...",
         success: "Source successfully updated.",
       });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/gateways", payload, {
+    const { data } = await this._send(this._instance, "POST", "/admin/gateways", payload, {
       loading: "Creating source...",
       success: "Source successfully created.",
     });

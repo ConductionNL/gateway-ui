@@ -1,15 +1,17 @@
 import { AxiosInstance, AxiosResponse } from "axios";
-import { Send } from "../apiService";
 
 export default class Me {
   private _instance: AxiosInstance;
+  private _send: any; // TODO: add type
 
-  constructor(_instance: AxiosInstance) {
-    this._instance = _instance;
+  constructor(instance: AxiosInstance, send: any) {
+    // TODO: add type
+    this._instance = instance;
+    this._send = send;
   }
 
   public getMe = async (): Promise<AxiosResponse> => {
-    const { data } = await Send(this._instance, "GET", "/me");
+    const { data } = await this._send(this._instance, "GET", "/me");
     return data;
   };
 }
