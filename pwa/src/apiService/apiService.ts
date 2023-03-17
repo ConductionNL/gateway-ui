@@ -27,6 +27,11 @@ import Authentication from "./resources/authentication";
 import SecurityGroup from "./resources/securityGroup";
 import Mapping from "./resources/mapping";
 
+interface PromiseMessage {
+  loading?: string;
+  success?: string;
+}
+
 export default class APIService {
   public removeAuthentication(): void {
     window.sessionStorage.removeItem("JWT");
@@ -38,6 +43,10 @@ export default class APIService {
 
   public get authenticated(): boolean {
     return window.sessionStorage.getItem("JWT") ? true : false;
+  }
+
+  private renewAuthentication(): void {
+    this.apiClient.get("/users/reset_token").then((res) => this.setAuthentication(res.data.jwtToken));
   }
 
   private getJWT(): string | null {
@@ -98,7 +107,7 @@ export default class APIService {
 
   // Resources
   public get Action(): Action {
-    return new Action(this.BaseClient);
+    return new Action(this.BaseClient, this.Send);
   }
 
   public get Plugin(): Plugin {
@@ -181,83 +190,63 @@ export default class APIService {
   public get Me(): Me {
     return new Me(this.BaseClient);
   }
-}
 
-interface PromiseMessage {
-  loading?: string;
-  success?: string;
-}
+  // Send method
+  public get Send(): any {
+    // TODO: add type
+    return (
+      instance: AxiosInstance,
+      method: "GET" | "POST" | "PUT" | "DELETE",
+      endpoint: string,
+      payload?: JSON,
+      promiseMessage?: PromiseMessage,
+    ): Promise<AxiosResponse> => {
+      const _payload = JSON.stringify(payload);
 
-export const Send = (
-  instance: AxiosInstance,
-  method: "GET" | "POST" | "PUT" | "DELETE",
-  endpoint: string,
-  payload?: JSON,
-  promiseMessage?: PromiseMessage,
-): Promise<AxiosResponse> => {
-  const _payload = JSON.stringify(payload);
+      if (!validateSession()) {
+        handleAutomaticLogout();
 
-  if (!validateSession()) {
-    handleAutomaticLogout();
+        return Promise.resolve({
+          // return fake AxiosInstance for calls to not break
+          data: [],
+          status: -1,
+          statusText: "Session invalid",
+          config: {},
+          headers: {},
+        });
+      }
 
-    return Promise.resolve({
-      // return fake AxiosInstance for calls to not break
-      data: [],
-      status: -1,
-      statusText: "Session invalid",
-      config: {},
-      headers: {},
-    });
+      this.renewAuthentication();
+
+      switch (method) {
+        case "GET":
+          const response = instance.get(endpoint);
+
+          response.catch((err) => toast.error(err.message));
+
+          return response;
+
+        case "POST":
+          return toast.promise(instance.post(endpoint, _payload), {
+            loading: promiseMessage?.loading ?? "Creating item...",
+            success: promiseMessage?.success ?? "Succesfully created item",
+            error: (err) => err.message,
+          });
+
+        case "PUT":
+          return toast.promise(instance.put(endpoint, _payload), {
+            loading: promiseMessage?.loading ?? "Updating item...",
+            success: promiseMessage?.success ?? "Succesfully updated item",
+            error: (err) => err.message,
+          });
+
+        case "DELETE":
+          return toast.promise(instance.delete(endpoint), {
+            loading: promiseMessage?.loading ?? "Deleting item...",
+            success: promiseMessage?.success ?? "Succesfully deleted item",
+            error: (err) => err.message,
+          });
+      }
+    };
   }
-
-  renewJWT();
-
-  switch (method) {
-    case "GET":
-      const response = instance.get(endpoint);
-
-      response.catch((err) => toast.error(err.message));
-
-      return response;
-
-    case "POST":
-      return toast.promise(instance.post(endpoint, _payload), {
-        loading: promiseMessage?.loading ?? "Creating item...",
-        success: promiseMessage?.success ?? "Succesfully created item",
-        error: (err) => err.message,
-      });
-
-    case "PUT":
-      return toast.promise(instance.put(endpoint, _payload), {
-        loading: promiseMessage?.loading ?? "Updating item...",
-        success: promiseMessage?.success ?? "Succesfully updated item",
-        error: (err) => err.message,
-      });
-
-    case "DELETE":
-      return toast.promise(instance.delete(endpoint), {
-        loading: promiseMessage?.loading ?? "Deleting item...",
-        success: promiseMessage?.success ?? "Succesfully deleted item",
-        error: (err) => err.message,
-      });
-  }
-};
-
-const renewJWT = () => {
-  const JWT = window.sessionStorage.getItem("JWT");
-
-  if (!JWT) return;
-
-  const instance = axios.create({
-    baseURL: window.sessionStorage.getItem("GATSBY_API_URL") ?? "",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + JWT,
-    },
-  });
-
-  instance.get("/users/reset_token").then((res) => {
-    window.sessionStorage.setItem("JWT", res.data.jwtToken);
-  });
-};
+}
