@@ -6,7 +6,7 @@ import { LoginFormTemplate } from "../templateParts/loginForm/LoginFormTemplate"
 import { useQueryClient } from "react-query";
 import { navigate } from "gatsby";
 import { Button } from "../../components/button/Button";
-import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { useIsLoadingContext } from "../../context/isLoading";
@@ -25,6 +25,11 @@ export const LoginTemplate: React.FC = () => {
     document.cookie = "redirected_to_adfs=true";
     navigate(dexRedirectURL);
     // toast.loading("Redirecting to ADFS...");
+  };
+
+  const backToLogin = () => {
+    document.cookie = "redirected_to_adfs=false";
+    setRedirectedFromADFS(false);
   };
 
   React.useEffect(() => setIsLoading({ loginForm: authenticationIsLoading }), [authenticationIsLoading]);
@@ -65,7 +70,19 @@ export const LoginTemplate: React.FC = () => {
           </>
         )}
 
-        {redirectedFromADFS && <>Hoi</>}
+        {redirectedFromADFS && (
+          <>
+            {isLoading?.loginForm && <p>Logging in using external provider.</p>}
+
+            {!isLoading?.loginForm && (
+              <div className={styles.failedToLoginContent}>
+                <Heading1>Oops!, something went wrong</Heading1>
+                <p>Sorry, but we're having trouble signing you in using the external provider.</p>
+                <Button variant="primary" label={t("Return to login")} icon={faArrowLeft} onClick={backToLogin} />
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
