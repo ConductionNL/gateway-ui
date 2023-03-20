@@ -166,7 +166,7 @@ const CodeEditor: React.FC = () => {
       theme="github"
       onChange={(value) => setCode(value)}
       fontSize={14}
-      showPrintMargin={true}
+      showPrintMargin={false}
       showGutter={true}
       highlightActiveLine={true}
       value={code}
@@ -177,6 +177,7 @@ const CodeEditor: React.FC = () => {
         showLineNumbers: true,
         tabSize: 2,
       }}
+      width="100%"
     />
   );
 };
