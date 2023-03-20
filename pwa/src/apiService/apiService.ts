@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { handleAutomaticLogout, validateSession } from "../services/auth";
+import { handleAutomaticLogout, validateSession } from "../hooks/useAuthentication";
 import toast from "react-hot-toast";
 
 // Services

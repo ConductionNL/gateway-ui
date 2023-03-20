@@ -5,10 +5,11 @@ import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
 import toast from "react-hot-toast";
+import { useDeletedItemsContext } from "../context/deletedItems";
 
 export const useSource = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
-  const _queryClient = useQueryClient();
+  const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
   const getAll = () =>
     useQuery<any[], Error>("sources", API.Sources.getAll, {
@@ -17,13 +18,13 @@ export const useSource = (queryClient: QueryClient) => {
       },
     });
 
-  const getOne = (sourcesId: string) =>
-    useQuery<any, Error>(["sources", sourcesId], () => API?.Sources.getOne(sourcesId), {
-      initialData: () => queryClient.getQueryData<any[]>("sources")?.find((_sources) => _sources.id === sourcesId),
+  const getOne = (sourceId: string) =>
+    useQuery<any, Error>(["sources", sourceId], () => API?.Sources.getOne(sourceId), {
+      initialData: () => queryClient.getQueryData<any[]>("sources")?.find((_sources) => _sources.id === sourceId),
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!sourcesId,
+      enabled: !!sourceId && !isDeleted(sourceId),
     });
 
   const getProxy = (sourceId?: string) =>
@@ -38,22 +39,24 @@ export const useSource = (queryClient: QueryClient) => {
           toast.error(error.message);
         }
 
-        _queryClient.invalidateQueries(["sources", sourceId]);
+        queryClient.invalidateQueries(["sources", sourceId]);
 
         console.warn(error.message);
       },
       onSettled: () => {
-        _queryClient.invalidateQueries(["sources", sourceId]);
+        queryClient.invalidateQueries(["sources", sourceId]);
       },
     });
 
   const remove = () =>
     useMutation<any, Error, any>(API.Sources.delete, {
+      onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
-        deleteItem(queryClient, "gateways", variables.id);
+        deleteItem(queryClient, "sources", variables.id);
         navigate("/sources");
       },
-      onError: (error) => {
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
         console.warn(error.message);
       },
     });
@@ -66,7 +69,7 @@ export const useSource = (queryClient: QueryClient) => {
         }
 
         if (!sourceId) {
-          addItem(queryClient, "gateways", newSource);
+          addItem(queryClient, "sources", newSource);
           navigate(`/sources/${newSource.id}`);
         }
       },

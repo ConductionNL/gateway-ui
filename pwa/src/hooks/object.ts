@@ -3,9 +3,11 @@ import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
+import { useDeletedItemsContext } from "../context/deletedItems";
 
 export const useObject = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
   const getAll = (currentPage: number, limit?: number) =>
     useQuery<any, Error>(["objects", currentPage], () => API.Object.getAll(currentPage, limit), {
@@ -20,7 +22,7 @@ export const useObject = (queryClient: QueryClient) => {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!objectId,
+      enabled: !!objectId && !isDeleted(objectId),
     });
 
   const getAllFromEntity = (entityId: string, currentPage: number) =>
@@ -48,10 +50,12 @@ export const useObject = (queryClient: QueryClient) => {
 
   const remove = () =>
     useMutation<any, Error, any>(API.Object.delete, {
+      onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "object", variables.id);
       },
-      onError: (error) => {
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
         console.warn(error.message);
       },
       onSettled: () => {
@@ -71,6 +75,8 @@ export const useObject = (queryClient: QueryClient) => {
         }
       },
       onError: (error) => {
+        queryClient.invalidateQueries(["object", objectId]);
+
         console.warn(error.message);
       },
       onSettled: () => {

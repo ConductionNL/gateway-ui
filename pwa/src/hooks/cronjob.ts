@@ -4,9 +4,11 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { navigate } from "gatsby";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
+import { useDeletedItemsContext } from "../context/deletedItems";
 
 export const useCronjob = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
   const getAll = () =>
     useQuery<any[], Error>("cronjobs", API.Cronjob.getAll, {
@@ -28,16 +30,18 @@ export const useCronjob = (queryClient: QueryClient) => {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!cronjobId,
+      enabled: !!cronjobId && !isDeleted(cronjobId),
     });
 
   const remove = () =>
     useMutation<any, Error, any>(API.Cronjob.delete, {
+      onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "cronjobs", variables.id);
         navigate("/cronjobs");
       },
-      onError: (error) => {
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
         console.warn(error.message);
       },
     });

@@ -12,6 +12,8 @@ import Skeleton from "react-loading-skeleton";
 import { useCollection } from "../../hooks/collection";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { useBulkSelect } from "../../hooks/useBulkSelect";
+import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 
 export const CollectionsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -19,6 +21,13 @@ export const CollectionsTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const _useCollection = useCollection(queryClient);
   const getCollection = _useCollection.getAll();
+  const deleteCollection = _useCollection.remove();
+
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getCollection.data);
+
+  const handleBulkDelete = (): void => {
+    selectedItems.forEach((item) => deleteCollection.mutate({ id: item }));
+  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -37,26 +46,47 @@ export const CollectionsTemplate: React.FC = () => {
       {getCollection.isError && "Error..."}
 
       {getCollection.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getCollection.data.map((collection: any) => (
-              <TableRow onClick={() => navigate(`/collections/${collection.id}`)} key={collection.id}>
-                <TableCell>{collection.name}</TableCell>
-                <TableCell onClick={() => navigate(`/collections/${collection.id}`)}>
-                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
+        <div>
+          <BulkActionButton
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+            selectedItemsCount={selectedItems.length}
+          />
+
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader />
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getCollection.data.map((collection: any) => (
+                <TableRow key={collection.id}>
+                  <TableCell>{<CheckboxBulkSelectOne id={collection.id} />}</TableCell>
+
+                  <TableCell>{collection.name}</TableCell>
+
+                  <TableCell onClick={() => navigate(`/collections/${collection.id}`)}>
+                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+
+              {!getCollection.data.length && (
+                <TableRow>
+                  <TableCell>{t("No collections found")}</TableCell>
+                  <TableCell />
+                  <TableCell />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       )}
 
       {getCollection.isLoading && <Skeleton height="200px" />}

@@ -76,6 +76,8 @@
   --gateway-ui-side-bar-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
   --gateway-ui-color-disabled: #c2c8cb;
   --gateway-ui-mapping-header-border-color: 1px solid rgb(209, 209, 209);
+  --gateway-ui-row-background-color: #f9f8f6;
+  --gateway-ui-drop-down-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.8);
   --gateway-ui-mapping-header-background-color: #f9f8f6;
   --gateway-ui-mapping-code-editor-border-color: 1px solid rgb(118, 118, 118);
 

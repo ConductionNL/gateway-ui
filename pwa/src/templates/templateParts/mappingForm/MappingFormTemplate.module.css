@@ -27,7 +27,7 @@
     var(--gateway-ui-size-xl) * -1
   ); /* Dashboard Template padding offset  */
   position: sticky;
-  background-color: var(--gateway-ui-mapping-header-background-color);
+  background-color: var(--gateway-ui-row-background-color);
   user-select: none;
   display: flex;
   align-items: center;

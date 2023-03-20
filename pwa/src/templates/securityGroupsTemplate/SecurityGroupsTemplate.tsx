@@ -12,6 +12,8 @@ import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { useBulkSelect } from "../../hooks/useBulkSelect";
+import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 
 export const SecurityGroupsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -19,6 +21,13 @@ export const SecurityGroupsTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const _useSecurityGroups = useSecurityGroup(queryClient);
   const getSecurityGroups = _useSecurityGroups.getAll();
+  const deleteSecurityGroup = _useSecurityGroups.remove();
+
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getSecurityGroups.data);
+
+  const handleBulkDelete = (): void => {
+    selectedItems.forEach((item) => deleteSecurityGroup.mutate({ id: item }));
+  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -36,30 +45,45 @@ export const SecurityGroupsTemplate: React.FC = () => {
       />
 
       {getSecurityGroups.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader>{t("Description")}</TableHeader>
-              <TableHeader>{t("Config")}</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getSecurityGroups.data.map((securityGroup) => (
-              <TableRow onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)} key={securityGroup.id}>
-                <TableCell>{securityGroup.name}</TableCell>
-                <TableCell>{securityGroup.description ?? "-"}</TableCell>
-                <TableCell>{securityGroup.config ?? "-"}</TableCell>
-                <TableCell onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)}>
-                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
+        <div>
+          <BulkActionButton
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+            selectedItemsCount={selectedItems.length}
+          />
+
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Description")}</TableHeader>
+                <TableHeader>{t("Config")}</TableHeader>
+                <TableHeader />
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getSecurityGroups.data.map((securityGroup) => (
+                <TableRow key={securityGroup.id}>
+                  <TableCell>{<CheckboxBulkSelectOne id={securityGroup.id} />}</TableCell>
+
+                  <TableCell>{securityGroup.name}</TableCell>
+
+                  <TableCell>{securityGroup.description ?? "-"}</TableCell>
+
+                  <TableCell>{securityGroup.config ?? "-"}</TableCell>
+
+                  <TableCell onClick={() => navigate(`/settings/securitygroups/${securityGroup.id}`)}>
+                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       )}
       {getSecurityGroups.isLoading && <Skeleton height={"200px"} />}
     </Container>

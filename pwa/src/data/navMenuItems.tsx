@@ -16,10 +16,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { navigate } from "gatsby";
 import React from "react";
-import APIContext from "../apiService/apiContext";
-import APIService from "../apiService/apiService";
 import { useGatsbyContext } from "../context/gatsby";
-import { handleLogout } from "../services/auth";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 export const mainMenuItems = () => {
   const { gatsbyContext } = useGatsbyContext();
@@ -102,9 +100,9 @@ export const mainMenuItems = () => {
 };
 
 export const bottomMenuItems = () => {
-  const API: APIService | null = React.useContext(APIContext);
   const { gatsbyContext } = useGatsbyContext();
   const [pathname, setPathname] = React.useState<string>("");
+  const { handleLogout } = useAuthentication();
 
   React.useEffect(() => {
     if (!gatsbyContext) return;
@@ -122,7 +120,7 @@ export const bottomMenuItems = () => {
     {
       label: "Logout",
       icon: <FontAwesomeIcon icon={faArrowRightFromBracket} />,
-      onClick: () => handleLogout(API),
+      onClick: () => handleLogout(),
       current: false,
     },
   ];

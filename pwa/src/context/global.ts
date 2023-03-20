@@ -1,4 +1,5 @@
 import * as React from "react";
+import { defaultDeletedItemsContext, IDeletedItemsContext } from "./deletedItems";
 import { defaultGatsbyContext, IGatsbyContext } from "./gatsby";
 import { defaultIsLoadingContext, IIsLoadingContext } from "./isLoading";
 import {
@@ -15,6 +16,7 @@ export interface IGlobalContext {
   currentTabs: ITabsContext;
   logFilters: ILogFiltersContext;
   logTableColumns: ILogTableColumnsContext;
+  deletedItems: IDeletedItemsContext;
 }
 
 export const defaultGlobalContext: IGlobalContext = {
@@ -23,6 +25,7 @@ export const defaultGlobalContext: IGlobalContext = {
   currentTabs: defaultTabsContext,
   logFilters: defaultLogFiltersContext,
   logTableColumns: defaultLogTableColumnsContext,
+  deletedItems: defaultDeletedItemsContext,
 };
 
 export const GlobalContext = React.createContext<

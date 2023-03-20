@@ -444,6 +444,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         name="inversedBy"
                         options={getProperties.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                         disabled={loading}
+                        isClearable
                       />
                     )}
                   </FormFieldInput>
