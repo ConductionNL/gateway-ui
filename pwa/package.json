@@ -26,7 +26,6 @@
     "@gemeente-denhaag/table": "^0.1.1-alpha.87",
     "@gemeente-denhaag/textarea": "^0.1.1-alpha.65",
     "@opengemeenten/iconset-react": "^1.0.1",
-    "@uiw/react-textarea-code-editor": "^2.1.1",
     "ace-builds": "^1.15.2",
     "axios": "^0.25.0",
     "clsx": "^1.1.1",

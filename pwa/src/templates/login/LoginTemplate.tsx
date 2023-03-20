@@ -33,7 +33,7 @@ export const LoginTemplate: React.FC = () => {
 
   React.useEffect(() => {
     queryClient.removeQueries();
-    API.authenticated && navigate("/");
+    API.authenticated && navigate("/"); // checks if user is authenticated or not to prevent use of /login route
   }, []);
 
   React.useEffect(() => {
