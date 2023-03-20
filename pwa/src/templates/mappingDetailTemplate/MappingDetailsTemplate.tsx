@@ -20,7 +20,7 @@ import {
   Tabs,
 } from "@gemeente-denhaag/components-react";
 import { useForm } from "react-hook-form";
-import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faArrowsRotate, faInfoCircle, faMagicWandSparkles } from "@fortawesome/free-solid-svg-icons";
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -45,6 +45,9 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const testMapping = useMapping(queryClient).testMapping(mappingId);
 
   const dashboardCard = getDashboardCard(mappingId);
+
+  const beautify = require("ace-builds/src-noconflict/ext-beautify");
+  const editorRef = React.useRef<any>();
 
   const {
     handleSubmit,
@@ -75,6 +78,10 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   React.useEffect(() => {
     testMapping.isSuccess && setTestMappingData(testMapping.data);
   }, [testMapping.isSuccess]);
+
+  const beautifyEditorCode = () => {
+    beautify.beautify(editorRef.current.editor.session);
+  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -120,14 +127,23 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                   <div className={styles.content}>
                     <FormField>
                       <FormFieldInput>
-                        <div className={styles.formFieldInfoHeader}>
-                          <FormFieldLabel>{t("Input")}</FormFieldLabel>
-                          <ToolTip tooltip="The input is the JSON code you want to test the mapping with.">
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                          </ToolTip>
+                        <div className={styles.formFieldHeader}>
+                          <div className={styles.formFieldInfoHeader}>
+                            <FormFieldLabel>{t("Input")}</FormFieldLabel>
+                            <ToolTip tooltip="The input is the JSON code you want to test the mapping with.">
+                              <FontAwesomeIcon icon={faInfoCircle} />
+                            </ToolTip>
+                          </div>
+
+                          <FormFieldLabel>
+                            <a onClick={beautifyEditorCode} className={styles.beautifyButton}>
+                              <FontAwesomeIcon icon={faMagicWandSparkles} />
+                              Beautify
+                            </a>
+                          </FormFieldLabel>
                         </div>
 
-                        <CodeEditor />
+                        <CodeEditor {...{ beautify, editorRef }} />
 
                         {errors["input"] && <ErrorMessage message={errors["input"].message} />}
                       </FormFieldInput>
@@ -156,8 +172,14 @@ import "ace-builds/src-noconflict/mode-yaml";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/webpack-resolver";
 
-const CodeEditor: React.FC = () => {
+interface CodeEditorProps {
+  beautify: any;
+  editorRef: any;
+}
+
+const CodeEditor: React.FC<CodeEditorProps> = ({ beautify, editorRef }) => {
   const [code, setCode] = React.useState<string>("");
 
   return (
@@ -178,6 +200,8 @@ const CodeEditor: React.FC = () => {
         tabSize: 2,
       }}
       width="100%"
+      ref={editorRef}
+      commands={beautify.commands}
     />
   );
 };

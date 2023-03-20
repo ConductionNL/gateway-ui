@@ -33,6 +33,12 @@
   max-width: unset !important;
 }
 
+.formFieldHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .formFieldInfoHeader {
   display: flex;
   align-items: center;
@@ -45,4 +51,17 @@
 
 .testMappingInputField {
   border: var(--gateway-ui-mapping-code-editor-border-color) !important;
+}
+
+.beautifyButton {
+  color: var(--gateway-ui-color-primary);
+}
+
+.beautifyButton:hover {
+  color: var(--gateway-ui-color-primary-hover);
+  cursor: pointer;
+}
+
+.beautifyButton > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
 }
