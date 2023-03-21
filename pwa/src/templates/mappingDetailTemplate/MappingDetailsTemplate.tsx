@@ -24,7 +24,7 @@ import { faArrowsRotate, faInfoCircle, faMagicWandSparkles } from "@fortawesome/
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCodeEditor } from "../../hooks/useCodeEditor";
+import { useCodeEditor } from "../../hooks/useCodeEditor/useCodeEditor";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -36,7 +36,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
-  const { CodeEditor, BeautifyCodeButton } = useCodeEditor();
+  const { CodeEditor, code } = useCodeEditor();
   const [testMappingData, setTestMappingData] = React.useState<object>();
 
   const queryClient = useQueryClient();
@@ -45,17 +45,6 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const testMapping = useMapping(queryClient).testMapping(mappingId);
 
   const dashboardCard = getDashboardCard(mappingId);
-  const editorRef = React.useRef<any>();
-
-  const [test, setTest] = React.useState<string>("");
-
-  // React.useEffect(() => {
-  //   setTest(code);
-  // }, [code]);
-
-  // React.useEffect(() => {
-  //   setCode(test);
-  // }, [code]);
 
   const {
     handleSubmit,
@@ -119,50 +108,24 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
               </TabPanel>
 
               <TabPanel className={styles.tabPanel} value="1">
-                <form onSubmit={handleSubmit(onSubmitTest)} className={styles.testMappingForm}>
-                  <Button
-                    label={t("Test mapping")}
-                    icon={faArrowsRotate}
-                    variant="primary"
-                    disabled={isLoading.mappingForm}
-                    type="submit"
-                  />
+                <Button
+                  label={t("Test mapping")}
+                  icon={faArrowsRotate}
+                  variant="primary"
+                  disabled={isLoading.mappingForm}
+                />
 
-                  <div className={styles.content}>
-                    <FormField>
-                      <FormFieldInput>
-                        <div className={styles.formFieldHeader}>
-                          <div className={styles.formFieldInfoHeader}>
-                            <FormFieldLabel>{t("Input")}</FormFieldLabel>
-                            <ToolTip tooltip="The input is the JSON code you want to test the mapping with.">
-                              <FontAwesomeIcon icon={faInfoCircle} />
-                            </ToolTip>
-                          </div>
-
-                          <FormFieldLabel>
-                            {console.log(editorRef)}
-                            <BeautifyCodeButton
-                              {...{ editorRef }}
-                              layoutClassName={styles.beautifyButton}
-                              icon={faMagicWandSparkles}
-                            />
-                          </FormFieldLabel>
-                        </div>
-
-                        <CodeEditor {...{ editorRef }} />
-
-                        {errors["input"] && <ErrorMessage message={errors["input"].message} />}
-                      </FormFieldInput>
-                    </FormField>
-                    <FormField>
-                      <FormFieldLabel>{t("Output")}</FormFieldLabel>
-                      {testMappingData && <pre>{JSON.stringify(testMappingData, null, 2)}</pre>}
-                      {!testMappingData && (
-                        <div>When the mapping has been succesfully tested the output will be shown here.</div>
-                      )}
-                    </FormField>
-                  </div>
-                </form>
+                <div className={styles.content}>
+                  The input is the JSON code you want to test the mapping with.
+                  {CodeEditor}
+                  <FormField>
+                    <FormFieldLabel>{t("Output")}</FormFieldLabel>
+                    {testMappingData && <pre>{JSON.stringify(testMappingData, null, 2)}</pre>}
+                    {!testMappingData && (
+                      <div>When the mapping has been succesfully tested the output will be shown here.</div>
+                    )}
+                  </FormField>
+                </div>
               </TabPanel>
             </TabContext>
           </div>

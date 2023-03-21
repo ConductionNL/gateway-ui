@@ -48,16 +48,3 @@
 .testMappingForm > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-lg);
 }
-
-.beautifyButton {
-  color: var(--gateway-ui-color-primary);
-}
-
-.beautifyButton:hover {
-  color: var(--gateway-ui-color-primary-hover);
-  cursor: pointer;
-}
-
-.beautifyButton > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
