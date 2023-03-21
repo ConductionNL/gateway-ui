@@ -10,18 +10,8 @@ import Skeleton from "react-loading-skeleton";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useCurrentTabContext } from "../../context/tabs";
 import { useTranslation } from "react-i18next";
-import {
-  FormField,
-  FormFieldInput,
-  FormFieldLabel,
-  Tab,
-  TabContext,
-  TabPanel,
-  Tabs,
-} from "@gemeente-denhaag/components-react";
-import { useForm } from "react-hook-form";
-import { faArrowsRotate, faInfoCircle, faMagicWandSparkles } from "@fortawesome/free-solid-svg-icons";
-import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
+import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCodeEditor } from "../../hooks/useCodeEditor/useCodeEditor";
@@ -46,17 +36,12 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
 
   const dashboardCard = getDashboardCard(mappingId);
 
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
   const toggleFromDashboard = () => {
     toggleDashboardCard(getMapping.data.name, "mapping", "Mapping", mappingId, dashboardCard?.id);
   };
 
-  const onSubmitTest = (data: any) => {
-    const jsonData = data.input ? JSON.parse(data.input) : [];
+  const submitMappingTest = () => {
+    const jsonData = code ? JSON.parse(code) : [];
 
     const payload = {
       ...jsonData,
@@ -108,23 +93,32 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
               </TabPanel>
 
               <TabPanel className={styles.tabPanel} value="1">
-                <Button
-                  label={t("Test mapping")}
-                  icon={faArrowsRotate}
-                  variant="primary"
-                  disabled={isLoading.mappingForm}
-                />
-
                 <div className={styles.content}>
-                  The input is the JSON code you want to test the mapping with.
-                  {CodeEditor}
-                  <FormField>
-                    <FormFieldLabel>{t("Output")}</FormFieldLabel>
+                  <Button
+                    label={t("Test mapping")}
+                    icon={faArrowsRotate}
+                    variant="primary"
+                    disabled={isLoading.mappingForm}
+                    onClick={submitMappingTest}
+                  />
+
+                  <div className={styles.inputContent}>
+                    <div className={styles.inputTitle}>
+                      {t("Input")}
+                      <ToolTip tooltip="The input is the JSON code you want to test the mapping with.">
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                      </ToolTip>
+                    </div>
+
+                    {CodeEditor}
+                  </div>
+                  <div className={styles.outputContent}>
+                    <div> {t("Output")}</div>
                     {testMappingData && <pre>{JSON.stringify(testMappingData, null, 2)}</pre>}
                     {!testMappingData && (
                       <div>When the mapping has been succesfully tested the output will be shown here.</div>
                     )}
-                  </FormField>
+                  </div>
                 </div>
               </TabPanel>
             </TabContext>
