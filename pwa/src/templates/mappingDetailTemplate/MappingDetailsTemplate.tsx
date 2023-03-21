@@ -24,6 +24,7 @@ import { faArrowsRotate, faInfoCircle, faMagicWandSparkles } from "@fortawesome/
 import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useCodeEditor } from "../../hooks/useCodeEditor";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -35,9 +36,8 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
+  const { CodeEditor, BeautifyCodeButton } = useCodeEditor();
   const [testMappingData, setTestMappingData] = React.useState<object>();
-
-  const [code, setCode] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const getMapping = useMapping(queryClient).getOne(mappingId);
@@ -45,9 +45,17 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const testMapping = useMapping(queryClient).testMapping(mappingId);
 
   const dashboardCard = getDashboardCard(mappingId);
-
-  const beautify = require("ace-builds/src-noconflict/ext-beautify");
   const editorRef = React.useRef<any>();
+
+  const [test, setTest] = React.useState<string>("");
+
+  // React.useEffect(() => {
+  //   setTest(code);
+  // }, [code]);
+
+  // React.useEffect(() => {
+  //   setCode(test);
+  // }, [code]);
 
   const {
     handleSubmit,
@@ -78,10 +86,6 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   React.useEffect(() => {
     testMapping.isSuccess && setTestMappingData(testMapping.data);
   }, [testMapping.isSuccess]);
-
-  const beautifyEditorCode = () => {
-    beautify.beautify(editorRef.current.editor.session);
-  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -136,14 +140,16 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                           </div>
 
                           <FormFieldLabel>
-                            <a onClick={beautifyEditorCode} className={styles.beautifyButton}>
-                              <FontAwesomeIcon icon={faMagicWandSparkles} />
-                              Beautify
-                            </a>
+                            {console.log(editorRef)}
+                            <BeautifyCodeButton
+                              {...{ editorRef }}
+                              layoutClassName={styles.beautifyButton}
+                              icon={faMagicWandSparkles}
+                            />
                           </FormFieldLabel>
                         </div>
 
-                        <CodeEditor {...{ beautify, editorRef }} />
+                        <CodeEditor {...{ editorRef }} />
 
                         {errors["input"] && <ErrorMessage message={errors["input"].message} />}
                       </FormFieldInput>
@@ -163,45 +169,5 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
         </>
       )}
     </Container>
-  );
-};
-
-import AceEditor from "react-ace";
-
-import "ace-builds/src-noconflict/mode-yaml";
-import "ace-builds/src-noconflict/mode-json";
-import "ace-builds/src-noconflict/theme-github";
-import "ace-builds/src-noconflict/ext-language_tools";
-import "ace-builds/webpack-resolver";
-
-interface CodeEditorProps {
-  beautify: any;
-  editorRef: any;
-}
-
-const CodeEditor: React.FC<CodeEditorProps> = ({ beautify, editorRef }) => {
-  const [code, setCode] = React.useState<string>("");
-
-  return (
-    <AceEditor
-      mode="json"
-      theme="github"
-      onChange={(value) => setCode(value)}
-      fontSize={14}
-      showPrintMargin={false}
-      showGutter={true}
-      highlightActiveLine={true}
-      value={code}
-      setOptions={{
-        enableBasicAutocompletion: true,
-        enableLiveAutocompletion: true,
-        enableSnippets: false,
-        showLineNumbers: true,
-        tabSize: 2,
-      }}
-      width="100%"
-      ref={editorRef}
-      commands={beautify.commands}
-    />
   );
 };

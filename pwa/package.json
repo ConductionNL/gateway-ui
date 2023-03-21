@@ -4,7 +4,9 @@
   "private": true,
   "description": "Gatsby Skeleton Application",
   "author": "Conduction B.V.",
-  "keywords": ["gatsby"],
+  "keywords": [
+    "gatsby"
+  ],
   "scripts": {
     "develop": "gatsby develop",
     "start": "gatsby develop",
@@ -26,7 +28,7 @@
     "@gemeente-denhaag/table": "^0.1.1-alpha.87",
     "@gemeente-denhaag/textarea": "^0.1.1-alpha.65",
     "@opengemeenten/iconset-react": "^1.0.1",
-    "ace-builds": "^1.15.2",
+    "ace-builds": "^1.16.0",
     "axios": "^0.25.0",
     "clsx": "^1.1.1",
     "cron-validator": "^1.3.1",
