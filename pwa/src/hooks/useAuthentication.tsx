@@ -17,28 +17,21 @@ export const useAuthentication = () => {
   const API: APIService | null = React.useContext(APIContext);
 
   // Handle logout
-  // const handleLogout = async () => {
-  //   if (!isBrowser()) return;
-
-  //   return await toast.promise(
-  //     API.Login.logout().then(() => {
-  //       API.removeAuthentication();
-  //       navigate("/");
-  //     }),
-
-  //     {
-  //       loading: "Logging out...",
-  //       success: "Succesfully logged out",
-  //       error: (err) => err.message,
-  //     },
-  //   );
-  // };
-
   const handleLogout = async () => {
     if (!isBrowser()) return;
 
-    API.removeAuthentication();
-    navigate("/");
+    return await toast.promise(
+      API.Login.logout().then(() => {
+        API.removeAuthentication();
+        navigate("/");
+      }),
+
+      {
+        loading: "Logging out...",
+        success: "Succesfully logged out",
+        error: (err) => err.message,
+      },
+    );
   };
 
   // Login using gateway users
