@@ -1,0 +1,6 @@
+.container {
+  height: 500px;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}

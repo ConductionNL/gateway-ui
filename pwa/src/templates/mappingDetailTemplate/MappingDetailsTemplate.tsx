@@ -14,7 +14,7 @@ import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-re
 import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCodeEditor } from "../../hooks/useCodeEditor/useCodeEditor";
+import { CodeEditor } from "../../components/codeEditor/CodeEditor";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -22,11 +22,10 @@ interface MappingDetailsTemplateProps {
 
 export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ mappingId }) => {
   const { t } = useTranslation();
-
+  const [mappingTestInput, setMappingTestInput] = React.useState<string>("");
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
-  const { CodeEditor, code } = useCodeEditor();
   const [testMappingData, setTestMappingData] = React.useState<object>();
 
   const queryClient = useQueryClient();
@@ -41,13 +40,11 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   };
 
   const submitMappingTest = () => {
-    const jsonData = code ? JSON.parse(code) : [];
-
-    const payload = {
-      ...jsonData,
-    };
-
-    testMapping.mutate({ payload: payload, id: mappingId });
+    try {
+      testMapping.mutate({ payload: { ...JSON.parse(mappingTestInput) }, id: mappingId });
+    } catch {
+      alert("Invalid JSON supplied, update the object and try again");
+    }
   };
 
   React.useEffect(() => {
@@ -98,7 +95,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                     label={t("Test mapping")}
                     icon={faArrowsRotate}
                     variant="primary"
-                    disabled={isLoading.mappingForm}
+                    disabled={isLoading.mappingForm || !mappingTestInput}
                     onClick={submitMappingTest}
                   />
 
@@ -110,7 +107,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                       </ToolTip>
                     </div>
 
-                    {CodeEditor}
+                    <CodeEditor code={mappingTestInput} setCode={setMappingTestInput} />
                   </div>
                   <div className={styles.outputContent}>
                     <div> {t("Output")}</div>
