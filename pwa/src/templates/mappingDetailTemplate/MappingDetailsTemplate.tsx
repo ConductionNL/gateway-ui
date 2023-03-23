@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./MappingDetailsTemplate.module.css";
-import { Container, Textarea, ToolTip } from "@conduction/components";
+import { Container, ToolTip } from "@conduction/components";
 import { MappingFormTemplate, formId } from "../templateParts/mappingForm/MappingFormTemplate";
 import { useMapping } from "../../hooks/mapping";
 import { useQueryClient } from "react-query";
@@ -10,22 +10,11 @@ import Skeleton from "react-loading-skeleton";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useCurrentTabContext } from "../../context/tabs";
 import { useTranslation } from "react-i18next";
-import {
-  FormField,
-  FormFieldInput,
-  FormFieldLabel,
-  Tab,
-  TabContext,
-  TabPanel,
-  Tabs,
-} from "@gemeente-denhaag/components-react";
-import { useForm } from "react-hook-form";
-import clsx from "clsx";
+import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { ErrorMessage } from "../../components/errorMessage/ErrorMessage";
-import { validateStringAsJSON } from "../../services/validateJSON";
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CodeEditor } from "../../components/codeEditor/CodeEditor";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -33,7 +22,7 @@ interface MappingDetailsTemplateProps {
 
 export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ mappingId }) => {
   const { t } = useTranslation();
-
+  const [mappingTestInput, setMappingTestInput] = React.useState<string>("");
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
@@ -46,26 +35,18 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
 
   const dashboardCard = getDashboardCard(mappingId);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
   const toggleFromDashboard = () => {
     toggleDashboardCard(getMapping.data.name, "mapping", "Mapping", mappingId, dashboardCard?.id);
   };
 
-  const onSubmitTest = (data: any) => {
-    const jsonData = data.input ? JSON.parse(data.input) : [];
-
-    const payload = {
-      ...jsonData,
-    };
-
-    testMapping.mutate({ payload: payload, id: mappingId });
+  const submitMappingTest = () => {
+    try {
+      testMapping.mutate({ payload: { ...JSON.parse(mappingTestInput) }, id: mappingId });
+    } catch {
+      alert("Invalid JSON supplied, update the object and try again");
+    }
   };
-    
+
   React.useEffect(() => {
     setIsLoading({
       ...isLoading,
@@ -109,43 +90,33 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
               </TabPanel>
 
               <TabPanel className={styles.tabPanel} value="1">
-                <form onSubmit={handleSubmit(onSubmitTest)} className={styles.testMappingForm}>
+                <div className={styles.content}>
                   <Button
                     label={t("Test mapping")}
                     icon={faArrowsRotate}
                     variant="primary"
-                    disabled={isLoading.mappingForm}
-                    type="submit"
+                    disabled={isLoading.mappingForm || !mappingTestInput}
+                    onClick={submitMappingTest}
                   />
 
-                  <div className={styles.content}>
-                    <FormField>
-                      <FormFieldInput>
-                        <div className={styles.formFieldInfoHeader}>
-                          <FormFieldLabel>{t("Input")}</FormFieldLabel>
-                          <ToolTip tooltip="The input is the JSON code you want to test the mapping with.">
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                          </ToolTip>
-                        </div>
+                  <div className={styles.inputContent}>
+                    <div className={styles.inputTitle}>
+                      {t("Input")}
+                      <ToolTip tooltip="The input is the JSON code you want to test the mapping with.">
+                        <FontAwesomeIcon icon={faInfoCircle} />
+                      </ToolTip>
+                    </div>
 
-                        <Textarea
-                          {...{ register, errors }}
-                          name="input"
-                          validation={{ validate: validateStringAsJSON }}
-                          disabled={isLoading.mappingForm}
-                        />
-                        {errors["input"] && <ErrorMessage message={errors["input"].message} />}
-                      </FormFieldInput>
-                    </FormField>
-                    <FormField>
-                      <FormFieldLabel>{t("Output")}</FormFieldLabel>
-                      {testMappingData && <pre>{JSON.stringify(testMappingData, null, 2)}</pre>}
-                      {!testMappingData && (
-                        <div>When the mapping has been succesfully tested the output will be shown here.</div>
-                      )}
-                    </FormField>
+                    <CodeEditor code={mappingTestInput} setCode={setMappingTestInput} />
                   </div>
-                </form>
+                  <div className={styles.outputContent}>
+                    <div> {t("Output")}</div>
+                    {testMappingData && <pre>{JSON.stringify(testMappingData, null, 2)}</pre>}
+                    {!testMappingData && (
+                      <div>When the mapping has been succesfully tested the output will be shown here.</div>
+                    )}
+                  </div>
+                </div>
               </TabPanel>
             </TabContext>
           </div>

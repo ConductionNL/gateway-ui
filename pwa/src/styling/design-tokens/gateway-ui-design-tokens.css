@@ -112,4 +112,6 @@
   --gateway-ui-objects-save-button-options-button-border-radius: 4px;
   --gateway-ui-confirm-popup-overlay-background-color: rgba(0, 0, 0, 0.3);
   --gateway-ui-confirm-popup-width: 500px;
+  --gateway-ui-code-editor-height: 500px;
+  --gateway-ui-code-editor-border: 1px solid rgba(0, 0, 0, 0.2);
 }
