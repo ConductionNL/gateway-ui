@@ -1,6 +1,4 @@
 .container {
-  height: 500px;
-  position: relative;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+  height: var(--gateway-ui-code-editor-height);
+  border: var(--gateway-ui-code-editor-border);
 }
