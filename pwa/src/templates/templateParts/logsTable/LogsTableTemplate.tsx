@@ -3,17 +3,16 @@ import * as styles from "./LogsTableTemplate.module.css";
 
 import _ from "lodash";
 import { navigate } from "gatsby";
-import { ToolTip } from "@conduction/components";
-import { Button } from "@gemeente-denhaag/components-react";
-import { faArrowRight, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SelectSingle, ToolTip } from "@conduction/components";
+import { faArrowRight, faClose, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { Paginate } from "../../../components/paginate/Paginate";
-import { useLogTableColumnsContext } from "../../../context/logs";
-import Collapsible from "react-collapsible";
-import clsx from "clsx";
+import { useLogFiltersContext, useLogTableColumnsContext } from "../../../context/logs";
 import { useTranslation } from "react-i18next";
 import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusTag";
+import { Button } from "../../../components/button/Button";
+import clsx from "clsx";
+import { useForm } from "react-hook-form";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -40,7 +39,9 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
 
   return (
     <div className={styles.container}>
-      <LogsTableColumnFilters />
+      <div className={styles.header}>
+        <LogsFiltersDisplayFilters />
+      </div>
 
       <Table>
         <TableHead>
@@ -80,91 +81,91 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
               {logTableColumns.endpoint && (
                 <TableCell>
                   <Button
+                    variant="primary"
+                    label={t("Endpoint")}
+                    icon={faArrowRight}
                     className={styles.button}
                     disabled={!log.context.endpoint}
                     onClick={(e) => handleResourceClick(e, "endpoints", log.context.endpoint)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Endpoint")}
-                  </Button>
+                  />
                 </TableCell>
               )}
 
               {logTableColumns.schema && (
                 <TableCell>
                   <Button
+                    variant="primary"
+                    label={t("Schema")}
+                    icon={faArrowRight}
                     className={styles.button}
                     disabled={!log.context.schema}
                     onClick={(e) => handleResourceClick(e, "schemas", log.context.schema)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Schema")}
-                  </Button>
+                  />
                 </TableCell>
               )}
 
               {logTableColumns.cronjob && (
                 <TableCell>
                   <Button
+                    variant="primary"
+                    label={t("Cronjob")}
+                    icon={faArrowRight}
                     className={styles.button}
                     disabled={!log.context.cronjob}
                     onClick={(e) => handleResourceClick(e, "cronjobs", log.context.cronjob)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Cronjob")}
-                  </Button>
+                  />
                 </TableCell>
               )}
 
               {logTableColumns.action && (
                 <TableCell>
                   <Button
+                    variant="primary"
+                    label={t("Action")}
+                    icon={faArrowRight}
                     className={styles.button}
                     disabled={!log.context.action}
                     onClick={(e) => handleResourceClick(e, "actions", log.context.action)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Action")}
-                  </Button>
+                  />
                 </TableCell>
               )}
 
               {logTableColumns.user && (
                 <TableCell>
                   <Button
+                    variant="primary"
+                    label={t("User")}
+                    icon={faArrowRight}
                     className={styles.button}
                     disabled={!log.context.user}
                     onClick={(e) => handleResourceClick(e, "settings/users", log.context.user)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("User")}
-                  </Button>
+                  />
                 </TableCell>
               )}
 
               {logTableColumns.organization && (
                 <TableCell>
                   <Button
+                    variant="primary"
+                    label={t("Organization")}
+                    icon={faArrowRight}
                     className={styles.button}
                     disabled={!log.context.organization}
                     onClick={(e) => handleResourceClick(e, "settings/organizations", log.context.organization)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Organization")}
-                  </Button>
+                  />
                 </TableCell>
               )}
 
               {logTableColumns.application && (
                 <TableCell>
                   <Button
+                    variant="primary"
+                    label={t("Application")}
+                    icon={faArrowRight}
                     className={styles.button}
                     disabled={!log.context.application}
                     onClick={(e) => handleResourceClick(e, "settings/applications", log.context.application)}
-                  >
-                    <FontAwesomeIcon icon={faArrowRight} />
-                    {t("Application")}
-                  </Button>
+                  />
                 </TableCell>
               )}
             </TableRow>
@@ -182,43 +183,78 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
         </TableBody>
       </Table>
 
-      <Paginate {...pagination} />
+      <Paginate layoutClassName={styles.pagination} {...pagination} />
     </div>
   );
 };
 
-const LogsTableColumnFilters: React.FC = () => {
+const LogsFiltersDisplayFilters: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const { logFilters, setLogFilters } = useLogFiltersContext();
   const { setLogTableColumns, logTableColumns } = useLogTableColumnsContext();
 
+  const {
+    register,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm();
+
+  const order = watch("order");
+
+  React.useEffect(() => {
+    if (!order) return;
+
+    setLogFilters({ "_order[datetime]": order.value });
+  }, [order]);
+
+  const orderOptions = [
+    { label: "Newest first", value: "desc" },
+    { label: "Oldest first", value: "asc" },
+  ];
+
   return (
-    <div className={styles.columnFiltersWrapper}>
-      <Collapsible
-        trigger={
-          <div className={clsx(styles.columnFiltersToggle, isOpen && styles.isOpen)}>
-            Filter log table columns <FontAwesomeIcon icon={faChevronRight} />
-          </div>
-        }
-        open={isOpen}
-        transitionTime={200}
-        onOpening={() => setIsOpen(true)}
-        onClosing={() => setIsOpen(false)}
-      >
-        <div className={styles.columnFiltersContainer}>
-          {Object.entries(logTableColumns).map(([key, value]) => (
-            <div {...{ key }}>
-              <label htmlFor={key}>{_.upperFirst(key)}</label>
-              <input
-                id={key}
-                name={key}
-                checked={value}
-                type="checkbox"
-                onChange={() => setLogTableColumns({ [key]: !value })}
-              />
-            </div>
-          ))}
+    <div className={styles.displayFiltersContainer}>
+      <Button
+        label={isOpen ? "Close filters" : "Display filters"}
+        icon={isOpen ? faClose : faFilter}
+        variant="secondary"
+        onClick={() => setIsOpen((isOpen) => !isOpen)}
+      />
+
+      <div className={clsx(styles.popUp, isOpen && styles.isOpen)}>
+        <div className={styles.sortingContainer}>
+          <span className={styles.title}>Sort results</span>
+
+          <SelectSingle
+            name="order"
+            options={orderOptions}
+            defaultValue={orderOptions.find((option) => option.value === logFilters["_order[datetime]"] ?? "desc")}
+            {...{ register, errors, control }}
+          />
         </div>
-      </Collapsible>
+
+        <hr />
+
+        <div>
+          <span className={styles.title}>Toggle columns</span>
+
+          <div className={styles.columns}>
+            {Object.entries(logTableColumns).map(([key, value]) => (
+              <div {...{ key }} className={styles.column}>
+                <input
+                  id={key}
+                  name={key}
+                  checked={value}
+                  type="checkbox"
+                  onChange={() => setLogTableColumns({ [key]: !value })}
+                />
+                <label htmlFor={key}>{_.upperFirst(key)}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
