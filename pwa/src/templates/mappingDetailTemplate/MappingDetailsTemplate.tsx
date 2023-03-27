@@ -15,6 +15,8 @@ import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CodeEditor } from "../../components/codeEditor/CodeEditor";
+import { useLog } from "../../hooks/log";
+import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -32,6 +34,9 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const getMapping = useMapping(queryClient).getOne(mappingId);
   const deleteMapping = useMapping(queryClient).remove();
   const testMapping = useMapping(queryClient).testMapping(mappingId);
+
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
+  const getLogs = useLog().getAllFromChannel("mapping", mappingId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(mappingId);
 
@@ -83,6 +88,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
               >
                 <Tab className={styles.tab} label={t("General")} value={0} />
                 <Tab className={styles.tab} label={t("Test Mappings")} value={1} />
+                <Tab className={styles.tab} label={t("Logs")} value={2} />
               </Tabs>
 
               <TabPanel className={styles.tabPanel} value="0">
@@ -117,6 +123,21 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                     )}
                   </div>
                 </div>
+              </TabPanel>
+
+              <TabPanel className={styles.tabPanel} value="2">
+                {getLogs.isLoading && <Skeleton height="200px" />}
+
+                {getLogs.isSuccess && (
+                  <LogsTableTemplate
+                    logs={getLogs.data.results}
+                    pagination={{
+                      totalPages: getLogs.data.pages,
+                      currentPage: currentLogsPage,
+                      changePage: setCurrentLogsPage,
+                    }}
+                  />
+                )}
               </TabPanel>
             </TabContext>
           </div>
