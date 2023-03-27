@@ -89,3 +89,24 @@ export const validateSession = () => {
 
   return !expired;
 };
+
+export const checkIfExpiresSoon = () => {
+  const token = sessionStorage.getItem("JWT");
+
+  if (!token) return false;
+
+  const decoded = jwtDecode<JwtPayload>(token);
+
+  if (decoded.exp) {
+    const renewTokenTime = decoded.exp * 1000 - 5 * 60 * 1000; // 5 is minutes
+    const tokenExpiration = decoded.exp * 1000;
+    const currentTime = Date.now();
+
+    const renewTokenPossible =
+      decoded?.exp &&
+      currentTime.valueOf() >= renewTokenTime.valueOf() &&
+      currentTime.valueOf() <= tokenExpiration.valueOf();
+
+    return renewTokenPossible;
+  }
+};

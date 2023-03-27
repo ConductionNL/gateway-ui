@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { handleAutomaticLogout, validateSession } from "../hooks/useAuthentication";
+import { checkIfExpiresSoon, handleAutomaticLogout, validateSession } from "../hooks/useAuthentication";
 import toast from "react-hot-toast";
 
 // Services
@@ -54,7 +54,9 @@ export default class APIService {
   }
 
   private renewAuthentication(): void {
-    this.apiClient.get("/users/reset_token").then((res) => this.setAuthentication(res.data.jwtToken));
+    this.apiClient
+      .get("/users/reset_token", { withCredentials: true })
+      .then((res) => this.setAuthentication(res.data.jwtToken));
   }
 
   private getJWT(): string | null {
@@ -216,7 +218,9 @@ export default class APIService {
       });
     }
 
-    this.renewAuthentication();
+    if (checkIfExpiresSoon()) {
+      this.renewAuthentication();
+    }
 
     switch (method) {
       case "GET":
