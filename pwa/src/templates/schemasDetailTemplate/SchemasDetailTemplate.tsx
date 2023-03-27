@@ -41,7 +41,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
   const getSchemaSchema = _useSchema.getSchema(schemaId);
 
-  const getLogs = useLog(queryClient).getAllFromChannel("schema", schemaId, currentLogsPage);
+  const getLogs = useLog().getAllFromChannel("schema", schemaId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(getSchema.data?.id);
 

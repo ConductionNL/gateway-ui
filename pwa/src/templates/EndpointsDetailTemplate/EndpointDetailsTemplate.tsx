@@ -31,7 +31,7 @@ export const EndpointDetailTemplate: React.FC<EndpointDetailsTemplateProps> = ({
   const getEndpoint = _useEndpoints.getOne(endpointId);
   const deleteEndpoint = _useEndpoints.remove();
 
-  const getLogs = useLog(queryClient).getAllFromChannel("endpoint", endpointId, currentLogsPage);
+  const getLogs = useLog().getAllFromChannel("endpoint", endpointId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(endpointId);
 

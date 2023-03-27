@@ -35,7 +35,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
   const _useOrganizations = useOrganization(queryClient);
   const getOrganization = _useOrganizations.getOne(organizationId);
 
-  const getLogs = useLog(queryClient).getAllFromChannel("organization", organizationId, currentLogsPage);
+  const getLogs = useLog().getAllFromChannel("organization", organizationId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(organizationId);
 

@@ -37,7 +37,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
 
   const getSchema = _useObject.getSchema(objectId);
 
-  const getLogs = useLog(queryClient).getAllFromChannel("object", objectId, currentLogsPage);
+  const getLogs = useLog().getAllFromChannel("object", objectId, currentLogsPage);
 
   const handleDeleteObject = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,

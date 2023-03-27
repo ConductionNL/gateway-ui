@@ -1,11 +1,12 @@
 import * as React from "react";
-import { QueryClient, useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { ILogFiltersContext, TLogChannel } from "../context/logs";
 
-export const useLog = (queryClient: QueryClient) => {
+export const useLog = () => {
   const API: APIService | null = React.useContext(APIContext);
+  const queryClient = useQueryClient();
 
   const getOne = (logId: string) =>
     useQuery<any, Error>(["log", logId], () => API?.Log.getOne(logId), {

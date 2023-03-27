@@ -35,7 +35,7 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
   const getUser = _useUsers.getOne(userId);
   const deleteUser = _useUsers.remove();
 
-  const getLogs = useLog(queryClient).getAllFromChannel("user", userId, currentLogsPage);
+  const getLogs = useLog().getAllFromChannel("user", userId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(getUser.data?.id);
 

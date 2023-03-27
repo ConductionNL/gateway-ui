@@ -30,7 +30,7 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
   const queryClient = useQueryClient();
   const _useSource = useSource(queryClient);
 
-  const getLogs = useLog(queryClient).getAllFromChannel("source", sourceId, currentLogsPage);
+  const getLogs = useLog().getAllFromChannel("source", sourceId, currentLogsPage);
 
   const getSource = _useSource.getOne(sourceId);
   const deleteSource = _useSource.remove();

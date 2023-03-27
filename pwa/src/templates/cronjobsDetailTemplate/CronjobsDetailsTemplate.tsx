@@ -29,7 +29,7 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
   const getCronjob = _useCronjob.getOne(cronjobId);
   const deleteCronjob = _useCronjob.remove();
 
-  const getLogs = useLog(queryClient).getAllFromChannel("cronjob", cronjobId, currentLogsPage);
+  const getLogs = useLog().getAllFromChannel("cronjob", cronjobId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(cronjobId);
 

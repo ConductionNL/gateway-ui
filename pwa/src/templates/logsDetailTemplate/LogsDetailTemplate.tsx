@@ -32,7 +32,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
 
   const queryClient = useQueryClient();
 
-  const getLog = useLog(queryClient).getOne(logId);
+  const getLog = useLog().getOne(logId);
   const getApplication = useApplication(queryClient).getOne(getLog.data?.context?.application);
   const getEndpoint = useEndpoint(queryClient).getOne(getLog.data?.context?.endpoint);
   const getSchema = useSchema(queryClient).getOne(getLog.data?.context?.schema);

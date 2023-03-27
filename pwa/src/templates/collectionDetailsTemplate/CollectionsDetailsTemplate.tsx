@@ -30,7 +30,7 @@ export const CollectionsDetailTemplate: React.FC<CollectionsDetailPageProps> = (
   const getCollection = _useCollection.getOne(collectionId);
   const deleteCollection = _useCollection.remove();
 
-  const getLogs = useLog(queryClient).getAllFromChannel("collection", collectionId, currentLogsPage);
+  const getLogs = useLog().getAllFromChannel("collection", collectionId, currentLogsPage);
 
   const dashboardCard = getDashboardCard(collectionId);
 

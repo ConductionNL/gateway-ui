@@ -34,7 +34,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
   const deleteAction = _useAction.remove();
   const runAction = _useAction.runAction(actionId);
 
-  const getLogs = useLog(queryClient).getAllFromChannel("action", actionId, currentLogsPage);
+  const getLogs = useLog().getAllFromChannel("action", actionId, currentLogsPage);
 
   const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
 

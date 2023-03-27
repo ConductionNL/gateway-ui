@@ -18,7 +18,7 @@ export const LogsTemplate: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
   const queryClient = useQueryClient();
-  const getLogs = useLog(queryClient).getAll(logFilters, currentPage);
+  const getLogs = useLog().getAll(logFilters, currentPage);
 
   React.useEffect(() => {
     setCurrentPage(1);
