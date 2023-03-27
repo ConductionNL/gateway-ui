@@ -10,11 +10,14 @@ import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import { useIsLoadingContext } from "../../context/isLoading";
+import APIService from "../../apiService/apiService";
+import APIContext from "../../apiService/apiContext";
 
 export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
   const { handleExternalLogin, isLoading: authenticationIsLoading } = useAuthentication();
   const { isLoading, setIsLoading } = useIsLoadingContext();
+  const [API] = React.useState<APIService>(React.useContext(APIContext));
 
   const [redirectedFromDex, setRedirectedFromDex] = React.useState<boolean>(false); // is set when the user was redirected BACK to this LoginTemplate from DEX
   const [dexRedirectURL, setDexRedirectURL] = React.useState<string>("");
@@ -30,6 +33,7 @@ export const LoginTemplate: React.FC = () => {
 
   React.useEffect(() => {
     queryClient.removeQueries();
+    API.authenticated && navigate("/"); // checks if user is authenticated or not to prevent use of /login route
   }, []);
 
   React.useEffect(() => {

@@ -33,12 +33,27 @@
   max-width: unset !important;
 }
 
+.formFieldHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .formFieldInfoHeader {
   display: flex;
   align-items: center;
   gap: var(--gateway-ui-size-xs);
 }
 
-.testMappingForm > *:not(:last-child) {
-  margin-block-end: var(--gateway-ui-size-lg);
+.inputContent > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-sm);
+}
+.outputContent > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-sm);
+}
+
+.inputTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--gateway-ui-size-xs);
 }

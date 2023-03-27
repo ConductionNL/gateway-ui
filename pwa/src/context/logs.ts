@@ -2,6 +2,7 @@ import * as React from "react";
 import { GlobalContext } from "./global";
 
 export interface ILogFiltersContext {
+  "_order[datetime]": "asc" | "desc";
   channel?: TLogChannel;
   level_name?: TLogLevelName;
   context?: {
@@ -17,7 +18,9 @@ export interface ILogFiltersContext {
   };
 }
 
-export const defaultLogFiltersContext = {} as ILogFiltersContext;
+export const defaultLogFiltersContext = {
+  "_order[datetime]": "desc",
+} as ILogFiltersContext;
 
 export const useLogFiltersContext = () => {
   const [globalContext, setGlobalContext] = React.useContext(GlobalContext);

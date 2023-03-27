@@ -1,0 +1,4 @@
+.container {
+  height: var(--gateway-ui-code-editor-height);
+  border: var(--gateway-ui-code-editor-border);
+}
