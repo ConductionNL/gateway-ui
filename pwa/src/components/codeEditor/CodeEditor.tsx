@@ -16,7 +16,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({ code, setCode, language 
       value={code}
       {...{ language }}
       onChange={(newCode) => setCode(newCode ?? "")}
-      className={clsx(styles.container, layoutClassName && styles.layoutClassName)}
+      className={clsx(styles.container, layoutClassName && layoutClassName)}
     />
   );
 };
