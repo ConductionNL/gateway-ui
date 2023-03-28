@@ -67,12 +67,18 @@ export default class APIService {
   }
 
   public get LoginClient(): AxiosInstance {
+    let headers: any = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+
+    if (this.getJWT()) {
+      headers.Authorization = `Bearer ${this.getJWT()}`;
+    }
+
     return axios.create({
       baseURL: window.sessionStorage.getItem("GATSBY_API_URL") ?? "",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      headers,
     });
   }
 
