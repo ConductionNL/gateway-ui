@@ -1,17 +1,3 @@
-.paginationContainer {
-  margin-block-start: var(--gateawy-ui-size-lg);
-}
-
-.deleteButton {
-  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
-}
-
-.deleteButton:hover {
-  --denhaag-button-primary-action-hover-background-color: var(
-    --gateway-ui-color-dark-red
-  );
-}
-
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
 }

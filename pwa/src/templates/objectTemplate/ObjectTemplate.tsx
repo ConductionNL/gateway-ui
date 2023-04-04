@@ -1,20 +1,15 @@
 import * as React from "react";
 import * as styles from "./ObjectTemplate.module.css";
-import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { navigate } from "gatsby";
 import { useObject } from "../../hooks/object";
 import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
-import { Paginate } from "../../components/paginate/Paginate";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
-import { useBulkSelect } from "../../hooks/useBulkSelect";
-import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -23,15 +18,8 @@ export const ObjectTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const _useObject = useObject(queryClient);
   const getObjects = _useObject.getAll(currentPage, 30);
-  const deleteObject = _useObject.remove();
-
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getObjects.data);
 
   if (getObjects.isError) return <>Oops, something went wrong...</>;
-
-  const handleBulkDelete = () => {
-    selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
-  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -44,58 +32,14 @@ export const ObjectTemplate: React.FC = () => {
 
       {getObjects.isSuccess && (
         <div>
-          <BulkActionButton
-            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
-            selectedItemsCount={selectedItems.length}
+          <ObjectsTable
+            objects={getObjects.data.results}
+            pagination={{
+              totalPages: getObjects.data.pages,
+              currentPage: currentPage,
+              changePage: setCurrentPage,
+            }}
           />
-
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>
-                  <CheckboxBulkSelectAll />
-                </TableHeader>
-                <TableHeader>{t("Id")}</TableHeader>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader>{t("Schema")}</TableHeader>
-                <TableHeader>{t("Sources")}</TableHeader>
-                <TableHeader></TableHeader>
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {!!getObjects.data.results.length &&
-                getObjects.data.results.map((object: any) => (
-                  <TableRow key={object.id}>
-                    <TableCell>{<CheckboxBulkSelectOne id={object.id} />}</TableCell>
-                    <TableCell>{object._self?.id ?? "-"}</TableCell>
-                    <TableCell>{object._self?.name ?? "NVT"}</TableCell>
-                    <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>
-                    <TableCell>{object._self?.sources ?? "-"}</TableCell>
-                    <TableCell onClick={() => navigate(`/objects/${object.id}`)}>
-                      <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                        {t("Details")}
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
-
-              {!getObjects.data.results.length && (
-                <TableRow>
-                  <TableCell>{t("No objects found")}</TableCell>
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-
-          {getObjects.data.results.length > 0 && (
-            <Paginate totalPages={getObjects.data.pages} currentPage={currentPage} changePage={setCurrentPage} />
-          )}
         </div>
       )}
       {getObjects.isLoading && <Skeleton height="200px" />}

@@ -111,7 +111,6 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
                   currentPage: currentObjectsPage,
                   changePage: setCurrentObjectsPage,
                 }}
-                {...{ schemaId }}
               />
             )}
 
