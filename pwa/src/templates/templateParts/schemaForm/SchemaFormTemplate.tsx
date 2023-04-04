@@ -315,14 +315,15 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "array" && (
+        {type === "array" && <>Properties of type array are not yet supported.</>}
+        {/* {type === "array" && (
           <>
             <CreateKeyValue
               disabled={disabled || readOnly}
               {...{ register, errors, control, placeholder, name, defaultValue }}
             />
           </>
-        )}
+        )} */}
 
         {type === "object" && (
           <SchemaTypeObject
