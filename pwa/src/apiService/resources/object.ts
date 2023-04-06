@@ -8,12 +8,12 @@ export default class Sources {
     this._instance = _instance;
   }
 
-  public getAll = async (currentPage: number, limit?: number, search?: string): Promise<any> => {
+  public getAll = async (currentPage: number, limit?: number, searchQuery?: string): Promise<any> => {
     const { data } = await Send(
       this._instance,
       "GET",
       `/admin/objects?extend[]=all&page=${currentPage}${limit ? `&_limit=${limit}` : ""}${
-        search ? `&_search=${search}` : ""
+        searchQuery ? `&_search=${searchQuery}` : ""
       }`,
     );
 

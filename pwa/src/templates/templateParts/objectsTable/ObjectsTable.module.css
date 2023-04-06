@@ -5,7 +5,6 @@
 .actionsContainer {
   width: 100%;
   gap: var(--gateway-ui-size-md);
-  align-items: stretch;
   display: flex;
   justify-content: space-between;
 }
@@ -13,4 +12,8 @@
 .searchActionContainer {
   width: 100%;
   max-width: 350px;
+}
+
+.searchActionContainer > div > input {
+  height: 47.5px; /* height of BulkActionButton */
 }
