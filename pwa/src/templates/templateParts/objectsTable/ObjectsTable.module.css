@@ -1,3 +1,16 @@
-.container > *:not(:last-child) {
-  margin-block-end: var(--gateway-ui-size-lg);
+.container > :last-child {
+  margin-block-start: var(--gateway-ui-size-lg);
+}
+
+.actionsContainer {
+  width: 100%;
+  gap: var(--gateway-ui-size-md);
+  align-items: stretch;
+  display: flex;
+  justify-content: space-between;
+}
+
+.searchActionContainer {
+  width: 100%;
+  max-width: 350px;
 }

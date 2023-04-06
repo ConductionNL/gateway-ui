@@ -362,7 +362,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   schema,
 }) => {
   const queryClient = useQueryClient();
-  const _useObject = useObject(queryClient);
+  const _useObject = useObject();
   const property = schema?.properties[name];
 
   const getAllFromList = _useObject.getAllFromList(`${property?._list}&_limit=200`);
