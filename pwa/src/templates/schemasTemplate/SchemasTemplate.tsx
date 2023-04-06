@@ -23,7 +23,7 @@ export const SchemasTemplate: React.FC = () => {
   const getSchemas = _useSchema.getAll();
   const deleteSchema = _useSchema.remove();
 
-  const _useObject = useObject(queryClient);
+  const _useObject = useObject();
   const getObjects = _useObject.getAll(1, 200);
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getSchemas.data);

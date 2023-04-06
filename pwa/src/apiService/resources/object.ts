@@ -8,11 +8,13 @@ export default class Sources {
     this._instance = _instance;
   }
 
-  public getAll = async (currentPage: number, limit?: number): Promise<any> => {
+  public getAll = async (currentPage: number, limit?: number, searchQuery?: string): Promise<any> => {
     const { data } = await Send(
       this._instance,
       "GET",
-      `/admin/objects?extend[]=all&page=${currentPage}${limit ? `&_limit=${limit}` : ""}`,
+      `/admin/objects?extend[]=all&page=${currentPage}${limit ? `&_limit=${limit}` : ""}${
+        searchQuery ? `&_search=${searchQuery}` : ""
+      }`,
     );
 
     return data;
@@ -24,11 +26,13 @@ export default class Sources {
     return data;
   };
 
-  public getAllFromEntity = async (entityId: string, currentPage: number): Promise<any> => {
+  public getAllFromEntity = async (entityId: string, currentPage: number, searchQuery?: string): Promise<any> => {
     const { data } = await Send(
       this._instance,
       "GET",
-      `/admin/objects?_self.schema.id=${entityId}&page=${currentPage}&_limit=10`,
+      `/admin/objects?_self.schema.id=${entityId}&page=${currentPage}&_limit=10${
+        searchQuery ? `&_search=${searchQuery}` : ""
+      }`,
     );
 
     return data;

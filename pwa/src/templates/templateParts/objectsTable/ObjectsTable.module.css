@@ -1,17 +1,19 @@
-.paginationContainer {
-  margin-block-start: var(--gateawy-ui-size-lg);
+.container > :last-child {
+  margin-block-start: var(--gateway-ui-size-lg);
 }
 
-.deleteButton {
-  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
+.actionsContainer {
+  width: 100%;
+  gap: var(--gateway-ui-size-md);
+  display: flex;
+  justify-content: space-between;
 }
 
-.deleteButton:hover {
-  --denhaag-button-primary-action-hover-background-color: var(
-    --gateway-ui-color-dark-red
-  );
+.searchActionContainer {
+  width: 100%;
+  max-width: 350px;
 }
 
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
+.searchActionContainer > div > input {
+  height: 47.5px; /* height of BulkActionButton */
 }

@@ -28,7 +28,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
   const queryClient = useQueryClient();
-  const _useObject = useObject(queryClient);
+  const _useObject = useObject();
   const getObject = _useObject.getOne(objectId);
 
   const _useSync = useSync(queryClient);

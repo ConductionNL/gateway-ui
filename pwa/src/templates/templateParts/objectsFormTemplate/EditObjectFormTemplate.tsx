@@ -27,8 +27,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
   const [loading, setLoading] = React.useState<boolean>(false);
 
-  const queryClient = useQueryClient();
-  const _useObjects = useObject(queryClient);
+  const _useObjects = useObject();
   const createOrEditObject = _useObjects.createOrEdit(objectId);
   const deleteObject = _useObjects.remove();
 
