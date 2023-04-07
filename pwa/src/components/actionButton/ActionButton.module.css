@@ -22,6 +22,7 @@
 
 .actionsContainer.isOpen {
   display: block;
+  z-index: 2;
 }
 
 .actionsContainer > ul {
