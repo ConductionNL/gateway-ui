@@ -15,7 +15,7 @@ interface DisplayFiltersProps {
   sortOrder: string;
   toggleSortOrder: (order: "asc" | "desc") => void;
 
-  tableColumns: any;
+  tableColumns: TColumns;
   setTableColumns: (columnType: TColumnType, column: TColumns) => void;
 
   disabled?: boolean;
