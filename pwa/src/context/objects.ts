@@ -20,33 +20,3 @@ export const useObjectsStateContext = () => {
 
   return { setObjectsState, objectsState };
 };
-
-/**
- * Active object table columns
- */
-export interface IObjectTableColumnsContext {
-  id?: boolean;
-  name?: boolean;
-  schema?: boolean;
-}
-
-export const defaultObjectTableColumnsContext = {
-  id: true,
-  name: true,
-  schema: true,
-} as IObjectTableColumnsContext;
-
-export const useObjectTableColumnsContext = () => {
-  const [globalContext, setGlobalContext] = React.useContext(GlobalContext);
-
-  const objectTableColumns: IObjectTableColumnsContext = globalContext.objectTableColumns;
-
-  const setObjectTableColumns = (objectTableColumns: IObjectTableColumnsContext) => {
-    setGlobalContext((context) => ({
-      ...context,
-      objectTableColumns: { ...context.objectTableColumns, ...objectTableColumns },
-    }));
-  };
-
-  return { setObjectTableColumns, objectTableColumns };
-};

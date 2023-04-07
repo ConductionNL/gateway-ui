@@ -7,18 +7,22 @@ import { useForm } from "react-hook-form";
 import { Button } from "../../../components/button/Button";
 import { faClose, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { SelectSingle } from "@conduction/components";
+import { TColumnType, TColumns } from "../../../context/tableColumns";
 
 interface DisplayFiltersProps {
+  columnType: TColumnType;
+
   sortOrder: string;
   toggleSortOrder: (order: "asc" | "desc") => void;
 
   tableColumns: any;
-  setTableColumns: (column: { [key: string]: boolean }) => void;
+  setTableColumns: (columnType: TColumnType, column: TColumns) => void;
 
   disabled?: boolean;
 }
 
 export const DisplayFilters: React.FC<DisplayFiltersProps> = ({
+  columnType,
   sortOrder,
   toggleSortOrder,
   tableColumns,
@@ -82,7 +86,7 @@ export const DisplayFilters: React.FC<DisplayFiltersProps> = ({
                   name={key}
                   checked={value as boolean}
                   type="checkbox"
-                  onChange={() => setTableColumns({ [key]: !value })}
+                  onChange={() => setTableColumns(columnType, { [key]: !value })}
                 />
                 <label htmlFor={key}>{_.upperFirst(key)}</label>
               </div>

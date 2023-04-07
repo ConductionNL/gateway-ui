@@ -15,7 +15,7 @@ import Skeleton from "react-loading-skeleton";
 import { InputText } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
-import { useObjectTableColumnsContext } from "../../../context/objects";
+import { useTableColumnsContext } from "../../../context/tableColumns";
 
 interface TableProps {
   currentPage: number;
@@ -74,7 +74,10 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
   searchQuery,
   setSearchQuery,
 }) => {
-  const { objectTableColumns, setObjectTableColumns } = useObjectTableColumnsContext();
+  const {
+    columns: { objectColumns },
+    setColumns,
+  } = useTableColumnsContext();
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 
@@ -106,10 +109,11 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
         <div className={styles.searchAndFilterContainer}>
           <DisplayFilters
             sortOrder="desc"
+            columnType="objectColumns"
             toggleSortOrder={() => {}}
-            tableColumns={objectTableColumns}
-            setTableColumns={setObjectTableColumns}
             disabled={objectsQuery.isLoading}
+            tableColumns={objectColumns}
+            setTableColumns={setColumns}
           />
 
           <InputText
@@ -137,9 +141,9 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                 <TableHeader>
                   <CheckboxBulkSelectAll />
                 </TableHeader>
-                {objectTableColumns.id && <TableHeader>{t("Id")}</TableHeader>}
-                {objectTableColumns.name && <TableHeader>{t("Name")}</TableHeader>}
-                {objectTableColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
+                {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
+                {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
+                {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
                 <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
@@ -149,9 +153,9 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                 objectsQuery.data.results.map((object: any) => (
                   <TableRow key={object._self.id}>
                     <TableCell>{<CheckboxBulkSelectOne id={object.id} />}</TableCell>
-                    {objectTableColumns.id && <TableCell>{object._self.id ?? "-"}</TableCell>}
-                    {objectTableColumns.name && <TableCell>{object._self.name ?? "NVT"}</TableCell>}
-                    {objectTableColumns.schema && <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>}
+                    {objectColumns.id && <TableCell>{object._self.id ?? "-"}</TableCell>}
+                    {objectColumns.name && <TableCell>{object._self.name ?? "NVT"}</TableCell>}
+                    {objectColumns.schema && <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>}
 
                     <TableCell onClick={() => navigate(`/objects/${object._self.id}`)}>
                       <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
@@ -165,7 +169,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                 <TableRow>
                   <TableCell>No objects found</TableCell>
                   <TableCell />
-                  {Object.values(objectTableColumns)
+                  {Object.values(objectColumns)
                     .filter((value) => value)
                     .map((_, idx) => (
                       <TableCell key={idx} />
