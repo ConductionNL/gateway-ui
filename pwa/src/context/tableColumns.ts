@@ -9,7 +9,6 @@ export type TColumns = { [key: string]: boolean };
  * Columns per resource
  */
 const objectColumns = {
-  id: true,
   name: true,
   schema: true,
   actions: true,

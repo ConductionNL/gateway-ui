@@ -156,7 +156,6 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                 <TableHeader>
                   <CheckboxBulkSelectAll />
                 </TableHeader>
-                {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
                 {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
                 {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
                 {objectColumns.actions && <TableHeader>Actions</TableHeader>}
@@ -169,8 +168,14 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                 objectsQuery.data.results.map((object: any) => (
                   <TableRow key={object._self.id} onClick={() => toggleItem(object._self.id)}>
                     <TableCell>{<CheckboxBulkSelectOne id={object.id} />}</TableCell>
-                    {objectColumns.id && <TableCell>{object._self.id ?? "-"}</TableCell>}
-                    {objectColumns.name && <TableCell>{object._self.name ?? "NVT"}</TableCell>}
+                    {objectColumns.name && (
+                      <TableCell>
+                        <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                          <span onClick={() => handleNavigateToDetail(object._self.id)}>{object._self.name}</span>
+                        </Link>
+                      </TableCell>
+                    )}
+
                     {objectColumns.schema && <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>}
 
                     {objectColumns.actions && (
