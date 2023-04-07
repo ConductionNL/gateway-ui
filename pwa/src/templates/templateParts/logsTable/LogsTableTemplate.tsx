@@ -3,16 +3,15 @@ import * as styles from "./LogsTableTemplate.module.css";
 
 import _ from "lodash";
 import { navigate } from "gatsby";
-import { SelectSingle, ToolTip } from "@conduction/components";
-import { faArrowRight, faClose, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { ToolTip } from "@conduction/components";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { Paginate } from "../../../components/paginate/Paginate";
 import { useLogFiltersContext, useLogTableColumnsContext } from "../../../context/logs";
 import { useTranslation } from "react-i18next";
 import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusTag";
 import { Button } from "../../../components/button/Button";
-import clsx from "clsx";
-import { useForm } from "react-hook-form";
+import { DisplayFilters } from "../displayFilters/DisplayFilters";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -25,7 +24,8 @@ interface LogsTableTemplateProps {
 
 export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagination }) => {
   const { t } = useTranslation();
-  const { logTableColumns } = useLogTableColumnsContext();
+  const { logTableColumns, setLogTableColumns } = useLogTableColumnsContext();
+  const { logFilters, toggleOrder } = useLogFiltersContext();
 
   const handleResourceClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
@@ -40,7 +40,12 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <LogsFiltersDisplayFilters />
+        <DisplayFilters
+          sortOrder={logFilters["_order[datetime]"]}
+          toggleSortOrder={toggleOrder}
+          tableColumns={logTableColumns}
+          setTableColumns={setLogTableColumns}
+        />
       </div>
 
       <Table>
@@ -184,77 +189,6 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
       </Table>
 
       <Paginate layoutClassName={styles.pagination} {...pagination} />
-    </div>
-  );
-};
-
-const LogsFiltersDisplayFilters: React.FC = () => {
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const { logFilters, setLogFilters } = useLogFiltersContext();
-  const { setLogTableColumns, logTableColumns } = useLogTableColumnsContext();
-
-  const {
-    register,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm();
-
-  const order = watch("order");
-
-  React.useEffect(() => {
-    if (!order) return;
-
-    setLogFilters({ "_order[datetime]": order.value });
-  }, [order]);
-
-  const orderOptions = [
-    { label: "Newest first", value: "desc" },
-    { label: "Oldest first", value: "asc" },
-  ];
-
-  return (
-    <div className={styles.displayFiltersContainer}>
-      <Button
-        label={isOpen ? "Close filters" : "Display filters"}
-        icon={isOpen ? faClose : faFilter}
-        variant="secondary"
-        onClick={() => setIsOpen((isOpen) => !isOpen)}
-      />
-
-      <div className={clsx(styles.popUp, isOpen && styles.isOpen)}>
-        <div className={styles.sortingContainer}>
-          <span className={styles.title}>Sort results</span>
-
-          <SelectSingle
-            name="order"
-            options={orderOptions}
-            defaultValue={orderOptions.find((option) => option.value === logFilters["_order[datetime]"] ?? "desc")}
-            {...{ register, errors, control }}
-          />
-        </div>
-
-        <hr />
-
-        <div>
-          <span className={styles.title}>Toggle columns</span>
-
-          <div className={styles.columns}>
-            {Object.entries(logTableColumns).map(([key, value]) => (
-              <div {...{ key }} className={styles.column}>
-                <input
-                  id={key}
-                  name={key}
-                  checked={value}
-                  type="checkbox"
-                  onChange={() => setLogTableColumns({ [key]: !value })}
-                />
-                <label htmlFor={key}>{_.upperFirst(key)}</label>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

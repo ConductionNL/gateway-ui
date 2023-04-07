@@ -31,7 +31,11 @@ export const useLogFiltersContext = () => {
     setGlobalContext((context) => ({ ...context, logFilters }));
   };
 
-  return { setLogFilters, logFilters };
+  const toggleOrder = (order: "asc" | "desc") => {
+    setGlobalContext((context) => ({ ...context, logFilters: { ...logFilters, "_order[datetime]": order } }));
+  };
+
+  return { setLogFilters, toggleOrder, logFilters };
 };
 
 /**
