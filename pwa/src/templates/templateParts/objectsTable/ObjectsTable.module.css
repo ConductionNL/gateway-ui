@@ -1,12 +1,22 @@
+.container {
+  position: relative;
+}
+
+.container > *:not(.actionsContainer) {
+  z-index: 1;
+}
+
 .container > :last-child {
   margin-block-start: var(--gateway-ui-size-lg);
 }
 
 .actionsContainer {
+  z-index: 2;
   width: 100%;
-  gap: var(--gateway-ui-size-md);
   display: flex;
+  position: relative;
   justify-content: space-between;
+  gap: var(--gateway-ui-size-md);
 }
 
 .searchAndFilterContainer {

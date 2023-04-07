@@ -2,7 +2,13 @@
   background: var(--gateway-ui-color-white);
 }
 
+.container > *:not(.header) {
+  z-index: 1;
+}
+
 .header {
+  z-index: 2;
+  position: relative;
   padding-inline-start: var(--gateway-ui-size-md);
   padding-inline-end: var(--gateway-ui-size-md);
   padding-block-start: var(--gateway-ui-size-md);

@@ -109,36 +109,36 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
 
   return (
     <div className={styles.container}>
+      <div className={styles.actionsContainer}>
+        <div className={styles.searchAndFilterContainer}>
+          <DisplayFilters
+            sortOrder={objectsState["_order[datetime]"]}
+            columnType="objectColumns"
+            toggleSortOrder={toggleOrder}
+            disabled={objectsQuery.isLoading}
+            tableColumns={objectColumns}
+            setTableColumns={setColumns}
+          />
+
+          <InputText
+            icon={<FontAwesomeIcon icon={faSearch} />}
+            name="searchQuery"
+            placeholder="Type to search..."
+            defaultValue={searchQuery}
+            {...{ register, errors }}
+          />
+        </div>
+
+        <BulkActionButton
+          actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+          selectedItemsCount={selectedItems.length}
+        />
+      </div>
+
       {objectsQuery.isLoading && <Skeleton height="200px" />}
 
       {objectsQuery.isSuccess && (
         <>
-          <div className={styles.actionsContainer}>
-            <div className={styles.searchAndFilterContainer}>
-              <DisplayFilters
-                sortOrder={objectsState["_order[datetime]"]}
-                columnType="objectColumns"
-                toggleSortOrder={toggleOrder}
-                disabled={objectsQuery.isLoading}
-                tableColumns={objectColumns}
-                setTableColumns={setColumns}
-              />
-
-              <InputText
-                icon={<FontAwesomeIcon icon={faSearch} />}
-                name="searchQuery"
-                placeholder="Type to search..."
-                defaultValue={searchQuery}
-                {...{ register, errors }}
-              />
-            </div>
-
-            <BulkActionButton
-              actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
-              selectedItemsCount={selectedItems.length}
-            />
-          </div>
-
           <Table>
             <TableHead>
               <TableRow>
