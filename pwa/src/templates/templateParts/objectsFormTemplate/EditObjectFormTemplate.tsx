@@ -110,6 +110,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
               <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
 
               <Button
+                disabled={loading}
                 label={!!inDuplicatingMode ? "Exit duplicating mode" : "Duplicating mode"}
                 variant={!!inDuplicatingMode ? "secondary" : "primary"}
                 icon={faCopy}
