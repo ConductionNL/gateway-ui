@@ -9,7 +9,12 @@ import {
   ILogTableColumnsContext,
 } from "./logs";
 import { defaultTabsContext, ITabsContext } from "./tabs";
-import { defaultObjectsContext, IObjectsStateContext } from "./objects";
+import {
+  defaultObjectsContext,
+  defaultObjectTableColumnsContext,
+  IObjectsStateContext,
+  IObjectTableColumnsContext,
+} from "./objects";
 
 export interface IGlobalContext {
   gatsby: IGatsbyContext;
@@ -19,6 +24,7 @@ export interface IGlobalContext {
   logTableColumns: ILogTableColumnsContext;
   deletedItems: IDeletedItemsContext;
   objectsState: IObjectsStateContext;
+  objectTableColumns: IObjectTableColumnsContext;
 }
 
 export const defaultGlobalContext: IGlobalContext = {
@@ -29,6 +35,7 @@ export const defaultGlobalContext: IGlobalContext = {
   logTableColumns: defaultLogTableColumnsContext,
   deletedItems: defaultDeletedItemsContext,
   objectsState: defaultObjectsContext,
+  objectTableColumns: defaultObjectTableColumnsContext,
 };
 
 export const GlobalContext = React.createContext<

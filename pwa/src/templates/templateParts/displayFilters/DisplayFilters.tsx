@@ -14,6 +14,8 @@ interface DisplayFiltersProps {
 
   tableColumns: any;
   setTableColumns: (column: { [key: string]: boolean }) => void;
+
+  disabled?: boolean;
 }
 
 export const DisplayFilters: React.FC<DisplayFiltersProps> = ({
@@ -21,6 +23,7 @@ export const DisplayFilters: React.FC<DisplayFiltersProps> = ({
   toggleSortOrder,
   tableColumns,
   setTableColumns,
+  disabled,
 }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
@@ -47,6 +50,7 @@ export const DisplayFilters: React.FC<DisplayFiltersProps> = ({
   return (
     <div className={styles.container}>
       <Button
+        {...{ disabled }}
         label={isOpen ? "Close filters" : "Display filters"}
         icon={isOpen ? faClose : faFilter}
         variant="secondary"
