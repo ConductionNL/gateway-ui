@@ -90,8 +90,10 @@ export const useObject = () => {
         console.warn(error.message);
       },
       onSettled: () => {
-        queryClient.resetQueries(["object", objectId]);
-        queryClient.resetQueries(["object_schema", objectId]);
+        if (objectId) {
+          queryClient.resetQueries(["object", objectId]);
+          queryClient.resetQueries(["object_schema", objectId]);
+        }
       },
     });
 
