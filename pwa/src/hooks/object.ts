@@ -11,10 +11,10 @@ export const useObject = () => {
 
   const queryClient = useQueryClient();
 
-  const getAll = (currentPage: number, limit?: number, searchQuery?: string) =>
+  const getAll = (currentPage: number, order: string, limit?: number, searchQuery?: string) =>
     useQuery<any, Error>(
-      ["objects", currentPage, searchQuery],
-      () => API.Object.getAll(currentPage, limit, searchQuery),
+      ["objects", order, currentPage, searchQuery],
+      () => API.Object.getAll(currentPage, order, limit, searchQuery),
       {
         onError: (error) => {
           console.warn(error.message);

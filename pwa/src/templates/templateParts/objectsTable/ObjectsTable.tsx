@@ -16,6 +16,7 @@ import { InputText } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
+import { useObjectsStateContext } from "../../../context/objects";
 
 interface TableProps {
   currentPage: number;
@@ -59,7 +60,9 @@ const ObjectsFromEntityTable: React.FC<{ entityId: string } & TableProps> = ({
  * Holds and manages query to get all objects
  */
 const ObjectsTable: React.FC<TableProps> = ({ currentPage, searchQuery, ...rest }) => {
-  const getObjects = useObject().getAll(currentPage, undefined, searchQuery);
+  const { objectsState } = useObjectsStateContext();
+
+  const getObjects = useObject().getAll(currentPage, objectsState["_order[datetime]"], undefined, searchQuery);
 
   return <BaseTable objectsQuery={getObjects} {...{ currentPage, searchQuery, ...rest }} />;
 };
@@ -78,6 +81,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
     columns: { objectColumns },
     setColumns,
   } = useTableColumnsContext();
+  const { toggleOrder, objectsState } = useObjectsStateContext();
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 
@@ -105,36 +109,36 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
 
   return (
     <div className={styles.container}>
-      <div className={styles.actionsContainer}>
-        <div className={styles.searchAndFilterContainer}>
-          <DisplayFilters
-            sortOrder="desc"
-            columnType="objectColumns"
-            toggleSortOrder={() => {}}
-            disabled={objectsQuery.isLoading}
-            tableColumns={objectColumns}
-            setTableColumns={setColumns}
-          />
-
-          <InputText
-            icon={<FontAwesomeIcon icon={faSearch} />}
-            name="searchQuery"
-            placeholder="Type to search..."
-            defaultValue={searchQuery}
-            {...{ register, errors }}
-          />
-        </div>
-
-        <BulkActionButton
-          actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
-          selectedItemsCount={selectedItems.length}
-        />
-      </div>
-
       {objectsQuery.isLoading && <Skeleton height="200px" />}
 
       {objectsQuery.isSuccess && (
         <>
+          <div className={styles.actionsContainer}>
+            <div className={styles.searchAndFilterContainer}>
+              <DisplayFilters
+                sortOrder={objectsState["_order[datetime]"]}
+                columnType="objectColumns"
+                toggleSortOrder={toggleOrder}
+                disabled={objectsQuery.isLoading}
+                tableColumns={objectColumns}
+                setTableColumns={setColumns}
+              />
+
+              <InputText
+                icon={<FontAwesomeIcon icon={faSearch} />}
+                name="searchQuery"
+                placeholder="Type to search..."
+                defaultValue={searchQuery}
+                {...{ register, errors }}
+              />
+            </div>
+
+            <BulkActionButton
+              actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+              selectedItemsCount={selectedItems.length}
+            />
+          </div>
+
           <Table>
             <TableHead>
               <TableRow>
