@@ -62,7 +62,7 @@ const ObjectsFromEntityTable: React.FC<{ entityId: string } & TableProps> = ({
 const ObjectsTable: React.FC<TableProps> = ({ currentPage, searchQuery, ...rest }) => {
   const { objectsState } = useObjectsStateContext();
 
-  const getObjects = useObject().getAll(currentPage, objectsState["_order[datetime]"], undefined, searchQuery);
+  const getObjects = useObject().getAll(currentPage, objectsState.order, undefined, searchQuery);
 
   return <BaseTable objectsQuery={getObjects} {...{ currentPage, searchQuery, ...rest }} />;
 };
@@ -112,7 +112,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
       <div className={styles.actionsContainer}>
         <div className={styles.searchAndFilterContainer}>
           <DisplayFilters
-            sortOrder={objectsState["_order[datetime]"]}
+            sortOrder={objectsState.order}
             columnType="objectColumns"
             toggleSortOrder={toggleOrder}
             disabled={objectsQuery.isLoading}

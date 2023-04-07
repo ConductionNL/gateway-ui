@@ -2,12 +2,12 @@ import * as React from "react";
 import { GlobalContext } from "./global";
 
 export interface IObjectsStateContext {
-  "_order[datetime]": "asc" | "desc";
+  order: "asc" | "desc";
   inDuplicatingMode?: boolean;
 }
 
 export const defaultObjectsContext = {
-  "_order[datetime]": "desc",
+  order: "desc",
   inDuplicatingMode: false,
 } as IObjectsStateContext;
 
@@ -21,7 +21,7 @@ export const useObjectsStateContext = () => {
   };
 
   const toggleOrder = (order: "asc" | "desc") => {
-    setGlobalContext((context) => ({ ...context, objectsState: { ...objectsState, "_order[datetime]": order } }));
+    setGlobalContext((context) => ({ ...context, objectsState: { ...objectsState, order: order } }));
   };
 
   return { setObjectsState, toggleOrder, objectsState };
