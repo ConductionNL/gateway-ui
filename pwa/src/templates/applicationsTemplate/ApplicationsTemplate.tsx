@@ -24,7 +24,9 @@ export const ApplicationsTemplate: React.FC = () => {
   const getApplications = _useApplication.getAll();
   const deleteApplication = _useApplication.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getApplications.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(
+    getApplications.data,
+  );
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteApplication.mutate({ id: item }));
@@ -67,7 +69,7 @@ export const ApplicationsTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getApplications.data.map((application) => (
-                <TableRow key={application.id}>
+                <TableRow key={application.id} onClick={() => toggleItem(application.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={application.id} />}</TableCell>
 
                   <TableCell>{application.name}</TableCell>

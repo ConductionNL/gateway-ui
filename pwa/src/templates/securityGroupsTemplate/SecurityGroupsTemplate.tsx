@@ -23,7 +23,9 @@ export const SecurityGroupsTemplate: React.FC = () => {
   const getSecurityGroups = _useSecurityGroups.getAll();
   const deleteSecurityGroup = _useSecurityGroups.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getSecurityGroups.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(
+    getSecurityGroups.data,
+  );
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteSecurityGroup.mutate({ id: item }));
@@ -65,7 +67,7 @@ export const SecurityGroupsTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getSecurityGroups.data.map((securityGroup) => (
-                <TableRow key={securityGroup.id}>
+                <TableRow key={securityGroup.id} onClick={() => toggleItem(securityGroup.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={securityGroup.id} />}</TableCell>
 
                   <TableCell>{securityGroup.name}</TableCell>

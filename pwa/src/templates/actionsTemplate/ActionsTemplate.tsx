@@ -26,7 +26,7 @@ export const ActionsTemplate: React.FC = () => {
   const getActions = _useActions.getAll();
   const deleteAction = _useActions.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getActions.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getActions.data);
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteAction.mutate({ id: item }));
@@ -69,7 +69,7 @@ export const ActionsTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getActions.data.map((action) => (
-                <TableRow key={action.id}>
+                <TableRow key={action.id} onClick={() => toggleItem(action.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={action.id} />}</TableCell>
 
                   <TableCell className={styles.actionName}>{action.name}</TableCell>

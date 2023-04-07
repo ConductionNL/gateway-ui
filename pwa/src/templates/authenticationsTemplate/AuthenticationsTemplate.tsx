@@ -24,7 +24,9 @@ export const AuthenticationsTemplate: React.FC = () => {
   const getAuthentications = _useAuthentication.getAll();
   const deleteAuthentication = _useAuthentication.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getAuthentications.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(
+    getAuthentications.data,
+  );
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteAuthentication.mutate({ id: item }));
@@ -67,7 +69,7 @@ export const AuthenticationsTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getAuthentications.data.map((authentication) => (
-                <TableRow key={authentication.id}>
+                <TableRow key={authentication.id} onClick={() => toggleItem(authentication.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={authentication.id} />}</TableCell>
 
                   <TableCell>{authentication.name}</TableCell>
