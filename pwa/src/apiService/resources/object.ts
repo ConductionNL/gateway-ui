@@ -8,14 +8,19 @@ export default class Sources {
     this._instance = _instance;
   }
 
-  public getAll = async (currentPage: number, limit?: number, searchQuery?: string): Promise<any> => {
-    const { data } = await Send(
-      this._instance,
-      "GET",
-      `/admin/objects?extend[]=all&page=${currentPage}${limit ? `&_limit=${limit}` : ""}${
-        searchQuery ? `&_search=${searchQuery}` : ""
-      }`,
-    );
+  public getAll = async (currentPage: number, order: string, limit?: number, searchQuery?: string): Promise<any> => {
+    const url = new URL("/admin/objects", "http://localhost"); // localhost is overwritten by the service, ignore it
+
+    url.searchParams.append("extend[]", "all");
+    url.searchParams.append("page", currentPage.toString());
+
+    limit && url.searchParams.append("_limit", limit.toString());
+    searchQuery && url.searchParams.append("_search", searchQuery);
+    order && url.searchParams.append("_order[_self.dateCreated]", order);
+
+    console.log(url.toString());
+
+    const { data } = await Send(this._instance, "GET", url.toString());
 
     return data;
   };

@@ -3,16 +3,16 @@ import * as styles from "./LogsTableTemplate.module.css";
 
 import _ from "lodash";
 import { navigate } from "gatsby";
-import { SelectSingle, ToolTip } from "@conduction/components";
-import { faArrowRight, faClose, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { ToolTip } from "@conduction/components";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { Paginate } from "../../../components/paginate/Paginate";
-import { useLogFiltersContext, useLogTableColumnsContext } from "../../../context/logs";
+import { useLogFiltersContext } from "../../../context/logs";
 import { useTranslation } from "react-i18next";
 import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusTag";
 import { Button } from "../../../components/button/Button";
-import clsx from "clsx";
-import { useForm } from "react-hook-form";
+import { DisplayFilters } from "../displayFilters/DisplayFilters";
+import { useTableColumnsContext } from "../../../context/tableColumns";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -25,7 +25,11 @@ interface LogsTableTemplateProps {
 
 export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagination }) => {
   const { t } = useTranslation();
-  const { logTableColumns } = useLogTableColumnsContext();
+  const {
+    columns: { logColumns },
+    setColumns,
+  } = useTableColumnsContext();
+  const { logFilters, toggleOrder } = useLogFiltersContext();
 
   const handleResourceClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
@@ -40,28 +44,34 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <LogsFiltersDisplayFilters />
+        <DisplayFilters
+          columnType="logColumns"
+          sortOrder={logFilters["_order[datetime]"]}
+          toggleSortOrder={toggleOrder}
+          tableColumns={logColumns}
+          setTableColumns={setColumns}
+        />
       </div>
 
       <Table>
         <TableHead>
           <TableRow>
-            {logTableColumns.level && <TableHeader>{t("Level")}</TableHeader>}
-            {logTableColumns.message && <TableHeader>{t("Message")}</TableHeader>}
-            {logTableColumns.endpoint && <TableHeader>{t("Endpoint")}</TableHeader>}
-            {logTableColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
-            {logTableColumns.cronjob && <TableHeader>{t("Cronjob")}</TableHeader>}
-            {logTableColumns.action && <TableHeader>{t("Action")}</TableHeader>}
-            {logTableColumns.user && <TableHeader>{t("User")}</TableHeader>}
-            {logTableColumns.organization && <TableHeader>{t("Organization")}</TableHeader>}
-            {logTableColumns.application && <TableHeader>{t("Application")}</TableHeader>}
+            {logColumns.level && <TableHeader>{t("Level")}</TableHeader>}
+            {logColumns.message && <TableHeader>{t("Message")}</TableHeader>}
+            {logColumns.endpoint && <TableHeader>{t("Endpoint")}</TableHeader>}
+            {logColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
+            {logColumns.cronjob && <TableHeader>{t("Cronjob")}</TableHeader>}
+            {logColumns.action && <TableHeader>{t("Action")}</TableHeader>}
+            {logColumns.user && <TableHeader>{t("User")}</TableHeader>}
+            {logColumns.organization && <TableHeader>{t("Organization")}</TableHeader>}
+            {logColumns.application && <TableHeader>{t("Application")}</TableHeader>}
           </TableRow>
         </TableHead>
 
         <TableBody>
           {logs.map((log: any) => (
             <TableRow onClick={() => navigate(`/logs/${log._id.$oid}`)} key={log._id.$oid}>
-              {logTableColumns.level && (
+              {logColumns.level && (
                 <TableCell>
                   <StatusTag
                     type={_.lowerCase(log.level_name) as TStatusTagType}
@@ -70,7 +80,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.message && (
+              {logColumns.message && (
                 <TableCell>
                   <ToolTip tooltip={log.message}>
                     <div className={styles.message}>{log.message}</div>
@@ -78,7 +88,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.endpoint && (
+              {logColumns.endpoint && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -91,7 +101,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.schema && (
+              {logColumns.schema && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -104,7 +114,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.cronjob && (
+              {logColumns.cronjob && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -117,7 +127,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.action && (
+              {logColumns.action && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -130,7 +140,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.user && (
+              {logColumns.user && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -143,7 +153,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.organization && (
+              {logColumns.organization && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -156,7 +166,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.application && (
+              {logColumns.application && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -173,7 +183,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
 
           {!logs.length && (
             <TableRow>
-              {Object.values(logTableColumns)
+              {Object.values(logColumns)
                 .filter((value) => value)
                 .map((_, idx) => (
                   <TableCell key={idx}>{idx === 0 && <>No logs found</>}</TableCell>
@@ -184,77 +194,6 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
       </Table>
 
       <Paginate layoutClassName={styles.pagination} {...pagination} />
-    </div>
-  );
-};
-
-const LogsFiltersDisplayFilters: React.FC = () => {
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const { logFilters, setLogFilters } = useLogFiltersContext();
-  const { setLogTableColumns, logTableColumns } = useLogTableColumnsContext();
-
-  const {
-    register,
-    control,
-    watch,
-    formState: { errors },
-  } = useForm();
-
-  const order = watch("order");
-
-  React.useEffect(() => {
-    if (!order) return;
-
-    setLogFilters({ "_order[datetime]": order.value });
-  }, [order]);
-
-  const orderOptions = [
-    { label: "Newest first", value: "desc" },
-    { label: "Oldest first", value: "asc" },
-  ];
-
-  return (
-    <div className={styles.displayFiltersContainer}>
-      <Button
-        label={isOpen ? "Close filters" : "Display filters"}
-        icon={isOpen ? faClose : faFilter}
-        variant="secondary"
-        onClick={() => setIsOpen((isOpen) => !isOpen)}
-      />
-
-      <div className={clsx(styles.popUp, isOpen && styles.isOpen)}>
-        <div className={styles.sortingContainer}>
-          <span className={styles.title}>Sort results</span>
-
-          <SelectSingle
-            name="order"
-            options={orderOptions}
-            defaultValue={orderOptions.find((option) => option.value === logFilters["_order[datetime]"] ?? "desc")}
-            {...{ register, errors, control }}
-          />
-        </div>
-
-        <hr />
-
-        <div>
-          <span className={styles.title}>Toggle columns</span>
-
-          <div className={styles.columns}>
-            {Object.entries(logTableColumns).map(([key, value]) => (
-              <div {...{ key }} className={styles.column}>
-                <input
-                  id={key}
-                  name={key}
-                  checked={value}
-                  type="checkbox"
-                  onChange={() => setLogTableColumns({ [key]: !value })}
-                />
-                <label htmlFor={key}>{_.upperFirst(key)}</label>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

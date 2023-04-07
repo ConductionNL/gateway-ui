@@ -14,6 +14,9 @@ import { BulkActionButton } from "../../../components/bulkActionButton/BulkActio
 import Skeleton from "react-loading-skeleton";
 import { InputText } from "@conduction/components";
 import { useForm } from "react-hook-form";
+import { DisplayFilters } from "../displayFilters/DisplayFilters";
+import { useTableColumnsContext } from "../../../context/tableColumns";
+import { useObjectsStateContext } from "../../../context/objects";
 
 interface TableProps {
   currentPage: number;
@@ -57,7 +60,9 @@ const ObjectsFromEntityTable: React.FC<{ entityId: string } & TableProps> = ({
  * Holds and manages query to get all objects
  */
 const ObjectsTable: React.FC<TableProps> = ({ currentPage, searchQuery, ...rest }) => {
-  const getObjects = useObject().getAll(currentPage, undefined, searchQuery);
+  const { objectsState } = useObjectsStateContext();
+
+  const getObjects = useObject().getAll(currentPage, objectsState.order, undefined, searchQuery);
 
   return <BaseTable objectsQuery={getObjects} {...{ currentPage, searchQuery, ...rest }} />;
 };
@@ -72,6 +77,11 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
   searchQuery,
   setSearchQuery,
 }) => {
+  const {
+    columns: { objectColumns },
+    setColumns,
+  } = useTableColumnsContext();
+  const { toggleOrder, objectsState } = useObjectsStateContext();
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 
@@ -100,7 +110,16 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
   return (
     <div className={styles.container}>
       <div className={styles.actionsContainer}>
-        <div className={styles.searchActionContainer}>
+        <div className={styles.searchAndFilterContainer}>
+          <DisplayFilters
+            sortOrder={objectsState.order}
+            columnType="objectColumns"
+            toggleSortOrder={toggleOrder}
+            disabled={objectsQuery.isLoading}
+            tableColumns={objectColumns}
+            setTableColumns={setColumns}
+          />
+
           <InputText
             icon={<FontAwesomeIcon icon={faSearch} />}
             name="searchQuery"
@@ -126,9 +145,9 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                 <TableHeader>
                   <CheckboxBulkSelectAll />
                 </TableHeader>
-                <TableHeader>{t("Id")}</TableHeader>
-                <TableHeader>{t("Name")}</TableHeader>
-                <TableHeader>{t("Schema")}</TableHeader>
+                {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
+                {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
+                {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
                 <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
@@ -138,9 +157,10 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                 objectsQuery.data.results.map((object: any) => (
                   <TableRow key={object._self.id}>
                     <TableCell>{<CheckboxBulkSelectOne id={object.id} />}</TableCell>
-                    <TableCell>{object._self.id ?? "-"}</TableCell>
-                    <TableCell>{object._self.name ?? "NVT"}</TableCell>
-                    <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>
+                    {objectColumns.id && <TableCell>{object._self.id ?? "-"}</TableCell>}
+                    {objectColumns.name && <TableCell>{object._self.name ?? "NVT"}</TableCell>}
+                    {objectColumns.schema && <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>}
+
                     <TableCell onClick={() => navigate(`/objects/${object._self.id}`)}>
                       <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                         {t("Details")}
@@ -151,11 +171,13 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
 
               {!objectsQuery.data.results.length && (
                 <TableRow>
-                  <TableCell>{t("No objects found")}</TableCell>
+                  <TableCell>No objects found</TableCell>
                   <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
+                  {Object.values(objectColumns)
+                    .filter((value) => value)
+                    .map((_, idx) => (
+                      <TableCell key={idx} />
+                    ))}
                 </TableRow>
               )}
             </TableBody>

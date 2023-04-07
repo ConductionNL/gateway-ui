@@ -31,7 +31,11 @@ export const useLogFiltersContext = () => {
     setGlobalContext((context) => ({ ...context, logFilters }));
   };
 
-  return { setLogFilters, logFilters };
+  const toggleOrder = (order: "asc" | "desc") => {
+    setGlobalContext((context) => ({ ...context, logFilters: { ...logFilters, "_order[datetime]": order } }));
+  };
+
+  return { setLogFilters, toggleOrder, logFilters };
 };
 
 /**
@@ -59,45 +63,3 @@ export const channels = [
   "collection",
 ] as const;
 export type TLogChannel = typeof channels[number];
-
-/**
- * Active log table columns
- */
-export interface ILogTableColumnsContext {
-  level?: boolean;
-  message?: boolean;
-  endpoint?: boolean;
-  schema?: boolean;
-  cronjob?: boolean;
-  action?: boolean;
-  user?: boolean;
-  organization?: boolean;
-  application?: boolean;
-}
-
-export const defaultLogTableColumnsContext = {
-  level: true,
-  message: true,
-  endpoint: true,
-  schema: true,
-  cronjob: true,
-  action: true,
-  user: true,
-  organization: true,
-  application: true,
-} as ILogTableColumnsContext;
-
-export const useLogTableColumnsContext = () => {
-  const [globalContext, setGlobalContext] = React.useContext(GlobalContext);
-
-  const logTableColumns: ILogTableColumnsContext = globalContext.logTableColumns;
-
-  const setLogTableColumns = (logTableColumns: ILogTableColumnsContext) => {
-    setGlobalContext((context) => ({
-      ...context,
-      logTableColumns: { ...context.logTableColumns, ...logTableColumns },
-    }));
-  };
-
-  return { setLogTableColumns, logTableColumns };
-};
