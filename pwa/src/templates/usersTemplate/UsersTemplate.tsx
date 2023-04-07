@@ -24,7 +24,7 @@ export const UsersTemplate: React.FC = () => {
   const getUsers = _useUsers.getAll();
   const deleteUser = _useUsers.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getUsers.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getUsers.data);
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteUser.mutate({ id: item }));
@@ -69,7 +69,7 @@ export const UsersTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getUsers.data.map((user: any) => (
-                <TableRow key={user.id}>
+                <TableRow key={user.id} onClick={() => toggleItem(user.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={user.id} />}</TableCell>
 
                   <TableCell>{user.name}</TableCell>

@@ -101,7 +101,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
 
   const deleteObject = useObject().remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(objectsQuery);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(objectsQuery);
 
   const handleBulkDelete = () => {
     selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
@@ -155,7 +155,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
             <TableBody>
               {objectsQuery.isSuccess &&
                 objectsQuery.data.results.map((object: any) => (
-                  <TableRow key={object._self.id}>
+                  <TableRow key={object._self.id} onClick={() => toggleItem(object._self.id)}>
                     <TableCell>{<CheckboxBulkSelectOne id={object.id} />}</TableCell>
                     {objectColumns.id && <TableCell>{object._self.id ?? "-"}</TableCell>}
                     {objectColumns.name && <TableCell>{object._self.name ?? "NVT"}</TableCell>}
