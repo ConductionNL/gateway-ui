@@ -16,8 +16,9 @@
   right: 0;
   bottom: 0;
   background: var(--gateway-ui-confirm-popup-overlay-background-color);
-  z-index: 1;
+  z-index: 1000; /* TODO: rewrite this entire pop-up to a React.Portal */
   display: block;
+  pointer-events: none;
 }
 
 .button.danger {

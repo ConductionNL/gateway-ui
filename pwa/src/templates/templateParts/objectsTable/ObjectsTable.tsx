@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
 import { useObjectsStateContext } from "../../../context/objects";
+import { ActionButton } from "../../../components/actionButton/ActionButton";
 
 interface TableProps {
   currentPage: number;
@@ -81,7 +82,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
     columns: { objectColumns },
     setColumns,
   } = useTableColumnsContext();
-  const { toggleOrder, objectsState } = useObjectsStateContext();
+  const { toggleOrder, objectsState, setObjectsState } = useObjectsStateContext();
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 
@@ -105,6 +106,16 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
 
   const handleBulkDelete = () => {
     selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
+  };
+
+  const handleDuplicate = (objectId: string) => {
+    setObjectsState({ inDuplicatingMode: true });
+    navigate(`/objects/${objectId}`);
+  };
+
+  const handleNavigateToDetail = (objectId: string) => {
+    setObjectsState({ inDuplicatingMode: false });
+    navigate(`/objects/${objectId}`);
   };
 
   return (
@@ -148,6 +159,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                 {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
                 {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
                 {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
+                {objectColumns.actions && <TableHeader>Actions</TableHeader>}
                 <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
@@ -161,7 +173,19 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                     {objectColumns.name && <TableCell>{object._self.name ?? "NVT"}</TableCell>}
                     {objectColumns.schema && <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>}
 
-                    <TableCell onClick={() => navigate(`/objects/${object._self.id}`)}>
+                    {objectColumns.actions && (
+                      <TableCell>
+                        <ActionButton
+                          actions={[
+                            { type: "delete", onSubmit: () => deleteObject.mutate({ id: object._self.id }) },
+                            { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
+                            { type: "download", onSubmit: () => undefined, disabled: true },
+                          ]}
+                        />
+                      </TableCell>
+                    )}
+
+                    <TableCell onClick={() => handleNavigateToDetail(object._self.id)}>
                       <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                         {t("Details")}
                       </Link>

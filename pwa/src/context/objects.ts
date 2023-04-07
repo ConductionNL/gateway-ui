@@ -16,8 +16,11 @@ export const useObjectsStateContext = () => {
 
   const objectsState: IObjectsStateContext = globalContext.objectsState;
 
-  const setObjectsState = (objectsState: IObjectsStateContext) => {
-    setGlobalContext((context) => ({ ...context, objectsState: { ...objectsState, objectsState } }));
+  const setObjectsState = (objectsState: Partial<IObjectsStateContext>) => {
+    setGlobalContext((context) => ({
+      ...context,
+      objectsState: { ...context.objectsState, ...objectsState },
+    }));
   };
 
   const toggleOrder = (order: "asc" | "desc") => {
