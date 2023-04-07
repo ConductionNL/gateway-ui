@@ -12,6 +12,7 @@ const objectColumns = {
   id: true,
   name: true,
   schema: true,
+  actions: true,
 };
 
 const logColumns = {

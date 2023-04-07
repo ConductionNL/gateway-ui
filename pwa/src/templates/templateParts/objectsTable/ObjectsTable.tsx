@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
 import { useObjectsStateContext } from "../../../context/objects";
+import { ActionButton } from "../../../components/actionButton/ActionButton";
 
 interface TableProps {
   currentPage: number;
@@ -148,6 +149,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                 {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
                 {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
                 {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
+                {objectColumns.actions && <TableHeader>Actions</TableHeader>}
                 <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
@@ -160,6 +162,14 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                     {objectColumns.id && <TableCell>{object._self.id ?? "-"}</TableCell>}
                     {objectColumns.name && <TableCell>{object._self.name ?? "NVT"}</TableCell>}
                     {objectColumns.schema && <TableCell>{object._self?.schema?.id ?? "-"}</TableCell>}
+
+                    {objectColumns.actions && (
+                      <TableCell>
+                        <ActionButton
+                          actions={[{ type: "delete", onSubmit: () => deleteObject.mutate({ id: object._self.id }) }]}
+                        />
+                      </TableCell>
+                    )}
 
                     <TableCell onClick={() => navigate(`/objects/${object._self.id}`)}>
                       <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
