@@ -7,7 +7,6 @@ import { useObject } from "../../hooks/object";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { EditObjectFormTemplate } from "../templateParts/objectsFormTemplate/EditObjectFormTemplate";
-import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { navigate } from "gatsby";
@@ -57,10 +56,10 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
       {getObject.isError && "Error..."}
 
       {getObject.isSuccess && getSchema.isSuccess && (
-        <EditObjectFormTemplate object={getObject.data} {...{ getSchema }} {...{ objectId }} />
+        <EditObjectFormTemplate object={getObject.data} schema={getSchema.data} {...{ objectId }} />
       )}
 
-      {getObject.isLoading && <Skeleton height="200px" />}
+      {(getObject.isLoading || getSchema.isLoading) && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTabs.objectDetailTabs.toString()}>
