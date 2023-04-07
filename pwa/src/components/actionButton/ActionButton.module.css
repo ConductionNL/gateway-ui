@@ -9,19 +9,6 @@
   gap: var(--gateway-ui-size-xs);
 }
 
-.amountIndicator {
-  align-items: center;
-  display: inline-flex;
-  justify-content: center;
-  color: var(--gateway-ui-color-black);
-  border-radius: var(--gateway-ui-size-sm);
-  font-size: var(--gateway-ui-font-size-sm);
-  background-color: var(--gateway-ui-color-white);
-  line-height: var(--gateway-ui-font-size-sm);
-  width: var(--gateway-ui-size-lg);
-  height: var(--gateway-ui-size-lg);
-}
-
 .actionsContainer {
   width: 100%;
   display: none;
@@ -45,6 +32,8 @@
 
 .actionsContainer > ul > li {
   display: flex;
+  align-items: center;
+  user-select: none;
   gap: var(--gateway-ui-size-xs);
   font-size: var(--gateway-ui-font-size-md);
   padding-inline: var(--gateway-ui-size-sm);
@@ -54,4 +43,9 @@
 .actionsContainer > ul > li:hover {
   cursor: pointer;
   background-color: var(--gateway-ui-row-background-color);
+}
+
+.actionsContainer > ul > li.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./ActionButton.module.css";
 import clsx from "clsx";
 
-import { faEllipsisH, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faEllipsisH, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
 import { NotificationPopUp, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,8 +10,9 @@ import _ from "lodash";
 import { ConfirmPopUp } from "../confirmPopUp/ConfirmPopUp";
 
 type TAction = {
-  type: "delete" | "download";
+  type: "delete" | "download" | "duplicate";
   onSubmit: () => any;
+  disabled?: boolean;
 };
 
 interface ActionButtonProps {
@@ -24,7 +25,9 @@ export const ActionButton: React.FC<ActionButtonProps> = ({ actions, layoutClass
   const [action, setAction] = React.useState<() => any>(() => actions[0].onSubmit);
   const { isVisible, show, hide } = NotificationPopUp.controller();
 
-  const handleActionClick = (action: TAction) => {
+  const handleActionClick = (e: React.MouseEvent<HTMLLIElement, MouseEvent>, action: TAction) => {
+    e.stopPropagation();
+
     const { type, onSubmit } = action;
 
     if (type === "delete") {
@@ -57,7 +60,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({ actions, layoutClass
       <div className={clsx(styles.actionsContainer, isOpen && styles.isOpen)}>
         <ul>
           {actions.map((action, idx) => (
-            <li key={idx} onClick={() => handleActionClick(action)}>
+            <li key={idx} onClick={(e) => handleActionClick(e, action)} className={action.disabled && styles.disabled}>
               <FontAwesomeIcon icon={getIconFromBulkAction(action)} /> {_.upperFirst(action.type)}
             </li>
           ))}
@@ -87,5 +90,7 @@ const getIconFromBulkAction = (action: TAction) => {
       return faTrash;
     case "download":
       return faSave;
+    case "duplicate":
+      return faCopy;
   }
 };
