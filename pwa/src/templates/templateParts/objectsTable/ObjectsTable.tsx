@@ -103,7 +103,15 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
   return (
     <div className={styles.container}>
       <div className={styles.actionsContainer}>
-        <div className={styles.searchActionContainer}>
+        <div className={styles.searchAndFilterContainer}>
+          <DisplayFilters
+            sortOrder="desc"
+            toggleSortOrder={() => {}}
+            tableColumns={objectTableColumns}
+            setTableColumns={setObjectTableColumns}
+            disabled={objectsQuery.isLoading}
+          />
+
           <InputText
             icon={<FontAwesomeIcon icon={faSearch} />}
             name="searchQuery"
@@ -112,14 +120,6 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
             {...{ register, errors }}
           />
         </div>
-
-        <DisplayFilters
-          sortOrder="desc"
-          toggleSortOrder={() => {}}
-          tableColumns={objectTableColumns}
-          setTableColumns={setObjectTableColumns}
-          disabled={objectsQuery.isLoading}
-        />
 
         <BulkActionButton
           actions={[{ type: "delete", onSubmit: handleBulkDelete }]}

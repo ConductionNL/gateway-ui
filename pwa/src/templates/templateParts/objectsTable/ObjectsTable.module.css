@@ -9,11 +9,18 @@
   justify-content: space-between;
 }
 
-.searchActionContainer {
+.searchAndFilterContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gateway-ui-size-md);
   width: 100%;
-  max-width: 350px;
 }
 
-.searchActionContainer > div > input {
-  height: 47.5px; /* height of BulkActionButton */
+.searchAndFilterContainer > :last-child {
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.searchAndFilterContainer > div > input {
+  height: 49.5px; /* height of DisplayFiltersButton */
 }
