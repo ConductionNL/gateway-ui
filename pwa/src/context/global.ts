@@ -2,12 +2,7 @@ import * as React from "react";
 import { defaultDeletedItemsContext, IDeletedItemsContext } from "./deletedItems";
 import { defaultGatsbyContext, IGatsbyContext } from "./gatsby";
 import { defaultIsLoadingContext, IIsLoadingContext } from "./isLoading";
-import {
-  defaultLogFiltersContext,
-  defaultLogTableColumnsContext,
-  ILogFiltersContext,
-  ILogTableColumnsContext,
-} from "./logs";
+import { defaultLogFiltersContext, ILogFiltersContext } from "./logs";
 import { defaultTabsContext, ITabsContext } from "./tabs";
 import { defaultObjectsContext, IObjectsStateContext } from "./objects";
 import { defaultTableColumnsContext, ITableColumnsContext } from "./tableColumns";
@@ -17,7 +12,6 @@ export interface IGlobalContext {
   isLoading: IIsLoadingContext;
   currentTabs: ITabsContext;
   logFilters: ILogFiltersContext;
-  logTableColumns: ILogTableColumnsContext;
   deletedItems: IDeletedItemsContext;
   objectsState: IObjectsStateContext;
   tableColumns: ITableColumnsContext;
@@ -28,7 +22,6 @@ export const defaultGlobalContext: IGlobalContext = {
   isLoading: defaultIsLoadingContext,
   currentTabs: defaultTabsContext,
   logFilters: defaultLogFiltersContext,
-  logTableColumns: defaultLogTableColumnsContext,
   deletedItems: defaultDeletedItemsContext,
   objectsState: defaultObjectsContext,
   tableColumns: defaultTableColumnsContext,

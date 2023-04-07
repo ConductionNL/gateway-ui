@@ -7,11 +7,12 @@ import { ToolTip } from "@conduction/components";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { Paginate } from "../../../components/paginate/Paginate";
-import { useLogFiltersContext, useLogTableColumnsContext } from "../../../context/logs";
+import { useLogFiltersContext } from "../../../context/logs";
 import { useTranslation } from "react-i18next";
 import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusTag";
 import { Button } from "../../../components/button/Button";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
+import { useTableColumnsContext } from "../../../context/tableColumns";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -24,7 +25,10 @@ interface LogsTableTemplateProps {
 
 export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagination }) => {
   const { t } = useTranslation();
-  const { logTableColumns, setLogTableColumns } = useLogTableColumnsContext();
+  const {
+    columns: { logColumns },
+    setColumns,
+  } = useTableColumnsContext();
   const { logFilters, toggleOrder } = useLogFiltersContext();
 
   const handleResourceClick = (
@@ -41,32 +45,33 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
     <div className={styles.container}>
       <div className={styles.header}>
         <DisplayFilters
+          columnType="logColumns"
           sortOrder={logFilters["_order[datetime]"]}
           toggleSortOrder={toggleOrder}
-          tableColumns={logTableColumns}
-          setTableColumns={setLogTableColumns}
+          tableColumns={logColumns}
+          setTableColumns={setColumns}
         />
       </div>
 
       <Table>
         <TableHead>
           <TableRow>
-            {logTableColumns.level && <TableHeader>{t("Level")}</TableHeader>}
-            {logTableColumns.message && <TableHeader>{t("Message")}</TableHeader>}
-            {logTableColumns.endpoint && <TableHeader>{t("Endpoint")}</TableHeader>}
-            {logTableColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
-            {logTableColumns.cronjob && <TableHeader>{t("Cronjob")}</TableHeader>}
-            {logTableColumns.action && <TableHeader>{t("Action")}</TableHeader>}
-            {logTableColumns.user && <TableHeader>{t("User")}</TableHeader>}
-            {logTableColumns.organization && <TableHeader>{t("Organization")}</TableHeader>}
-            {logTableColumns.application && <TableHeader>{t("Application")}</TableHeader>}
+            {logColumns.level && <TableHeader>{t("Level")}</TableHeader>}
+            {logColumns.message && <TableHeader>{t("Message")}</TableHeader>}
+            {logColumns.endpoint && <TableHeader>{t("Endpoint")}</TableHeader>}
+            {logColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
+            {logColumns.cronjob && <TableHeader>{t("Cronjob")}</TableHeader>}
+            {logColumns.action && <TableHeader>{t("Action")}</TableHeader>}
+            {logColumns.user && <TableHeader>{t("User")}</TableHeader>}
+            {logColumns.organization && <TableHeader>{t("Organization")}</TableHeader>}
+            {logColumns.application && <TableHeader>{t("Application")}</TableHeader>}
           </TableRow>
         </TableHead>
 
         <TableBody>
           {logs.map((log: any) => (
             <TableRow onClick={() => navigate(`/logs/${log._id.$oid}`)} key={log._id.$oid}>
-              {logTableColumns.level && (
+              {logColumns.level && (
                 <TableCell>
                   <StatusTag
                     type={_.lowerCase(log.level_name) as TStatusTagType}
@@ -75,7 +80,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.message && (
+              {logColumns.message && (
                 <TableCell>
                   <ToolTip tooltip={log.message}>
                     <div className={styles.message}>{log.message}</div>
@@ -83,7 +88,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.endpoint && (
+              {logColumns.endpoint && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -96,7 +101,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.schema && (
+              {logColumns.schema && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -109,7 +114,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.cronjob && (
+              {logColumns.cronjob && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -122,7 +127,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.action && (
+              {logColumns.action && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -135,7 +140,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.user && (
+              {logColumns.user && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -148,7 +153,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.organization && (
+              {logColumns.organization && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -161,7 +166,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 </TableCell>
               )}
 
-              {logTableColumns.application && (
+              {logColumns.application && (
                 <TableCell>
                   <Button
                     variant="primary"
@@ -178,7 +183,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
 
           {!logs.length && (
             <TableRow>
-              {Object.values(logTableColumns)
+              {Object.values(logColumns)
                 .filter((value) => value)
                 .map((_, idx) => (
                   <TableCell key={idx}>{idx === 0 && <>No logs found</>}</TableCell>

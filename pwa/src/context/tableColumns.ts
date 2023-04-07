@@ -1,7 +1,7 @@
 import * as React from "react";
 import { GlobalContext } from "./global";
 
-export type TColumnType = "objectColumns";
+export type TColumnType = "objectColumns" | "logColumns";
 
 export type TColumns = { [key: string]: boolean };
 
@@ -14,9 +14,22 @@ const objectColumns = {
   schema: true,
 };
 
+const logColumns = {
+  level: true,
+  message: true,
+  endpoint: true,
+  schema: true,
+  cronjob: true,
+  action: true,
+  user: true,
+  organization: true,
+  application: true,
+};
+
 // Interface combining all above columns
 export interface ITableColumnsContext {
   objectColumns: TColumns;
+  logColumns: TColumns;
 }
 
 /**
@@ -24,6 +37,7 @@ export interface ITableColumnsContext {
  */
 export const defaultTableColumnsContext = {
   objectColumns: objectColumns,
+  logColumns: logColumns,
 } as ITableColumnsContext;
 
 export const useTableColumnsContext = () => {
