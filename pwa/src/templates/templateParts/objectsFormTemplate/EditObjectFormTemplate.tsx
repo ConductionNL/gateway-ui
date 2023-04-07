@@ -9,18 +9,17 @@ import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
-import Skeleton from "react-loading-skeleton";
 import { FormSaveButton, TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
 import { Button } from "../../../components/button/Button";
 import { useObjectsStateContext } from "../../../context/objects";
 
 interface EditObjectFormTemplateProps {
   object: any;
-  getSchema: any;
+  schema: any; // data from useObject.getSchema
   objectId: string;
 }
 
-export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, getSchema, objectId }) => {
+export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, schema, objectId }) => {
   const { t } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
@@ -46,8 +45,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   } = useForm();
 
   React.useEffect(() => {
-    setLoading(createOrEditObject.isLoading || deleteObject.isLoading || getSchema.isLoading || dashboardLoading);
-  }, [createOrEditObject.isLoading, deleteObject.isLoading, getSchema.isLoading, dashboardLoading]);
+    setLoading(createOrEditObject.isLoading || deleteObject.isLoading || dashboardLoading);
+  }, [createOrEditObject.isLoading, deleteObject.isLoading, dashboardLoading]);
 
   const onSubmit = (data: any): void => {
     delete data.schema;
@@ -94,8 +93,6 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
   return (
     <>
-      {!getSchema.data && <Skeleton height="200px" />}
-
       <div className={styles.container}>
         {inDuplicatingMode && (
           <Alert
@@ -139,9 +136,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
 
           <Divider />
 
-          {getSchema.data && (
-            <SchemaFormTemplate {...{ register, errors, control }} schema={getSchema.data} disabled={loading} />
-          )}
+          <SchemaFormTemplate {...{ register, errors, control, schema }} disabled={loading} />
         </form>
       </div>
     </>
