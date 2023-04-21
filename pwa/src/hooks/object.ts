@@ -1,20 +1,26 @@
 import * as React from "react";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { useDeletedItemsContext } from "../context/deletedItems";
 
-export const useObject = (queryClient: QueryClient) => {
+export const useObject = () => {
   const API: APIService | null = React.useContext(APIContext);
   const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
-  const getAll = (currentPage: number, limit?: number) =>
-    useQuery<any, Error>(["objects", currentPage], () => API.Object.getAll(currentPage, limit), {
-      onError: (error) => {
-        console.warn(error.message);
+  const queryClient = useQueryClient();
+
+  const getAll = (currentPage: number, order: string, limit?: number, searchQuery?: string) =>
+    useQuery<any, Error>(
+      ["objects", order, currentPage, searchQuery],
+      () => API.Object.getAll(currentPage, order, limit, searchQuery),
+      {
+        onError: (error) => {
+          console.warn(error.message);
+        },
       },
-    });
+    );
 
   const getOne = (objectId: string) =>
     useQuery<any, Error>(["object", objectId], () => API?.Object.getOne(objectId), {
@@ -25,13 +31,17 @@ export const useObject = (queryClient: QueryClient) => {
       enabled: !!objectId && !isDeleted(objectId),
     });
 
-  const getAllFromEntity = (entityId: string, currentPage: number) =>
-    useQuery<any, Error>(["objects", entityId, currentPage], () => API.Object.getAllFromEntity(entityId, currentPage), {
-      onError: (error) => {
-        console.warn(error.message);
+  const getAllFromEntity = (entityId: string, currentPage: number, searchQuery?: string) =>
+    useQuery<any, Error>(
+      ["objects", entityId, currentPage, searchQuery],
+      () => API.Object.getAllFromEntity(entityId, currentPage, searchQuery),
+      {
+        onError: (error) => {
+          console.warn(error.message);
+        },
+        enabled: !!entityId,
       },
-      enabled: !!entityId,
-    });
+    );
 
   const getAllFromList = (list: string) =>
     useQuery<any[], Error>(["objects", list], () => API.Object.getAllFromList(list), {
@@ -80,8 +90,10 @@ export const useObject = (queryClient: QueryClient) => {
         console.warn(error.message);
       },
       onSettled: () => {
-        queryClient.resetQueries(["object", objectId]);
-        queryClient.resetQueries(["object_schema", objectId]);
+        if (objectId) {
+          queryClient.resetQueries(["object", objectId]);
+          queryClient.resetQueries(["object_schema", objectId]);
+        }
       },
     });
 

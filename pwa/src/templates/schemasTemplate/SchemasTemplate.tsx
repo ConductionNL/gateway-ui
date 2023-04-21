@@ -23,10 +23,10 @@ export const SchemasTemplate: React.FC = () => {
   const getSchemas = _useSchema.getAll();
   const deleteSchema = _useSchema.remove();
 
-  const _useObject = useObject(queryClient);
-  const getObjects = _useObject.getAll(1, 200);
+  const _useObject = useObject();
+  const getObjects = _useObject.getAll(1, "asc", 200);
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getSchemas.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getSchemas.data);
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteSchema.mutate({ id: item }));
@@ -73,7 +73,7 @@ export const SchemasTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getSchemas.data.map((schema) => (
-                <TableRow key={schema.id}>
+                <TableRow key={schema.id} onClick={() => toggleItem(schema.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={schema.id} />}</TableCell>
 
                   <TableCell>{schema.name}</TableCell>

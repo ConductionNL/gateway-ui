@@ -23,7 +23,7 @@ export const CollectionsTemplate: React.FC = () => {
   const getCollection = _useCollection.getAll();
   const deleteCollection = _useCollection.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getCollection.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getCollection.data);
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteCollection.mutate({ id: item }));
@@ -64,7 +64,7 @@ export const CollectionsTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getCollection.data.map((collection: any) => (
-                <TableRow key={collection.id}>
+                <TableRow key={collection.id} onClick={() => toggleItem(collection.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={collection.id} />}</TableCell>
 
                   <TableCell>{collection.name}</TableCell>

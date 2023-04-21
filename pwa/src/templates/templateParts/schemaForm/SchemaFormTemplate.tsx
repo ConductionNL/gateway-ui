@@ -315,14 +315,15 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "array" && (
+        {type === "array" && <>Properties of type array are not yet supported.</>}
+        {/* {type === "array" && (
           <>
             <CreateKeyValue
               disabled={disabled || readOnly}
               {...{ register, errors, control, placeholder, name, defaultValue }}
             />
           </>
-        )}
+        )} */}
 
         {type === "object" && (
           <SchemaTypeObject
@@ -362,7 +363,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   schema,
 }) => {
   const queryClient = useQueryClient();
-  const _useObject = useObject(queryClient);
+  const _useObject = useObject();
   const property = schema?.properties[name];
 
   const getAllFromList = _useObject.getAllFromList(`${property?._list}&_limit=200`);

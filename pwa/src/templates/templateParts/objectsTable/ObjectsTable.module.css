@@ -1,17 +1,36 @@
-.paginationContainer {
-  margin-block-start: var(--gateawy-ui-size-lg);
+.container {
+  position: relative;
 }
 
-.deleteButton {
-  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
+.container > *:not(.actionsContainer) {
+  z-index: 1;
 }
 
-.deleteButton:hover {
-  --denhaag-button-primary-action-hover-background-color: var(
-    --gateway-ui-color-dark-red
-  );
+.container > :last-child {
+  margin-block-start: var(--gateway-ui-size-lg);
 }
 
-.buttonIcon > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
+.actionsContainer {
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  gap: var(--gateway-ui-size-md);
+}
+
+.searchAndFilterContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gateway-ui-size-md);
+  width: 100%;
+}
+
+.searchAndFilterContainer > :last-child {
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.searchAndFilterContainer > div > input {
+  height: 49.5px; /* height of DisplayFiltersButton */
 }

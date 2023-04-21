@@ -16,6 +16,24 @@ export const useAuthentication = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const API: APIService | null = React.useContext(APIContext);
 
+  // Handle logout
+  const handleLogout = async () => {
+    if (!isBrowser()) return;
+
+    return await toast.promise(
+      API.Login.logout().then(() => {
+        API.removeAuthentication();
+        navigate("/");
+      }),
+
+      {
+        loading: "Logging out...",
+        success: "Succesfully logged out",
+        error: (err) => err.message,
+      },
+    );
+  };
+
   // Login using gateway users
   const handleInternalLogin = async (data: IUnvalidatedUser) => {
     if (!isBrowser()) return;
@@ -46,9 +64,11 @@ export const useAuthentication = () => {
       API.Login.getExternalToken()
         .then((res) => {
           API.setAuthentication(res.data.jwtToken);
-          location.href = "/"; // Required to reset referrer
         })
-        .finally(() => setIsLoading(false)),
+        .finally(() => {
+          setIsLoading(false);
+          document.cookie = "redirected_to_adfs=false";
+        }),
       {
         loading: "Logging in using external provider...",
         success: "Welcome back",
@@ -61,13 +81,6 @@ export const useAuthentication = () => {
     if (!isBrowser()) return false;
 
     return !!window.sessionStorage.getItem("JWT");
-  };
-
-  const handleLogout = (): void => {
-    if (!isBrowser()) return;
-
-    API.removeAuthentication();
-    navigate("/");
   };
 
   return { handleInternalLogin, handleExternalLogin, isLoggedIn, handleLogout, isLoading };

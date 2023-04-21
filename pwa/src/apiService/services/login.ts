@@ -19,4 +19,8 @@ export default class Login {
   public getExternalToken = (): Promise<AxiosResponse> => {
     return this._instance.get("/users/reset_token", { withCredentials: true });
   };
+
+  public logout = (): Promise<AxiosResponse> => {
+    return this._instance.post("/users/logout");
+  };
 }

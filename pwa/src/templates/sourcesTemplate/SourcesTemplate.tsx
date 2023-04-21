@@ -27,7 +27,7 @@ export const SourcesTemplate: React.FC = () => {
   const getSources = _useSources.getAll();
   const deleteSource = _useSources.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getSources.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getSources.data);
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteSource.mutate({ id: item }));
@@ -69,7 +69,7 @@ export const SourcesTemplate: React.FC = () => {
               </TableHead>
               <TableBody>
                 {getSources.data.map((source) => (
-                  <TableRow key={source.id}>
+                  <TableRow key={source.id} onClick={() => toggleItem(source.id)}>
                     <TableCell>{<CheckboxBulkSelectOne id={source.id} />}</TableCell>
 
                     <TableCell>{source.name}</TableCell>

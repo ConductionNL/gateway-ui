@@ -32,7 +32,7 @@ export const ConfirmPopUp: React.FC<ConfirmPopUpProps> = ({
   if (!isVisible) return <></>;
 
   return (
-    <div className={styles.overlay}>
+    <div className={styles.overlay} onClick={(e) => e.stopPropagation()}>
       <NotificationPopUp
         primaryButton={{
           label: confirmButton.label,

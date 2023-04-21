@@ -5,19 +5,21 @@ import ReactPaginate from "react-paginate";
 import { faChevronRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@gemeente-denhaag/components-react";
+import clsx from "clsx";
 
 interface PaginateProps {
   totalPages: number;
   currentPage: number;
   changePage: React.Dispatch<React.SetStateAction<number>>;
+  layoutClassName?: string;
 }
 
-export const Paginate: React.FC<PaginateProps> = ({ totalPages, currentPage, changePage }) => {
+export const Paginate: React.FC<PaginateProps> = ({ totalPages, currentPage, changePage, layoutClassName }) => {
   if (totalPages < 1) return <></>; // no pages available
 
   return (
     <ReactPaginate
-      className={styles.container}
+      className={clsx(styles.container, layoutClassName && layoutClassName)}
       disabledClassName={styles.disabled}
       activeClassName={styles.currentPage}
       onPageChange={(e: any) => changePage(e.selected + 1)}
