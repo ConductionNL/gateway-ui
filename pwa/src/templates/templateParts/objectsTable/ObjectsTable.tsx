@@ -18,6 +18,7 @@ import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
 import { useObjectsStateContext } from "../../../context/objects";
 import { ActionButton } from "../../../components/actionButton/ActionButton";
+import { TotalResultsSpan } from "../../../components/totalResultsSpan/TotalResultsSpan";
 
 interface TableProps {
   currentPage: number;
@@ -150,6 +151,14 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
 
       {objectsQuery.isSuccess && (
         <>
+          <div className={styles.pageAndTotalResults}>
+            <TotalResultsSpan
+              total={objectsQuery.data.total}
+              count={objectsQuery.data.count}
+              offset={objectsQuery.data.offset}
+            />
+          </div>
+
           <Table>
             <TableHead>
               <TableRow>
