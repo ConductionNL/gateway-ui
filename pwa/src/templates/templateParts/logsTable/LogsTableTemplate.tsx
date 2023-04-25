@@ -51,6 +51,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
           tableColumns={logColumns}
           setTableColumns={setColumns}
         />
+        <TotalResultsSpan total={pagination.totalPages * 15} count={15} offset={15 * (pagination.currentPage - 1)} />
       </div>
 
       <Table>
