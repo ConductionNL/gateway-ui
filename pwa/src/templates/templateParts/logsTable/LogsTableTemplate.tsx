@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as styles from "./LogsTableTemplate.module.css";
-
 import _ from "lodash";
 import { navigate } from "gatsby";
 import { ToolTip } from "@conduction/components";
@@ -13,6 +12,7 @@ import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusT
 import { Button } from "../../../components/button/Button";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
+import { TotalResultsSpan } from "../../../components/totalResultsSpan/TotalResultsSpan";
 
 interface LogsTableTemplateProps {
   logs: any[];
