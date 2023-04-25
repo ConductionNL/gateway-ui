@@ -4,7 +4,7 @@ import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/compone
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { useObject } from "../../hooks/object";
-import { Container } from "@conduction/components";
+import { Container, ToolTip } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { EditObjectFormTemplate } from "../templateParts/objectsFormTemplate/EditObjectFormTemplate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,13 +16,14 @@ import { useCurrentTabContext } from "../../context/tabs";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { Button } from "../../components/button/Button";
+import { formatDateTime } from "../../services/dateTime";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
 }
 
 export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ objectId }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
@@ -70,12 +71,65 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             }}
             variant="scrollable"
           >
-            <Tab className={styles.tab} label={t("Logs")} value={0} />
-            <Tab className={styles.tab} label={t("Sync")} value={1} />
-            <Tab className={styles.tab} label={t("Object")} value={2} />
+            <Tab className={styles.tab} label={t("Metadata")} value={0} />
+            <Tab className={styles.tab} label={t("Logs")} value={1} />
+            <Tab className={styles.tab} label={t("Sync")} value={2} />
+            <Tab className={styles.tab} label={t("Object")} value={3} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
+            {getObject.isSuccess && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeader>Id</TableHeader>
+                    <TableHeader>Date created</TableHeader>
+                    <TableHeader>Date modified</TableHeader>
+                    <TableHeader>Owner</TableHeader>
+                    <TableHeader>Organisation</TableHeader>
+                    <TableHeader>Application</TableHeader>
+                    <TableHeader>Schema</TableHeader>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow key={getObject.data.id}>
+                    <TableCell>{getObject.data._self?.id}</TableCell>
+                    <TableCell className={styles.dateContent}>
+                      {formatDateTime(t(i18n.language), getObject.data._self?.dateCreated) ?? "-"}
+                    </TableCell>
+                    <TableCell className={styles.dateContent}>
+                      {formatDateTime(t(i18n.language), getObject.data._self?.dateModified) ?? "-"}
+                    </TableCell>
+                    <TableCell>
+                      <ToolTip tooltip={getObject.data._self?.owner.name ?? ""}>
+                        {getObject.data._self?.owner.id ?? "-"}
+                      </ToolTip>
+                    </TableCell>
+                    <TableCell>
+                      <ToolTip tooltip={getObject.data._self?.organization.name ?? ""}>
+                        {getObject.data._self?.organization.id ?? "-"}
+                      </ToolTip>
+                    </TableCell>
+                    <TableCell>
+                      <ToolTip tooltip={getObject.data._self?.organization.name ?? ""}>
+                        {getObject.data._self?.application.id ?? "-"}
+                      </ToolTip>
+                    </TableCell>
+                    <TableCell>
+                      <span onClick={() => navigate(`/schemas/${getObject.data._self?.schema.id}`)}>
+                        <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                          {getObject.data._self?.schema.name ?? "-"}
+                        </Link>
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            )}
+            {getObject.isLoading && <Skeleton height="200px" />}
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="1">
             {getLogs.isSuccess && (
               <LogsTableTemplate
                 logs={getLogs.data.results}
@@ -90,7 +144,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
 
-          <TabPanel className={styles.tabPanel} value="1">
+          <TabPanel className={styles.tabPanel} value="2">
             {getObject.isLoading && <Skeleton height="200px" />}
             {getObject.isSuccess && (
               <Button
@@ -152,7 +206,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             )}
           </TabPanel>
 
-          <TabPanel className={styles.tabPanel} value="2">
+          <TabPanel className={styles.tabPanel} value="3">
             {getObject.isLoading && <Skeleton height="200px" />}
             {getObject.isSuccess && <pre>{JSON.stringify(getObject.data, null, 2)}</pre>}
           </TabPanel>
