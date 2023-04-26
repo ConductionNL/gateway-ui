@@ -23,13 +23,7 @@ export const HomeTemplate: React.FC = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
     dashboardCardId: string,
   ) => {
-    e.stopPropagation();
-
-    const confirmDeletion = confirm("Are you sure you want to delete this object?");
-
-    if (confirmDeletion) {
-      deleteDashboardCard.mutate({ id: dashboardCardId });
-    }
+    deleteDashboardCard.mutate({ id: dashboardCardId });
   };
 
   const createTags = (dashboardCard: any): TDashboardCardTag[] => {

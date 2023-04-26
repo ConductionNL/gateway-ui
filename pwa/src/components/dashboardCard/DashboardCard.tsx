@@ -3,11 +3,12 @@ import * as styles from "./DashboardCard.module.css";
 import _ from "lodash";
 import clsx from "clsx";
 import { navigate } from "gatsby";
-import { ToolTip } from "@conduction/components";
+import { NotificationPopUp, ToolTip } from "@conduction/components";
 import { faArrowRight, faBars, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
 import { getDashboardStatusTag } from "../../services/getStatusTag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ConfirmPopUp } from "../confirmPopUp/ConfirmPopUp";
 
 export type TDashboardCardTag = { label: string; tooltip: string };
 
@@ -24,6 +25,7 @@ export interface DashboardCardProps {
 
 export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags, isEnabled, onDelete }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const { isVisible, show, hide } = NotificationPopUp.controller();
 
   return (
     <div className={styles.container}>
@@ -38,8 +40,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags,
 
             <div className={clsx(styles.actionsContainer, isOpen && styles.isOpen)}>
               <ul>
-                {/* @ts-ignore */}
-                <li onClick={onDelete}>
+                <li onClick={() => show()}>
                   <FontAwesomeIcon icon={faTrash} /> Remove
                 </li>
               </ul>
@@ -68,6 +69,19 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags,
           </ToolTip>
         )}
       </div>
+
+      <ConfirmPopUp
+        title="Are you sure you want to remove this card from your dashboard?"
+        description="This can only be reversed on the detail page of the removed item."
+        confirmButton={{
+          variant: "danger",
+          label: "Delete",
+          icon: faTrash,
+        }}
+        //@ts-ignore
+        handleConfirm={onDelete}
+        {...{ isVisible, hide }}
+      />
     </div>
   );
 };
