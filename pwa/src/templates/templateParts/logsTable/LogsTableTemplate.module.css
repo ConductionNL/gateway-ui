@@ -30,6 +30,10 @@
   width: 100%;
 }
 
+.created {
+  white-space: nowrap;
+}
+
 .pagination {
   padding-inline-start: var(--gateway-ui-size-md);
   padding-inline-end: var(--gateway-ui-size-md);

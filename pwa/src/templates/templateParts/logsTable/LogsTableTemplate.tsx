@@ -13,6 +13,7 @@ import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusT
 import { Button } from "../../../components/button/Button";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
+import { formatUnixDateTime } from "../../../services/dateTime";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -24,7 +25,7 @@ interface LogsTableTemplateProps {
 }
 
 export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagination }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const {
     columns: { logColumns },
     setColumns,
@@ -52,12 +53,12 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
           setTableColumns={setColumns}
         />
       </div>
-
       <Table>
         <TableHead>
           <TableRow>
             {logColumns.level && <TableHeader>{t("Level")}</TableHeader>}
             {logColumns.message && <TableHeader>{t("Message")}</TableHeader>}
+            {logColumns.created && <TableHeader>{t("Created")}</TableHeader>}
             {logColumns.endpoint && <TableHeader>{t("Endpoint")}</TableHeader>}
             {logColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
             {logColumns.cronjob && <TableHeader>{t("Cronjob")}</TableHeader>}
@@ -67,10 +68,9 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
             {logColumns.application && <TableHeader>{t("Application")}</TableHeader>}
           </TableRow>
         </TableHead>
-
         <TableBody>
           {logs.map((log: any) => (
-            <TableRow onClick={() => navigate(`/logs/${log._id.$oid}`)} key={log._id.$oid}>
+            <TableRow key={log._id.$oid}>
               {logColumns.level && (
                 <TableCell>
                   <StatusTag
@@ -84,6 +84,16 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                 <TableCell>
                   <ToolTip tooltip={log.message}>
                     <div className={styles.message}>{log.message}</div>
+                  </ToolTip>
+                </TableCell>
+              )}
+
+              {logColumns.created && (
+                <TableCell>
+                  <ToolTip tooltip={formatUnixDateTime(t(i18n.language), log.datetime.$date.$numberLong)}>
+                    <div className={styles.created}>
+                      {formatUnixDateTime(t(i18n.language), log.datetime.$date.$numberLong)}
+                    </div>
                   </ToolTip>
                 </TableCell>
               )}
