@@ -53,23 +53,12 @@
   background-color: var(--gateway-ui-color-red);
 }
 
-.statusTypeContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--gateway-ui-size-sm);
-}
-
 .cardType {
   font-style: italic;
   font-size: var(--gateway-ui-font-size-md);
   font-weight: var(--gateway-ui-font-weight-light);
   color: var(--gateway-ui-color-gray);
   /* order: 5; */
-}
-
-.date {
-  display: flex;
 }
 
 .tagsList {
@@ -99,39 +88,13 @@
   gap: var(--gateway-ui-size-md);
 }
 
-.buttonContainer {
+.buttonsContainer {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   gap: var(--gateway-ui-size-sm);
-  align-items: flex-end;
 }
 
-.buttonContainer Button {
+.buttonsContainer > * {
   display: flex;
-  flex-grow: var(--gateway-ui-button-flex-grow);
-}
-
-.deleteButton {
-  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
-}
-
-.deleteButton:hover {
-  --denhaag-button-primary-action-hover-background-color: var(
-    --gateway-ui-color-dark-red
-  );
-}
-
-.deleteButton > span > svg {
-  margin-inline-end: var(--gateway-ui-size-xs);
-}
-
-/* Status colors */
-.statusOk {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-green);
-  --conduction-tag-color: var(--gateway-ui-color-white);
-}
-
-.statusFailed {
-  --conduction-tag-background-color: var(--gateway-ui-color-status-red);
-  --conduction-tag-color: var(--gateway-ui-color-white);
+  flex: 1;
 }

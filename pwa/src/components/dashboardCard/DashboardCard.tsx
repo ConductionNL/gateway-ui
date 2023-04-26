@@ -1,15 +1,10 @@
 import * as React from "react";
 import * as styles from "./DashboardCard.module.css";
-import { Link } from "@gemeente-denhaag/components-react";
-import { navigate } from "gatsby";
 import _ from "lodash";
-import { useTranslation } from "react-i18next";
 import clsx from "clsx";
+import { navigate } from "gatsby";
 import { Tag, ToolTip } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { dateTime } from "../../services/dateTime";
 import { faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { getStatusTag } from "../../services/getStatusTag";
 import { Button } from "../button/Button";
 
 export interface DashboardCardProps {
@@ -23,7 +18,6 @@ export interface DashboardCardProps {
     tooltip: string;
   }[];
   onDelete: (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>) => void;
-
   isEnabled?: boolean;
 }
 
@@ -53,7 +47,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags,
         ))}
       </ul>
 
-      <div className={styles.buttonContainer}>
+      <div className={styles.buttonsContainer}>
         <Button variant="primary" icon={faArrowRight} label="Details" onClick={() => navigate(title.href)} />
         <Button variant="danger" icon={faTrash} label="Delete" onClick={onDelete} />
       </div>
