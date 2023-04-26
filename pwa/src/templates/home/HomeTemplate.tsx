@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { useDashboardCards } from "../../hooks/dashboardCards";
 import Skeleton from "react-loading-skeleton";
-import { DashboardCard } from "../../components/dashboardCard/DashboardCard";
+import { DashboardCard, TDashboardCardTag } from "../../components/dashboardCard/DashboardCard";
 import _ from "lodash";
 import { getPath } from "../../services/getPath";
 import { Container } from "@conduction/components";
@@ -32,8 +32,8 @@ export const HomeTemplate: React.FC = () => {
     }
   };
 
-  const createTags = (dashboardCard: any): { label: string; tooltip: string }[] => {
-    const tagsArray: { label: string; tooltip: string }[] = [];
+  const createTags = (dashboardCard: any): TDashboardCardTag[] => {
+    const tagsArray: TDashboardCardTag[] = [];
 
     if (dashboardCard.object?.status) tagsArray.push({ label: dashboardCard.object.status, tooltip: "Status" });
     if (dashboardCard.object?.lastCall)
