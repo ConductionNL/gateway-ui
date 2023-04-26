@@ -6,6 +6,7 @@
   padding-inline-end: var(--gateway-ui-size-md);
   padding-block-start: var(--gateway-ui-size-md);
   padding-block-end: var(--gateway-ui-size-md);
+  justify-content: space-between;
 }
 
 .container > *:not(:last-child) {
@@ -25,20 +26,23 @@
 .titleLink > :first-child {
   display: flex;
 }
+
 .headerContainer {
   display: flex;
   flex-direction: column;
 }
+
 .headerContainer > :first-child {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .enabledIndicator {
   display: block;
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
+  width: var(--gateway-ui-size-sm);
+  height: var(--gateway-ui-size-sm);
+  border-radius: var(--gateway-ui-size-xs);
 }
 
 .enabledIndicator.enabled {
@@ -55,25 +59,29 @@
   justify-content: space-between;
   gap: var(--gateway-ui-size-sm);
 }
+
 .cardType {
   font-style: italic;
   font-size: var(--gateway-ui-font-size-md);
   font-weight: var(--gateway-ui-font-weight-light);
-  color: gray;
-  order: 5;
+  color: var(--gateway-ui-color-gray);
+  /* order: 5; */
 }
+
 .date {
   display: flex;
 }
+
 .tagsList {
   display: flex;
   list-style-type: none;
   padding: 0;
-  gap: 12px;
+  gap: var(--gateway-ui-size-sm);
   flex-wrap: wrap;
   padding-block-end: var(--gateway-ui-size-sm);
   margin-top: var(--gateway-ui-size-xs);
 }
+
 .date :not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-sm);
 }
@@ -90,16 +98,19 @@
   display: flex;
   gap: var(--gateway-ui-size-md);
 }
+
 .buttonContainer {
   display: flex;
   justify-content: space-evenly;
-  gap: 15px;
+  gap: var(--gateway-ui-size-sm);
   align-items: flex-end;
 }
+
 .buttonContainer Button {
   display: flex;
-  flex-grow: 4;
+  flex-grow: var(--gateway-ui-button-flex-grow);
 }
+
 .deleteButton {
   --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
 }
@@ -109,9 +120,11 @@
     --gateway-ui-color-dark-red
   );
 }
+
 .deleteButton > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
+
 /* Status colors */
 .statusOk {
   --conduction-tag-background-color: var(--gateway-ui-color-status-green);

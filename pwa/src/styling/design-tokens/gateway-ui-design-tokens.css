@@ -54,6 +54,7 @@
   /* Colors */
   --gateway-ui-color-white: #ffffff;
   --gateway-ui-color-black: black;
+  --gateway-ui-color-gray: gray;
   --gateway-ui-color-lightgrey: rgb(238, 238, 238);
   --gateway-ui-color-grey: rgb(217, 217, 217);
   --gateway-ui-color-darkgrey: rgb(204, 204, 204);
@@ -116,4 +117,5 @@
   --gateway-ui-button-secondary-border: 1px solid;
   --gateway-ui-code-editor-height: 500px;
   --gateway-ui-code-editor-border: 1px solid rgba(0, 0, 0, 0.2);
+  --gateway-ui-button-flex-grow: 4;
 }
