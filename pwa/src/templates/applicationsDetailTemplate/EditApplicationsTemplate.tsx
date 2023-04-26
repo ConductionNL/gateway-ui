@@ -21,12 +21,6 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
   const getApplication = _useApplication.getOne(applicationId);
   const deleteApplication = _useApplication.remove();
 
-  const handleDeleteApplication = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this application?");
-
-    confirmDeletion && deleteApplication.mutate({ id: applicationId });
-  };
-
   React.useEffect(() => {
     setIsLoading({ applicationForm: deleteApplication.isLoading });
   }, [deleteApplication.isLoading]);
@@ -39,7 +33,7 @@ export const EditApplicationTemplate: React.FC<EditApplicationTemplateProps> = (
             title={`Edit ${getApplication.data.name}`}
             {...{ formId }}
             disabled={isLoading.applicationForm}
-            handleDelete={handleDeleteApplication}
+            handleDelete={() => deleteApplication.mutate({ id: applicationId })}
             showTitleTooltip
           />
 

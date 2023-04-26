@@ -8,12 +8,20 @@ export default class Sources {
     this._instance = _instance;
   }
 
-  public getAll = async (currentPage: number, limit?: number): Promise<any> => {
-    const { data } = await Send(
-      this._instance,
-      "GET",
-      `/admin/objects?extend[]=all&page=${currentPage}${limit ? `&limit=${limit}` : ""}`,
-    );
+  public getAll = async (currentPage: number, order: string, limit?: number, searchQuery?: string): Promise<any> => {
+    let url = `/admin/objects?extend[]=all&page=${currentPage.toString()}`;
+
+    if (limit) {
+      url += `&_limit=${limit.toString()}`;
+    }
+    if (searchQuery) {
+      url += `&_search=${searchQuery}`;
+    }
+    if (order) {
+      url += `&_order[_self.dateCreated]=${order}`;
+    }
+
+    const { data } = await Send(this._instance, "GET", url);
 
     return data;
   };
@@ -24,10 +32,16 @@ export default class Sources {
     return data;
   };
 
-  public getAllFromEntity = async (entityId: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/objects?_self.schema.id=${entityId}&limit=200`);
+  public getAllFromEntity = async (entityId: string, currentPage: number, searchQuery?: string): Promise<any> => {
+    const { data } = await Send(
+      this._instance,
+      "GET",
+      `/admin/objects?_self.schema.id=${entityId}&page=${currentPage}&_limit=10${
+        searchQuery ? `&_search=${searchQuery}` : ""
+      }`,
+    );
 
-    return data.results;
+    return data;
   };
 
   public getAllFromList = async (list: string): Promise<any> => {

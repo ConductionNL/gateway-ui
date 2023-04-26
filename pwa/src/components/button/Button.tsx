@@ -8,16 +8,17 @@ import clsx from "clsx";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string | JSX.Element;
-  variant: "primary" | "danger" | "success";
+  variant: "primary" | "danger" | "success" | "secondary";
   icon: IconDefinition;
 
   onClick?: (event: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>) => any;
   disabled?: boolean;
+  layoutClassName?: string;
 }
 
-export const Button: React.FC<ButtonProps> = ({ label, variant, icon, ...rest }) => {
+export const Button: React.FC<ButtonProps> = ({ label, variant, icon, layoutClassName, ...rest }) => {
   return (
-    <DenHaagButton className={clsx(styles.button, styles[variant])} {...rest}>
+    <DenHaagButton className={clsx(styles.button, styles[variant], layoutClassName && layoutClassName)} {...rest}>
       <FontAwesomeIcon {...{ icon }} />
 
       {label}

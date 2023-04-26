@@ -13,6 +13,7 @@ import { useOrganization } from "../../../hooks/organization";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { useApplication } from "../../../hooks/application";
 import { IKeyValue } from "@conduction/components/lib/components/formFields";
+import { useSecurityGroup } from "../../../hooks/securityGroup";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -29,6 +30,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
 
   const getOrganization = useOrganization(queryClient).getAll();
   const getApplications = useApplication(queryClient).getAll();
+  const getSecurityGroups = useSecurityGroup(queryClient).getAll();
 
   const organisationOptions = getOrganization.data?.map((_organisation: any) => ({
     label: _organisation.name,
@@ -40,17 +42,30 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
     value: application.id,
   }));
 
+  const securityGroupOptions = getSecurityGroups.data?.map((securityGroup: any) => ({
+    label: securityGroup.name,
+    value: securityGroup.id,
+  }));
+
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitted },
     control,
     watch,
+    trigger,
   } = useForm();
 
-  const pwd = watch("password");
-  const pwd_verify = watch("password_verify");
+  const password = watch("password");
+  const validationPassword = watch("validation_password");
+
+  React.useEffect(() => {
+    if (isSubmitted) {
+      trigger("password");
+      trigger("validation_password");
+    }
+  }, [password, validationPassword]);
 
   const handleSetFormValues = (user: any): void => {
     const basicFields: string[] = ["name", "description", "email", "password", "locale", "person"];
@@ -60,6 +75,11 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
       "applications",
       user.applications.map((application: any) => ({ label: application.name, value: application.id })),
     );
+
+    setValue(
+      "securityGroups",
+      user.securityGroups.map((securityGroup: any) => ({ label: securityGroup.name, value: securityGroup.id })),
+    );
   };
 
   const onSubmit = (data: any): void => {
@@ -67,6 +87,9 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
       ...data,
       organisation: data.organization && `/admin/organisations/${data.organization.value}`,
       applications: data.applications?.map((application: IKeyValue) => `/admin/applications/${application.value}`),
+      securityGroups: data.securityGroups?.map(
+        (securityGroup: IKeyValue) => `admin/user_groups/${securityGroup.value}`,
+      ),
     };
 
     delete payload.organization;
@@ -171,11 +194,29 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
 
           <FormField>
             <FormFieldInput>
+              <FormFieldLabel>{t("Security Groups")}</FormFieldLabel>
+              {getSecurityGroups.isSuccess && (
+                <SelectMultiple
+                  options={securityGroupOptions ?? []}
+                  {...{ register, errors, control }}
+                  name="securityGroups"
+                  validation={{ required: true }}
+                  disabled={isLoading.userForm}
+                />
+              )}
+              {getSecurityGroups.isLoading && <Skeleton height={50} />}
+            </FormFieldInput>
+          </FormField>
+        </div>
+
+        <div className={styles.grid}>
+          <FormField>
+            <FormFieldInput>
               <FormFieldLabel>{t("Password")}</FormFieldLabel>
               <InputPassword
                 {...{ register, errors }}
                 name="password"
-                validation={{ validate: () => validatePassword(pwd, pwd_verify) }}
+                validation={{ validate: (value) => validatePassword(value, validationPassword, !user) }}
                 disabled={isLoading.userForm}
               />
 
@@ -188,12 +229,12 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
               <FormFieldLabel>{t("Retype Password")}</FormFieldLabel>
               <InputPassword
                 {...{ register, errors }}
-                name="password_verify"
-                validation={{ validate: () => validatePassword(pwd_verify, pwd) }}
+                name="validation_password"
+                validation={{ validate: (value) => validatePassword(password, value, !user) }}
                 disabled={isLoading.userForm}
               />
 
-              {errors["password_verify"] && <ErrorMessage message={errors["password_verify"].message} />}
+              {errors["validation_password"] && <ErrorMessage message={errors["validation_password"].message} />}
             </FormFieldInput>
           </FormField>
         </div>

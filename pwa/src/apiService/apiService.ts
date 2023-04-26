@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { handleAutomaticLogout, validateSession } from "../services/auth";
+import { handleAutomaticLogout, validateSession } from "../hooks/useAuthentication";
 import toast from "react-hot-toast";
 
 // Services
@@ -67,12 +67,18 @@ export default class APIService {
   }
 
   public get LoginClient(): AxiosInstance {
+    let headers: any = {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    };
+
+    if (this.getJWT()) {
+      headers.Authorization = `Bearer ${this.getJWT()}`;
+    }
+
     return axios.create({
       baseURL: window.sessionStorage.getItem("GATSBY_API_URL") ?? "",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+      headers,
     });
   }
 

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputText, SelectSingle, Textarea } from "@conduction/components";
+import { InputCheckbox, InputText, SelectSingle, Textarea, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useSource } from "../../../hooks/source";

@@ -4,8 +4,9 @@ import * as styles from "./FormHeaderTemplate.module.css";
 import { t } from "i18next";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { faMinus, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { ToolTip } from "@conduction/components";
+import { ToolTip, NotificationPopUp } from "@conduction/components";
 import { Button } from "../../../components/button/Button";
+import { ConfirmPopUp } from "../../../components/confirmPopUp/ConfirmPopUp";
 
 interface FormHeaderTemplateProps {
   title: string;
@@ -30,6 +31,8 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
   customElements,
   showTitleTooltip,
 }) => {
+  const { isVisible, show, hide } = NotificationPopUp.controller();
+
   return (
     <section className={styles.container}>
       {showTitleTooltip && (
@@ -58,7 +61,21 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
         )}
 
         {handleDelete && (
-          <Button variant="danger" onClick={handleDelete} icon={faTrash} label={t("Delete")} {...{ disabled }} />
+          <>
+            <Button variant="danger" onClick={() => show()} icon={faTrash} label={t("Delete")} {...{ disabled }} />
+
+            <ConfirmPopUp
+              title="Are you sure you want to delete this item?"
+              description="Deletion of an item can not be reversed."
+              confirmButton={{
+                variant: "danger",
+                label: "Delete item",
+                icon: faTrash,
+              }}
+              handleConfirm={handleDelete}
+              {...{ isVisible, hide }}
+            />
+          </>
         )}
       </div>
     </section>

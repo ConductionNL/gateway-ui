@@ -44,12 +44,6 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
     toggleDashboardCard(action.name, "action", "Action", actionId, dashboardCard?.id);
   };
 
-  const handleDeleteAction = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this action?");
-
-    confirmDeletion && deleteAction.mutate({ id: actionId });
-  };
-
   const handleRunAction = (data: any) => {
     runAction.mutate({ payload: data, id: actionId });
   };
@@ -68,7 +62,7 @@ export const ActionsDetailTemplate: React.FC<ActionsDetailsTemplateProps> = ({ a
             title={`Edit ${getAction.data.name}`}
             {...{ formId }}
             disabled={isLoading.actionForm}
-            handleDelete={handleDeleteAction}
+            handleDelete={() => deleteAction.mutate({ id: actionId })}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
             customElements={

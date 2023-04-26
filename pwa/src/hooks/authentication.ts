@@ -4,9 +4,11 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
+import { useDeletedItemsContext } from "../context/deletedItems";
 
 export const useAuthentication = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
   const getAll = () =>
     useQuery<any[], Error>("authentications", API.Authentication.getAll, {
@@ -24,16 +26,18 @@ export const useAuthentication = (queryClient: QueryClient) => {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!authenticationId,
+      enabled: !!authenticationId && !isDeleted(authenticationId),
     });
 
-  const remove = (authenticationId: string) =>
+  const remove = () =>
     useMutation<any, Error, any>(API.Authentication.delete, {
+      onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "authentications", variables.id);
         navigate("/settings/authentication");
       },
-      onError: (error) => {
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
         console.warn(error.message);
       },
     });

@@ -13,12 +13,21 @@ import Skeleton from "react-loading-skeleton";
 import { translateDate } from "../../services/dateFormat";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
+import { useBulkSelect } from "../../hooks/useBulkSelect";
+import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 
 export const MappingTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
   const queryClient = useQueryClient();
   const getMappings = useMapping(queryClient).getAll();
+  const deleteMapping = useMapping(queryClient).remove();
+
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getMappings.data);
+
+  const handleBulkDelete = (): void => {
+    selectedItems.forEach((item) => deleteMapping.mutate({ id: item }));
+  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -32,32 +41,59 @@ export const MappingTemplate: React.FC = () => {
       {getMappings.isLoading && <Skeleton height="200px" />}
 
       {getMappings.isSuccess && (
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>Name</TableHeader>
-              <TableHeader>Version</TableHeader>
-              <TableHeader>Date Created</TableHeader>
-              <TableHeader>Date Modified</TableHeader>
-              <TableHeader></TableHeader>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {getMappings.data.map((mapping) => (
-              <TableRow key={mapping.id} onClick={() => navigate(`/mappings/${mapping.id}`)}>
-                <TableCell>{mapping.name ?? "-"}</TableCell>
-                <TableCell>{mapping.version ?? "-"}</TableCell>
-                <TableCell>{translateDate(i18n.language, mapping.dateCreated) ?? "-"}</TableCell>
-                <TableCell>{translateDate(i18n.language, mapping.dateModified) ?? "-"}</TableCell>
-                <TableCell className={styles.details} onClick={() => navigate(`/mappings/${mapping.id}`)}>
-                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
+        <div>
+          <BulkActionButton
+            actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+            selectedItemsCount={selectedItems.length}
+          />
+
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
+                <TableHeader>Name</TableHeader>
+                <TableHeader>Version</TableHeader>
+                <TableHeader>Date Created</TableHeader>
+                <TableHeader>Date Modified</TableHeader>
+                <TableHeader />
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {getMappings.data.map((mapping) => (
+                <TableRow key={mapping.id} onClick={() => toggleItem(mapping.id)}>
+                  <TableCell>{<CheckboxBulkSelectOne id={mapping.id} />}</TableCell>
+
+                  <TableCell>{mapping.name ?? "-"}</TableCell>
+
+                  <TableCell>{mapping.version ?? "-"}</TableCell>
+
+                  <TableCell>{translateDate(i18n.language, mapping.dateCreated) ?? "-"}</TableCell>
+
+                  <TableCell>{translateDate(i18n.language, mapping.dateModified) ?? "-"}</TableCell>
+
+                  <TableCell className={styles.details} onClick={() => navigate(`/mappings/${mapping.id}`)}>
+                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+
+            {!getMappings.data.length && (
+              <TableRow>
+                <TableCell>{t("No mappings found")}</TableCell>
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+                <TableCell />
+              </TableRow>
+            )}
+          </Table>
+        </div>
       )}
     </Container>
   );

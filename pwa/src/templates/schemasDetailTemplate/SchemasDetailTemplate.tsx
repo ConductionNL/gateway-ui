@@ -6,8 +6,7 @@ import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../hooks/schema";
 import { Button, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
-import { useObject } from "../../hooks/object";
-import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
+import { ObjectsTableTemplate } from "../templateParts/objectsTable/ObjectsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
@@ -44,17 +43,6 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
   const dashboardCard = getDashboardCard(getSchema.data?.id);
 
-  const _useObject = useObject(queryClient);
-  const getObjectsFromEntity = _useObject.getAllFromEntity(schemaId);
-
-  const handleDeleteSchema = () => {
-    const confirmDeletion = confirm("Are you sure you want to delete this schema?");
-
-    if (confirmDeletion) {
-      deleteSchema.mutate({ id: schemaId });
-    }
-  };
-
   const toggleFromDashboard = () => {
     toggleDashboardCard(getSchema.data?.name, "schema", "Entity", schemaId, dashboardCard?.id);
   };
@@ -69,7 +57,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
         <FormHeaderTemplate
           title={`Edit ${getSchema.data?.name || "Schema"}`}
           disabled={isLoading.schemaForm}
-          handleDelete={handleDeleteSchema}
+          handleDelete={() => deleteSchema.mutate({ id: schemaId })}
           handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
           customElements={
             <a
@@ -110,8 +98,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
-            {getObjectsFromEntity.isSuccess && <ObjectsTable objects={getObjectsFromEntity.data} {...{ schemaId }} />}
-            {getObjectsFromEntity.isLoading && <Skeleton height="100px" />}
+            <ObjectsTableTemplate entityId={schemaId} />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">

@@ -59,6 +59,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
     { label: "Phone", value: "phone" },
     { label: "Json", value: "json" },
     { label: "Dutch_pc4", value: "dutch_pc4" },
+    { label: "Text", value: "text" },
   ];
 
   const functionSelectOptions = [
@@ -443,6 +444,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         name="inversedBy"
                         options={getProperties.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                         disabled={loading}
+                        isClearable
                       />
                     )}
                   </FormFieldInput>

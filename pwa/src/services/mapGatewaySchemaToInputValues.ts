@@ -1,12 +1,12 @@
 export const mapGatewaySchemaToInputValues = (value: any): any => {
   switch (value.type) {
-    case "array":
-      if (Array.isArray(value.value) || value.value === undefined || value.value === null) {
-        return value.value?.map((item: any) => ({ key: item.key, value: item.value }));
-      } else {
-        const objectToArray = Object.entries(value.value).map(([key, value]) => ({ key, value: value }));
-        return objectToArray?.map((item: any) => ({ key: item.key, value: item.value }));
-      }
+    // case "array":
+    //   if (Array.isArray(value.value) || value.value === undefined || value.value === null) {
+    //     return value.value?.map((item: any) => ({ key: item.key, value: item.value }));
+    //   } else {
+    //     const objectToArray = Object.entries(value.value).map(([key, value]) => ({ key, value: value }));
+    //     return objectToArray?.map((item: any) => ({ key: item.key, value: item.value }));
+    //   }
 
     case "boolean":
     case "integer":
