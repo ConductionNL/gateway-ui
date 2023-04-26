@@ -50,20 +50,17 @@ export const HomeTemplate: React.FC = () => {
       {getDashboardCards.isSuccess && (
         <div className={styles.cardsGrid}>
           {getDashboardCards.data.map((dashboardCard) => (
-            <>
-              {console.log(dashboardCard)}
-              <DashboardCard
-                key={dashboardCard.id}
-                title={{
-                  label: dashboardCard.object?.name ?? dashboardCard.object?.id,
-                  href: `/${getPath(dashboardCard.type)}/${dashboardCard.object?.id ?? dashboardCard.entityId}`,
-                }}
-                tags={createTags(dashboardCard)}
-                type={dashboardCard.type}
-                onDelete={(e) => handleDeleteDashboardCard(e, dashboardCard.id)}
-                isEnabled={dashboardCard.object?.isEnabled}
-              />
-            </>
+            <DashboardCard
+              key={dashboardCard.id}
+              title={{
+                label: dashboardCard.object?.name ?? dashboardCard.object?.id,
+                href: `/${getPath(dashboardCard.type)}/${dashboardCard.object?.id ?? dashboardCard.entityId}`,
+              }}
+              tags={createTags(dashboardCard)}
+              type={dashboardCard.type}
+              onDelete={(e) => handleDeleteDashboardCard(e, dashboardCard.id)}
+              isEnabled={dashboardCard.object?.isEnabled}
+            />
           ))}
         </div>
       )}
