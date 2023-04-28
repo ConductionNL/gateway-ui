@@ -14,6 +14,8 @@ import { Button } from "../../../components/button/Button";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
 import { formatUnixDateTime } from "../../../services/dateTime";
+import { Link } from "@gemeente-denhaag/components-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -66,6 +68,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
             {logColumns.user && <TableHeader>{t("User")}</TableHeader>}
             {logColumns.organization && <TableHeader>{t("Organization")}</TableHeader>}
             {logColumns.application && <TableHeader>{t("Application")}</TableHeader>}
+            <TableHeader></TableHeader>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -188,6 +191,11 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                   />
                 </TableCell>
               )}
+              <TableCell onClick={() => navigate(`/logs/${log._id.$oid}`)}>
+                <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                  {t("Details")}
+                </Link>
+              </TableCell>
             </TableRow>
           ))}
 
