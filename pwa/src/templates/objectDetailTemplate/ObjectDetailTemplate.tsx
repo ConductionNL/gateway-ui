@@ -16,6 +16,7 @@ import { useCurrentTabContext } from "../../context/tabs";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { Button } from "../../components/button/Button";
+import { CodeEditor } from "../../components/codeEditor/CodeEditor";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -25,6 +26,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
   const { t } = useTranslation();
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
+  const [objectJsonData, setObjectJsonData] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const _useObject = useObject();
@@ -154,7 +156,9 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
 
           <TabPanel className={styles.tabPanel} value="2">
             {getObject.isLoading && <Skeleton height="200px" />}
-            {getObject.isSuccess && <pre>{JSON.stringify(getObject.data, null, 2)}</pre>}
+            {getObject.isSuccess && (
+              <CodeEditor code={JSON.stringify(getObject.data, null, 2)} setCode={setObjectJsonData} readOnly />
+            )}
           </TabPanel>
         </TabContext>
       </div>
