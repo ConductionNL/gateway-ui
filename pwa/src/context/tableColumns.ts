@@ -18,6 +18,7 @@ const objectColumns = {
 const logColumns = {
   level: true,
   message: true,
+  created: true,
   endpoint: true,
   schema: true,
   cronjob: true,
