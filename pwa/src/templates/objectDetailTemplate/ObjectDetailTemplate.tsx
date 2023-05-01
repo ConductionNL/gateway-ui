@@ -80,41 +80,55 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
           <TabPanel className={styles.tabPanel} value="0">
             {getObject.isSuccess && (
               <Table>
-                <TableHead>
+                <TableBody>
                   <TableRow>
                     <TableHeader>Id</TableHeader>
-                    <TableHeader>Date created</TableHeader>
-                    <TableHeader>Date modified</TableHeader>
-                    <TableHeader>Owner</TableHeader>
-                    <TableHeader>Organisation</TableHeader>
-                    <TableHeader>Application</TableHeader>
-                    <TableHeader>Schema</TableHeader>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow key={getObject.data.id}>
                     <TableCell>{getObject.data._self?.id}</TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Date created</TableHeader>
                     <TableCell className={styles.dateContent}>
                       {formatDateTime(t(i18n.language), getObject.data._self?.dateCreated) ?? "-"}
                     </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Date modified</TableHeader>
                     <TableCell className={styles.dateContent}>
                       {formatDateTime(t(i18n.language), getObject.data._self?.dateModified) ?? "-"}
                     </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Owner</TableHeader>
                     <TableCell>
                       <ToolTip tooltip={getObject.data._self?.owner.name ?? ""}>
                         {getObject.data._self?.owner.id ?? "-"}
                       </ToolTip>
                     </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Organisation</TableHeader>
                     <TableCell>
                       <ToolTip tooltip={getObject.data._self?.organization.name ?? ""}>
                         {getObject.data._self?.organization.id ?? "-"}
                       </ToolTip>
                     </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Application</TableHeader>
                     <TableCell>
                       <ToolTip tooltip={getObject.data._self?.organization.name ?? ""}>
                         {getObject.data._self?.application.id ?? "-"}
                       </ToolTip>
                     </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Schema</TableHeader>
                     <TableCell>
                       <span onClick={() => navigate(`/schemas/${getObject.data._self?.schema.id}`)}>
                         <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
