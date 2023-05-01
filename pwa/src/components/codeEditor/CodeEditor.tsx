@@ -8,15 +8,23 @@ interface CodeEditorProps {
   setCode: React.Dispatch<React.SetStateAction<string>>;
   language?: "json";
   layoutClassName?: string;
+  readOnly?: boolean;
 }
 
-export const CodeEditor: React.FC<CodeEditorProps> = ({ code, setCode, language = "json", layoutClassName }) => {
+export const CodeEditor: React.FC<CodeEditorProps> = ({
+  code,
+  setCode,
+  language = "json",
+  layoutClassName,
+  readOnly,
+}) => {
   return (
     <MonacoEditor
       value={code}
       {...{ language }}
       onChange={(newCode) => setCode(newCode ?? "")}
       className={clsx(styles.container, layoutClassName && layoutClassName)}
+      options={{ readOnly }}
     />
   );
 };
