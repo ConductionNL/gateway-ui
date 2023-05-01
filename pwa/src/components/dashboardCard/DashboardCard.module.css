@@ -1,12 +1,13 @@
 .container {
   display: flex;
   flex-direction: column;
-  border: var(--gateway-ui-card-border-color);
   padding-inline-start: var(--gateway-ui-size-md);
   padding-inline-end: var(--gateway-ui-size-md);
   padding-block-start: var(--gateway-ui-size-md);
   padding-block-end: var(--gateway-ui-size-md);
   justify-content: space-between;
+  background: var(--gateway-ui-color-white);
+  border-radius: var(--gateway-ui-border-radius-md);
 }
 
 .container > *:not(:last-child) {
@@ -15,13 +16,12 @@
 
 .headerContainer {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
 }
 
-.headerContainer > :first-child {
+.headerContainer > .titleContainer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
 }
 
 .title {
@@ -44,7 +44,13 @@
   background-color: var(--gateway-ui-color-red);
 }
 
-.cardType {
+.typeContainer {
+  display: flex;
+  gap: var(--gateway-ui-size-xs);
+  align-items: center;
+}
+
+.typeLabel {
   font-style: italic;
   font-size: var(--gateway-ui-font-size-md);
   font-weight: var(--gateway-ui-font-weight-light);
@@ -60,70 +66,6 @@
   margin-top: var(--gateway-ui-size-xs);
 }
 
-.date :not(:last-child) {
-  margin-inline-end: var(--gateway-ui-size-sm);
-}
-
-.dateText {
-  align-self: center;
-}
-
-.sectionDivider > *:not(:last-child):has(> *) {
-  margin-block-end: var(--gateway-ui-size-md);
-}
-
-.mainSection {
-  display: flex;
-  gap: var(--gateway-ui-size-md);
-}
-
-.buttonsContainer {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--gateway-ui-size-sm);
-}
-
-.buttonsContainer > * {
-  display: flex;
-  align-items: center;
-}
-
-.menuContainer {
-  position: relative;
+.button {
   width: fit-content;
-  padding-block-end: var(--gateway-ui-size-sm);
-}
-
-.actionsContainer {
-  left: -80px;
-  display: none;
-  position: absolute;
-  background-color: var(--gateway-ui-color-white);
-  box-shadow: var(--gateway-ui-drop-down-box-shadow);
-  border-radius: 3px;
-}
-
-.actionsContainer.isOpen {
-  display: block;
-}
-
-.actionsContainer > ul {
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.actionsContainer > ul > li {
-  display: flex;
-  gap: var(--gateway-ui-size-xs);
-  font-size: var(--gateway-ui-font-size-md);
-  padding-inline: var(--gateway-ui-size-sm);
-  padding-block: var(--gateway-ui-size-sm);
-  border-radius: 3px;
-}
-
-.actionsContainer > ul > li:hover {
-  cursor: pointer;
-  background-color: var(--gateway-ui-row-background-color);
-  border-radius: 3px;
 }

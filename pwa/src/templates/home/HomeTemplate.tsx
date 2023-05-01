@@ -19,10 +19,7 @@ export const HomeTemplate: React.FC = () => {
   const getDashboardCards = _useDashboardCards.getAll();
   const deleteDashboardCard = _useDashboardCards.createOrDelete();
 
-  const handleDeleteDashboardCard = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
-    dashboardCardId: string,
-  ) => {
+  const handleDeleteDashboardCard = (dashboardCardId: string) => {
     deleteDashboardCard.mutate({ id: dashboardCardId });
   };
 
@@ -52,7 +49,7 @@ export const HomeTemplate: React.FC = () => {
               }}
               tags={createTags(dashboardCard)}
               type={dashboardCard.type}
-              onDelete={(e) => handleDeleteDashboardCard(e, dashboardCard.id)}
+              onDelete={() => handleDeleteDashboardCard(dashboardCard.id)}
               isEnabled={dashboardCard.object?.isEnabled}
             />
           ))}
