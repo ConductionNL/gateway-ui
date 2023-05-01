@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { checkIfExpiresSoon, handleAutomaticLogout, validateSession } from "../hooks/useAuthentication";
+import { shouldRenewToken, handleAutomaticLogout, validateSession } from "../hooks/useAuthentication";
 import toast from "react-hot-toast";
 
 // Services
@@ -224,7 +224,7 @@ export default class APIService {
       });
     }
 
-    if (checkIfExpiresSoon()) {
+    if (shouldRenewToken()) {
       this.renewAuthentication();
     }
 

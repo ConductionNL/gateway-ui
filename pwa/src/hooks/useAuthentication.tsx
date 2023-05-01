@@ -103,7 +103,7 @@ export const validateSession = () => {
   return !expired;
 };
 
-export const checkIfExpiresSoon = () => {
+export const shouldRenewToken = (): boolean => {
   const token = sessionStorage.getItem("JWT");
 
   if (!token) return false;
@@ -115,11 +115,13 @@ export const checkIfExpiresSoon = () => {
     const tokenExpiration = decoded.exp * 1000;
     const currentTime = Date.now();
 
-    const renewTokenPossible =
+    if (
       decoded?.exp &&
       currentTime.valueOf() >= renewTokenTime.valueOf() &&
-      currentTime.valueOf() <= tokenExpiration.valueOf();
-
-    return renewTokenPossible;
+      currentTime.valueOf() <= tokenExpiration.valueOf()
+    ) {
+      return true;
+    }
   }
+  return false;
 };
