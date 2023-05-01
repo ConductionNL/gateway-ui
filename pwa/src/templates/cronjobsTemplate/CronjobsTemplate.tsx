@@ -64,6 +64,7 @@ export const CronjobsTemplate: React.FC = () => {
                 <TableHeader>{t("Next run")}</TableHeader>
                 <TableHeader>{t("Date created")}</TableHeader>
                 <TableHeader>{t("Date modified")}</TableHeader>
+                <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
             <TableBody>
