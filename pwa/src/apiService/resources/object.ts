@@ -23,7 +23,7 @@ export default class Sources {
       url += `&_order[_self.dateCreated]=${order}`;
     }
 
-    const { data } = await Send(this._instance, "GET", url);
+    const { data } = await this._send(this._instance, "GET", url);
 
     return data;
   };
@@ -35,7 +35,7 @@ export default class Sources {
   };
 
   public getAllFromEntity = async (entityId: string, currentPage: number, searchQuery?: string): Promise<any> => {
-    const { data } = await Send(
+    const { data } = await this._send(
       this._instance,
       "GET",
       `/admin/objects?_self.schema.id=${entityId}&page=${currentPage}&_limit=10${
