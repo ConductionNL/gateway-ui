@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useObject } from "../../../hooks/object";
 import { UseQueryResult } from "react-query";
-import { Paginate } from "../../../components/paginate/Paginate";
 import { useTranslation } from "react-i18next";
 import { useBulkSelect } from "../../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../../components/bulkActionButton/BulkActionButton";
@@ -18,7 +17,7 @@ import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
 import { useObjectsStateContext } from "../../../context/objects";
 import { ActionButton } from "../../../components/actionButton/ActionButton";
-import { TotalResultsSpan } from "../../../components/totalResultsSpan/TotalResultsSpan";
+import { usePagination } from "../../../hooks/usePagination";
 
 interface TableProps {
   currentPage: number;
@@ -84,6 +83,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
     setColumns,
   } = useTableColumnsContext();
   const { toggleOrder, objectsState, setObjectsState } = useObjectsStateContext();
+  const { Pagination, PaginationLocationIndicator } = usePagination(objectsQuery, currentPage, setCurrentPage);
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 
@@ -152,11 +152,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
       {objectsQuery.isSuccess && (
         <>
           <div className={styles.pageAndTotalResults}>
-            <TotalResultsSpan
-              total={objectsQuery.data.total}
-              count={objectsQuery.data.count}
-              offset={objectsQuery.data.offset}
-            />
+            <PaginationLocationIndicator />
           </div>
 
           <Table>
@@ -235,7 +231,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
             </TableBody>
           </Table>
 
-          <Paginate totalPages={objectsQuery.data.pages} currentPage={currentPage} changePage={setCurrentPage} />
+          <Pagination />
         </>
       )}
     </div>
