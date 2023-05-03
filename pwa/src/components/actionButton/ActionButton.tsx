@@ -17,10 +17,11 @@ type TAction = {
 
 interface ActionButtonProps {
   actions: TAction[];
+  size?: "sm" | "md";
   layoutClassName?: string;
 }
 
-export const ActionButton: React.FC<ActionButtonProps> = ({ actions, layoutClassName }) => {
+export const ActionButton: React.FC<ActionButtonProps> = ({ actions, size = "md", layoutClassName }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [action, setAction] = React.useState<() => any>(() => actions[0].onSubmit);
   const { isVisible, show, hide } = NotificationPopUp.controller();
@@ -51,10 +52,11 @@ export const ActionButton: React.FC<ActionButtonProps> = ({ actions, layoutClass
     <div className={clsx(styles.container, layoutClassName && layoutClassName)}>
       <Button
         variant="secondary"
-        label="Actions"
-        onBlur={() => setTimeout(() => setIsOpen(false), 100)}
+        label={size !== "sm" ? "Actions" : ""}
+        onBlur={() => setTimeout(() => setIsOpen(false), 200)}
         onClick={(e) => handleActionButtonClick(e)}
         icon={faEllipsisH}
+        layoutClassName={styles[size]}
       />
 
       <div className={clsx(styles.actionsContainer, isOpen && styles.isOpen)}>

@@ -14,6 +14,7 @@
   display: none;
   overflow: hidden;
   position: absolute;
+  width: fit-content;
   background-color: var(--gateway-ui-color-white);
   border-bottom-left-radius: var(--gateway-ui-size-xs);
   border-bottom-right-radius: var(--gateway-ui-size-xs);
@@ -49,4 +50,13 @@
 .actionsContainer > ul > li.disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.sm {
+  padding-inline: var(--gateway-ui-size-sm) !important;
+  padding-block: var(--gateway-ui-size-3xs) !important;
+}
+
+.sm > span > svg {
+  margin: 0;
 }

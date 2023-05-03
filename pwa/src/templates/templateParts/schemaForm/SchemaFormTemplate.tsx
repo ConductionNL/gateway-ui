@@ -57,6 +57,8 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
     setSimpleProperties([]);
     setComplexProperties([]);
 
+    if (!schema.properties) return;
+
     for (const [key, _value] of Object.entries(schema.properties)) {
       const value = _value as any; // todo: type this
 
