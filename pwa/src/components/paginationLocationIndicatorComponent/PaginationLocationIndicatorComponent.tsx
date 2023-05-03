@@ -17,7 +17,9 @@ export const PaginationLocationIndicatorComponent: React.FC<PaginationLocationIn
 }) => {
   return (
     <span className={clsx(styles.content, layoutClassName && layoutClassName)}>
-      {offset} tot {offset + count} van de {total} resultaten.
+      {count === 1
+        ? `${offset + count} van de ${total} resultaten.`
+        : `${offset + 1} t/m ${offset + count} van de ${total} resultaten.`}
     </span>
   );
 };
