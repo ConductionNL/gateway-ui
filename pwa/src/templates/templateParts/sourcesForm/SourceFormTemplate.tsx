@@ -148,6 +148,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   const handleSetFormValues = (source: any): void => {
     const basicFields: string[] = [
       "name",
+      "isEnabled",
       "status",
       "description",
       "location",
@@ -309,6 +310,18 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 </FormField>
 
                 {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} />}
+
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                    <InputCheckbox
+                      disabled={isLoading.sourceForm}
+                      {...{ register, errors }}
+                      label="on"
+                      name="isEnabled"
+                    />
+                  </FormFieldInput>
+                </FormField>
               </div>
             </div>
           </TabPanel>
