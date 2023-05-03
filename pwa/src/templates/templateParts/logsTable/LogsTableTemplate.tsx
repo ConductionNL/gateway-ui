@@ -5,7 +5,6 @@ import { navigate } from "gatsby";
 import { ToolTip } from "@conduction/components";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
-import { Paginate } from "../../../components/paginate/Paginate";
 import { useLogFiltersContext } from "../../../context/logs";
 import { useTranslation } from "react-i18next";
 import { StatusTag, TStatusTagType } from "../../../components/statusTag/StatusTag";
@@ -15,14 +14,21 @@ import { useTableColumnsContext } from "../../../context/tableColumns";
 import { formatUnixDateTime } from "../../../services/dateTime";
 import { Link } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TotalResultsSpan } from "../../../components/totalResultsSpan/TotalResultsSpan";
+import { usePagination } from "../../../hooks/usePagination";
 
 interface LogsTableTemplateProps {
   logs: any[];
   pagination: {
-    totalPages: number;
+    data: {
+      count: number;
+      limit: number;
+      offset: number;
+      page: number;
+      pages: number;
+      total: number;
+    };
     currentPage: number;
-    changePage: React.Dispatch<React.SetStateAction<number>>;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   };
 }
 
@@ -33,6 +39,11 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
     setColumns,
   } = useTableColumnsContext();
   const { logFilters, toggleOrder } = useLogFiltersContext();
+  const { Pagination, PaginationLocationIndicator } = usePagination(
+    { data: { ...pagination.data } },
+    pagination.currentPage,
+    pagination.setCurrentPage,
+  );
 
   const handleResourceClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
@@ -54,7 +65,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
           tableColumns={logColumns}
           setTableColumns={setColumns}
         />
-        <TotalResultsSpan total={pagination.totalPages * 15} count={15} offset={15 * (pagination.currentPage - 1)} />
+        <PaginationLocationIndicator />
       </div>
       <Table>
         <TableHead>
@@ -212,7 +223,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
         </TableBody>
       </Table>
 
-      <Paginate layoutClassName={styles.pagination} {...pagination} />
+      <Pagination layoutClassName={styles.pagination} />
     </div>
   );
 };
