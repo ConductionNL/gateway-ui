@@ -707,4 +707,5 @@ const authSelectOptions = [
   { label: "JWT-HS256", value: "jwt-HS256" },
   { label: "Username and Password", value: "username-password" },
   { label: "VrijBRP-JWT", value: "vrijbrp-jwt" },
+  { label: "Pink-JWT", value: "pink-jwt" },
 ];
