@@ -11,6 +11,7 @@ import { useAction } from "../../../hooks/action";
 import Skeleton from "react-loading-skeleton";
 import { useSync } from "../../../hooks/synchronization";
 import { useObject } from "../../../hooks/object";
+import { useIsLoadingContext } from "../../../context/isLoading";
 
 interface SyncFormTemplateProps {
   objectId: string;
@@ -21,7 +22,7 @@ export const formId: string = "synchronization-form";
 
 export const SyncFormTemplate: React.FC<SyncFormTemplateProps> = ({ objectId, synchronization }) => {
   const { t } = useTranslation();
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = useQueryClient();
   const _useObject = useObject();
@@ -87,6 +88,10 @@ export const SyncFormTemplate: React.FC<SyncFormTemplateProps> = ({ objectId, sy
     getSources.isSuccess && getSource.isSuccess && handleSetSelectSourceFormValues();
   }, [getSource.isSuccess]);
 
+  React.useEffect(() => {
+    setIsLoading({ syncForm: syncObject.isLoading });
+  }, [syncObject.isLoading]);
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)} id={formId}>
@@ -104,6 +109,7 @@ export const SyncFormTemplate: React.FC<SyncFormTemplateProps> = ({ objectId, sy
                       <SelectSingle
                         options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                         name="source"
+                        disabled={isLoading.syncForm}
                         validation={{ required: true }}
                         {...{ register, errors, control }}
                       />
@@ -119,6 +125,7 @@ export const SyncFormTemplate: React.FC<SyncFormTemplateProps> = ({ objectId, sy
                       <SelectSingle
                         options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                         name="source"
+                        disabled={isLoading.syncForm}
                         validation={{ required: true }}
                         {...{ register, errors, control }}
                       />
@@ -139,6 +146,7 @@ export const SyncFormTemplate: React.FC<SyncFormTemplateProps> = ({ objectId, sy
                       <SelectSingle
                         options={syncActions.map((action: any) => ({ label: action.name, value: action.id }))}
                         name="action"
+                        disabled={isLoading.syncForm}
                         {...{ register, errors, control }}
                       />
                     )}
@@ -153,6 +161,7 @@ export const SyncFormTemplate: React.FC<SyncFormTemplateProps> = ({ objectId, sy
                       <SelectSingle
                         options={syncActions.map((action: any) => ({ label: action.name, value: action.id }))}
                         name="action"
+                        disabled={isLoading.syncForm}
                         {...{ register, errors, control }}
                       />
                     )}
@@ -168,7 +177,7 @@ export const SyncFormTemplate: React.FC<SyncFormTemplateProps> = ({ objectId, sy
                   {...{ register, errors }}
                   name="sourceId"
                   validation={{ maxLength: 225 }}
-                  disabled={loading}
+                  disabled={isLoading.syncForm}
                 />
                 {errors["sourceId"] && <ErrorMessage message={errors["sourceId"].message} />}
               </FormFieldInput>
@@ -181,7 +190,7 @@ export const SyncFormTemplate: React.FC<SyncFormTemplateProps> = ({ objectId, sy
                   {...{ register, errors }}
                   name="endpoint"
                   validation={{ required: true, maxLength: 225 }}
-                  disabled={loading}
+                  disabled={isLoading.syncForm}
                 />
                 {errors["endpoint"] && <ErrorMessage message={errors["endpoint"].message} />}
               </FormFieldInput>

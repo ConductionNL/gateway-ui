@@ -11,6 +11,7 @@ import { navigate } from "gatsby";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
+import { useIsLoadingContext } from "../../context/isLoading";
 
 interface SyncDetailTemplateProps {
   syncId: string;
@@ -19,11 +20,16 @@ interface SyncDetailTemplateProps {
 
 export const SyncDetailTemplate: React.FC<SyncDetailTemplateProps> = ({ syncId, objectId }) => {
   const { t } = useTranslation();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = useQueryClient();
   const _useSync = useSync(queryClient);
   const getSynchronization = _useSync.getOne(syncId);
-  const deleteSync = _useSync.remove();
+  const deleteSync = _useSync.remove(objectId);
+
+  React.useEffect(() => {
+    setIsLoading({ syncForm: deleteSync.isLoading });
+  }, [deleteSync.isLoading]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -38,7 +44,7 @@ export const SyncDetailTemplate: React.FC<SyncDetailTemplateProps> = ({ syncId, 
         <>
           <FormHeaderTemplate
             {...{ formId }}
-            // disabled={isLoading.sourceForm}
+            disabled={isLoading.syncForm}
             title={`Edit ${getSynchronization.data.id}`}
             handleDelete={() => deleteSync.mutateAsync({ id: syncId })}
             showTitleTooltip

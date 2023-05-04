@@ -16,7 +16,7 @@ export const CreateSyncTemplate: React.FC<CreateSyncTemplateProps> = ({ objectId
 
   return (
     <div className={styles.container}>
-      <FormHeaderTemplate title={t("Create Sync")} disabled={isLoading.sourceForm} {...{ formId }} />
+      <FormHeaderTemplate title={t("Create Sync")} disabled={isLoading.syncForm} {...{ formId }} />
 
       <SyncFormTemplate {...{ objectId }} />
     </div>
