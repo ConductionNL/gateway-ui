@@ -28,12 +28,13 @@ export const useSync = (queryClient: QueryClient) => {
       enabled: !!syncId && !isDeleted(syncId),
     });
 
-  const remove = () =>
+  const remove = (objectId?: string) =>
     useMutation<any, Error, any>(API.Synchroniation.delete, {
       onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
         deleteItem(queryClient, "object", variables.id);
         queryClient.invalidateQueries(["synchronizations"]);
+        objectId && navigate(`/objects/${objectId}`);
       },
       onError: (error, { id }) => {
         removeDeletedItem(id);
