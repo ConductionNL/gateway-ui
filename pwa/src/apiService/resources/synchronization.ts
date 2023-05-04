@@ -36,29 +36,28 @@ export default class Synchroniation {
   }): Promise<any> => {
     const { payload, sourceId, objectId, syncId } = variables;
 
-    const params = {
-      action: payload.action && payload.action.value,
-      endpoint: payload.endpoint,
-      externalId: payload.externalId,
-      sourceId: sourceId,
-    };
-
     const _payload = {
       ...payload,
+      entity: payload.entity && `/admin/entities/${payload.entity}`,
+      // object: objectId,
       action: payload.action && `/admin/actions/${payload.action.value}`,
-      sourceId: payload.source.value,
+      gateway: payload.source && `/admin/gateways/${payload.source.value}`,
     };
 
+    delete _payload.source;
+
     if (syncId) {
-      const { data } = await Send(this._instance, "PUT", `/admin/synchronizations/${syncId}`, _payload);
+      const { data } = await Send(this._instance, "PUT", `/admin/synchronizations/${syncId}`, _payload, {
+        loading: "Updating synchronization...",
+        success: "Synchronization successfully updated.",
+      });
       return data;
     }
 
-    const { data } = await Send(
-      this._instance,
-      "POST",
-      `/admin/object_entities/${objectId}/sync/${sourceId}${paramsToQueryParams(params, true)}`,
-    );
+    const { data } = await Send(this._instance, "POST", "/admin/synchronizations", _payload, {
+      loading: "Creating synchronization...",
+      success: "Synchronization successfully created.",
+    });
     return data;
   };
 }

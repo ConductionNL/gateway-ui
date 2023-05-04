@@ -89,7 +89,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles.section}>
-          <Heading1>{`Edit ${sync?.name}`}</Heading1>
+          <Heading1>{`Edit ${sync?.id}`}</Heading1>
 
           <div className={styles.buttons}>
             <Button label={t("Save")} variant="primary" icon={faSave} type="submit" disabled={loading} />

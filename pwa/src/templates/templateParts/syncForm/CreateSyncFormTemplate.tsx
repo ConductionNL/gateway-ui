@@ -13,6 +13,7 @@ import Skeleton from "react-loading-skeleton";
 import { useAction } from "../../../hooks/action";
 import { useSync } from "../../../hooks/synchronization";
 import { Button } from "../../../components/button/Button";
+import { useObject } from "../../../hooks/object";
 
 interface CreateSyncFormTemplateProps {
   objectId: string;
@@ -24,6 +25,9 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
   const [formError, setFormError] = React.useState<string>("");
 
   const queryClient = useQueryClient();
+  const _useObject = useObject();
+  const getObject = _useObject.getOne(objectId);
+
   const _useSync = useSync(queryClient);
   const syncObject = _useSync.createOrEdit(objectId);
 
@@ -47,10 +51,10 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
+      entity: getObject.data._self.schema.id,
     };
-    const sourceId = data.source.value;
 
-    syncObject.mutate({ payload, objectId, sourceId });
+    syncObject.mutate({ payload, objectId });
   };
 
   return (
@@ -60,7 +64,13 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
           <Heading1>{t("Create Synchronization")}</Heading1>
 
           <div className={styles.buttons}>
-            <Button label={t("Save")} variant="primary" icon={faSave} type="submit" disabled={loading} />
+            <Button
+              label={t("Save")}
+              variant="primary"
+              icon={faSave}
+              type="submit"
+              disabled={getObject.isLoading || loading}
+            />
           </div>
         </section>
         {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
@@ -100,11 +110,11 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
                 <FormFieldLabel>{t("ExternalId")}</FormFieldLabel>
                 <InputText
                   {...{ register, errors }}
-                  name="externalId"
+                  name="sourceId"
                   validation={{ maxLength: 225 }}
                   disabled={loading}
                 />
-                {errors["externalId"] && <ErrorMessage message={errors["externalId"].message} />}
+                {errors["sourceId"] && <ErrorMessage message={errors["sourceId"].message} />}
               </FormFieldInput>
             </FormField>
             <FormField>
