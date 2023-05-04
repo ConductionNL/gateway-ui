@@ -48,8 +48,6 @@ export const useSync = (queryClient: QueryClient) => {
     useMutation<any, Error, any>(API.Synchroniation.createOrUpdate, {
       onSuccess: async (newSync) => {
         if (syncId) {
-          toast.success("Succesfully updated synchroniation");
-
           updateItem(queryClient, "synchronizations", newSync);
           navigate(`/objects/${objectId}`);
         }

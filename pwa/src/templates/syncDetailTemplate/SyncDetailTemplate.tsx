@@ -5,11 +5,12 @@ import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
-import { EditSyncFormTemplate } from "../templateParts/syncForm/EditSyncFormTemplate";
+import { SyncFormTemplate, formId } from "../templateParts/syncForm/SyncFormTemplate";
 import { useSync } from "../../hooks/synchronization";
 import { navigate } from "gatsby";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 
 interface SyncDetailTemplateProps {
   syncId: string;
@@ -22,6 +23,7 @@ export const SyncDetailTemplate: React.FC<SyncDetailTemplateProps> = ({ syncId, 
   const queryClient = useQueryClient();
   const _useSync = useSync(queryClient);
   const getSynchronization = _useSync.getOne(syncId);
+  const deleteSync = _useSync.remove();
 
   return (
     <Container layoutClassName={styles.container}>
@@ -33,7 +35,16 @@ export const SyncDetailTemplate: React.FC<SyncDetailTemplateProps> = ({ syncId, 
       {getSynchronization.isError && "Error..."}
 
       {getSynchronization.isSuccess && (
-        <EditSyncFormTemplate sync={getSynchronization.data} {...{ syncId, objectId }} />
+        <>
+          <FormHeaderTemplate
+            {...{ formId }}
+            // disabled={isLoading.sourceForm}
+            title={`Edit ${getSynchronization.data.id}`}
+            handleDelete={() => deleteSync.mutateAsync({ id: syncId })}
+            showTitleTooltip
+          />
+          <SyncFormTemplate synchronization={getSynchronization.data} {...{ objectId }} />
+        </>
       )}
 
       {getSynchronization.isLoading && <Skeleton height="200px" />}

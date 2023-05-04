@@ -28,13 +28,8 @@ export default class Synchroniation {
     return data;
   };
 
-  public createOrUpdate = async (variables: {
-    payload: any;
-    objectId: string;
-    sourceId: string;
-    syncId?: string;
-  }): Promise<any> => {
-    const { payload, sourceId, objectId, syncId } = variables;
+  public createOrUpdate = async (variables: { payload: any; objectId: string; syncId?: string }): Promise<any> => {
+    const { payload, objectId, syncId } = variables;
 
     const _payload = {
       ...payload,
