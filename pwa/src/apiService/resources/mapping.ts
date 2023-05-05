@@ -1,21 +1,23 @@
-import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
+import { TSendFunction } from "../apiService";
 
 export default class Mapping {
   private _instance: AxiosInstance;
+  private _send: TSendFunction;
 
-  constructor(_instance: AxiosInstance) {
-    this._instance = _instance;
+  constructor(instance: AxiosInstance, send: TSendFunction) {
+    this._instance = instance;
+    this._send = send;
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/mappings");
+    const { data } = await this._send(this._instance, "GET", "/admin/mappings");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/mappings/${id}`);
+    const { data } = await this._send(this._instance, "GET", `/admin/mappings/${id}`);
 
     return data;
   };
@@ -23,7 +25,7 @@ export default class Mapping {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/mappings/${id}`, undefined, {
+    const { data } = await this._send(this._instance, "DELETE", `/admin/mappings/${id}`, undefined, {
       loading: "Removing mapping...",
       success: "Mapping successfully removed.",
     });
@@ -34,14 +36,14 @@ export default class Mapping {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await Send(this._instance, "PUT", `/admin/mappings/${id}`, payload, {
+      const { data } = await this._send(this._instance, "PUT", `/admin/mappings/${id}`, payload, {
         loading: "Updating mapping...",
         success: "Mapping successfully updated.",
       });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/mappings", payload, {
+    const { data } = await this._send(this._instance, "POST", "/admin/mappings", payload, {
       loading: "Creating mapping...",
       success: "Mapping successfully created.",
     });
@@ -51,7 +53,7 @@ export default class Mapping {
   public testMapping = async (variables: { payload: any; id: string }): Promise<any> => {
     const { id, payload } = variables;
 
-    const { data } = await Send(this._instance, "POST", `/admin/mappings/${id}/test`, payload, {
+    const { data } = await this._send(this._instance, "POST", `/admin/mappings/${id}/test`, payload, {
       loading: "Testing mapping...",
       success: "Mapping succesfully tested.",
     });

@@ -1,22 +1,24 @@
-import { Send } from "../apiService";
 import { AxiosInstance } from "axios";
 import { paramsToQueryParams } from "../../services/paramsToQueryParams";
+import { TSendFunction } from "../apiService";
 
 export default class Synchroniation {
   private _instance: AxiosInstance;
+  private _send: TSendFunction;
 
-  constructor(_instance: AxiosInstance) {
-    this._instance = _instance;
+  constructor(instance: AxiosInstance, send: TSendFunction) {
+    this._instance = instance;
+    this._send = send;
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", "/admin/synchronizations");
+    const { data } = await this._send(this._instance, "GET", "/admin/synchronizations");
 
     return data;
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await Send(this._instance, "GET", `/admin/synchronizations/${id}`);
+    const { data } = await this._send(this._instance, "GET", `/admin/synchronizations/${id}`);
 
     return data;
   };
@@ -24,7 +26,7 @@ export default class Synchroniation {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await Send(this._instance, "DELETE", `/admin/synchronizations/${id}`);
+    const { data } = await this._send(this._instance, "DELETE", `/admin/synchronizations/${id}`);
     return data;
   };
 
