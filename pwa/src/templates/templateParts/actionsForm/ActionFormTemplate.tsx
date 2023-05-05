@@ -250,7 +250,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
 
                   <FormField>
                     <FormFieldInput>
-                      <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                      <FormFieldLabel>{t("isEnabled")}</FormFieldLabel>
                       <InputCheckbox
                         {...{ register, errors }}
                         disabled={isLoading.actionForm}
