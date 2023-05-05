@@ -38,6 +38,7 @@ export const HomeTemplate: React.FC = () => {
   return (
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Dashboard")}</Heading1>
+
       {getDashboardCards.isSuccess && (
         <div className={styles.cardsGrid}>
           {getDashboardCards.data.map((dashboardCard) => (

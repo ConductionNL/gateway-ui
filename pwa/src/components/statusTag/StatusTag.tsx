@@ -19,13 +19,8 @@ export type TStatusTagType =
 interface StatusTagProps {
   label: string;
   type?: TStatusTagType;
-  toolTipContent?: string;
 }
 
-export const StatusTag: React.FC<StatusTagProps> = ({ label, type = "default", toolTipContent = "" }) => {
-  return (
-    <ToolTip layoutClassName={styles.tooltip} tooltip={toolTipContent}>
-      <Tag layoutClassName={clsx(styles.container, styles[type])} {...{ label }} />
-    </ToolTip>
-  );
+export const StatusTag: React.FC<StatusTagProps> = ({ label, type = "default" }) => {
+  return <Tag layoutClassName={clsx(styles.container, styles[type])} {...{ label }} />;
 };

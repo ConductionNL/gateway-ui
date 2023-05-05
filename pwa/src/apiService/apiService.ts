@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { handleAutomaticLogout, validateSession } from "../hooks/useAuthentication";
+import { shouldRenewToken, handleAutomaticLogout, validateSession } from "../hooks/useAuthentication";
 import toast from "react-hot-toast";
 
 // Services
@@ -27,6 +27,19 @@ import Authentication from "./resources/authentication";
 import SecurityGroup from "./resources/securityGroup";
 import Mapping from "./resources/mapping";
 
+interface PromiseMessage {
+  loading?: string;
+  success?: string;
+}
+
+export type TSendFunction = (
+  instance: AxiosInstance,
+  method: "GET" | "POST" | "PUT" | "DELETE",
+  endpoint: string,
+  payload?: JSON,
+  promiseMessage?: PromiseMessage,
+) => Promise<AxiosResponse>;
+
 export default class APIService {
   public removeAuthentication(): void {
     window.sessionStorage.removeItem("JWT");
@@ -38,6 +51,12 @@ export default class APIService {
 
   public get authenticated(): boolean {
     return window.sessionStorage.getItem("JWT") ? true : false;
+  }
+
+  private renewAuthentication(): void {
+    this.apiClient
+      .get("/users/reset_token", { withCredentials: true })
+      .then((res) => this.setAuthentication(res.data.jwtToken));
   }
 
   private getJWT(): string | null {
@@ -104,79 +123,79 @@ export default class APIService {
 
   // Resources
   public get Action(): Action {
-    return new Action(this.BaseClient);
+    return new Action(this.BaseClient, this.Send);
   }
 
   public get Plugin(): Plugin {
-    return new Plugin(this.BaseClient);
+    return new Plugin(this.BaseClient, this.Send);
   }
 
   public get PluginReadMe(): PluginReadMe {
-    return new PluginReadMe(this.gitClient);
+    return new PluginReadMe(this.gitClient, this.Send);
   }
 
   public get Sources(): Source {
-    return new Source(this.BaseClient);
+    return new Source(this.BaseClient, this.Send);
   }
 
   public get Cronjob(): Cronjob {
-    return new Cronjob(this.BaseClient);
+    return new Cronjob(this.BaseClient, this.Send);
   }
 
   public get Endpoints(): Endpoint {
-    return new Endpoint(this.BaseClient);
+    return new Endpoint(this.BaseClient, this.Send);
   }
 
   public get Object(): Object {
-    return new Object(this.BaseClient);
+    return new Object(this.BaseClient, this.Send);
   }
 
   public get Schema(): Schema {
-    return new Schema(this.BaseClient);
+    return new Schema(this.BaseClient, this.Send);
   }
 
   public get Log(): Log {
-    return new Log(this.BaseClient);
+    return new Log(this.BaseClient, this.Send);
   }
 
   public get Collection(): Collection {
-    return new Collection(this.BaseClient);
+    return new Collection(this.BaseClient, this.Send);
   }
 
   public get DashboardCards(): DashboardCards {
-    return new DashboardCards(this.BaseClient);
+    return new DashboardCards(this.BaseClient, this.Send);
   }
 
   public get Attribute(): Attribute {
-    return new Attribute(this.BaseClient);
+    return new Attribute(this.BaseClient, this.Send);
   }
 
   public get Synchroniation(): Synchroniation {
-    return new Synchroniation(this.BaseClient);
+    return new Synchroniation(this.BaseClient, this.Send);
   }
 
   public get Application(): Application {
-    return new Application(this.BaseClient);
+    return new Application(this.BaseClient, this.Send);
   }
 
   public get Organization(): Organization {
-    return new Organization(this.BaseClient);
+    return new Organization(this.BaseClient, this.Send);
   }
 
   public get User(): User {
-    return new User(this.BaseClient);
+    return new User(this.BaseClient, this.Send);
   }
 
   public get Authentication(): Authentication {
-    return new Authentication(this.BaseClient);
+    return new Authentication(this.BaseClient, this.Send);
   }
 
   public get SecurityGroup(): SecurityGroup {
-    return new SecurityGroup(this.BaseClient);
+    return new SecurityGroup(this.BaseClient, this.Send);
   }
 
   public get Mapping(): Mapping {
-    return new Mapping(this.BaseClient);
+    return new Mapping(this.BaseClient, this.Send);
   }
 
   // Services
@@ -185,64 +204,58 @@ export default class APIService {
   }
 
   public get Me(): Me {
-    return new Me(this.BaseClient);
+    return new Me(this.BaseClient, this.Send);
   }
+
+  // Send method
+  public Send: TSendFunction = (instance, method, endpoint, payload, promiseMessage) => {
+    const _payload = JSON.stringify(payload);
+
+    if (!validateSession()) {
+      handleAutomaticLogout();
+
+      return Promise.resolve({
+        // return fake AxiosInstance for calls to not break
+        data: [],
+        status: -1,
+        statusText: "Session invalid",
+        config: {},
+        headers: {},
+      });
+    }
+
+    if (shouldRenewToken()) {
+      this.renewAuthentication();
+    }
+
+    switch (method) {
+      case "GET":
+        const response = instance.get(endpoint);
+
+        response.catch((err) => toast.error(err.message));
+
+        return response;
+
+      case "POST":
+        return toast.promise(instance.post(endpoint, _payload), {
+          loading: promiseMessage?.loading ?? "Creating item...",
+          success: promiseMessage?.success ?? "Succesfully created item",
+          error: (err) => err.message,
+        });
+
+      case "PUT":
+        return toast.promise(instance.put(endpoint, _payload), {
+          loading: promiseMessage?.loading ?? "Updating item...",
+          success: promiseMessage?.success ?? "Succesfully updated item",
+          error: (err) => err.message,
+        });
+
+      case "DELETE":
+        return toast.promise(instance.delete(endpoint), {
+          loading: promiseMessage?.loading ?? "Deleting item...",
+          success: promiseMessage?.success ?? "Succesfully deleted item",
+          error: (err) => err.message,
+        });
+    }
+  };
 }
-
-interface PromiseMessage {
-  loading?: string;
-  success?: string;
-}
-
-export const Send = (
-  instance: AxiosInstance,
-  method: "GET" | "POST" | "PUT" | "DELETE",
-  endpoint: string,
-  payload?: JSON,
-  promiseMessage?: PromiseMessage,
-): Promise<AxiosResponse> => {
-  const _payload = JSON.stringify(payload);
-
-  if (!validateSession()) {
-    handleAutomaticLogout();
-
-    return Promise.resolve({
-      // return fake AxiosInstance for calls to not break
-      data: [],
-      status: -1,
-      statusText: "Session invalid",
-      config: {},
-      headers: {},
-    });
-  }
-
-  switch (method) {
-    case "GET":
-      const response = instance.get(endpoint);
-
-      response.catch((err) => toast.error(err.message));
-
-      return response;
-
-    case "POST":
-      return toast.promise(instance.post(endpoint, _payload), {
-        loading: promiseMessage?.loading ?? "Creating item...",
-        success: promiseMessage?.success ?? "Succesfully created item",
-        error: (err) => err.message,
-      });
-
-    case "PUT":
-      return toast.promise(instance.put(endpoint, _payload), {
-        loading: promiseMessage?.loading ?? "Updating item...",
-        success: promiseMessage?.success ?? "Succesfully updated item",
-        error: (err) => err.message,
-      });
-
-    case "DELETE":
-      return toast.promise(instance.delete(endpoint), {
-        loading: promiseMessage?.loading ?? "Deleting item...",
-        success: promiseMessage?.success ?? "Succesfully deleted item",
-        error: (err) => err.message,
-      });
-  }
-};
