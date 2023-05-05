@@ -17,6 +17,7 @@ import { LogsTableTemplate } from "../logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CHANNEL_LOG_LIMIT } from "../../../apiService/resources/log";
 
 interface EditUserTemplateProps {
   userId: string;
@@ -146,9 +147,14 @@ export const EditUserTemplate: React.FC<EditUserTemplateProps> = ({ userId }) =>
                 <LogsTableTemplate
                   logs={getLogs.data.results}
                   pagination={{
-                    totalPages: getLogs.data.pages,
+                    data: {
+                      count: getLogs.data.results.length,
+                      offset: CHANNEL_LOG_LIMIT * (currentLogsPage - 1),
+                      pages: getLogs.data.pages,
+                      total: getLogs.data.count,
+                    },
                     currentPage: currentLogsPage,
-                    changePage: setCurrentLogsPage,
+                    setCurrentPage: setCurrentLogsPage,
                   }}
                 />
               )}

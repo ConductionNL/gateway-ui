@@ -16,6 +16,7 @@ import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTempla
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { TestSourceConnectionFormTemplate } from "./TestSourceConnectionFormTemplate/TestSourceConnectionFormTemplate";
+import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
 
 interface SourcesDetailTemplateProps {
   sourceId: string;
@@ -108,9 +109,14 @@ export const SourcesDetailTemplate: React.FC<SourcesDetailTemplateProps> = ({ so
               <LogsTableTemplate
                 logs={getLogs.data.results}
                 pagination={{
-                  totalPages: getLogs.data.pages,
+                  data: {
+                    count: getLogs.data.results.length,
+                    offset: CHANNEL_LOG_LIMIT * (currentLogsPage - 1),
+                    pages: getLogs.data.pages,
+                    total: getLogs.data.count,
+                  },
                   currentPage: currentLogsPage,
-                  changePage: setCurrentLogsPage,
+                  setCurrentPage: setCurrentLogsPage,
                 }}
               />
             )}

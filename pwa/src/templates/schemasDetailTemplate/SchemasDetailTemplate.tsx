@@ -20,6 +20,7 @@ import { useIsLoadingContext } from "../../context/isLoading";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
+import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
 
 interface SchemasDetailPageProps {
   schemaId: string;
@@ -182,9 +183,14 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               <LogsTableTemplate
                 logs={getLogs.data.results}
                 pagination={{
-                  totalPages: getLogs.data.pages,
+                  data: {
+                    count: getLogs.data.results.length,
+                    offset: CHANNEL_LOG_LIMIT * (currentLogsPage - 1),
+                    pages: getLogs.data.pages,
+                    total: getLogs.data.count,
+                  },
                   currentPage: currentLogsPage,
-                  changePage: setCurrentLogsPage,
+                  setCurrentPage: setCurrentLogsPage,
                 }}
               />
             )}
