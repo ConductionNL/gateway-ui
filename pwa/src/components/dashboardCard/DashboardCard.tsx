@@ -3,10 +3,10 @@ import * as styles from "./DashboardCard.module.css";
 import _ from "lodash";
 import clsx from "clsx";
 import { navigate } from "gatsby";
-import { ToolTip } from "@conduction/components";
+import { Tag, ToolTip } from "@conduction/components";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
-import { getDashboardStatusTag } from "../../services/getStatusTag";
+import { getStatusTag } from "../../services/getStatusTag";
 import { ActionButton } from "../actionButton/ActionButton";
 
 export type TDashboardCardTag = { label: string; tooltip: string };
@@ -47,7 +47,9 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags,
         <ul className={styles.tagsList}>
           {tags.map((tag, idx) => (
             <li key={idx}>
-              <ToolTip tooltip={tag.tooltip}>{getDashboardStatusTag(tag.label)}</ToolTip>
+              <ToolTip tooltip={tag.tooltip}>
+                {tag.tooltip === "Status" ? getStatusTag(tag.label) : <Tag label={tag.label} />}
+              </ToolTip>
             </li>
           ))}
         </ul>

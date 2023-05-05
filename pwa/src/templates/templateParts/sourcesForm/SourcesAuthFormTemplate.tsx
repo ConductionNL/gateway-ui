@@ -7,7 +7,7 @@ import { FieldValues, UseFormRegister } from "react-hook-form";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useIsLoadingContext } from "../../../context/isLoading";
 
-export type TSourcesAuthType = "jwt-HS256" | "apikey" | "username-password" | "vrijbrp-jwt";
+export type TSourcesAuthType = "jwt-HS256" | "apikey" | "username-password" | "vrijbrp-jwt" | "pink-jwt";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -34,6 +34,9 @@ export const SourcesAuthFormTemplate: React.FC<SourcesAuthFormTemplateProps & Re
       return <UsernamePasswordForm {...rest} />;
 
     case "vrijbrp-jwt":
+      return <UsernamePasswordForm {...rest} />;
+
+    case "pink-jwt":
       return <UsernamePasswordForm {...rest} />;
 
     default:
