@@ -313,7 +313,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
                 <FormField>
                   <FormFieldInput>
-                    <FormFieldLabel>{t("is Enabeld")}</FormFieldLabel>
+                    <FormFieldLabel>{t("isEnabled")}</FormFieldLabel>
                     <InputCheckbox
                       disabled={isLoading.sourceForm}
                       {...{ register, errors }}
