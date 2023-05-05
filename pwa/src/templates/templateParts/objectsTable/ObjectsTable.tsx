@@ -17,7 +17,7 @@ import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
 import { useObjectsStateContext } from "../../../context/objects";
 import { ActionButton } from "../../../components/actionButton/ActionButton";
-import { usePagination } from "../../../hooks/usePagination";
+import { PaginationDataProps, usePagination } from "../../../hooks/usePagination";
 
 interface TableProps {
   currentPage: number;
@@ -83,7 +83,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
     setColumns,
   } = useTableColumnsContext();
   const { toggleOrder, objectsState, setObjectsState } = useObjectsStateContext();
-  const { Pagination, PaginationLocationIndicator } = usePagination(objectsQuery, currentPage, setCurrentPage);
+  const { Pagination, PaginationLocationIndicator } = usePagination(objectsQuery.data, currentPage, setCurrentPage);
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 

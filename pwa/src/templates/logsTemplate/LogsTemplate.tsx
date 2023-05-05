@@ -36,9 +36,7 @@ export const LogsTemplate: React.FC = () => {
           pagination={{
             data: {
               count: getLogs.data.results.length,
-              limit: 15,
               offset: 15 * (currentPage - 1),
-              page: currentPage,
               pages: getLogs.data.pages,
               total: getLogs.data.count,
             },

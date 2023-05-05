@@ -18,6 +18,7 @@ import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate"
 import { Button } from "../../components/button/Button";
 import { CodeEditor } from "../../components/codeEditor/CodeEditor";
 import { formatDateTime } from "../../services/dateTime";
+import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -150,9 +151,14 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
               <LogsTableTemplate
                 logs={getLogs.data.results}
                 pagination={{
-                  totalPages: getLogs.data.pages,
+                  data: {
+                    count: getLogs.data.results.length,
+                    offset: CHANNEL_LOG_LIMIT * (currentLogsPage - 1),
+                    pages: getLogs.data.pages,
+                    total: getLogs.data.count,
+                  },
                   currentPage: currentLogsPage,
-                  changePage: setCurrentLogsPage,
+                  setCurrentPage: setCurrentLogsPage,
                 }}
               />
             )}

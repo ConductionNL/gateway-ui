@@ -3,6 +3,8 @@ import { AxiosInstance } from "axios";
 import { ILogFiltersContext, TLogChannel } from "../../context/logs";
 import { filtersToQueryParams } from "../../services/filtersToQueryParams";
 
+export const CHANNEL_LOG_LIMIT = 10;
+
 export default class Log {
   private _instance: AxiosInstance;
 
@@ -30,7 +32,7 @@ export default class Log {
     const { data } = await Send(
       this._instance,
       "GET",
-      `/admin/monologs?_limit=10&_page=${page}&context.${channel}=${resourceId}`,
+      `/admin/monologs?_limit=${CHANNEL_LOG_LIMIT}&_page=${page}&context.${channel}=${resourceId}`,
     );
 
     return data;

@@ -12,6 +12,7 @@ import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
+import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
 
 interface CronjobDetailPageProps {
   cronjobId: string;
@@ -80,9 +81,14 @@ export const CronjobsDetailTemplate: React.FC<CronjobDetailPageProps> = ({ cronj
               <LogsTableTemplate
                 logs={getLogs.data.results}
                 pagination={{
-                  totalPages: getLogs.data.pages,
+                  data: {
+                    count: getLogs.data.results.length,
+                    offset: CHANNEL_LOG_LIMIT * (currentLogsPage - 1),
+                    pages: getLogs.data.pages,
+                    total: getLogs.data.count,
+                  },
                   currentPage: currentLogsPage,
-                  changePage: setCurrentLogsPage,
+                  setCurrentPage: setCurrentLogsPage,
                 }}
               />
             )}

@@ -17,6 +17,11 @@
   justify-content: space-between;
 }
 
+.tableContainer {
+  max-width: 100%;
+  overflow-x: scroll;
+}
+
 .button > span > svg {
   margin-inline-end: var(--gateway-ui-size-xs);
 }
