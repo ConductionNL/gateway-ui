@@ -23,8 +23,6 @@ export const PaginationLocationIndicatorComponent: React.FC<PaginationLocationIn
 const PaginationLocationText: React.FC<PaginationLocationIndicatorComponentProps> = ({ total, offset, count }) => {
   let text = "";
 
-  console.log({ total, offset, count });
-
   switch (count) {
     case 0:
       text = "Geen resultaten";
