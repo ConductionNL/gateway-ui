@@ -44,14 +44,14 @@ export default class Synchroniation {
     delete _payload.source;
 
     if (syncId) {
-      const { data } = await Send(this._instance, "PUT", `/admin/synchronizations/${syncId}`, _payload, {
+      const { data } = await this._send(this._instance, "PUT", `/admin/synchronizations/${syncId}`, _payload, {
         loading: "Updating synchronization...",
         success: "Synchronization successfully updated.",
       });
       return data;
     }
 
-    const { data } = await Send(this._instance, "POST", "/admin/synchronizations", _payload, {
+    const { data } = await this._send(this._instance, "POST", "/admin/synchronizations", _payload, {
       loading: "Creating synchronization...",
       success: "Synchronization successfully created.",
     });
