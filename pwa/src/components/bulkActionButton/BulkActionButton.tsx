@@ -52,7 +52,7 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, sel
               <span className={styles.amountIndicator}>{Math.min(selectedItemsCount, 99)}</span>
             </span>
           }
-          onBlur={() => setTimeout(() => setIsOpen(false), 100)}
+          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
           onClick={() => setIsOpen((isOpen) => !isOpen)}
           icon={faEllipsisH}
           {...{ disabled }}
