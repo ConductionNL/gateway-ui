@@ -30,12 +30,16 @@ interface TableProps {
  * Entry point
  * Hold logic for pagination, and search queries
  */
-export const ObjectsTableTemplate: React.FC<{ entityId?: string }> = ({ entityId }) => {
+export const ObjectsTableTemplate: React.FC<{ entityId?: string; objectId?: string }> = ({ entityId, objectId }) => {
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
   if (entityId) {
     return <ObjectsFromEntityTable {...{ entityId, currentPage, setCurrentPage, searchQuery, setSearchQuery }} />;
+  }
+
+  if (objectId) {
+    return <ObjectsFromRelation {...{ objectId, currentPage, setCurrentPage, searchQuery, setSearchQuery }} />;
   }
 
   return <ObjectsTable {...{ currentPage, setCurrentPage, searchQuery, setSearchQuery }} />;
@@ -57,6 +61,16 @@ const ObjectsFromEntityTable: React.FC<{ entityId: string } & TableProps> = ({
 };
 
 /**
+ * Objects that are related to the main object
+ * Holds and manages query to get all objects from that are related to the main object
+ */
+const ObjectsFromRelation: React.FC<{ objectId: string } & TableProps> = ({ currentPage, searchQuery, ...rest }) => {
+  const getAllRelatedObjects = null;
+
+  return <BaseTable objectsQuery={getAllRelatedObjects} {...{ currentPage, searchQuery, ...rest }} />;
+};
+
+/**
  * All objects
  * Holds and manages query to get all objects
  */
@@ -71,7 +85,7 @@ const ObjectsTable: React.FC<TableProps> = ({ currentPage, searchQuery, ...rest 
 /**
  * Table to show actual objects
  */
-const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TableProps> = ({
+const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> | null } & TableProps> = ({
   objectsQuery,
   currentPage,
   setCurrentPage,
@@ -83,7 +97,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
     setColumns,
   } = useTableColumnsContext();
   const { toggleOrder, objectsState, setObjectsState } = useObjectsStateContext();
-  const { Pagination, PaginationLocationIndicator } = usePagination(objectsQuery.data, currentPage, setCurrentPage);
+  const { Pagination, PaginationLocationIndicator } = usePagination(objectsQuery?.data, currentPage, setCurrentPage);
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 
@@ -127,7 +141,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
             sortOrder={objectsState.order}
             columnType="objectColumns"
             toggleSortOrder={toggleOrder}
-            disabled={objectsQuery.isLoading}
+            disabled={objectsQuery?.isLoading}
             tableColumns={objectColumns}
             setTableColumns={setColumns}
           />
@@ -147,9 +161,9 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
         />
       </div>
 
-      {objectsQuery.isLoading && <Skeleton height="200px" />}
+      {objectsQuery?.isLoading && <Skeleton height="200px" />}
 
-      {objectsQuery.isSuccess && (
+      {objectsQuery?.isSuccess && (
         <>
           <div className={styles.pageAndTotalResults}>
             <PaginationLocationIndicator />
@@ -170,8 +184,8 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
             </TableHead>
 
             <TableBody>
-              {objectsQuery.isSuccess &&
-                objectsQuery.data.results.map((object: any) => (
+              {objectsQuery?.isSuccess &&
+                objectsQuery?.data.results.map((object: any) => (
                   <TableRow key={object._self.id} onClick={() => toggleItem(object._self.id)}>
                     <TableCell>{<CheckboxBulkSelectOne id={object._self.id} />}</TableCell>
 
@@ -217,7 +231,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                   </TableRow>
                 ))}
 
-              {!objectsQuery.data.results.length && (
+              {!objectsQuery?.data.results.length && (
                 <TableRow>
                   <TableCell>No objects found</TableCell>
                   <TableCell />
@@ -233,6 +247,35 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
 
           <Pagination />
         </>
+      )}
+
+      {objectsQuery === null && (
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeader>
+                <CheckboxBulkSelectAll />
+              </TableHeader>
+              {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
+              {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
+              {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
+              {objectColumns.actions && <TableHeader>Actions</TableHeader>}
+              <TableHeader></TableHeader>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            <TableRow>
+              <TableCell>No objects found</TableCell>
+              <TableCell />
+              {Object.values(objectColumns)
+                .filter((value) => value)
+                .map((_, idx) => (
+                  <TableCell key={idx} />
+                ))}
+            </TableRow>
+          </TableBody>
+        </Table>
       )}
     </div>
   );

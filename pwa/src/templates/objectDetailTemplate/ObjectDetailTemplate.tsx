@@ -19,6 +19,7 @@ import { Button } from "../../components/button/Button";
 import { CodeEditor } from "../../components/codeEditor/CodeEditor";
 import { formatDateTime } from "../../services/dateTime";
 import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
+import { ObjectsTableTemplate } from "../templateParts/objectsTable/ObjectsTable";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -78,6 +79,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             <Tab className={styles.tab} label={t("Logs")} value={1} />
             <Tab className={styles.tab} label={t("Sync")} value={2} />
             <Tab className={styles.tab} label={t("Object")} value={3} />
+            <Tab className={styles.tab} label={t("Related Objects")} value={4} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
@@ -233,6 +235,11 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             {getObject.isSuccess && (
               <CodeEditor code={JSON.stringify(getObject.data, null, 2)} setCode={setObjectJsonData} readOnly />
             )}
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="4">
+            {getObject.isLoading && <Skeleton height="200px" />}
+            {getObject.isSuccess && <ObjectsTableTemplate {...{ objectId }} />}
           </TabPanel>
         </TabContext>
       </div>
