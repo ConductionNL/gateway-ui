@@ -34,7 +34,7 @@ export const useBulkSelect = (data: any) => {
       setItems((items) => [...items, id]);
     }, [id]);
 
-    return <input type="checkbox" onChange={() => toggleItem(id)} checked={selectedItems.includes(id)} />;
+    return <input type="checkbox" checked={selectedItems.includes(id)} readOnly />; // readOnly due to it being controlled elsewhere
   };
 
   return { selectedItems, CheckboxBulkSelectAll, CheckboxBulkSelectOne, toggleItem };
