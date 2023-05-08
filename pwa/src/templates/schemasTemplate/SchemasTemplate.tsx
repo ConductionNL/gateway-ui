@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useQueryClient } from "react-query";
 import { navigate } from "gatsby";
 import { Container } from "@conduction/components";
-import { faPlus, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../hooks/schema";
 import { translateDate } from "../../services/dateFormat";
@@ -14,6 +14,9 @@ import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { ActionButton } from "../../components/actionButton/ActionButton";
+import { Link } from "@gemeente-denhaag/components-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const SchemasTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -32,11 +35,7 @@ export const SchemasTemplate: React.FC = () => {
     selectedItems.forEach((item) => deleteSchema.mutate({ id: item }));
   };
 
-  const goToCreateObject = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>,
-    id: string,
-  ) => {
-    e.stopPropagation();
+  const goToCreateObject = (id: string) => {
     navigate(`/objects/new?schema=${id}`);
   };
 
@@ -68,6 +67,7 @@ export const SchemasTemplate: React.FC = () => {
                 <TableHeader>{t("Objects")}</TableHeader>
                 <TableHeader>{t("Date Created")}</TableHeader>
                 <TableHeader>{t("Date Modified")}</TableHeader>
+                <TableHeader>{t("Actions")}</TableHeader>
                 <TableHeader />
               </TableRow>
             </TableHead>
@@ -90,20 +90,22 @@ export const SchemasTemplate: React.FC = () => {
 
                   <TableCell>{translateDate(i18n.language, schema.dateModified)}</TableCell>
 
-                  <TableCell className={styles.callsToAction}>
-                    <Button
-                      onClick={(e) => goToCreateObject(e, schema.id)}
-                      variant="primary"
-                      icon={faPlus}
-                      label={t("Add Object")}
+                  <TableCell>
+                    <ActionButton
+                      actions={[
+                        {
+                          type: "add",
+                          onSubmit: () => goToCreateObject(schema.id),
+                          label: "add Object",
+                        },
+                      ]}
                     />
+                  </TableCell>
 
-                    <Button
-                      onClick={() => navigate(`/schemas/${schema.id}`)}
-                      variant="primary"
-                      icon={faGear}
-                      label={t("Edit Schema")}
-                    />
+                  <TableCell onClick={() => navigate(`/schemas/${schema.id}`)}>
+                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}
