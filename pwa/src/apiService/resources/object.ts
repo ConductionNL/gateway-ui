@@ -61,6 +61,27 @@ export default class Sources {
 
     const { data } = await this._send(this._instance, "GET", `admin/objects/${id}`);
 
+    const enrichSchemaWithLists = async (schema: any) => {
+      const { properties } = schema;
+
+      if (!properties) return; // no properties found, nothing to enrich
+
+      for (const [_key, _value] of Object.entries(properties)) {
+        const key = _key as any;
+        const value = _value as any;
+
+        if (!value._list) continue; // no list found, nothing to enrich
+
+        const list = await this._send(this._instance, "GET", value._list);
+
+        console.log({ list });
+      }
+
+      return schema;
+    };
+
+    await enrichSchemaWithLists(data);
+
     return data;
   };
 
