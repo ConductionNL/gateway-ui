@@ -17,6 +17,7 @@ import { dateTime } from "../../services/dateTime";
 import { StatusTag } from "../../components/statusTag/StatusTag";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { TableWrapper } from "../../components/tableWrapper/TableWrapper";
 
 export const ActionsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -50,72 +51,74 @@ export const ActionsTemplate: React.FC = () => {
             selectedItemsCount={selectedItems.length}
           />
 
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>
-                  <CheckboxBulkSelectAll />
-                </TableHeader>
-                <TableHeader>Name</TableHeader>
-                <TableHeader>Priority</TableHeader>
-                <TableHeader>Status</TableHeader>
-                <TableHeader>Enabled</TableHeader>
-                <TableHeader>Last run</TableHeader>
-                <TableHeader>Last run time</TableHeader>
-                <TableHeader>Date Created</TableHeader>
-                <TableHeader>Date Modified</TableHeader>
-                <TableHeader />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {getActions.data.map((action) => (
-                <TableRow key={action.id} onClick={() => toggleItem(action.id)}>
-                  <TableCell>{<CheckboxBulkSelectOne id={action.id} />}</TableCell>
-
-                  <TableCell className={styles.actionName}>{action.name}</TableCell>
-
-                  <TableCell>{action.priority}</TableCell>
-
-                  <TableCell>
-                    <StatusTag
-                      type={action.status ? "success" : "default"}
-                      label={action.status ? "Success" : "No status"}
-                    />
-                  </TableCell>
-
-                  <TableCell>{action.isEnabled ? "Yes" : "No"}</TableCell>
-
-                  <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>
-
-                  <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
-
-                  <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
-
-                  <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
-
-                  <TableCell onClick={() => navigate(`/actions/${action.id}`)}>
-                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                      {t("Details")}
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {!getActions.data.length && (
+          <TableWrapper>
+            <Table>
+              <TableHead>
                 <TableRow>
-                  <TableCell>{t("No actions found")}</TableCell>
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
+                  <TableHeader>
+                    <CheckboxBulkSelectAll />
+                  </TableHeader>
+                  <TableHeader>Name</TableHeader>
+                  <TableHeader>Priority</TableHeader>
+                  <TableHeader>Status</TableHeader>
+                  <TableHeader>Enabled</TableHeader>
+                  <TableHeader>Last run</TableHeader>
+                  <TableHeader>Last run time</TableHeader>
+                  <TableHeader>Date Created</TableHeader>
+                  <TableHeader>Date Modified</TableHeader>
+                  <TableHeader />
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {getActions.data.map((action) => (
+                  <TableRow key={action.id} onClick={() => toggleItem(action.id)}>
+                    <TableCell>{<CheckboxBulkSelectOne id={action.id} />}</TableCell>
+
+                    <TableCell className={styles.actionName}>{action.name}</TableCell>
+
+                    <TableCell>{action.priority}</TableCell>
+
+                    <TableCell>
+                      <StatusTag
+                        type={action.status ? "success" : "default"}
+                        label={action.status ? "Success" : "No status"}
+                      />
+                    </TableCell>
+
+                    <TableCell>{action.isEnabled ? "Yes" : "No"}</TableCell>
+
+                    <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>
+
+                    <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
+
+                    <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
+
+                    <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
+
+                    <TableCell onClick={() => navigate(`/actions/${action.id}`)}>
+                      <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                        {t("Details")}
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {!getActions.data.length && (
+                  <TableRow>
+                    <TableCell>{t("No actions found")}</TableCell>
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableWrapper>
         </div>
       )}
 

@@ -1,60 +1,39 @@
 import * as React from "react";
 import * as styles from "./TableWrapper.module.css";
-import clsx from "clsx";
 
-const TableWrapper: React.FC = ({ children }) => {
-  const [tableIsScrollable, setTableIsScrollable] = React.useState<Boolean>(false);
-  const [tableScrollPosition, setTableScrollPosition] = React.useState<"left" | "middle" | "right">("left");
-  const TableScrollWrapper = React.useRef();
+interface TableWrapperProps {
+  children: React.ReactNode;
+}
 
-  const isTableScrollable = () => TableScrollWrapper?.current?.scrollWidth > TableScrollWrapper?.current?.clientWidth;
+export const TableWrapper: React.FC<TableWrapperProps> = ({ children }) => {
+  const tableContainerRef = React.useRef<HTMLDivElement>(null);
+  const [tableScrollX, setTableScrollX] = React.useState<number>(0);
+
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const scrollLeft = (event.target as HTMLDivElement).scrollLeft;
+    setTableScrollX(scrollLeft);
+  };
 
   React.useEffect(() => {
     const handleWindowResize = () => {
-      setTableIsScrollable(isTableScrollable());
-      setScrollPosition();
-    };
+      if (!tableContainerRef.current) return;
 
-    let currentAttempt = 0;
-    let attemptsTillFail = 50;
-    const checkExist = setInterval(function () {
-      if (TableScrollWrapper?.current) {
-        setTableIsScrollable(isTableScrollable());
-        clearInterval(checkExist);
-      }
-      if (attemptsTillFail == currentAttempt) clearInterval(checkExist);
-      else currentAttempt++;
-    }, 100);
+      console.log(tableContainerRef.current.scrollWidth);
+      console.log(tableContainerRef.current.);
+    };
 
     window.addEventListener("resize", handleWindowResize);
 
-    () => window.removeEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
   }, []);
 
-  const setScrollPosition = () => {
-    const maxScrollLeft = TableScrollWrapper?.current?.scrollWidth - TableScrollWrapper?.current?.clientWidth;
-
-    if (TableScrollWrapper?.current?.scrollLeft === 0) setTableScrollPosition("left");
-    else if (TableScrollWrapper?.current?.scrollLeft === maxScrollLeft) setTableScrollPosition("right");
-    else setTableScrollPosition("middle");
-  };
-
   return (
-    <div
-      className={clsx(
-        tableIsScrollable && [
-          styles.tableBoxShadow,
-          tableScrollPosition === "left" && styles.tableBoxShadowR,
-          tableScrollPosition === "right" && styles.tableBoxShadowL,
-          tableScrollPosition === "middle" && styles.tableBoxShadowM,
-        ],
-      )}
-    >
-      <div className={styles.table} ref={TableScrollWrapper} onScroll={setScrollPosition}>
+    <div className={styles.container}>
+      <div className={styles.scrollIndicator} />
+
+      <div onScroll={handleScroll} ref={tableContainerRef}>
         {children}
       </div>
     </div>
   );
 };
-
-export default TableWrapper;
