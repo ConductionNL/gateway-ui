@@ -19,7 +19,7 @@ import { Button } from "../../components/button/Button";
 import { CodeEditor } from "../../components/codeEditor/CodeEditor";
 import { formatDateTime } from "../../services/dateTime";
 import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
-import { ObjectsTableTemplate } from "../templateParts/objectsTable/ObjectsTable";
+import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -28,6 +28,7 @@ interface ObjectDetailTemplateProps {
 export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ objectId }) => {
   const { t, i18n } = useTranslation();
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const [objectJsonData, setObjectJsonData] = React.useState<string>("");
 
@@ -239,7 +240,15 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
 
           <TabPanel className={styles.tabPanel} value="4">
             {getObject.isLoading && <Skeleton height="200px" />}
-            {getObject.isSuccess && <ObjectsTableTemplate {...{ objectId }} />}
+            {getObject.isSuccess && (
+              <ObjectsTable
+                objects={getObject}
+                pagination={{
+                  currentPage,
+                  setCurrentPage,
+                }}
+              />
+            )}
           </TabPanel>
         </TabContext>
       </div>

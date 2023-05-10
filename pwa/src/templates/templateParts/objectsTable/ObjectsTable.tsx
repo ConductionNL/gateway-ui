@@ -10,7 +10,6 @@ import { UseQueryResult } from "react-query";
 import { useTranslation } from "react-i18next";
 import { useBulkSelect } from "../../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../../components/bulkActionButton/BulkActionButton";
-import Skeleton from "react-loading-skeleton";
 import { InputText } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
@@ -19,88 +18,26 @@ import { useObjectsStateContext } from "../../../context/objects";
 import { ActionButton } from "../../../components/actionButton/ActionButton";
 import { usePagination } from "../../../hooks/usePagination";
 
-interface TableProps {
-  currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+interface ObjectsTableProps {
+  objects: UseQueryResult<any, Error>;
+  pagination: {
+    currentPage: number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  };
 }
 
-/**
- * Entry point
- * Hold logic for pagination, and search queries
- */
-export const ObjectsTableTemplate: React.FC<{ entityId?: string; objectId?: string }> = ({ entityId, objectId }) => {
-  const [searchQuery, setSearchQuery] = React.useState<string>("");
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
-
-  if (entityId) {
-    return <ObjectsFromEntityTable {...{ entityId, currentPage, setCurrentPage, searchQuery, setSearchQuery }} />;
-  }
-
-  if (objectId) {
-    return <ObjectsFromRelation {...{ objectId, currentPage, setCurrentPage, searchQuery, setSearchQuery }} />;
-  }
-
-  return <ObjectsTable {...{ currentPage, setCurrentPage, searchQuery, setSearchQuery }} />;
-};
-
-/**
- * Objects from specific Entity
- * Holds and manages query to get all objects from entity
- */
-const ObjectsFromEntityTable: React.FC<{ entityId: string } & TableProps> = ({
-  entityId,
-  currentPage,
-  searchQuery,
-  ...rest
-}) => {
-  const getAllObjectsFromEntity = useObject().getAllFromEntity(entityId, currentPage, searchQuery);
-
-  return <BaseTable objectsQuery={getAllObjectsFromEntity} {...{ currentPage, searchQuery, ...rest }} />;
-};
-
-/**
- * Objects that are related to the main object
- * Holds and manages query to get all objects from that are related to the main object
- */
-const ObjectsFromRelation: React.FC<{ objectId: string } & TableProps> = ({ currentPage, searchQuery, ...rest }) => {
-  const { objectsState } = useObjectsStateContext();
-
-  const getAllRelatedObjects = useObject().getAll(currentPage, objectsState.order, undefined, searchQuery);
-
-  return <BaseTable objectsQuery={getAllRelatedObjects} noQuery {...{ currentPage, searchQuery, ...rest }} />;
-};
-
-/**
- * All objects
- * Holds and manages query to get all objects
- */
-const ObjectsTable: React.FC<TableProps> = ({ currentPage, searchQuery, ...rest }) => {
-  const { objectsState } = useObjectsStateContext();
-
-  const getObjects = useObject().getAll(currentPage, objectsState.order, undefined, searchQuery);
-
-  return <BaseTable objectsQuery={getObjects} {...{ currentPage, searchQuery, ...rest }} />;
-};
-
-/**
- * Table to show actual objects
- */
-const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error>; noQuery?: boolean } & TableProps> = ({
-  objectsQuery,
-  noQuery,
-  currentPage,
-  setCurrentPage,
-  searchQuery,
-  setSearchQuery,
-}) => {
+export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, pagination }) => {
   const {
     columns: { objectColumns },
     setColumns,
   } = useTableColumnsContext();
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
   const { toggleOrder, objectsState, setObjectsState } = useObjectsStateContext();
-  const { Pagination, PaginationLocationIndicator } = usePagination(objectsQuery.data, currentPage, setCurrentPage);
+  const { Pagination, PaginationLocationIndicator } = usePagination(
+    { ...objects.data },
+    pagination.currentPage,
+    pagination.setCurrentPage,
+  );
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 
@@ -120,7 +57,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error>; noQuery?: 
 
   const deleteObject = useObject().remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(objectsQuery);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(objects);
 
   const handleBulkDelete = () => {
     selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
@@ -144,7 +81,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error>; noQuery?: 
             sortOrder={objectsState.order}
             columnType="objectColumns"
             toggleSortOrder={toggleOrder}
-            disabled={objectsQuery.isLoading}
+            disabled={objects.isLoading}
             tableColumns={objectColumns}
             setTableColumns={setColumns}
           />
@@ -164,94 +101,83 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error>; noQuery?: 
         />
       </div>
 
-      {objectsQuery.isLoading && <Skeleton height="200px" />}
+      <div className={styles.pageAndTotalResults}>{objects.data.results && <PaginationLocationIndicator />}</div>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeader>
+              <CheckboxBulkSelectAll />
+            </TableHeader>
+            {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
+            {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
+            {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
+            {objectColumns.actions && <TableHeader>Actions</TableHeader>}
+            <TableHeader></TableHeader>
+          </TableRow>
+        </TableHead>
 
-      {objectsQuery.isSuccess && (
-        <>
-          {!noQuery && (
-            <div className={styles.pageAndTotalResults}>
-              <PaginationLocationIndicator />
-            </div>
-          )}
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableHeader>
-                  <CheckboxBulkSelectAll />
-                </TableHeader>
-                {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
-                {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
-                {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
-                {objectColumns.actions && <TableHeader>Actions</TableHeader>}
-                <TableHeader></TableHeader>
-              </TableRow>
-            </TableHead>
+        <TableBody>
+          {objects.data.results &&
+            objects.data.results.map((object: any) => (
+              <TableRow key={object._self.id} onClick={() => toggleItem(object._self.id)}>
+                <TableCell>{<CheckboxBulkSelectOne id={object._self.id} />}</TableCell>
 
-            <TableBody>
-              {objectsQuery.isSuccess &&
-                !noQuery &&
-                objectsQuery.data.results.map((object: any) => (
-                  <TableRow key={object._self.id} onClick={() => toggleItem(object._self.id)}>
-                    <TableCell>{<CheckboxBulkSelectOne id={object._self.id} />}</TableCell>
+                {objectColumns.id && <TableCell>{object._self.id}</TableCell>}
 
-                    {objectColumns.id && <TableCell>{object._self.id}</TableCell>}
-
-                    {objectColumns.name && (
-                      <TableCell>
-                        <span onClick={() => handleNavigateToDetail(object._self.id)}>
-                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                            {object.name ?? "-"}
-                          </Link>
-                        </span>
-                      </TableCell>
-                    )}
-
-                    {objectColumns.schema && (
-                      <TableCell>
-                        <span onClick={() => navigate(`/schemas/${object._self?.schema?.id}`)}>
-                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                            {object._self?.schema?.name ?? "-"}
-                          </Link>
-                        </span>
-                      </TableCell>
-                    )}
-
-                    {objectColumns.actions && (
-                      <TableCell>
-                        <ActionButton
-                          actions={[
-                            { type: "delete", onSubmit: () => deleteObject.mutate({ id: object._self.id }) },
-                            { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
-                            { type: "download", onSubmit: () => undefined, disabled: true },
-                          ]}
-                        />
-                      </TableCell>
-                    )}
-
-                    <TableCell onClick={() => handleNavigateToDetail(object._self.id)}>
+                {objectColumns.name && (
+                  <TableCell>
+                    <span onClick={() => handleNavigateToDetail(object._self.id)}>
                       <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                        {t("Details")}
+                        {object.name ?? "-"}
                       </Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                    </span>
+                  </TableCell>
+                )}
 
-              {(!objectsQuery.data.results.length || noQuery) && (
-                <TableRow>
-                  <TableCell>No objects found</TableCell>
-                  <TableCell />
-                  {Object.values(objectColumns)
-                    .filter((value) => value)
-                    .map((_, idx) => (
-                      <TableCell key={idx} />
-                    ))}
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-          {!noQuery && <Pagination />}
-        </>
-      )}
+                {objectColumns.schema && (
+                  <TableCell>
+                    <span onClick={() => navigate(`/schemas/${object._self?.schema?.id}`)}>
+                      <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                        {object._self?.schema?.name ?? "-"}
+                      </Link>
+                    </span>
+                  </TableCell>
+                )}
+
+                {objectColumns.actions && (
+                  <TableCell>
+                    <ActionButton
+                      actions={[
+                        { type: "delete", onSubmit: () => deleteObject.mutate({ id: object._self.id }) },
+                        { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
+                      ]}
+                    />
+                  </TableCell>
+                )}
+
+                <TableCell onClick={() => handleNavigateToDetail(object._self.id)}>
+                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                    {t("Details")}
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
+
+          {!objects.data.results && (
+            <TableRow>
+              <TableCell>No objects found</TableCell>
+              <TableCell />
+              {Object.values(objectColumns)
+                .filter((value) => value)
+                .map((_, idx) => (
+                  <TableCell key={idx} />
+                ))}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      {objects.data.results && <Pagination />}
     </div>
   );
 };
