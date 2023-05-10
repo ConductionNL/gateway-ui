@@ -96,8 +96,9 @@ export const SchemasTemplate: React.FC = () => {
                         {
                           type: "add",
                           onSubmit: () => goToCreateObject(schema.id),
-                          label: "add Object",
+                          label: "Add Object",
                         },
+                        { type: "delete", onSubmit: () => deleteSchema.mutate({ id: schema.id }) },
                       ]}
                     />
                   </TableCell>
