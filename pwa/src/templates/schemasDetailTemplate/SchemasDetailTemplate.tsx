@@ -6,7 +6,7 @@ import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { useSchema } from "../../hooks/schema";
 import { Button, Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
-import { ObjectsTableTemplate } from "../templateParts/objectsTable/ObjectsTable";
+import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
@@ -21,6 +21,7 @@ import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
+import { useObject } from "../../hooks/object";
 
 interface SchemasDetailPageProps {
   schemaId: string;
@@ -32,16 +33,18 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
 
   const queryClient = useQueryClient();
   const _useSchema = useSchema(queryClient);
   const getSchema = _useSchema.getOne(schemaId);
   const deleteSchema = _useSchema.remove();
 
+  const getAllObjectsFromEntity = useObject().getAllFromEntity(schemaId, currentPage);
+
   const getSchemaSchema = _useSchema.getSchema(schemaId);
 
   const getLogs = useLog(queryClient).getAllFromChannel("schema", schemaId, currentLogsPage);
-
   const dashboardCard = getDashboardCard(getSchema.data?.id);
 
   const toggleFromDashboard = () => {
@@ -99,7 +102,17 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
-            <ObjectsTableTemplate entityId={schemaId} />
+            {getAllObjectsFromEntity.isLoading && <Skeleton height="200px" />}
+
+            {getAllObjectsFromEntity.isSuccess && (
+              <ObjectsTable
+                objects={getAllObjectsFromEntity}
+                pagination={{
+                  currentPage,
+                  setCurrentPage,
+                }}
+              />
+            )}
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">

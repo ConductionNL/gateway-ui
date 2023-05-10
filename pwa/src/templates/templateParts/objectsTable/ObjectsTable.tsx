@@ -164,7 +164,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, pagination 
               </TableRow>
             ))}
 
-          {!objects.data.results && (
+          {(!objects.data.results || !objects.data.results.length) && (
             <TableRow>
               <TableCell>No objects found</TableCell>
               <TableCell />
