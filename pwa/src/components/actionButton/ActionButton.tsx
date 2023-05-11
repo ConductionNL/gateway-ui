@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./ActionButton.module.css";
 import clsx from "clsx";
 
-import { faCopy, faEllipsisH, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faEllipsisH, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
 import { NotificationPopUp, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,8 +10,9 @@ import _ from "lodash";
 import { ConfirmPopUp } from "../confirmPopUp/ConfirmPopUp";
 
 type TAction = {
-  type: "delete" | "download" | "duplicate";
+  type: "delete" | "download" | "duplicate" | "add";
   onSubmit: () => any;
+  label?: string;
   disabled?: boolean;
 };
 
@@ -62,8 +63,12 @@ export const ActionButton: React.FC<ActionButtonProps> = ({ actions, size = "md"
       <div className={clsx(styles.actionsContainer, isOpen && styles.isOpen)}>
         <ul>
           {actions.map((action, idx) => (
-            <li key={idx} onClick={(e) => handleActionClick(e, action)} className={action.disabled && styles.disabled}>
-              <FontAwesomeIcon icon={getIconFromBulkAction(action)} /> {_.upperFirst(action.type)}
+            <li
+              key={idx}
+              onClick={(e) => handleActionClick(e, action)}
+              className={clsx(action.disabled && styles.disabled, action.label && styles.buttonLabel)}
+            >
+              <FontAwesomeIcon icon={getIconFromBulkAction(action)} /> {_.upperFirst(action.label ?? action.type)}
             </li>
           ))}
         </ul>
@@ -94,5 +99,7 @@ const getIconFromBulkAction = (action: TAction) => {
       return faSave;
     case "duplicate":
       return faCopy;
+    case "add":
+      return faPlus;
   }
 };
