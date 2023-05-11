@@ -41,7 +41,7 @@ export const LogFiltersTemplate: React.FC = () => {
     const subscription = watch((value) => {
       setLogFilters({
         ...logFilters,
-        channel: value.channels?.value,
+        channel: value.channels?.map((c: any) => c.value),
         level_name: value.level_name?.map((ln: any) => ln.value),
         context: {
           session: value.session,
@@ -67,12 +67,12 @@ export const LogFiltersTemplate: React.FC = () => {
 
     setValue(
       "level_name",
-      logFilters.level_name?.map((levelName: any) => ({ label: levelName, value: levelName })),
+      logFilters.level_name?.map((levelName: any) => ({ label: _.upperFirst(_.toLower(levelName)), value: levelName })),
     );
 
     setValue(
       "channels",
-      channelOptions.find((channelName) => channelName.value === logFilters.channel),
+      logFilters.channel?.map((channel: any) => ({ label: channel, value: channel })),
     );
 
     setValue(
@@ -149,7 +149,7 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldInput>
             <FormFieldLabel>Channels</FormFieldLabel>
 
-            <SelectSingle isClearable options={channelOptions} name="channels" {...{ register, errors, control }} />
+            <SelectMultiple isClearable options={channelOptions} name="channels" {...{ register, errors, control }} />
           </FormFieldInput>
         </FormField>
 

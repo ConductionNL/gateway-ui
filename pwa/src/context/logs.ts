@@ -3,7 +3,7 @@ import { GlobalContext } from "./global";
 
 export interface ILogFiltersContext {
   "_order[datetime]": "asc" | "desc";
-  channel?: TLogChannel;
+  channel?: TLogChannel[];
   level_name?: TLogLevelName[];
   context?: {
     session?: string;
