@@ -12,7 +12,7 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { useEndpoint } from "../../../hooks/endpoint";
 import { useApplication } from "../../../hooks/application";
 import { useOrganization } from "../../../hooks/organization";
-import { InputText, SelectSingle } from "@conduction/components/lib/components/formFields";
+import { InputText, SelectMultiple, SelectSingle } from "@conduction/components/lib/components/formFields";
 import { channels, levelNames, useLogFiltersContext } from "../../../context/logs";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 
@@ -42,7 +42,7 @@ export const LogFiltersTemplate: React.FC = () => {
       setLogFilters({
         ...logFilters,
         channel: value.channels?.value,
-        level_name: value.level_name?.value,
+        level_name: value.level_name?.map((ln: any) => ln.value),
         context: {
           session: value.session,
           process: value.process,
@@ -67,7 +67,7 @@ export const LogFiltersTemplate: React.FC = () => {
 
     setValue(
       "level_name",
-      levelNameOptions.find((levelName) => levelName.value === logFilters.level_name),
+      logFilters.level_name?.map((levelName: any) => ({ label: levelName, value: levelName })),
     );
 
     setValue(
@@ -136,7 +136,12 @@ export const LogFiltersTemplate: React.FC = () => {
           <FormFieldInput>
             <FormFieldLabel>Levels</FormFieldLabel>
 
-            <SelectSingle isClearable options={levelNameOptions} name="level_name" {...{ register, errors, control }} />
+            <SelectMultiple
+              isClearable
+              options={levelNameOptions}
+              name="level_name"
+              {...{ register, errors, control }}
+            />
           </FormFieldInput>
         </FormField>
 
