@@ -30,6 +30,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [objectJsonData, setObjectJsonData] = React.useState<string>("");
 
   const queryClient = useQueryClient();
@@ -239,16 +240,14 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="4">
-            {getObject.isLoading && <Skeleton height="200px" />}
-            {getObject.isSuccess && (
-              <ObjectsTable
-                objects={getObject}
-                pagination={{
-                  currentPage,
-                  setCurrentPage,
-                }}
-              />
-            )}
+            <ObjectsTable
+              objectsQuery={getObject}
+              pagination={{
+                currentPage,
+                setCurrentPage,
+              }}
+              search={{ searchQuery, setSearchQuery }}
+            />
           </TabPanel>
         </TabContext>
       </div>

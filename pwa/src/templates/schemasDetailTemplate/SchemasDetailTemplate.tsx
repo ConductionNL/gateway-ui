@@ -34,13 +34,14 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const _useSchema = useSchema(queryClient);
   const getSchema = _useSchema.getOne(schemaId);
   const deleteSchema = _useSchema.remove();
 
-  const getAllObjectsFromEntity = useObject().getAllFromEntity(schemaId, currentPage);
+  const getAllObjectsFromEntity = useObject().getAllFromEntity(schemaId, currentPage, searchQuery);
 
   const getSchemaSchema = _useSchema.getSchema(schemaId);
 
@@ -102,17 +103,14 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
               <FontAwesomeIcon icon={faPlus} /> {t("Add Object")}
             </Button>
 
-            {getAllObjectsFromEntity.isLoading && <Skeleton height="200px" />}
-
-            {getAllObjectsFromEntity.isSuccess && (
-              <ObjectsTable
-                objects={getAllObjectsFromEntity}
-                pagination={{
-                  currentPage,
-                  setCurrentPage,
-                }}
-              />
-            )}
+            <ObjectsTable
+              objectsQuery={getAllObjectsFromEntity}
+              pagination={{
+                currentPage,
+                setCurrentPage,
+              }}
+              search={{ searchQuery, setSearchQuery }}
+            />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
