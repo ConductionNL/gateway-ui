@@ -9,7 +9,6 @@ import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/
 import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { useObject } from "../../hooks/object";
 import { useObjectsStateContext } from "../../context/objects";
-import Skeleton from "react-loading-skeleton";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -27,17 +26,15 @@ export const ObjectTemplate: React.FC = () => {
           <Button variant="primary" icon={faPlus} label={t("Add Object")} onClick={() => navigate("/objects/new")} />
         }
       />
-      {getObjects.isLoading && <Skeleton height="200px" />}
 
-      {getObjects.isSuccess && (
-        <ObjectsTable
-          objects={getObjects}
-          pagination={{
-            currentPage,
-            setCurrentPage,
-          }}
-        />
-      )}
+      <ObjectsTable
+        objectsQuery={getObjects}
+        pagination={{
+          currentPage,
+          setCurrentPage,
+        }}
+        search={{ searchQuery, setSearchQuery }}
+      />
     </Container>
   );
 };

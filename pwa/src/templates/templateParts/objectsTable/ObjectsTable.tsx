@@ -17,24 +17,32 @@ import { useTableColumnsContext } from "../../../context/tableColumns";
 import { useObjectsStateContext } from "../../../context/objects";
 import { ActionButton } from "../../../components/actionButton/ActionButton";
 import { usePagination } from "../../../hooks/usePagination";
+import Skeleton from "react-loading-skeleton";
 
 interface ObjectsTableProps {
-  objects: UseQueryResult<any, Error>;
+  objectsQuery: UseQueryResult<any, Error>;
   pagination: {
     currentPage: number;
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   };
+  search: {
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+    searchQuery: string;
+  };
 }
 
-export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, pagination }) => {
+export const ObjectsTable: React.FC<ObjectsTableProps> = ({
+  objectsQuery,
+  pagination,
+  search: { searchQuery, setSearchQuery },
+}) => {
   const {
     columns: { objectColumns },
     setColumns,
   } = useTableColumnsContext();
-  const [searchQuery, setSearchQuery] = React.useState<string>("");
   const { toggleOrder, objectsState, setObjectsState } = useObjectsStateContext();
   const { Pagination, PaginationLocationIndicator } = usePagination(
-    { ...objects.data },
+    { ...objectsQuery.data },
     pagination.currentPage,
     pagination.setCurrentPage,
   );
@@ -57,7 +65,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, pagination 
 
   const deleteObject = useObject().remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(objects);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(objectsQuery);
 
   const handleBulkDelete = () => {
     selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
@@ -81,7 +89,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, pagination 
             sortOrder={objectsState.order}
             columnType="objectColumns"
             toggleSortOrder={toggleOrder}
-            disabled={objects.isLoading}
+            disabled={objectsQuery.isLoading}
             tableColumns={objectColumns}
             setTableColumns={setColumns}
           />
@@ -101,83 +109,93 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({ objects, pagination 
         />
       </div>
 
-      <div className={styles.pageAndTotalResults}>{objects.data.results && <PaginationLocationIndicator />}</div>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableHeader>
-              <CheckboxBulkSelectAll />
-            </TableHeader>
-            {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
-            {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
-            {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
-            {objectColumns.actions && <TableHeader>Actions</TableHeader>}
-            <TableHeader></TableHeader>
-          </TableRow>
-        </TableHead>
+      {objectsQuery.isLoading && <Skeleton height="200px" />}
 
-        <TableBody>
-          {objects.data.results &&
-            objects.data.results.map((object: any) => (
-              <TableRow key={object._self.id} onClick={() => toggleItem(object._self.id)}>
-                <TableCell>{<CheckboxBulkSelectOne id={object._self.id} />}</TableCell>
+      {objectsQuery.isSuccess && (
+        <>
+          <div className={styles.pageAndTotalResults}>
+            {objectsQuery.data.results && <PaginationLocationIndicator />}
+          </div>
 
-                {objectColumns.id && <TableCell>{object._self.id}</TableCell>}
-
-                {objectColumns.name && (
-                  <TableCell>
-                    <span onClick={() => handleNavigateToDetail(object._self.id)}>
-                      <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                        {object.name ?? "-"}
-                      </Link>
-                    </span>
-                  </TableCell>
-                )}
-
-                {objectColumns.schema && (
-                  <TableCell>
-                    <span onClick={() => navigate(`/schemas/${object._self?.schema?.id}`)}>
-                      <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                        {object._self?.schema?.name ?? "-"}
-                      </Link>
-                    </span>
-                  </TableCell>
-                )}
-
-                {objectColumns.actions && (
-                  <TableCell>
-                    <ActionButton
-                      actions={[
-                        { type: "delete", onSubmit: () => deleteObject.mutate({ id: object._self.id }) },
-                        { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
-                        { type: "download", onSubmit: () => undefined, disabled: true },
-                      ]}
-                    />
-                  </TableCell>
-                )}
-
-                <TableCell onClick={() => handleNavigateToDetail(object._self.id)}>
-                  <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                    {t("Details")}
-                  </Link>
-                </TableCell>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
+                {objectColumns.id && <TableHeader>{t("Id")}</TableHeader>}
+                {objectColumns.name && <TableHeader>{t("Name")}</TableHeader>}
+                {objectColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
+                {objectColumns.actions && <TableHeader>Actions</TableHeader>}
+                <TableHeader></TableHeader>
               </TableRow>
-            ))}
+            </TableHead>
 
-          {(!objects.data.results || !objects.data.results.length) && (
-            <TableRow>
-              <TableCell>No objects found</TableCell>
-              <TableCell />
-              {Object.values(objectColumns)
-                .filter((value) => value)
-                .map((_, idx) => (
-                  <TableCell key={idx} />
+            <TableBody>
+              {objectsQuery.data.results &&
+                objectsQuery.data.results.map((object: any) => (
+                  <TableRow key={object._self.id} onClick={() => toggleItem(object._self.id)}>
+                    <TableCell>{<CheckboxBulkSelectOne id={object._self.id} />}</TableCell>
+
+                    {objectColumns.id && <TableCell>{object._self.id}</TableCell>}
+
+                    {objectColumns.name && (
+                      <TableCell>
+                        <span onClick={() => handleNavigateToDetail(object._self.id)}>
+                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                            {object.name ?? "-"}
+                          </Link>
+                        </span>
+                      </TableCell>
+                    )}
+
+                    {objectColumns.schema && (
+                      <TableCell>
+                        <span onClick={() => navigate(`/schemas/${object._self?.schema?.id}`)}>
+                          <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                            {object._self?.schema?.name ?? "-"}
+                          </Link>
+                        </span>
+                      </TableCell>
+                    )}
+
+                    {objectColumns.actions && (
+                      <TableCell>
+                        <ActionButton
+                          actions={[
+                            { type: "delete", onSubmit: () => deleteObject.mutate({ id: object._self.id }) },
+                            { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
+                            { type: "download", onSubmit: () => undefined, disabled: true },
+                          ]}
+                        />
+                      </TableCell>
+                    )}
+
+                    <TableCell onClick={() => handleNavigateToDetail(object._self.id)}>
+                      <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                        {t("Details")}
+                      </Link>
+                    </TableCell>
+                  </TableRow>
                 ))}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      {objects.data.results && <Pagination />}
+
+              {(!objectsQuery.data.results || !objectsQuery.data.results.length) && (
+                <TableRow>
+                  <TableCell>No objects found</TableCell>
+                  <TableCell />
+                  {Object.values(objectColumns)
+                    .filter((value) => value)
+                    .map((_, idx) => (
+                      <TableCell key={idx} />
+                    ))}
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+
+          {objectsQuery.data.results && <Pagination />}
+        </>
+      )}
     </div>
   );
 };
