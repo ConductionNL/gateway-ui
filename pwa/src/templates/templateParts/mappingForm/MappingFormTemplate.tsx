@@ -176,6 +176,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   defaultValue={_mapping}
                   disabled={isLoading.endpointForm}
                   validation={{ required: true }}
+                  copyValue
                 />
               </div>
             </Collapsible>
@@ -219,6 +220,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   {...{ register, errors, control }}
                   defaultValue={unset}
                   disabled={isLoading.endpointForm}
+                  copyValue
                 />
               </div>
             </Collapsible>
@@ -263,6 +265,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   {...{ register, errors, control }}
                   defaultValue={cast}
                   disabled={isLoading.endpointForm}
+                  copyValue
                 />
               </div>
             </Collapsible>
