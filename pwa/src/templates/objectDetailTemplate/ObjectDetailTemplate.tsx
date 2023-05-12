@@ -19,6 +19,7 @@ import { Button } from "../../components/button/Button";
 import { CodeEditor } from "../../components/codeEditor/CodeEditor";
 import { formatDateTime } from "../../services/dateTime";
 import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
+import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -27,7 +28,9 @@ interface ObjectDetailTemplateProps {
 export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ objectId }) => {
   const { t, i18n } = useTranslation();
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [objectJsonData, setObjectJsonData] = React.useState<string>("");
 
   const queryClient = useQueryClient();
@@ -78,6 +81,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             <Tab className={styles.tab} label={t("Logs")} value={1} />
             <Tab className={styles.tab} label={t("Sync")} value={2} />
             <Tab className={styles.tab} label={t("Object")} value={3} />
+            <Tab className={styles.tab} label={t("Related Objects")} value={4} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
@@ -233,6 +237,17 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             {getObject.isSuccess && (
               <CodeEditor code={JSON.stringify(getObject.data, null, 2)} setCode={setObjectJsonData} readOnly />
             )}
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="4">
+            <ObjectsTable
+              objectsQuery={getObject}
+              pagination={{
+                currentPage,
+                setCurrentPage,
+              }}
+              search={{ searchQuery, setSearchQuery }}
+            />
           </TabPanel>
         </TabContext>
       </div>
