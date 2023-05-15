@@ -2,8 +2,7 @@ import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import { Alert } from "@gemeente-denhaag/components-react";
-import { useTranslation } from "react-i18next";
-import { faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import { useObject } from "../../../hooks/object";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
@@ -13,6 +12,7 @@ import { FormSaveButton, TAfterSuccessfulFormSubmit } from "../formSaveButton/Fo
 import { Button } from "../../../components/button/Button";
 import { useObjectsStateContext } from "../../../context/objects";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
+import { ActionButton } from "../../../components/actionButton/ActionButton";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -21,7 +21,6 @@ interface EditObjectFormTemplateProps {
 }
 
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, schema, objectId }) => {
-  const { t } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
@@ -121,7 +120,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
                   icon={faCopy}
                   onClick={() => setObjectsState({ inDuplicatingMode: !inDuplicatingMode })}
                 />
-                <Button label={"Download"} variant="primary" icon={faDownload} disabled={loading} />
+
+                <ActionButton actions={[{ type: "download", onSubmit: () => navigate("#") }]} />
               </>
             }
           />

@@ -2,9 +2,9 @@ import * as React from "react";
 import * as styles from "./ActionButton.module.css";
 import clsx from "clsx";
 
-import { faCopy, faEllipsisH, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faDownload, faEllipsisH, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
-import { NotificationPopUp, ToolTip } from "@conduction/components";
+import { NotificationPopUp } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _ from "lodash";
 import { ConfirmPopUp } from "../confirmPopUp/ConfirmPopUp";
@@ -96,7 +96,7 @@ const getIconFromBulkAction = (action: TAction) => {
     case "delete":
       return faTrash;
     case "download":
-      return faSave;
+      return faDownload;
     case "duplicate":
       return faCopy;
     case "add":
