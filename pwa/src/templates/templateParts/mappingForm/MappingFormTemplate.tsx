@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import { faArrowDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "@gemeente-denhaag/components-react";
+import toast from "react-hot-toast";
 
 interface MappingFormTemplateProps {
   mapping?: any;
@@ -176,7 +177,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   defaultValue={_mapping}
                   disabled={isLoading.endpointForm}
                   validation={{ required: true }}
-                  copyValue
+                  copyValue={{ canCopy: true, onCopied: () => toast.success("Copied!") }}
                 />
               </div>
             </Collapsible>
@@ -220,7 +221,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   {...{ register, errors, control }}
                   defaultValue={unset}
                   disabled={isLoading.endpointForm}
-                  copyValue
+                  copyValue={{ canCopy: true, onCopied: () => toast.success("Copied!") }}
                 />
               </div>
             </Collapsible>
@@ -265,7 +266,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   {...{ register, errors, control }}
                   defaultValue={cast}
                   disabled={isLoading.endpointForm}
-                  copyValue
+                  copyValue={{ canCopy: true, onCopied: () => toast.success("Copied!") }}
                 />
               </div>
             </Collapsible>
