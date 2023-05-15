@@ -34,3 +34,8 @@
 .searchAndFilterContainer > div > input {
   height: 49.5px; /* height of DisplayFiltersButton */
 }
+
+.pageAndTotalResults {
+  display: flex;
+  justify-content: flex-end;
+}

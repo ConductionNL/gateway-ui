@@ -13,6 +13,13 @@
   padding-inline-end: var(--gateway-ui-size-md);
   padding-block-start: var(--gateway-ui-size-md);
   padding-block-end: var(--gateway-ui-size-md);
+  display: flex;
+  justify-content: space-between;
+}
+
+.tableContainer {
+  max-width: 100%;
+  overflow-x: scroll;
 }
 
 .button > span > svg {

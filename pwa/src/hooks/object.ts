@@ -69,7 +69,7 @@ export const useObject = () => {
         console.warn(error.message);
       },
       onSettled: () => {
-        setTimeout(() => queryClient.invalidateQueries(["objects"]), 100);
+        setTimeout(() => queryClient.invalidateQueries(["objects"]), 200);
       },
     });
 

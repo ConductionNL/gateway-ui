@@ -34,9 +34,14 @@ export const LogsTemplate: React.FC = () => {
         <LogsTableTemplate
           logs={getLogs.data.results}
           pagination={{
-            totalPages: getLogs.data.pages,
-            currentPage: currentPage,
-            changePage: setCurrentPage,
+            data: {
+              count: getLogs.data.results.length,
+              offset: 15 * (currentPage - 1),
+              pages: getLogs.data.pages,
+              total: getLogs.data.count,
+            },
+            currentPage,
+            setCurrentPage,
           }}
         />
       )}

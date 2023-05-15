@@ -6,10 +6,17 @@ import { Container } from "@conduction/components";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
-import { ObjectsTableTemplate } from "../templateParts/objectsTable/ObjectsTable";
+import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
+import { useObject } from "../../hooks/object";
+import { useObjectsStateContext } from "../../context/objects";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
+  const { objectsState } = useObjectsStateContext();
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+
+  const getObjects = useObject().getAll(currentPage, objectsState.order, undefined, searchQuery);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -20,7 +27,14 @@ export const ObjectTemplate: React.FC = () => {
         }
       />
 
-      <ObjectsTableTemplate />
+      <ObjectsTable
+        objectsQuery={getObjects}
+        pagination={{
+          currentPage,
+          setCurrentPage,
+        }}
+        search={{ searchQuery, setSearchQuery }}
+      />
     </Container>
   );
 };

@@ -83,7 +83,7 @@ export const ActionsTemplate: React.FC = () => {
                     />
                   </TableCell>
 
-                  <TableCell>{action.isEnabled ? "On" : "Off"}</TableCell>
+                  <TableCell>{action.isEnabled ? "Yes" : "No"}</TableCell>
 
                   <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>
 
