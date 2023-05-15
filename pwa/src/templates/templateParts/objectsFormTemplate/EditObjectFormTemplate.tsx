@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
-import { Alert, Divider, Heading1 } from "@gemeente-denhaag/components-react";
+import { Alert } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { faCopy, faMinus, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faDownload } from "@fortawesome/free-solid-svg-icons";
 import { useObject } from "../../../hooks/object";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
@@ -12,6 +12,7 @@ import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData
 import { FormSaveButton, TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
 import { Button } from "../../../components/button/Button";
 import { useObjectsStateContext } from "../../../context/objects";
+import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -103,39 +104,27 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
         )}
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <section className={styles.section}>
-            <Heading1>{`Edit ${object._self.name}`}</Heading1>
+          <FormHeaderTemplate
+            title={`Edit ${object._self.name}`}
+            disabled={loading}
+            handleDelete={() => handleDeleteObject}
+            handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            showTitleTooltip
+            customElements={
+              <>
+                <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
 
-            <div className={styles.buttons}>
-              <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
-
-              <Button
-                disabled={loading}
-                label={!!inDuplicatingMode ? "Exit duplicating mode" : "Duplicating mode"}
-                variant={!!inDuplicatingMode ? "secondary" : "primary"}
-                icon={faCopy}
-                onClick={() => setObjectsState({ inDuplicatingMode: !inDuplicatingMode })}
-              />
-
-              <Button
-                label={dashboardCard ? t("Remove from dashboard") : t("Add to dashboard")}
-                variant="primary"
-                icon={dashboardCard ? faMinus : faPlus}
-                onClick={toggleFromDashboard}
-                disabled={loading}
-              />
-
-              <Button
-                label={t("Delete")}
-                variant="danger"
-                icon={faTrash}
-                onClick={handleDeleteObject}
-                disabled={loading}
-              />
-            </div>
-          </section>
-
-          <Divider />
+                <Button
+                  disabled={loading}
+                  label={!!inDuplicatingMode ? "Exit duplicating mode" : "Duplicating mode"}
+                  variant={!!inDuplicatingMode ? "secondary" : "primary"}
+                  icon={faCopy}
+                  onClick={() => setObjectsState({ inDuplicatingMode: !inDuplicatingMode })}
+                />
+                <Button label={"Download"} variant="primary" icon={faDownload} disabled={loading} />
+              </>
+            }
+          />
 
           <SchemaFormTemplate {...{ register, errors, control, schema }} disabled={loading} />
         </form>
