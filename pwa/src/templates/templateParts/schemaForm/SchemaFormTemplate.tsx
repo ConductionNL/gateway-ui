@@ -378,7 +378,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     let selected;
 
     if (!multiple) {
-      selected = getAllFromList.data.find((item) => item.id ?? item._id === property.value);
+      selected = getAllFromList.data.find((item) => item._id === property.value);
     }
 
     if (multiple) {
