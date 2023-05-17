@@ -382,7 +382,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     }
 
     if (multiple) {
-      selected = getAllFromList.data.filter((item) => property.value?.includes(item.id));
+      selected = getAllFromList.data.filter((item) => property.value?.includes(item._id));
     }
 
     if (!selected) {
