@@ -378,7 +378,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     let selected;
 
     if (!multiple) {
-      selected = getAllFromList.data.find((item) => item.id === property.value);
+      selected = getAllFromList.data.find((item) => item.id ?? item._id === property.value);
     }
 
     if (multiple) {
@@ -387,12 +387,11 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
     if (!selected) {
       setDefaultValue({});
-
       return;
     }
 
     if (!multiple) {
-      setDefaultValue({ label: selected.name, value: selected.id });
+      setDefaultValue({ label: selected.name, value: selected._id });
     }
 
     if (multiple) {
