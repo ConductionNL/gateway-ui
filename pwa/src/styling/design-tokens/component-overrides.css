@@ -6,6 +6,9 @@
 
   --denhaag-sidenav-link-hover-color: var(--gateway-ui-color-primary);
   --denhaag-sidenav-link-active-color: var(--gateway-ui-color-primary);
+  --denhaag-sidenav-link-active-font-weight: var(
+    --denhaag-sidenav-item-font-size
+  );
 
   --denhaag-button-primary-action-background-color: var(
     --gateway-ui-color-primary

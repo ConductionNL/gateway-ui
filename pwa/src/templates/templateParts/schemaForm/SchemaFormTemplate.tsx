@@ -368,7 +368,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   const _useObject = useObject();
   const property = schema?.properties[name];
 
-  const getAllFromList = _useObject.getAllFromList(`${property?._list}&_limit=200`);
+  const getAllFromList = _useObject.getAllFromList(`${property?._list}&_limit=500`);
 
   const [defaultValue, setDefaultValue] = React.useState<any>(null);
 
@@ -382,7 +382,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     }
 
     if (multiple) {
-      selected = getAllFromList.data.filter((item) => property.value?.includes(item.id));
+      selected = getAllFromList.data.filter((item) => property.value?.includes(item._id));
     }
 
     if (!selected) {
