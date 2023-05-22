@@ -17,9 +17,26 @@
     --gateway-ui-color-primary-hover
   );
 
+  --denhaag-button-secondary-action-border-color: var(
+    --gateway-ui-color-primary
+  );
+  --denhaag-button-secondary-action-color: var(--gateway-ui-color-primary);
+
+  --denhaag-button-secondary-action-hover-border-color: var(
+    --gateway-ui-color-primary-hover
+  );
+  --denhaag-button-secondary-action-hover-color: var(
+    --gateway-ui-color-primary-hover
+  );
+
   --denhaag-link-color: var(--gateway-ui-color-primary);
 
   --conduction-container-max-width: var(--gateway-ui-container-max-width);
+
+  --conduction-delete-button-background-color: var(--gateway-ui-color-red);
+  --conduction-delete-button-background-hover-color: var(
+    --gateway-ui-color-dark-red
+  );
 
   --utrecht-form-input-placeholder-color: var(--denhaag-color-grey-2);
 

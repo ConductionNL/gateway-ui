@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 import { faCopy, faEllipsisH, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
-import { NotificationPopUp, ToolTip } from "@conduction/components";
+import { NotificationPopUp } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _ from "lodash";
 import { ConfirmPopUp } from "../confirmPopUp/ConfirmPopUp";
