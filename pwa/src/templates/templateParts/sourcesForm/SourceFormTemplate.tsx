@@ -81,6 +81,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
   React.useEffect(() => {
     if (!watchQuery) return;
+    if (!Array.isArray(watchQuery)) return;
 
     const newQuery = watchQuery?.map((item: any) => ({ key: item.key, value: item.value }));
 
@@ -105,6 +106,8 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
         proxy: data.proxy,
         idn_conversion: advancedSwitch.idnConversion === "int" ? data.idn_conversion_int : data.idn_conversion_bool,
         https_errors: data.https_errors,
+        headers: data.headers,
+        query: data.query,
       },
     };
 
@@ -147,7 +150,13 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   };
 
   const handleSetFormValues = (_source: any): void => {
-    const source = { ..._source, configuration: { headers: _source.configuration.headers ?? _source.headers ?? [] } };
+    const source = {
+      ..._source,
+      configuration: {
+        headers: _source.configuration.headers ?? _source.headers ?? [],
+        query: _source.configuration.query ?? _source.query ?? [],
+      },
+    };
 
     const basicFields: string[] = [
       "name",
