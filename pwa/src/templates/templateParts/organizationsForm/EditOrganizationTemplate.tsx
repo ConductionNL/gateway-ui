@@ -18,6 +18,7 @@ import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CHANNEL_LOG_LIMIT } from "../../../apiService/resources/log";
 
 interface CreateOrganizationTemplateProps {
   organizationId: string;
@@ -171,9 +172,14 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                   <LogsTableTemplate
                     logs={getLogs.data.results}
                     pagination={{
-                      totalPages: getLogs.data.pages,
+                      data: {
+                        count: getLogs.data.results.length,
+                        offset: CHANNEL_LOG_LIMIT * (currentLogsPage - 1),
+                        pages: getLogs.data.pages,
+                        total: getLogs.data.count,
+                      },
                       currentPage: currentLogsPage,
-                      changePage: setCurrentLogsPage,
+                      setCurrentPage: setCurrentLogsPage,
                     }}
                   />
                 )}

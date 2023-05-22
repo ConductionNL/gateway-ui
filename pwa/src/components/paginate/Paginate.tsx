@@ -10,11 +10,11 @@ import clsx from "clsx";
 interface PaginateProps {
   totalPages: number;
   currentPage: number;
-  changePage: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   layoutClassName?: string;
 }
 
-export const Paginate: React.FC<PaginateProps> = ({ totalPages, currentPage, changePage, layoutClassName }) => {
+export const Paginate: React.FC<PaginateProps> = ({ totalPages, currentPage, setCurrentPage, layoutClassName }) => {
   if (totalPages < 1) return <></>; // no pages available
 
   return (
@@ -22,7 +22,7 @@ export const Paginate: React.FC<PaginateProps> = ({ totalPages, currentPage, cha
       className={clsx(styles.container, layoutClassName && layoutClassName)}
       disabledClassName={styles.disabled}
       activeClassName={styles.currentPage}
-      onPageChange={(e: any) => changePage(e.selected + 1)}
+      onPageChange={(e: any) => setCurrentPage(e.selected + 1)}
       forcePage={currentPage - 1}
       pageRangeDisplayed={3}
       pageCount={totalPages}

@@ -16,6 +16,24 @@ export const useAuthentication = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const API: APIService | null = React.useContext(APIContext);
 
+  // Handle logout
+  const handleLogout = async () => {
+    if (!isBrowser()) return;
+
+    return await toast.promise(
+      API.Login.logout().then(() => {
+        API.removeAuthentication();
+        navigate("/");
+      }),
+
+      {
+        loading: "Logging out...",
+        success: "Succesfully logged out",
+        error: (err) => err.message,
+      },
+    );
+  };
+
   // Login using gateway users
   const handleInternalLogin = async (data: IUnvalidatedUser) => {
     if (!isBrowser()) return;
@@ -43,12 +61,14 @@ export const useAuthentication = () => {
     setIsLoading(true);
 
     return await toast.promise(
-      API.Login.renewToken()
+      API.Login.getExternalToken()
         .then((res) => {
           API.setAuthentication(res.data.jwtToken);
-          location.href = "/"; // Required to reset referrer
         })
-        .finally(() => setIsLoading(false)),
+        .finally(() => {
+          setIsLoading(false);
+          document.cookie = "redirected_to_adfs=false";
+        }),
       {
         loading: "Logging in using external provider...",
         success: "Welcome back",
@@ -61,13 +81,6 @@ export const useAuthentication = () => {
     if (!isBrowser()) return false;
 
     return !!window.sessionStorage.getItem("JWT");
-  };
-
-  const handleLogout = (): void => {
-    if (!isBrowser()) return;
-
-    API.removeAuthentication();
-    navigate("/");
   };
 
   return { handleInternalLogin, handleExternalLogin, isLoggedIn, handleLogout, isLoading };
@@ -88,4 +101,27 @@ export const validateSession = () => {
   const expired = decoded?.exp && Date.now() >= decoded.exp * 1000;
 
   return !expired;
+};
+
+export const shouldRenewToken = (): boolean => {
+  const token = sessionStorage.getItem("JWT");
+
+  if (!token) return false;
+
+  const decoded = jwtDecode<JwtPayload>(token);
+
+  if (decoded.exp) {
+    const renewTokenTime = decoded.exp * 1000 - 5 * 60 * 1000; // 5 is minutes
+    const tokenExpiration = decoded.exp * 1000;
+    const currentTime = Date.now();
+
+    if (
+      decoded?.exp &&
+      currentTime.valueOf() >= renewTokenTime.valueOf() &&
+      currentTime.valueOf() <= tokenExpiration.valueOf()
+    ) {
+      return true;
+    }
+  }
+  return false;
 };

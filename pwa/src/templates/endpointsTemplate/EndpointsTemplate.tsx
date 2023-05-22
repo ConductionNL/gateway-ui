@@ -25,7 +25,7 @@ export const EndpointsTemplate: React.FC = () => {
   const getEndpoints = _useEndpoints.getAll();
   const deleteEndpoint = _useEndpoints.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getEndpoints.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getEndpoints.data);
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteEndpoint.mutate({ id: item }));
@@ -70,7 +70,7 @@ export const EndpointsTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getEndpoints.data.map((endpoint: any) => (
-                <TableRow key={endpoint.id}>
+                <TableRow key={endpoint.id} onClick={() => toggleItem(endpoint.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={endpoint.id} />}</TableCell>
 
                   <TableCell>{endpoint.name}</TableCell>

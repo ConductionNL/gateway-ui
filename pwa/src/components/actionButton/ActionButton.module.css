@@ -1,0 +1,66 @@
+.container {
+  position: relative;
+  width: fit-content;
+}
+
+.buttonContainer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gateway-ui-size-xs);
+}
+
+.actionsContainer {
+  width: 100%;
+  display: none;
+  overflow: hidden;
+  position: absolute;
+  width: fit-content;
+  background-color: var(--gateway-ui-color-white);
+  border-bottom-left-radius: var(--gateway-ui-size-xs);
+  border-bottom-right-radius: var(--gateway-ui-size-xs);
+  box-shadow: var(--gateway-ui-drop-down-box-shadow);
+}
+
+.actionsContainer.isOpen {
+  display: block;
+  z-index: 2;
+}
+
+.actionsContainer > ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.actionsContainer > ul > li {
+  display: flex;
+  align-items: center;
+  user-select: none;
+  gap: var(--gateway-ui-size-xs);
+  font-size: var(--gateway-ui-font-size-md);
+  padding-inline: var(--gateway-ui-size-sm);
+  padding-block: var(--gateway-ui-size-sm);
+}
+
+.actionsContainer > ul > li:hover {
+  cursor: pointer;
+  background-color: var(--gateway-ui-row-background-color);
+}
+
+.actionsContainer > ul > li.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.buttonLabel {
+  width: max-content;
+}
+
+.sm {
+  padding-inline: var(--gateway-ui-size-sm) !important;
+  padding-block: var(--gateway-ui-size-3xs) !important;
+}
+
+.sm > span > svg {
+  margin: 0;
+}

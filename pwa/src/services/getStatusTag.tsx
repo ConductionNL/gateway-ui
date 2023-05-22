@@ -2,7 +2,7 @@ import { StatusTag } from "../components/statusTag/StatusTag";
 
 export const getStatusTag = (value: unknown): JSX.Element => {
   if (value === "200" || value === true) {
-    return <StatusTag type="success" label="Success" />;
+    return <StatusTag type="success" label={value.toString()} />;
   }
 
   if (
@@ -11,8 +11,8 @@ export const getStatusTag = (value: unknown): JSX.Element => {
     value === undefined ||
     value === null
   ) {
-    return <StatusTag label="No status" />;
+    return <StatusTag label={value ?? "No status"} />;
   }
 
-  return <StatusTag type="critical" label="Error" />;
+  return <StatusTag type="critical" label={value.toString()} />;
 };

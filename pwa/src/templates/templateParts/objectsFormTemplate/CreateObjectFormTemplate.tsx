@@ -25,7 +25,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
   const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
   const queryClient = useQueryClient();
-  const _useObjects = useObject(queryClient);
+  const _useObjects = useObject();
   const createOrEditObject = _useObjects.createOrEdit();
 
   const _useSchema = useSchema(queryClient);
@@ -75,7 +75,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
         onSuccess: (newObject) => {
           switch (afterSuccessfulFormSubmit) {
             case "save":
-              navigate(`/objects/${newObject.id}`);
+              navigate(`/objects/${newObject._id}`);
               break;
 
             case "saveAndClose":

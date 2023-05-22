@@ -20,7 +20,7 @@ export const FormSaveButton: React.FC<FormSaveButtonProps> = ({ setAfterSuccessf
   function handleBlur() {
     setTimeout(() => {
       setMenuEnabled(false);
-    }, 100);
+    }, 200);
   }
 
   return (

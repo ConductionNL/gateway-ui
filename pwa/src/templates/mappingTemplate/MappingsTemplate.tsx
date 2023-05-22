@@ -23,7 +23,7 @@ export const MappingTemplate: React.FC = () => {
   const getMappings = useMapping(queryClient).getAll();
   const deleteMapping = useMapping(queryClient).remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getMappings.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getMappings.data);
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteMapping.mutate({ id: item }));
@@ -62,7 +62,7 @@ export const MappingTemplate: React.FC = () => {
             </TableHead>
             <TableBody>
               {getMappings.data.map((mapping) => (
-                <TableRow key={mapping.id}>
+                <TableRow key={mapping.id} onClick={() => toggleItem(mapping.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={mapping.id} />}</TableCell>
 
                   <TableCell>{mapping.name ?? "-"}</TableCell>

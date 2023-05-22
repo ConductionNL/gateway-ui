@@ -26,7 +26,7 @@ export const CronjobsTemplate: React.FC = () => {
   const getCronjobs = _useCronjob.getAll();
   const deleteCronjob = _useCronjob.remove();
 
-  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems } = useBulkSelect(getCronjobs.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getCronjobs.data);
 
   const handleBulkDelete = (): void => {
     selectedItems.forEach((item) => deleteCronjob.mutate({ id: item }));
@@ -64,11 +64,12 @@ export const CronjobsTemplate: React.FC = () => {
                 <TableHeader>{t("Next run")}</TableHeader>
                 <TableHeader>{t("Date created")}</TableHeader>
                 <TableHeader>{t("Date modified")}</TableHeader>
+                <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
             <TableBody>
               {getCronjobs.data.map((cronjob) => (
-                <TableRow key={cronjob.id}>
+                <TableRow key={cronjob.id} onClick={() => toggleItem(cronjob.id)}>
                   <TableCell>{<CheckboxBulkSelectOne id={cronjob.id} />}</TableCell>
 
                   <TableCell>{cronjob.name}</TableCell>

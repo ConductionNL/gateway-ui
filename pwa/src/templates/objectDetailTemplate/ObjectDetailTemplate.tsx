@@ -4,10 +4,9 @@ import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/compone
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { useObject } from "../../hooks/object";
-import { Container } from "@conduction/components";
+import { Container, ToolTip } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { EditObjectFormTemplate } from "../templateParts/objectsFormTemplate/EditObjectFormTemplate";
-import clsx from "clsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { navigate } from "gatsby";
@@ -17,18 +16,25 @@ import { useCurrentTabContext } from "../../context/tabs";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
 import { Button } from "../../components/button/Button";
+import { CodeEditor } from "../../components/codeEditor/CodeEditor";
+import { formatDateTime } from "../../services/dateTime";
+import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
+import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
 }
 
 export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ objectId }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [objectJsonData, setObjectJsonData] = React.useState<string>("");
 
   const queryClient = useQueryClient();
-  const _useObject = useObject(queryClient);
+  const _useObject = useObject();
   const getObject = _useObject.getOne(objectId);
 
   const _useSync = useSync(queryClient);
@@ -57,10 +63,10 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
       {getObject.isError && "Error..."}
 
       {getObject.isSuccess && getSchema.isSuccess && (
-        <EditObjectFormTemplate object={getObject.data} {...{ getSchema }} {...{ objectId }} />
+        <EditObjectFormTemplate object={getObject.data} schema={getSchema.data} {...{ objectId }} />
       )}
 
-      {getObject.isLoading && <Skeleton height="200px" />}
+      {(getObject.isLoading || getSchema.isLoading) && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTabs.objectDetailTabs.toString()}>
@@ -71,19 +77,92 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             }}
             variant="scrollable"
           >
-            <Tab className={styles.tab} label={t("Logs")} value={0} />
-            <Tab className={styles.tab} label={t("Sync")} value={1} />
-            <Tab className={styles.tab} label={t("Object")} value={2} />
+            <Tab className={styles.tab} label={t("Metadata")} value={0} />
+            <Tab className={styles.tab} label={t("Logs")} value={1} />
+            <Tab className={styles.tab} label={t("Sync")} value={2} />
+            <Tab className={styles.tab} label={t("Object")} value={3} />
+            <Tab className={styles.tab} label={t("Related Objects")} value={4} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
+            {getObject.isSuccess && (
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableHeader>Id</TableHeader>
+                    <TableCell>{getObject.data._self?.id}</TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Date created</TableHeader>
+                    <TableCell className={styles.dateContent}>
+                      {formatDateTime(t(i18n.language), getObject.data._self?.dateCreated) ?? "-"}
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Date modified</TableHeader>
+                    <TableCell className={styles.dateContent}>
+                      {formatDateTime(t(i18n.language), getObject.data._self?.dateModified) ?? "-"}
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Owner</TableHeader>
+                    <TableCell>
+                      <ToolTip tooltip={getObject.data._self?.owner.name ?? ""}>
+                        {getObject.data._self?.owner.id ?? "-"}
+                      </ToolTip>
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Organisation</TableHeader>
+                    <TableCell>
+                      <ToolTip tooltip={getObject.data._self?.organization.name ?? ""}>
+                        {getObject.data._self?.organization.id ?? "-"}
+                      </ToolTip>
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Application</TableHeader>
+                    <TableCell>
+                      <ToolTip tooltip={getObject.data._self?.organization.name ?? ""}>
+                        {getObject.data._self?.application.id ?? "-"}
+                      </ToolTip>
+                    </TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableHeader>Schema</TableHeader>
+                    <TableCell>
+                      <span onClick={() => navigate(`/schemas/${getObject.data._self?.schema.id}`)}>
+                        <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                          {getObject.data._self?.schema.name ?? "-"}
+                        </Link>
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            )}
+            {getObject.isLoading && <Skeleton height="200px" />}
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="1">
             {getLogs.isSuccess && (
               <LogsTableTemplate
                 logs={getLogs.data.results}
                 pagination={{
-                  totalPages: getLogs.data.pages,
+                  data: {
+                    count: getLogs.data.results.length,
+                    offset: CHANNEL_LOG_LIMIT * (currentLogsPage - 1),
+                    pages: getLogs.data.pages,
+                    total: getLogs.data.count,
+                  },
                   currentPage: currentLogsPage,
-                  changePage: setCurrentLogsPage,
+                  setCurrentPage: setCurrentLogsPage,
                 }}
               />
             )}
@@ -91,7 +170,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             {getLogs.isLoading && <Skeleton height="200px" />}
           </TabPanel>
 
-          <TabPanel className={styles.tabPanel} value="1">
+          <TabPanel className={styles.tabPanel} value="2">
             {getObject.isLoading && <Skeleton height="200px" />}
             {getObject.isSuccess && (
               <Button
@@ -153,9 +232,22 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
             )}
           </TabPanel>
 
-          <TabPanel className={styles.tabPanel} value="2">
+          <TabPanel className={styles.tabPanel} value="3">
             {getObject.isLoading && <Skeleton height="200px" />}
-            {getObject.isSuccess && <pre>{JSON.stringify(getObject.data, null, 2)}</pre>}
+            {getObject.isSuccess && (
+              <CodeEditor code={JSON.stringify(getObject.data, null, 2)} setCode={setObjectJsonData} readOnly />
+            )}
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="4">
+            <ObjectsTable
+              objectsQuery={getObject}
+              pagination={{
+                currentPage,
+                setCurrentPage,
+              }}
+              search={{ searchQuery, setSearchQuery }}
+            />
           </TabPanel>
         </TabContext>
       </div>

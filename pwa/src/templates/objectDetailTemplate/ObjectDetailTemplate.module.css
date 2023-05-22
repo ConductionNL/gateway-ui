@@ -57,3 +57,7 @@
     --gateway-ui-color-dark-red
   );
 }
+
+.dateContent {
+  white-space: nowrap;
+}

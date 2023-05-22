@@ -57,6 +57,8 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
     setSimpleProperties([]);
     setComplexProperties([]);
 
+    if (!schema.properties) return;
+
     for (const [key, _value] of Object.entries(schema.properties)) {
       const value = _value as any; // todo: type this
 
@@ -315,14 +317,15 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "array" && (
+        {type === "array" && <>Properties of type array are not yet supported.</>}
+        {/* {type === "array" && (
           <>
             <CreateKeyValue
               disabled={disabled || readOnly}
               {...{ register, errors, control, placeholder, name, defaultValue }}
             />
           </>
-        )}
+        )} */}
 
         {type === "object" && (
           <SchemaTypeObject
@@ -362,10 +365,10 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   schema,
 }) => {
   const queryClient = useQueryClient();
-  const _useObject = useObject(queryClient);
+  const _useObject = useObject();
   const property = schema?.properties[name];
 
-  const getAllFromList = _useObject.getAllFromList(`${property?._list}&_limit=200`);
+  const getAllFromList = _useObject.getAllFromList(`${property?._list}&_limit=500`);
 
   const [defaultValue, setDefaultValue] = React.useState<any>(null);
 
@@ -375,21 +378,20 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     let selected;
 
     if (!multiple) {
-      selected = getAllFromList.data.find((item) => item.id === property.value);
+      selected = getAllFromList.data.find((item) => item._id === property.value);
     }
 
     if (multiple) {
-      selected = getAllFromList.data.filter((item) => property.value?.includes(item.id));
+      selected = getAllFromList.data.filter((item) => property.value?.includes(item._id));
     }
 
     if (!selected) {
       setDefaultValue({});
-
       return;
     }
 
     if (!multiple) {
-      setDefaultValue({ label: selected.name, value: selected.id });
+      setDefaultValue({ label: selected.name, value: selected._id });
     }
 
     if (multiple) {

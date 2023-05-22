@@ -1,15 +1,15 @@
 import * as React from "react";
 import * as styles from "./DashboardCard.module.css";
-import { Button, Link } from "@gemeente-denhaag/components-react";
-import { navigate } from "gatsby";
 import _ from "lodash";
-import { useTranslation } from "react-i18next";
 import clsx from "clsx";
+import { navigate } from "gatsby";
 import { Tag, ToolTip } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { dateTime } from "../../services/dateTime";
-import { faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "../button/Button";
 import { getStatusTag } from "../../services/getStatusTag";
+import { ActionButton } from "../actionButton/ActionButton";
+
+export type TDashboardCardTag = { label: string; tooltip: string };
 
 export interface DashboardCardProps {
   title: {
@@ -17,61 +17,51 @@ export interface DashboardCardProps {
     href: string;
   };
   type: string;
-  status?: string | boolean;
-  isEnabled?: boolean | undefined;
-  lastRun?: string;
-  lastCall?: string;
-  onDelete?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.TouchEvent<HTMLButtonElement>) => void;
+  tags: TDashboardCardTag[];
+  onDelete: () => void;
+  isEnabled?: boolean;
 }
 
-export const DashboardCard: React.FC<DashboardCardProps> = ({
-  title,
-  type,
-  status,
-  isEnabled,
-  lastRun,
-  lastCall,
-  onDelete,
-}) => {
-  const { t, i18n } = useTranslation();
-
+export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags, isEnabled, onDelete }) => {
   return (
-    <div className={styles.container} onClick={() => navigate(title.href)}>
-      <div className={styles.titleLink}>
-        <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-          {title.label}
-        </Link>
-      </div>
+    <div className={styles.container}>
+      <div className={styles.headerContainer}>
+        <div className={styles.titleContainer}>
+          <span className={styles.title}>{title.label ? title.label : "-"}</span>
 
-      <div>
-        <Button className={styles.deleteButton} onClick={onDelete}>
-          <FontAwesomeIcon icon={faTrash} />
-          {t("Remove")}
-        </Button>
-      </div>
+          <div className={styles.typeContainer}>
+            <span className={styles.typeLabel}>{type}</span>
 
-      <div className={styles.statusTypeContainer}>
-        <div>{_.upperFirst(type)}</div>
-
-        {getStatusTag(status)}
-      </div>
-
-      <div className={styles.sectionDivider}>
-        <div className={styles.mainSection}>
-          {lastRun && (
-            <div className={styles.date}>
-              <span className={styles.dateText}>Last run:</span> {dateTime(t(i18n.language), lastRun) ?? "-"}
-            </div>
-          )}
-          {lastCall && (
-            <div className={styles.date}>
-              <span className={styles.dateText}>Last call:</span> {dateTime(t(i18n.language), lastCall) ?? "-"}
-            </div>
-          )}
+            {isEnabled !== undefined && (
+              <ToolTip tooltip={isEnabled ? "Enabled" : "Disabled"}>
+                <span className={clsx(styles.enabledIndicator, isEnabled && styles.enabled)} />
+              </ToolTip>
+            )}
+          </div>
         </div>
 
-        <div>{isEnabled !== undefined && <span>Enabled: {isEnabled ? "On" : "Off"}</span>}</div>
+        <ActionButton actions={[{ type: "delete", onSubmit: onDelete }]} size="sm" />
       </div>
+
+      {!!tags.length && (
+        <ul className={styles.tagsList}>
+          {tags.map((tag, idx) => (
+            <li key={idx}>
+              <ToolTip tooltip={tag.tooltip}>
+                {tag.tooltip === "Status" ? getStatusTag(tag.label) : <Tag label={tag.label} />}
+              </ToolTip>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <Button
+        layoutClassName={styles.button}
+        variant="primary"
+        icon={faArrowRight}
+        label="Details"
+        onClick={() => navigate(title.href)}
+      />
     </div>
   );
 };
