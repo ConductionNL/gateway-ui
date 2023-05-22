@@ -72,6 +72,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
   React.useEffect(() => {
     if (!watchHeaders) return;
+    if (!Array.isArray(watchHeaders)) return;
 
     const newHeaders = watchHeaders?.map((item: any) => ({ key: item.key, value: item.value }));
 
@@ -145,7 +146,9 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     setAdvancedSwitch(newAdvancedSwitch);
   };
 
-  const handleSetFormValues = (source: any): void => {
+  const handleSetFormValues = (_source: any): void => {
+    const source = { ..._source, configuration: { headers: _source.configuration.headers ?? _source.headers ?? [] } };
+
     const basicFields: string[] = [
       "name",
       "isEnabled",
@@ -183,7 +186,33 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
         setValue(key, source.configuration[key]);
 
         if (typeof _value === "object") {
-          source.configuration[key] && setValue(key, JSON.stringify(source.configuration[key]));
+          if (key === "headers" || key === "query") {
+            if (key === "headers") {
+              if (Array.isArray(source.configuration.headers) || source.configuration.headers === undefined) {
+                setHeaders(source.configuration.headers);
+              } else {
+                const newHeaders = Object.entries(source.configuration.headers).map(([key, value]) => ({
+                  key,
+                  value: value as string,
+                }));
+                setHeaders(newHeaders);
+              }
+            }
+
+            if (key === "query") {
+              if (Array.isArray(source.configuration.query) || source.configuration.query === undefined) {
+                setQuery(source.configuration.query);
+              } else {
+                const newQuery = Object.entries(source.configuration.query).map(([key, value]) => ({
+                  key,
+                  value: value as string,
+                }));
+                setQuery(newQuery);
+              }
+            }
+          } else {
+            source.configuration[key] && setValue(key, JSON.stringify(source.configuration[key]));
+          }
         }
 
         if (key === "decode_content" && typeof _value === "string") setValue("decode_content_str", _value);
@@ -197,20 +226,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
       }
 
       setupAdvancedSwitch();
-    }
-
-    if (Array.isArray(source.headers) || source.headers === undefined) {
-      setHeaders(source.headers);
-    } else {
-      const newHeaders = Object.entries(source.headers).map(([key, value]) => ({ key, value: value as string }));
-      setHeaders(newHeaders);
-    }
-
-    if (Array.isArray(source.query) || source.query === undefined) {
-      setQuery(source.query);
-    } else {
-      const newQuery = Object.entries(source.query).map(([key, value]) => ({ key, value: value as string }));
-      setQuery(newQuery);
     }
   };
 
