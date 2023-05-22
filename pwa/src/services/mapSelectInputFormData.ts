@@ -1,5 +1,7 @@
 // Temporary; the InputSelect elements should return data that the gateway expects
 
+import { getMultiSelectValues } from "../components/multiSelect/MultiSelect";
+
 export const mapSelectInputFormData = (data: any) => {
   const mappedData = data;
 
@@ -15,7 +17,7 @@ export const mapSelectInputFormData = (data: any) => {
     }
 
     if (Array.isArray(value)) {
-      data[key] = value.map((item: any) => item.value); // SelectMultiple or SelectCreate
+      data[key] = getMultiSelectValues(value); // value.map((item: any) => item.value); // SelectMultiple or SelectCreate
     }
   }
 

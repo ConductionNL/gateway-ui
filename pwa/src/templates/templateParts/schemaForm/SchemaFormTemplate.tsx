@@ -5,20 +5,17 @@ import clsx from "clsx";
 import { InputCheckbox, InputText } from "@conduction/components";
 import { FormField, FormFieldInput, FormFieldLabel, Heading2, Paragraph } from "@gemeente-denhaag/components-react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { CreateKeyValue, InputNumber, Textarea } from "@conduction/components/lib/components/formFields";
+import { InputNumber, Textarea } from "@conduction/components/lib/components/formFields";
 import { mapGatewaySchemaToInputValues } from "../../../services/mapGatewaySchemaToInputValues";
 import { InputDate } from "@conduction/components";
 import { InputFloat, InputURL } from "@conduction/components/lib/components/formFields/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import {
-  SelectCreate,
-  SelectMultiple,
-  SelectSingle,
-} from "@conduction/components/lib/components/formFields/select/select";
+import { SelectCreate, SelectSingle } from "@conduction/components/lib/components/formFields/select/select";
 import { useObject } from "../../../hooks/object";
 import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
+import { SelectMultiple } from "../../../components/multiSelect/MultiSelect";
 
 export type SchemaInputType =
   | "string"
