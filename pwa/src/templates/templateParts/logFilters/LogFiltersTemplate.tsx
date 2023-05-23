@@ -15,10 +15,16 @@ import { useOrganization } from "../../../hooks/organization";
 import { InputText, SelectSingle } from "@conduction/components/lib/components/formFields";
 import { channels, levelNames, useLogFiltersContext } from "../../../context/logs";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
+import { InputDate } from "@conduction/components";
+import clsx from "clsx";
+import { validateStringAs24DigitHex } from "../../../services/validateJSON";
 
-export const LogFiltersTemplate: React.FC = () => {
+interface LogFiltersTemplateProps {
+  layoutClassName?: string;
+}
+
+export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutClassName }) => {
   const setFiltersTimeout = React.useRef<NodeJS.Timeout | null>(null);
-
   const { logFilters, setLogFilters } = useLogFiltersContext();
 
   const queryClient = useQueryClient();
@@ -37,39 +43,47 @@ export const LogFiltersTemplate: React.FC = () => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({ mode: "onBlur" }); // onBlur is required due to the form never being submitted
 
   React.useEffect(() => {
-    const subscription = watch((value) => {
+    const subscription = watch((formValues) => {
       if (setFiltersTimeout.current) clearTimeout(setFiltersTimeout.current);
 
-      setFiltersTimeout.current = setTimeout(
-        () =>
-          setLogFilters({
-            ...logFilters,
-            _id: value.logId,
-            channel: value.channels?.value,
-            level_name: value.level_name?.value,
-            context: {
-              session: value.session,
-              process: value.process,
-              endpoint: value.endpoints?.value,
-              schema: value.schemas?.value,
-              cronjob: value.cronjobs?.value,
-              action: value.actions?.value,
-              user: value.users?.value,
-              organization: value.organizations?.value,
-              application: value.applications?.value,
-            },
-          }),
-        500,
-      );
+      setFiltersTimeout.current = setTimeout(() => submitFilters(formValues), 500);
     });
 
     return () => subscription.unsubscribe();
   }, [watch]);
 
+  const submitFilters = (formValues: any) => {
+    if (Object.keys(errors).length) return; // there's an error in the form
+
+    setLogFilters({
+      ...logFilters,
+      _id: formValues.logId,
+      "datetime[before]": formValues.datetime.before && new Date(formValues.datetime.before).toISOString(),
+      "datetime[after]": formValues.datetime.after && new Date(formValues.datetime.after).toISOString(),
+      channel: formValues.channels?.value,
+      level_name: formValues.level_name?.value,
+      context: {
+        session: formValues.session,
+        process: formValues.process,
+        endpoint: formValues.endpoints?.value,
+        schema: formValues.schemas?.value,
+        cronjob: formValues.cronjobs?.value,
+        action: formValues.actions?.value,
+        user: formValues.users?.value,
+        organization: formValues.organizations?.value,
+        application: formValues.applications?.value,
+      },
+    });
+  };
+
   React.useEffect(() => {
+    setValue("datetime[after]", logFilters["datetime[after]"]);
+
+    setValue("datetime[before]", logFilters["datetime[before]"]);
+
     setValue("session", logFilters.context?.session);
 
     setValue("process", logFilters.context?.process);
@@ -121,13 +135,18 @@ export const LogFiltersTemplate: React.FC = () => {
   }, []);
 
   return (
-    <form className={styles.form}>
+    <form className={clsx(styles.form, layoutClassName && layoutClassName)}>
       <div className={styles.textFiltersContainer}>
         <FormField>
           <FormFieldInput>
             <FormFieldLabel>Log</FormFieldLabel>
 
-            <InputText name="logId" placeholder="Log id" {...{ register, errors }} />
+            <InputText
+              name="logId"
+              placeholder="Log id"
+              validation={{ validate: validateStringAs24DigitHex }}
+              {...{ register, errors }}
+            />
           </FormFieldInput>
         </FormField>
 
@@ -261,6 +280,22 @@ export const LogFiltersTemplate: React.FC = () => {
             )}
 
             {getApplications.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
+
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Log created after</FormFieldLabel>
+
+            <InputDate name="datetime[after]" {...{ register, errors, control }} />
+          </FormFieldInput>
+        </FormField>
+
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Log created before</FormFieldLabel>
+
+            <InputDate name="datetime[before]" {...{ register, errors, control }} />
           </FormFieldInput>
         </FormField>
       </div>

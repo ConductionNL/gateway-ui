@@ -6,6 +6,8 @@ export interface ILogFiltersContext {
   _id?: string;
   channel?: TLogChannel;
   level_name?: TLogLevelName;
+  "datetime[before]": string;
+  "datetime[after]": string;
   context?: {
     session?: string;
     process?: string;
