@@ -2,17 +2,17 @@ import * as React from "react";
 import * as styles from "./ObjectFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import { Alert } from "@gemeente-denhaag/components-react";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { faCopy, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useObject } from "../../../hooks/object";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useDashboardCard } from "../../../hooks/useDashboardCard";
 import { navigate } from "gatsby";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 import { FormSaveButton, TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
-import { Button } from "../../../components/button/Button";
 import { useObjectsStateContext } from "../../../context/objects";
 import { FormHeaderTemplate } from "../formHeader/FormHeaderTemplate";
 import { ActionButton } from "../../../components/actionButton/ActionButton";
+import { useTranslation } from "react-i18next";
 
 interface EditObjectFormTemplateProps {
   object: any;
@@ -21,6 +21,7 @@ interface EditObjectFormTemplateProps {
 }
 
 export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ object, schema, objectId }) => {
+  const { t } = useTranslation();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
   const [afterSuccessfulFormSubmit, setAfterSuccessfulFormSubmit] = React.useState<TAfterSuccessfulFormSubmit>("save");
 
@@ -35,7 +36,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   const createOrEditObject = _useObjects.createOrEdit(!inDuplicatingMode ? objectId : undefined);
   const deleteObject = _useObjects.remove();
 
-  const dashboardCard = getDashboardCard(object.id);
+  const dashboardCard = getDashboardCard(object._id);
 
   const {
     register,
@@ -88,9 +89,8 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   };
 
   const toggleFromDashboard = () => {
-    toggleDashboardCard(object.id, "object", "ObjectEntity", objectId, dashboardCard?.id);
+    toggleDashboardCard(object._id, "object", "ObjectEntity", objectId, dashboardCard?.id);
   };
-
   return (
     <>
       <div className={styles.container}>
@@ -106,22 +106,32 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
           <FormHeaderTemplate
             title={`Edit ${object._self.name}`}
             disabled={loading}
-            handleDelete={() => handleDeleteObject}
-            handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
             customElements={
               <>
                 <FormSaveButton disabled={loading} {...{ setAfterSuccessfulFormSubmit }} />
 
-                <Button
-                  disabled={loading}
-                  label={!!inDuplicatingMode ? "Exit duplicating mode" : "Duplicating mode"}
-                  variant={!!inDuplicatingMode ? "secondary" : "primary"}
-                  icon={faCopy}
-                  onClick={() => setObjectsState({ inDuplicatingMode: !inDuplicatingMode })}
+                <ActionButton
+                  actions={[
+                    {
+                      type: "duplicate",
+                      onSubmit: () => setObjectsState({ inDuplicatingMode: !inDuplicatingMode }),
+                      label: !!inDuplicatingMode ? "Exit duplicating mode" : "Duplicating mode",
+                      icon: faCopy,
+                      disabled: loading,
+                    },
+                    {
+                      type: "add",
+                      onSubmit: toggleFromDashboard,
+                      label: !!dashboardCard ? t("Remove from dashboard") : t("Add to dashboard"),
+                      icon: !!dashboardCard ? faMinus : faPlus,
+                      disabled: loading,
+                    },
+                    { type: "download", onSubmit: () => navigate("#"), disabled: true },
+                    { type: "delete", onSubmit: () => handleDeleteObject },
+                  ]}
+                  variant="primary"
                 />
-
-                <ActionButton actions={[{ type: "download", onSubmit: () => navigate("#") }]} />
               </>
             }
           />
