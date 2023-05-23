@@ -3,6 +3,7 @@ import { GlobalContext } from "./global";
 
 export interface ILogFiltersContext {
   "_order[datetime]": "asc" | "desc";
+  _id?: string;
   channel?: TLogChannel;
   level_name?: TLogLevelName;
   context?: {
@@ -43,7 +44,7 @@ export const useLogFiltersContext = () => {
  */
 
 export const levelNames = ["DEBUG", "INFO", "NOTICE", "WARNING", "ERROR", "CRITICAL", "ALERT", "EMERGENCY"] as const;
-export type TLogLevelName = typeof levelNames[number];
+export type TLogLevelName = (typeof levelNames)[number];
 
 export const channels = [
   "endpoint",
@@ -62,4 +63,4 @@ export const channels = [
   "user",
   "collection",
 ] as const;
-export type TLogChannel = typeof channels[number];
+export type TLogChannel = (typeof channels)[number];

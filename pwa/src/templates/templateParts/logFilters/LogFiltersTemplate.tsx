@@ -17,6 +17,8 @@ import { channels, levelNames, useLogFiltersContext } from "../../../context/log
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 
 export const LogFiltersTemplate: React.FC = () => {
+  const setFiltersTimeout = React.useRef<NodeJS.Timeout | null>(null);
+
   const { logFilters, setLogFilters } = useLogFiltersContext();
 
   const queryClient = useQueryClient();
@@ -39,22 +41,29 @@ export const LogFiltersTemplate: React.FC = () => {
 
   React.useEffect(() => {
     const subscription = watch((value) => {
-      setLogFilters({
-        ...logFilters,
-        channel: value.channels?.value,
-        level_name: value.level_name?.value,
-        context: {
-          session: value.session,
-          process: value.process,
-          endpoint: value.endpoints?.value,
-          schema: value.schemas?.value,
-          cronjob: value.cronjobs?.value,
-          action: value.actions?.value,
-          user: value.users?.value,
-          organization: value.organizations?.value,
-          application: value.applications?.value,
-        },
-      });
+      if (setFiltersTimeout.current) clearTimeout(setFiltersTimeout.current);
+
+      setFiltersTimeout.current = setTimeout(
+        () =>
+          setLogFilters({
+            ...logFilters,
+            _id: value.logId,
+            channel: value.channels?.value,
+            level_name: value.level_name?.value,
+            context: {
+              session: value.session,
+              process: value.process,
+              endpoint: value.endpoints?.value,
+              schema: value.schemas?.value,
+              cronjob: value.cronjobs?.value,
+              action: value.actions?.value,
+              user: value.users?.value,
+              organization: value.organizations?.value,
+              application: value.applications?.value,
+            },
+          }),
+        500,
+      );
     });
 
     return () => subscription.unsubscribe();
@@ -114,6 +123,14 @@ export const LogFiltersTemplate: React.FC = () => {
   return (
     <form className={styles.form}>
       <div className={styles.textFiltersContainer}>
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Log</FormFieldLabel>
+
+            <InputText name="logId" placeholder="Log id" {...{ register, errors }} />
+          </FormFieldInput>
+        </FormField>
+
         <FormField>
           <FormFieldInput>
             <FormFieldLabel>Session</FormFieldLabel>
