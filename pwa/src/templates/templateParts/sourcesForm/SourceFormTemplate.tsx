@@ -71,7 +71,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   }, [watchAuth]);
 
   React.useEffect(() => {
-    if (!watchHeaders) return;
+    if (!watchHeaders || !Array.isArray(watchHeaders)) return;
 
     const newHeaders = watchHeaders?.map((item: any) => ({ key: item.key, value: item.value }));
 
@@ -79,7 +79,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   }, [watchHeaders]);
 
   React.useEffect(() => {
-    if (!watchQuery) return;
+    if (!watchQuery || !Array.isArray(watchQuery)) return;
 
     const newQuery = watchQuery?.map((item: any) => ({ key: item.key, value: item.value }));
 
@@ -104,8 +104,13 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
         proxy: data.proxy,
         idn_conversion: advancedSwitch.idnConversion === "int" ? data.idn_conversion_int : data.idn_conversion_bool,
         https_errors: data.https_errors,
+        headers: convertArrayToObject(data.headers),
+        query: convertArrayToObject(data.query),
       },
     };
+
+    delete payload.headers; // already sending in payload.configuration
+    delete payload.query; // already sending in payload.configuration
 
     createOrEditSource.mutate({ payload, id: source?.id });
 
@@ -145,7 +150,16 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     setAdvancedSwitch(newAdvancedSwitch);
   };
 
-  const handleSetFormValues = (source: any): void => {
+  const handleSetFormValues = (_source: any): void => {
+    const source = {
+      ..._source,
+      configuration: {
+        ..._source.configuration,
+        headers: _source.configuration.headers ?? _source.headers ?? [],
+        query: _source.configuration.query ?? _source.query ?? [],
+      },
+    };
+
     const basicFields: string[] = [
       "name",
       "isEnabled",
@@ -182,35 +196,36 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
         setValue(key, source.configuration[key]);
 
-        if (typeof _value === "object") {
-          source.configuration[key] && setValue(key, JSON.stringify(source.configuration[key]));
-        }
+        ["headers", "query"].forEach((item) => {
+          let data: any = [];
+
+          if (Array.isArray(source.configuration[item]) || source.configuration[item] === undefined) {
+            data = source.configuration[item];
+          } else {
+            data = Object.entries(source.configuration[item]).map(([key, value]) => ({
+              key,
+              value,
+            }));
+          }
+
+          if (item === "headers") setHeaders(data);
+          if (item === "query") setQuery(data);
+        });
 
         if (key === "decode_content" && typeof _value === "string") setValue("decode_content_str", _value);
         if (key === "decode_content" && typeof _value === "boolean") setValue("decode_content_bool", _value);
+
         if (key === "expect" && typeof _value === "number") setValue("expect_int", _value);
         if (key === "expect" && typeof _value === "boolean") setValue("expect_bool", _value);
+
         if (key === "verify" && typeof _value === "string") setValue("verify_str", _value);
         if (key === "verify" && typeof _value === "boolean") setValue("verify_bool", _value);
+
         if (key === "idn_conversion" && typeof _value === "number") setValue("idn_conversion_int", _value);
         if (key === "idn_conversion" && typeof _value === "boolean") setValue("idn_conversion_bool", _value);
       }
 
       setupAdvancedSwitch();
-    }
-
-    if (Array.isArray(source.headers) || source.headers === undefined) {
-      setHeaders(source.headers);
-    } else {
-      const newHeaders = Object.entries(source.headers).map(([key, value]) => ({ key, value: value as string }));
-      setHeaders(newHeaders);
-    }
-
-    if (Array.isArray(source.query) || source.query === undefined) {
-      setQuery(source.query);
-    } else {
-      const newQuery = Object.entries(source.query).map(([key, value]) => ({ key, value: value as string }));
-      setQuery(newQuery);
     }
   };
 
@@ -709,3 +724,13 @@ const authSelectOptions = [
   { label: "VrijBRP-JWT", value: "vrijbrp-jwt" },
   { label: "Pink-JWT", value: "pink-jwt" },
 ];
+
+const convertArrayToObject = (array: IKeyValue[]): Record<string, string> => {
+  const result: Record<string, string> = {};
+
+  for (const obj of array) {
+    result[obj.key] = obj.value;
+  }
+
+  return result;
+};
