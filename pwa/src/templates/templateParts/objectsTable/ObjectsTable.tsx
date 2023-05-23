@@ -10,80 +10,42 @@ import { UseQueryResult } from "react-query";
 import { useTranslation } from "react-i18next";
 import { useBulkSelect } from "../../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../../components/bulkActionButton/BulkActionButton";
-import Skeleton from "react-loading-skeleton";
 import { InputText } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { DisplayFilters } from "../displayFilters/DisplayFilters";
 import { useTableColumnsContext } from "../../../context/tableColumns";
 import { useObjectsStateContext } from "../../../context/objects";
 import { ActionButton } from "../../../components/actionButton/ActionButton";
-import { PaginationDataProps, usePagination } from "../../../hooks/usePagination";
+import { usePagination } from "../../../hooks/usePagination";
+import Skeleton from "react-loading-skeleton";
 
-interface TableProps {
-  currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+interface ObjectsTableProps {
+  objectsQuery: UseQueryResult<any, Error>;
+  pagination: {
+    currentPage: number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  };
+  search: {
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+    searchQuery: string;
+  };
 }
 
-/**
- * Entry point
- * Hold logic for pagination, and search queries
- */
-export const ObjectsTableTemplate: React.FC<{ entityId?: string }> = ({ entityId }) => {
-  const [searchQuery, setSearchQuery] = React.useState<string>("");
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
-
-  if (entityId) {
-    return <ObjectsFromEntityTable {...{ entityId, currentPage, setCurrentPage, searchQuery, setSearchQuery }} />;
-  }
-
-  return <ObjectsTable {...{ currentPage, setCurrentPage, searchQuery, setSearchQuery }} />;
-};
-
-/**
- * Objects from specific Entity
- * Holds and manages query to get all objects from entity
- */
-const ObjectsFromEntityTable: React.FC<{ entityId: string } & TableProps> = ({
-  entityId,
-  currentPage,
-  searchQuery,
-  ...rest
-}) => {
-  const getAllObjectsFromEntity = useObject().getAllFromEntity(entityId, currentPage, searchQuery);
-
-  return <BaseTable objectsQuery={getAllObjectsFromEntity} {...{ currentPage, searchQuery, ...rest }} />;
-};
-
-/**
- * All objects
- * Holds and manages query to get all objects
- */
-const ObjectsTable: React.FC<TableProps> = ({ currentPage, searchQuery, ...rest }) => {
-  const { objectsState } = useObjectsStateContext();
-
-  const getObjects = useObject().getAll(currentPage, objectsState.order, undefined, searchQuery);
-
-  return <BaseTable objectsQuery={getObjects} {...{ currentPage, searchQuery, ...rest }} />;
-};
-
-/**
- * Table to show actual objects
- */
-const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TableProps> = ({
+export const ObjectsTable: React.FC<ObjectsTableProps> = ({
   objectsQuery,
-  currentPage,
-  setCurrentPage,
-  searchQuery,
-  setSearchQuery,
+  pagination,
+  search: { searchQuery, setSearchQuery },
 }) => {
   const {
     columns: { objectColumns },
     setColumns,
   } = useTableColumnsContext();
   const { toggleOrder, objectsState, setObjectsState } = useObjectsStateContext();
-  const { Pagination, PaginationLocationIndicator } = usePagination(objectsQuery.data, currentPage, setCurrentPage);
+  const { Pagination, PaginationLocationIndicator } = usePagination(
+    { ...objectsQuery.data },
+    pagination.currentPage,
+    pagination.setCurrentPage,
+  );
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 
@@ -152,7 +114,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
       {objectsQuery.isSuccess && (
         <>
           <div className={styles.pageAndTotalResults}>
-            <PaginationLocationIndicator />
+            {objectsQuery.data.results && <PaginationLocationIndicator />}
           </div>
 
           <Table>
@@ -170,7 +132,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
             </TableHead>
 
             <TableBody>
-              {objectsQuery.isSuccess &&
+              {objectsQuery.data.results &&
                 objectsQuery.data.results.map((object: any) => (
                   <TableRow key={object._self.id} onClick={() => toggleItem(object._self.id)}>
                     <TableCell>{<CheckboxBulkSelectOne id={object._self.id} />}</TableCell>
@@ -217,7 +179,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
                   </TableRow>
                 ))}
 
-              {!objectsQuery.data.results.length && (
+              {(!objectsQuery.data.results || !objectsQuery.data.results.length) && (
                 <TableRow>
                   <TableCell>No objects found</TableCell>
                   <TableCell />
@@ -231,7 +193,7 @@ const BaseTable: React.FC<{ objectsQuery: UseQueryResult<any, Error> } & TablePr
             </TableBody>
           </Table>
 
-          <Pagination />
+          {objectsQuery.data.results && <Pagination />}
         </>
       )}
     </div>
