@@ -100,6 +100,7 @@ export const SchemasTemplate: React.FC = () => {
                         },
                         { type: "delete", onSubmit: () => deleteSchema.mutate({ id: schema.id }) },
                       ]}
+                      variant="secondary"
                     />
                   </TableCell>
 
