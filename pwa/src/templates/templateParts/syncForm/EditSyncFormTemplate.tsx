@@ -13,6 +13,7 @@ import { useAction } from "../../../hooks/action";
 import Skeleton from "react-loading-skeleton";
 import { useSync } from "../../../hooks/synchronization";
 import { Button } from "../../../components/button/Button";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface EditSyncFormTemplateProps {
   objectId: string;
@@ -106,7 +107,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                   <SelectSingle
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
-                    validation={{ required: true }}
+                    validation={enrichValidation({ required: true })}
                     {...{ register, errors, control }}
                   />
                 )}
@@ -147,7 +148,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                 <InputText
                   {...{ register, errors }}
                   name="externalId"
-                  validation={{ maxLength: 225 }}
+                  validation={enrichValidation({ maxLength: 225 })}
                   disabled={loading}
                 />
                 {errors["externalId"] && <ErrorMessage message={errors["externalId"].message} />}
@@ -156,7 +157,12 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Endpoint")}</FormFieldLabel>
-                <InputText {...{ register, errors }} name="endpoint" disabled={loading} />
+                <InputText
+                  {...{ register, errors }}
+                  name="endpoint"
+                  validation={enrichValidation({ required: true, maxLength: 225 })}
+                  disabled={loading}
+                />
                 {errors["endpoint"] && <ErrorMessage message={errors["endpoint"].message} />}
               </FormFieldInput>
             </FormField>
