@@ -14,6 +14,7 @@ import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { useSource } from "../../../hooks/source";
 import { validateStringAsJSON } from "../../../services/validateJSON";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface TestSourceConnectionFormTemplateProps {
   sourceId: string;
@@ -60,14 +61,12 @@ export const TestSourceConnectionFormTemplate: React.FC<TestSourceConnectionForm
             <FormFieldInput>
               <FormFieldLabel>{t("Method")}</FormFieldLabel>
               <SelectSingle
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 {...{ register, errors, control }}
                 name="method"
                 options={methodSelectOptions}
                 disabled={isLoading.sourceForm}
               />
-
-              {errors["method"] && <ErrorMessage message="This field is required." />}
             </FormFieldInput>
           </FormField>
           <FormField>
@@ -82,10 +81,9 @@ export const TestSourceConnectionFormTemplate: React.FC<TestSourceConnectionForm
               <Textarea
                 {...{ register, errors }}
                 name="body"
-                validation={{ validate: validateStringAsJSON }}
+                validation={enrichValidation({ validate: validateStringAsJSON })}
                 disabled={isLoading.sourceForm}
               />
-              {errors["body"] && <ErrorMessage message={errors["body"].message} />}
             </FormFieldInput>
           </FormField>
         </div>
