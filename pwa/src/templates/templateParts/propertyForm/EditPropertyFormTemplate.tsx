@@ -13,6 +13,7 @@ import { SelectCreate } from "@conduction/components/lib/components/formFields/s
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../../components/button/Button";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface EditPropertyFormTemplateProps {
   property: any;
@@ -365,7 +366,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                       <InputText
                         {...{ register, errors }}
                         name="name"
-                        validation={{ required: true }}
+                        validation={enrichValidation({ required: true })}
                         disabled={loading || isImmutable}
                       />
                     </FormFieldInput>
@@ -447,7 +448,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                             value: `/admin/entities/${schema.id}`,
                           }))}
                           disabled={loading}
-                          validation={{ required: true }}
+                          validation={enrichValidation({ required: true })}
                         />
                       </FormFieldInput>
                     </FormField>
