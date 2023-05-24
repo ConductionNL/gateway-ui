@@ -8,6 +8,7 @@ import { SelectCreate } from "@conduction/components/lib/components/formFields";
 import { useQueryClient } from "react-query";
 import { useSecurityGroup } from "../../../hooks/securityGroup";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface SecurityGroupFormTemplateProps {
   securityGroup?: any;
@@ -67,7 +68,7 @@ export const SecurityGroupFormTemplate: React.FC<SecurityGroupFormTemplateProps>
               <InputText
                 {...{ register, errors }}
                 name="name"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.securityGroupForm}
               />
             </FormFieldInput>
@@ -86,7 +87,7 @@ export const SecurityGroupFormTemplate: React.FC<SecurityGroupFormTemplateProps>
               <Textarea
                 {...{ register, errors }}
                 name="description"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.securityGroupForm}
               />
             </FormFieldInput>
