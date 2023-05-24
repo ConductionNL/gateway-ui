@@ -6,9 +6,9 @@ import { useQueryClient } from "react-query";
 import { useTranslation } from "react-i18next";
 import { useSchema } from "../../../hooks/schema";
 import { InputText, Textarea } from "@conduction/components";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface SchemaFormTemplateProps {
   schema?: any;
@@ -58,11 +58,9 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }
               <InputText
                 {...{ register, errors }}
                 name="name"
-                validation={{ required: true, maxLength: 225 }}
+                validation={enrichValidation({ required: true, maxLength: 225 })}
                 disabled={isLoading.schemaForm}
               />
-
-              {errors["name"] && <ErrorMessage message={errors["name"].message} />}
             </FormFieldInput>
           </FormField>
 
@@ -81,11 +79,9 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }
               <InputText
                 {...{ register, errors }}
                 name="reference"
-                validation={{ maxLength: 225 }}
+                validation={enrichValidation({ maxLength: 225 })}
                 disabled={isLoading.schemaForm}
               />
-
-              {errors["reference"] && <ErrorMessage message={errors["reference"].message} />}
             </FormFieldInput>
           </FormField>
         </div>
