@@ -10,7 +10,6 @@ import clsx from "clsx";
 import { t } from "i18next";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { useSource } from "../../../hooks/source";
 import { validateStringAsJSON } from "../../../services/validateJSON";

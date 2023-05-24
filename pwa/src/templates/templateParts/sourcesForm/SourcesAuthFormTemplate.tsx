@@ -4,7 +4,6 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { InputText, Textarea } from "@conduction/components";
 import { useTranslation } from "react-i18next";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
@@ -65,7 +64,6 @@ const ApiKeyForm: React.FC<FormProps> = ({ ...rest }) => {
           validation={enrichValidation({ maxLength: 225 })}
           disabled={isLoading.sourceForm}
         />
-        {rest.errors["apikey"] && <ErrorMessage message={rest.errors["apikey"].message} />}
       </FormFieldInput>
     </FormField>
   );
@@ -81,7 +79,6 @@ const JwtForm: React.FC<FormProps> = ({ ...rest }) => {
         <FormFieldInput>
           <FormFieldLabel>{t("JWT-HS256")}</FormFieldLabel>
           <Textarea {...rest} name="jwt" disabled={isLoading.sourceForm} />
-          {rest.errors["jwt"] && <ErrorMessage message={rest.errors["jwt"].message} />}
         </FormFieldInput>
       </FormField>
 
@@ -89,7 +86,6 @@ const JwtForm: React.FC<FormProps> = ({ ...rest }) => {
         <FormFieldInput>
           <FormFieldLabel>{t("Secret")}</FormFieldLabel>
           <Textarea {...rest} name="secret" disabled={isLoading.sourceForm} />
-          {rest.errors["secret"] && <ErrorMessage message={rest.errors["secret"].message} />}
         </FormFieldInput>
       </FormField>
 
@@ -118,7 +114,6 @@ const UsernamePasswordForm: React.FC<FormProps> = ({ ...rest }) => {
             validation={enrichValidation({ required: true, maxLength: 225 })}
             disabled={isLoading.sourceForm}
           />
-          {rest.errors["username"] && <ErrorMessage message={rest.errors["username"].message} />}
         </FormFieldInput>
       </FormField>
 
@@ -131,7 +126,6 @@ const UsernamePasswordForm: React.FC<FormProps> = ({ ...rest }) => {
             validation={enrichValidation({ required: true, maxLength: 225 })}
             disabled={isLoading.sourceForm}
           />
-          {rest.errors["password"] && <ErrorMessage message={rest.errors["password"].message} />}
         </FormFieldInput>
       </FormField>
     </>

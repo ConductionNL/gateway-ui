@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { InputText, SelectSingle } from "@conduction/components";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useSource } from "../../../hooks/source";
 import { useAction } from "../../../hooks/action";
 import Skeleton from "react-loading-skeleton";
@@ -151,7 +150,6 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                   validation={enrichValidation({ maxLength: 225 })}
                   disabled={loading}
                 />
-                {errors["externalId"] && <ErrorMessage message={errors["externalId"].message} />}
               </FormFieldInput>
             </FormField>
             <FormField>
@@ -163,7 +161,6 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                   validation={enrichValidation({ required: true, maxLength: 225 })}
                   disabled={loading}
                 />
-                {errors["endpoint"] && <ErrorMessage message={errors["endpoint"].message} />}
               </FormFieldInput>
             </FormField>
           </div>
