@@ -13,6 +13,7 @@ import Skeleton from "react-loading-skeleton";
 import { useAction } from "../../../hooks/action";
 import { useSync } from "../../../hooks/synchronization";
 import { Button } from "../../../components/button/Button";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface CreateSyncFormTemplateProps {
   objectId: string;
@@ -75,7 +76,7 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
                   <SelectSingle
                     options={getSources.data.map((source: any) => ({ label: source.name, value: source.id }))}
                     name="source"
-                    validation={{ required: true }}
+                    validation={enrichValidation({ required: true })}
                     {...{ register, errors, control }}
                   />
                 )}
@@ -101,7 +102,7 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
                 <InputText
                   {...{ register, errors }}
                   name="externalId"
-                  validation={{ maxLength: 225 }}
+                  validation={enrichValidation({ maxLength: 225 })}
                   disabled={loading}
                 />
                 {errors["externalId"] && <ErrorMessage message={errors["externalId"].message} />}
@@ -113,7 +114,7 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
                 <InputText
                   {...{ register, errors }}
                   name="endpoint"
-                  validation={{ required: true, maxLength: 225 }}
+                  validation={enrichValidation({ required: true, maxLength: 225 })}
                   disabled={loading}
                 />
                 {errors["endpoint"] && <ErrorMessage message={errors["endpoint"].message} />}
