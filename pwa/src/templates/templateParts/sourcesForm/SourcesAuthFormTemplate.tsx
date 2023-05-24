@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 export type TSourcesAuthType = "jwt-HS256" | "apikey" | "username-password" | "vrijbrp-jwt" | "pink-jwt";
 
@@ -58,7 +59,12 @@ const ApiKeyForm: React.FC<FormProps> = ({ ...rest }) => {
     <FormField>
       <FormFieldInput>
         <FormFieldLabel>{t("Api key")}</FormFieldLabel>
-        <Textarea {...rest} name="apikey" validation={{ maxLength: 225 }} disabled={isLoading.sourceForm} />
+        <Textarea
+          {...rest}
+          name="apikey"
+          validation={enrichValidation({ maxLength: 225 })}
+          disabled={isLoading.sourceForm}
+        />
         {rest.errors["apikey"] && <ErrorMessage message={rest.errors["apikey"].message} />}
       </FormFieldInput>
     </FormField>
@@ -109,7 +115,7 @@ const UsernamePasswordForm: React.FC<FormProps> = ({ ...rest }) => {
           <InputText
             {...rest}
             name="username"
-            validation={{ required: true, maxLength: 225 }}
+            validation={enrichValidation({ required: true, maxLength: 225 })}
             disabled={isLoading.sourceForm}
           />
           {rest.errors["username"] && <ErrorMessage message={rest.errors["username"].message} />}
@@ -122,7 +128,7 @@ const UsernamePasswordForm: React.FC<FormProps> = ({ ...rest }) => {
           <InputText
             {...rest}
             name="password"
-            validation={{ required: true, maxLength: 225 }}
+            validation={enrichValidation({ required: true, maxLength: 225 })}
             disabled={isLoading.sourceForm}
           />
           {rest.errors["password"] && <ErrorMessage message={rest.errors["password"].message} />}
