@@ -7,11 +7,11 @@ import { InputCheckbox, InputText, Textarea } from "@conduction/components";
 import { useQueryClient } from "react-query";
 import { useCronjob } from "../../../hooks/cronjob";
 import { validateStringAsCronTab } from "../../../services/stringValidations";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import Skeleton from "react-loading-skeleton";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface CronjobFormTemplateProps {
   cronjob?: any;
@@ -78,10 +78,9 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
                 <InputText
                   {...{ register, errors }}
                   name="name"
-                  validation={{ required: true, maxLength: 225 }}
+                  validation={enrichValidation({ required: true, maxLength: 225 })}
                   disabled={isLoading.cronjobForm}
                 />
-                {errors["name"] && <ErrorMessage message={errors["name"].message} />}
               </FormFieldInput>
             </FormField>
 
@@ -91,10 +90,9 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
                 <Textarea
                   {...{ register, errors }}
                   name="description"
-                  validation={{ required: true, maxLength: 225 }}
+                  validation={enrichValidation({ required: true, maxLength: 225 })}
                   disabled={isLoading.cronjobForm}
                 />
-                {errors["description"] && <ErrorMessage message={errors["description"].message} />}
               </FormFieldInput>
             </FormField>
 
@@ -104,10 +102,9 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
                 <InputText
                   {...{ register, errors }}
                   name="crontab"
-                  validation={{ validate: validateStringAsCronTab, required: true }}
+                  validation={enrichValidation({ validate: validateStringAsCronTab, required: true })}
                   disabled={isLoading.cronjobForm}
                 />
-                {errors["crontab"] && <ErrorMessage message={errors["crontab"].message} />}
               </FormFieldInput>
             </FormField>
 
@@ -124,7 +121,6 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
                     {...{ register, errors, control }}
                   />
                 )}
-                {errors["throws"] && <ErrorMessage message={errors["throws"].message} />}
               </FormFieldInput>
             </FormField>
 
