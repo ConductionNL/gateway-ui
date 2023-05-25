@@ -1,3 +1,14 @@
 .container > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-2xl);
 }
+
+.container > .tabsContainer {
+  background-color: var(--gateway-ui-color-white);
+}
+
+.tabPanel {
+  padding-inline-start: var(--gateway-ui-size-lg);
+  padding-inline-end: var(--gateway-ui-size-lg);
+  padding-block-end: var(--gateway-ui-size-lg);
+  padding-block-start: var(--gateway-ui-size-lg);
+}
