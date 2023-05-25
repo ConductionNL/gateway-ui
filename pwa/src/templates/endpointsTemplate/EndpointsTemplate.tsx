@@ -63,9 +63,9 @@ export const EndpointsTemplate: React.FC = () => {
                 </TableHeader>
                 <TableHeader>{t("Name")}</TableHeader>
                 <TableHeader>{t("Status")}</TableHeader>
-                <TableHeader>{t("Path")} regex</TableHeader>
-                <TableHeader>{t("Date")} Created</TableHeader>
-                <TableHeader>{t("Date")} Modified</TableHeader>
+                <TableHeader>{t("Path regex")}</TableHeader>
+                <TableHeader>{t("Date Created")}</TableHeader>
+                <TableHeader>{t("Date Modified")}</TableHeader>
                 <TableHeader>{t("Actions")}</TableHeader>
                 <TableHeader></TableHeader>
               </TableRow>

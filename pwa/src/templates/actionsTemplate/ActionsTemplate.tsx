@@ -61,10 +61,10 @@ export const ActionsTemplate: React.FC = () => {
                 <TableHeader>{t("Priority")}</TableHeader>
                 <TableHeader>{t("Status")}</TableHeader>
                 <TableHeader>{t("Enabled")}</TableHeader>
-                <TableHeader>{t("Last")} run</TableHeader>
-                <TableHeader>{t("Last")} run time</TableHeader>
-                <TableHeader>{t("Date")} Created</TableHeader>
-                <TableHeader>{t("Date")} Modified</TableHeader>
+                <TableHeader>{t("Last run")}</TableHeader>
+                <TableHeader>{t("Last run time")}</TableHeader>
+                <TableHeader>{t("Date Created")}</TableHeader>
+                <TableHeader>{t("Date Modified")}</TableHeader>
                 <TableHeader>{t("Actions")}</TableHeader>
                 <TableHeader />
               </TableRow>
