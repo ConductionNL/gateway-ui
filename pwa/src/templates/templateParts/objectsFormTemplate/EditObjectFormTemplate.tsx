@@ -130,7 +130,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
                     { type: "download", onSubmit: () => navigate("#"), disabled: true },
                     { type: "delete", onSubmit: () => handleDeleteObject },
                   ]}
-                  variant="primary"
+                  variant="secondary"
                 />
               </>
             }
