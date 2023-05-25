@@ -10,6 +10,7 @@ import { InputURL } from "@conduction/components/lib/components/formFields";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import Skeleton from "react-loading-skeleton";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface AuthenticationFormTemplateProps {
   authentication?: any;
@@ -74,7 +75,7 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
               <InputText
                 {...{ register, errors }}
                 name="name"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.authenticationForm}
               />
             </FormFieldInput>

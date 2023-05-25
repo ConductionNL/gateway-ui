@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useOrganization } from "../../../hooks/organization";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface OrganizationFormProps {
   organization?: any;
@@ -58,7 +59,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
               <InputText
                 {...{ register, errors }}
                 name="name"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.organizationForm}
               />
             </FormFieldInput>
@@ -70,7 +71,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
               <Textarea
                 {...{ register, errors }}
                 name="description"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.organizationForm}
               />
             </FormFieldInput>

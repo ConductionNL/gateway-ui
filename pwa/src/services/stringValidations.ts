@@ -6,7 +6,7 @@ export const validateStringAsCronTab = (crontab: string): boolean | string => {
   if (isValidCron(crontab)) {
     return true;
   } else {
-    return "This is not valid crontab. see https://crontab.guru/ to create an interval.";
+    return "This is not valid crontab. See https://crontab.guru/ to create an interval.";
   }
 };
 

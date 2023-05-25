@@ -12,12 +12,12 @@ import { useQueryClient } from "react-query";
 import { InputFloat, InputNumber } from "@conduction/components/lib/components/formFields/input";
 import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { translateDate } from "../../../services/dateFormat";
 import { getStatusTag } from "../../../services/getStatusTag";
 import { StatusTag } from "../../../components/statusTag/StatusTag";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface SourceTemplateProps {
   source?: any;
@@ -259,10 +259,9 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     <InputText
                       {...{ register, errors }}
                       name="name"
-                      validation={{ required: true, maxLength: 225 }}
+                      validation={enrichValidation({ required: true, maxLength: 225 })}
                       disabled={isLoading.sourceForm}
                     />
-                    {errors["name"] && <ErrorMessage message={errors["name"].message} />}
                   </FormFieldInput>
                 </FormField>
 
@@ -304,10 +303,9 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     <InputText
                       {...{ register, errors }}
                       name="location"
-                      validation={{ required: true, maxLength: 225 }}
+                      validation={enrichValidation({ required: true, maxLength: 225 })}
                       disabled={isLoading.sourceForm}
                     />
-                    {errors["location"] && <ErrorMessage message={errors["location"].message} />}
                   </FormFieldInput>
                 </FormField>
 
@@ -318,7 +316,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                       {...{ register, errors, control }}
                       name="auth"
                       options={authSelectOptions}
-                      validation={{ required: true }}
+                      validation={enrichValidation({ required: true })}
                       disabled={isLoading.sourceForm}
                     />
                   </FormFieldInput>

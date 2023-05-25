@@ -5,6 +5,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { InputText } from "@conduction/components";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
+import { enrichValidation } from "../../services/enrichReactHookFormValidation";
 
 interface PluginsSearchBarTemplateProps {
   searchQuery: any;
@@ -44,7 +45,7 @@ export const PluginsSearchBarTemplate: React.FC<PluginsSearchBarTemplateProps> =
       <FormField>
         <FormFieldInput>
           <FormFieldLabel>{t("Search on name")}</FormFieldLabel>
-          <InputText name="search" validation={{ required: true }} {...{ errors, register }} />
+          <InputText name="search" validation={enrichValidation({ required: true })} {...{ errors, register }} />
         </FormFieldInput>
       </FormField>
     </form>

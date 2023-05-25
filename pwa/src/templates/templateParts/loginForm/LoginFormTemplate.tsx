@@ -8,6 +8,7 @@ import { navigate } from "gatsby";
 import { useGatsbyContext } from "../../../context/gatsby";
 import { useAuthentication } from "../../../hooks/useAuthentication";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 export const LoginFormTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -37,7 +38,7 @@ export const LoginFormTemplate: React.FC = () => {
           <InputText
             {...{ register, errors }}
             name="username"
-            validation={{ required: true }}
+            validation={enrichValidation({ required: true })}
             disabled={isLoading?.loginForm}
           />
         </FormFieldInput>
@@ -48,7 +49,7 @@ export const LoginFormTemplate: React.FC = () => {
           <InputPassword
             {...{ register, errors }}
             name="password"
-            validation={{ required: true }}
+            validation={enrichValidation({ required: true })}
             disabled={isLoading?.loginForm}
           />
         </FormFieldInput>
