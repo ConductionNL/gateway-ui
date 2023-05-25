@@ -12,9 +12,9 @@ import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEv
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import Skeleton from "react-loading-skeleton";
 import { validateStringAsJSON } from "../../../services/validateJSON";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 export const formId: string = "action-form";
 
@@ -156,10 +156,9 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                       <InputText
                         {...{ register, errors }}
                         name="name"
-                        validation={{ required: true, maxLength: 225 }}
+                        validation={enrichValidation({ required: true, maxLength: 225 })}
                         disabled={isLoading.actionForm}
                       />
-                      {errors["name"] && <ErrorMessage message={errors["name"].message} />}
                     </FormFieldInput>
                   </FormField>
 
@@ -180,7 +179,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                           options={listensAndThrows}
                           disabled={isLoading.actionForm}
                           name="listens"
-                          validation={{ required: true }}
+                          validation={enrichValidation({ required: true })}
                           {...{ register, errors, control }}
                         />
                       )}
@@ -216,7 +215,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                             value: handler.class,
                           }))}
                           name="class"
-                          validation={{ required: true }}
+                          validation={enrichValidation({ required: true })}
                           {...{ register, errors, control }}
                           disabled={isLoading.actionForm}
                         />
@@ -230,7 +229,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                       <InputNumber
                         {...{ register, errors }}
                         name="priority"
-                        validation={{ required: true }}
+                        validation={enrichValidation({ required: true })}
                         disabled={isLoading.actionForm}
                       />
                     </FormFieldInput>
@@ -286,10 +285,8 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                         {...{ register, errors }}
                         name="conditions"
                         disabled={isLoading.actionForm}
-                        validation={{ validate: validateStringAsJSON }}
+                        validation={enrichValidation({ validate: validateStringAsJSON })}
                       />
-
-                      {errors["conditions"] && <ErrorMessage message={errors["conditions"].message} />}
                     </FormFieldInput>
                   </FormField>
                 </div>

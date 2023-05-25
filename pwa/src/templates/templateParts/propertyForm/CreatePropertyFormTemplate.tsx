@@ -15,6 +15,7 @@ import { CreateKeyValue } from "@conduction/components/lib/components/formFields
 import { useSchema } from "../../../hooks/schema";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../../components/button/Button";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface CreatePropertyFormTemplateProps {
   schemaId: string;
@@ -163,7 +164,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                       <InputText
                         {...{ register, errors }}
                         name="name"
-                        validation={{ required: true }}
+                        validation={enrichValidation({ required: true })}
                         disabled={loading}
                       />
                     </FormFieldInput>
@@ -235,7 +236,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                             value: `/admin/entities/${schema.id}`,
                           }))}
                           disabled={loading}
-                          validation={{ required: true }}
+                          validation={enrichValidation({ required: true })}
                         />
                       </FormFieldInput>
                     </FormField>

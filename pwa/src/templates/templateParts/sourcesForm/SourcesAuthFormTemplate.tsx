@@ -4,8 +4,8 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { InputText, Textarea } from "@conduction/components";
 import { useTranslation } from "react-i18next";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 export type TSourcesAuthType = "jwt-HS256" | "apikey" | "username-password" | "vrijbrp-jwt" | "pink-jwt";
 
@@ -58,8 +58,12 @@ const ApiKeyForm: React.FC<FormProps> = ({ ...rest }) => {
     <FormField>
       <FormFieldInput>
         <FormFieldLabel>{t("Api key")}</FormFieldLabel>
-        <Textarea {...rest} name="apikey" validation={{ maxLength: 225 }} disabled={isLoading.sourceForm} />
-        {rest.errors["apikey"] && <ErrorMessage message={rest.errors["apikey"].message} />}
+        <Textarea
+          {...rest}
+          name="apikey"
+          validation={enrichValidation({ maxLength: 225 })}
+          disabled={isLoading.sourceForm}
+        />
       </FormFieldInput>
     </FormField>
   );
@@ -75,7 +79,6 @@ const JwtForm: React.FC<FormProps> = ({ ...rest }) => {
         <FormFieldInput>
           <FormFieldLabel>{t("JWT-HS256")}</FormFieldLabel>
           <Textarea {...rest} name="jwt" disabled={isLoading.sourceForm} />
-          {rest.errors["jwt"] && <ErrorMessage message={rest.errors["jwt"].message} />}
         </FormFieldInput>
       </FormField>
 
@@ -83,7 +86,6 @@ const JwtForm: React.FC<FormProps> = ({ ...rest }) => {
         <FormFieldInput>
           <FormFieldLabel>{t("Secret")}</FormFieldLabel>
           <Textarea {...rest} name="secret" disabled={isLoading.sourceForm} />
-          {rest.errors["secret"] && <ErrorMessage message={rest.errors["secret"].message} />}
         </FormFieldInput>
       </FormField>
 
@@ -109,10 +111,9 @@ const UsernamePasswordForm: React.FC<FormProps> = ({ ...rest }) => {
           <InputText
             {...rest}
             name="username"
-            validation={{ required: true, maxLength: 225 }}
+            validation={enrichValidation({ required: true, maxLength: 225 })}
             disabled={isLoading.sourceForm}
           />
-          {rest.errors["username"] && <ErrorMessage message={rest.errors["username"].message} />}
         </FormFieldInput>
       </FormField>
 
@@ -122,10 +123,9 @@ const UsernamePasswordForm: React.FC<FormProps> = ({ ...rest }) => {
           <InputText
             {...rest}
             name="password"
-            validation={{ required: true, maxLength: 225 }}
+            validation={enrichValidation({ required: true, maxLength: 225 })}
             disabled={isLoading.sourceForm}
           />
-          {rest.errors["password"] && <ErrorMessage message={rest.errors["password"].message} />}
         </FormFieldInput>
       </FormField>
     </>
