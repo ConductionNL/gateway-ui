@@ -176,7 +176,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                         count: getLogs.data.results.length,
                         offset: CHANNEL_LOG_LIMIT * (currentLogsPage - 1),
                         pages: getLogs.data.pages,
-                        total: getLogs.data.count,
+                        total: getLogs.data.total,
                       },
                       currentPage: currentLogsPage,
                       setCurrentPage: setCurrentLogsPage,
