@@ -28,7 +28,7 @@ export const LogsTemplate: React.FC = () => {
     <Container layoutClassName={styles.container}>
       <Heading1>{t("Logs")}</Heading1>
 
-      <LogFiltersTemplate />
+      <LogFiltersTemplate layoutClassName={styles.filters} />
 
       {getLogs.isSuccess && (
         <LogsTableTemplate
@@ -38,11 +38,12 @@ export const LogsTemplate: React.FC = () => {
               count: getLogs.data.results.length,
               offset: 15 * (currentPage - 1),
               pages: getLogs.data.pages,
-              total: getLogs.data.count,
+              total: getLogs.data.total,
             },
             currentPage,
             setCurrentPage,
           }}
+          layoutClassName={styles.logsTable}
         />
       )}
 

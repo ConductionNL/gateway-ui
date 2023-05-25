@@ -15,6 +15,7 @@ import { formatUnixDateTime } from "../../../services/dateTime";
 import { Link } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePagination } from "../../../hooks/usePagination";
+import clsx from "clsx";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -28,15 +29,17 @@ interface LogsTableTemplateProps {
     currentPage: number;
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   };
+  layoutClassName?: string;
 }
 
-export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagination }) => {
+export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagination, layoutClassName }) => {
   const { t, i18n } = useTranslation();
   const {
     columns: { logColumns },
     setColumns,
   } = useTableColumnsContext();
   const { logFilters, toggleOrder } = useLogFiltersContext();
+
   const { Pagination, PaginationLocationIndicator } = usePagination(
     { ...pagination.data },
     pagination.currentPage,
@@ -54,7 +57,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
   };
 
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, layoutClassName && layoutClassName)}>
       <div className={styles.header}>
         <DisplayFilters
           columnType="logColumns"
