@@ -18,8 +18,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ layoutClassName }) => {
           <img className={styles.logo} src={Logo} alt="Conduction" title="Conduction" onClick={() => navigate("/")} />
         </div>
 
+        <hr className={styles.divider} />
+
         <VerticalMenu items={mainMenuItems()} />
       </section>
+
+      <hr className={styles.divider} />
 
       <VerticalMenu items={bottomMenuItems()} />
     </div>

@@ -1,6 +1,7 @@
 import {
   faArrowRightFromBracket,
   faClipboardList,
+  faCloudUpload,
   faDatabase,
   faDiagramProject,
   faGear,
@@ -111,6 +112,12 @@ export const bottomMenuItems = () => {
   }, [gatsbyContext]);
 
   return [
+    {
+      label: "Upload and import",
+      icon: <FontAwesomeIcon icon={faCloudUpload} />,
+      onClick: () => navigate("/upload"),
+      current: pathname === "/upload",
+    },
     {
       label: "Settings",
       icon: <FontAwesomeIcon icon={faGear} />,
