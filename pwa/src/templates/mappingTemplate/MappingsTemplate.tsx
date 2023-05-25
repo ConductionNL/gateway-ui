@@ -15,6 +15,7 @@ import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { ActionButton } from "../../components/actionButton/ActionButton";
 
 export const MappingTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -53,10 +54,11 @@ export const MappingTemplate: React.FC = () => {
                 <TableHeader>
                   <CheckboxBulkSelectAll />
                 </TableHeader>
-                <TableHeader>Name</TableHeader>
-                <TableHeader>Version</TableHeader>
-                <TableHeader>Date Created</TableHeader>
-                <TableHeader>Date Modified</TableHeader>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Version")}</TableHeader>
+                <TableHeader>{t("Date Created")}</TableHeader>
+                <TableHeader>{t("Date Modified")}</TableHeader>
+                <TableHeader>{t("Actions")}</TableHeader>
                 <TableHeader />
               </TableRow>
             </TableHead>
@@ -73,6 +75,15 @@ export const MappingTemplate: React.FC = () => {
 
                   <TableCell>{translateDate(i18n.language, mapping.dateModified) ?? "-"}</TableCell>
 
+                  <TableCell>
+                    <ActionButton
+                      actions={[
+                        { type: "delete", onSubmit: () => deleteMapping.mutate({ id: mapping.id }) },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
+                      ]}
+                    />
+                  </TableCell>
+
                   <TableCell className={styles.details} onClick={() => navigate(`/mappings/${mapping.id}`)}>
                     <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                       {t("Details")}
@@ -85,6 +96,7 @@ export const MappingTemplate: React.FC = () => {
             {!getMappings.data.length && (
               <TableRow>
                 <TableCell>{t("No mappings found")}</TableCell>
+                <TableCell />
                 <TableCell />
                 <TableCell />
                 <TableCell />

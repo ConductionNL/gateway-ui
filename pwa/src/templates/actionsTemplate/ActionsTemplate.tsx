@@ -17,6 +17,7 @@ import { dateTime } from "../../services/dateTime";
 import { StatusTag } from "../../components/statusTag/StatusTag";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { ActionButton } from "../../components/actionButton/ActionButton";
 
 export const ActionsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -56,14 +57,15 @@ export const ActionsTemplate: React.FC = () => {
                 <TableHeader>
                   <CheckboxBulkSelectAll />
                 </TableHeader>
-                <TableHeader>Name</TableHeader>
-                <TableHeader>Priority</TableHeader>
-                <TableHeader>Status</TableHeader>
-                <TableHeader>Enabled</TableHeader>
-                <TableHeader>Last run</TableHeader>
-                <TableHeader>Last run time</TableHeader>
-                <TableHeader>Date Created</TableHeader>
-                <TableHeader>Date Modified</TableHeader>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Priority")}</TableHeader>
+                <TableHeader>{t("Status")}</TableHeader>
+                <TableHeader>{t("Enabled")}</TableHeader>
+                <TableHeader>{t("Last")} run</TableHeader>
+                <TableHeader>{t("Last")} run time</TableHeader>
+                <TableHeader>{t("Date")} Created</TableHeader>
+                <TableHeader>{t("Date")} Modified</TableHeader>
+                <TableHeader>{t("Actions")}</TableHeader>
                 <TableHeader />
               </TableRow>
             </TableHead>
@@ -93,6 +95,15 @@ export const ActionsTemplate: React.FC = () => {
 
                   <TableCell>{translateDate(i18n.language, action.dateModified) ?? "-"}</TableCell>
 
+                  <TableCell>
+                    <ActionButton
+                      actions={[
+                        { type: "delete", onSubmit: () => deleteAction.mutate({ id: action.id }) },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
+                      ]}
+                    />
+                  </TableCell>
+
                   <TableCell onClick={() => navigate(`/actions/${action.id}`)}>
                     <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                       {t("Details")}
@@ -103,6 +114,7 @@ export const ActionsTemplate: React.FC = () => {
               {!getActions.data.length && (
                 <TableRow>
                   <TableCell>{t("No actions found")}</TableCell>
+                  <TableCell />
                   <TableCell />
                   <TableCell />
                   <TableCell />
