@@ -17,6 +17,7 @@ import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/
 import { StatusTag } from "../../components/statusTag/StatusTag";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { ActionButton } from "../../components/actionButton/ActionButton";
 
 export const CronjobsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -64,6 +65,7 @@ export const CronjobsTemplate: React.FC = () => {
                 <TableHeader>{t("Next run")}</TableHeader>
                 <TableHeader>{t("Date created")}</TableHeader>
                 <TableHeader>{t("Date modified")}</TableHeader>
+                <TableHeader>{t("Actions")}</TableHeader>
                 <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
@@ -94,6 +96,15 @@ export const CronjobsTemplate: React.FC = () => {
 
                   <TableCell>{translateDate(i18n.language, cronjob.dateMo)}</TableCell>
 
+                  <TableCell>
+                    <ActionButton
+                      actions={[
+                        { type: "delete", onSubmit: () => deleteCronjob.mutate({ id: cronjob.id }) },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
+                      ]}
+                    />
+                  </TableCell>
+
                   <TableCell onClick={() => navigate(`/cronjobs/${cronjob.id}`)}>
                     <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                       {t("Details")}
@@ -104,6 +115,8 @@ export const CronjobsTemplate: React.FC = () => {
               {!getCronjobs.data.length && (
                 <TableRow>
                   <TableCell>{t("No cronjobs found")}</TableCell>
+                  <TableCell />
+                  <TableCell />
                   <TableCell />
                   <TableCell />
                   <TableCell />

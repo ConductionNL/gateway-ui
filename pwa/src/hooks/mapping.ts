@@ -30,7 +30,7 @@ export const useMapping = (queryClient: QueryClient) => {
     useMutation<any, Error, any>(API.Mapping.delete, {
       onMutate: ({ id }) => addDeletedItem(id),
       onSuccess: async (_, variables) => {
-        deleteItem(queryClient, "mapping", variables.id);
+        deleteItem(queryClient, "mappings", variables.id);
         navigate("/mappings");
       },
       onError: (error, { id }) => {
