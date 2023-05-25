@@ -28,10 +28,10 @@ const PaginationLocationText: React.FC<PaginationLocationIndicatorComponentProps
       text = "Geen resultaten";
       break;
     case 1:
-      text = `${offset + count} van de ${total} resultaten.`;
+      text = `${offset + count} van de ${total.toLocaleString("de-DE")} resultaten.`; // using de-DE locale to get the wanted formatting
       break;
     default:
-      text = `${offset + 1} t/m ${offset + count} van de ${total} resultaten.`;
+      text = `${offset + 1} t/m ${offset + count} van de ${total.toLocaleString("de-DE")} resultaten.`;
       break;
   }
 

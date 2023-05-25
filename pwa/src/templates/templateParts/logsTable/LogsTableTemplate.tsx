@@ -39,6 +39,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
     setColumns,
   } = useTableColumnsContext();
   const { logFilters, toggleOrder } = useLogFiltersContext();
+
   const { Pagination, PaginationLocationIndicator } = usePagination(
     { ...pagination.data },
     pagination.currentPage,
