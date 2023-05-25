@@ -167,6 +167,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
                             { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
                             { type: "download", onSubmit: () => undefined, disabled: true },
                           ]}
+                          variant="secondary"
                         />
                       </TableCell>
                     )}

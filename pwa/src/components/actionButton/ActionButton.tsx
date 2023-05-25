@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as styles from "./ActionButton.module.css";
 import clsx from "clsx";
-
-import { faCopy, faEllipsisH, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition, faCopy, faDownload, faEllipsisH, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
 import { NotificationPopUp } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,16 +12,18 @@ type TAction = {
   type: "delete" | "download" | "duplicate" | "add";
   onSubmit: () => any;
   label?: string;
+  icon?: IconDefinition;
   disabled?: boolean;
 };
 
 interface ActionButtonProps {
   actions: TAction[];
+  variant: "primary" | "danger" | "success" | "secondary";
   size?: "sm" | "md";
   layoutClassName?: string;
 }
 
-export const ActionButton: React.FC<ActionButtonProps> = ({ actions, size = "md", layoutClassName }) => {
+export const ActionButton: React.FC<ActionButtonProps> = ({ actions, size = "md", layoutClassName, variant }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [action, setAction] = React.useState<() => any>(() => actions[0].onSubmit);
   const { isVisible, show, hide } = NotificationPopUp.controller();
@@ -52,7 +53,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({ actions, size = "md"
   return (
     <div className={clsx(styles.container, layoutClassName && layoutClassName)}>
       <Button
-        variant="secondary"
+        variant={variant}
         label={size !== "sm" ? "Actions" : ""}
         onBlur={() => setTimeout(() => setIsOpen(false), 200)}
         onClick={(e) => handleActionButtonClick(e)}
@@ -68,7 +69,8 @@ export const ActionButton: React.FC<ActionButtonProps> = ({ actions, size = "md"
               onClick={(e) => handleActionClick(e, action)}
               className={clsx(action.disabled && styles.disabled, action.label && styles.buttonLabel)}
             >
-              <FontAwesomeIcon icon={getIconFromBulkAction(action)} /> {_.upperFirst(action.label ?? action.type)}
+              <FontAwesomeIcon icon={action.icon ?? getIconFromBulkAction(action)} />{" "}
+              {_.upperFirst(action.label ?? action.type)}
             </li>
           ))}
         </ul>
@@ -96,7 +98,7 @@ const getIconFromBulkAction = (action: TAction) => {
     case "delete":
       return faTrash;
     case "download":
-      return faSave;
+      return faDownload;
     case "duplicate":
       return faCopy;
     case "add":
