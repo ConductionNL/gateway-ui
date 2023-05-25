@@ -127,6 +127,10 @@ module.exports = {
             pathname: "/mappings/[mappingId]",
             crumbLabel: "Mapping",
           },
+          {
+            pathname: "/upload",
+            crumbLabel: "Upload and import",
+          },
         ],
       },
     },
