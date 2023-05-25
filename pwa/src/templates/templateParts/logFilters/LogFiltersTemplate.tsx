@@ -43,17 +43,15 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
     watch,
     setValue,
     formState: { errors },
-  } = useForm({ mode: "onBlur" }); // onBlur is required due to the form never being submitted
+  } = useForm({ mode: "all" }); // 'all' is required due to the form never being submitted
+
+  const watchFormValues = watch();
 
   React.useEffect(() => {
-    const subscription = watch((formValues) => {
-      if (setFiltersTimeout.current) clearTimeout(setFiltersTimeout.current);
+    if (setFiltersTimeout.current) clearTimeout(setFiltersTimeout.current);
 
-      setFiltersTimeout.current = setTimeout(() => submitFilters(formValues), 500);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [watch]);
+    setFiltersTimeout.current = setTimeout(() => submitFilters(watchFormValues), 500);
+  }, [watchFormValues]);
 
   const submitFilters = (formValues: any) => {
     if (Object.keys(errors).length) return; // there's an error in the form
