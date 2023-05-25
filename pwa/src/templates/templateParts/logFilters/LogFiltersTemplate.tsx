@@ -56,7 +56,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
   const submitFilters = (formValues: any) => {
     if (Object.keys(errors).length) return; // there's an error in the form
 
-    setLogFilters({
+    const newLogFilters = {
       ...logFilters,
       _id: formValues.logId,
       "datetime[before]": formValues.datetime.before && new Date(formValues.datetime.before).toISOString(),
@@ -74,7 +74,9 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
         organization: formValues.organizations?.value,
         application: formValues.applications?.value,
       },
-    });
+    };
+
+    if (!_.isEqual(logFilters, newLogFilters)) setLogFilters(newLogFilters);
   };
 
   React.useEffect(() => {
