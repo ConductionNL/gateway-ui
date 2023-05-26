@@ -3,7 +3,7 @@ import * as styles from "./SourcesFormTemplate.module.css";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputText,  Textarea, ToolTip } from "@conduction/components";
+import { InputCheckbox, InputText, Textarea, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { InputFloat, InputNumber } from "@conduction/components/lib/components/formFields/input";
@@ -369,3 +369,28 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
     </div>
   );
 };
+
+export const advancedFormKeysToRemove: string[] = [
+  "headers",
+  "query",
+  "debug",
+  "https_errors",
+  "connect_timeout",
+  "force_ip_resolve",
+  "version",
+  "read_timeout",
+  "idn_conversion",
+  "idn_conversion_bool",
+  "idn_conversion_int",
+  "decode_content",
+  "decode_content_str",
+  "decode_content_bool",
+  "delay",
+  "expect",
+  "expect_bool",
+  "expect_int",
+  "verify",
+  "verify_bool",
+  "verify_str",
+  "proxy",
+];

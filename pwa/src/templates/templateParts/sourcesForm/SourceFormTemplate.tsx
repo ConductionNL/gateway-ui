@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputText, SelectSingle, Textarea, ToolTip } from "@conduction/components";
+import { InputCheckbox, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
 import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
@@ -15,7 +15,7 @@ import { translateDate } from "../../../services/dateFormat";
 import { getStatusTag } from "../../../services/getStatusTag";
 import { StatusTag } from "../../../components/statusTag/StatusTag";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
-import { SourceFormAdvancedTemplate } from "./SourceFormAdvancedTemplate";
+import { SourceFormAdvancedTemplate, advancedFormKeysToRemove } from "./SourceFormAdvancedTemplate";
 import { useAdvancedSwitchContext } from "../../../context/advancedSwitch";
 
 interface SourceTemplateProps {
@@ -32,7 +32,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
   const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
-  const { advancedSwitch, setAdvancedSwitch } = useAdvancedSwitchContext();
+  const { advancedSwitch, setupAdvancedSwitch } = useAdvancedSwitchContext();
 
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
@@ -103,45 +103,15 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
       },
     };
 
-    delete payload.headers; // already sending in payload.configuration
-    delete payload.query; // already sending in payload.configuration
+    Object.keys(payload)
+      .filter((key) => advancedFormKeysToRemove.includes(key))
+      .forEach((key) => {
+        delete payload[key];
+      }); // removing all the keys that we are already sending in payload.configuration
 
     createOrEditSource.mutate({ payload, id: source?.id });
 
     source?.id && queryClient.setQueryData(["sources", source.id], payload); // optimistic update query data
-  };
-
-  const setupAdvancedSwitch = () => {
-    const newAdvancedSwitch = { ...advancedSwitch };
-
-    for (const [key, value] of Object.entries(source.configuration)) {
-      if (key === "decode_content") {
-        if (typeof value === "string") newAdvancedSwitch.decodeContent = "string";
-        if (typeof value === "boolean") newAdvancedSwitch.decodeContent = "boolean";
-        continue;
-      }
-      if (key === "delay") {
-        if (Number.isInteger(value)) newAdvancedSwitch.delay = "int";
-        else newAdvancedSwitch.delay = "float";
-        continue;
-      }
-      if (key === "expect") {
-        if (typeof value === "number") newAdvancedSwitch.expect = "int";
-        if (typeof value === "boolean") newAdvancedSwitch.expect = "boolean";
-        continue;
-      }
-      if (key === "verify") {
-        if (typeof value === "string") newAdvancedSwitch.verify = "string";
-        if (typeof value === "boolean") newAdvancedSwitch.verify = "boolean";
-        continue;
-      }
-      if (key === "idn_conversion") {
-        if (typeof value === "number") newAdvancedSwitch.idnConversion = "int";
-        if (typeof value === "boolean") newAdvancedSwitch.idnConversion = "boolean";
-      }
-    }
-
-    setAdvancedSwitch(newAdvancedSwitch);
   };
 
   const handleSetFormValues = (_source: any): void => {
@@ -170,7 +140,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
       "jwtId",
       "secret",
       "jwt",
-      "connect_timeout",
     ];
     basicFields.forEach((field) => setValue(field, source[field]));
 
@@ -214,7 +183,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
         if (key === "idn_conversion" && typeof _value === "boolean") setValue("idn_conversion_bool", _value);
       }
 
-      setupAdvancedSwitch();
+      setupAdvancedSwitch(source.configuration);
     }
   };
 
