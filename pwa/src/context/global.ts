@@ -6,6 +6,7 @@ import { defaultLogFiltersContext, ILogFiltersContext } from "./logs";
 import { defaultTabsContext, ITabsContext } from "./tabs";
 import { defaultObjectsContext, IObjectsStateContext } from "./objects";
 import { defaultTableColumnsContext, ITableColumnsContext } from "./tableColumns";
+import { defaultAdvancedSwitchContext, IAdvancedSwitchContext } from "./advancedSwitch";
 
 export interface IGlobalContext {
   gatsby: IGatsbyContext;
@@ -15,6 +16,7 @@ export interface IGlobalContext {
   deletedItems: IDeletedItemsContext;
   objectsState: IObjectsStateContext;
   tableColumns: ITableColumnsContext;
+  advancedSwitch: IAdvancedSwitchContext;
 }
 
 export const defaultGlobalContext: IGlobalContext = {
@@ -25,6 +27,7 @@ export const defaultGlobalContext: IGlobalContext = {
   deletedItems: defaultDeletedItemsContext,
   objectsState: defaultObjectsContext,
   tableColumns: defaultTableColumnsContext,
+  advancedSwitch: defaultAdvancedSwitchContext,
 };
 
 export const GlobalContext = React.createContext<

@@ -1,23 +1,22 @@
 import * as React from "react";
 import * as styles from "./SourcesFormTemplate.module.css";
+import _ from "lodash";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputText, SelectSingle, Textarea, ToolTip } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
-import { InputFloat, InputNumber } from "@conduction/components/lib/components/formFields/input";
 import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
-import ToggleButton from "../../../components/toggleButton/ToggleButton";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { translateDate } from "../../../services/dateFormat";
 import { getStatusTag } from "../../../services/getStatusTag";
 import { StatusTag } from "../../../components/statusTag/StatusTag";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
+import { SourceFormAdvancedTemplate } from "./SourceFormAdvancedTemplate";
+import { useAdvancedSwitchContext } from "../../../context/advancedSwitch";
 
 interface SourceTemplateProps {
   source?: any;
@@ -33,13 +32,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
   const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
-  const [advancedSwitch, setAdvancedSwitch] = React.useState({
-    decodeContent: "string" as "string" | "boolean",
-    delay: "int" as "int" | "float",
-    expect: "int" as "int" | "boolean",
-    verify: "string" as "string" | "boolean",
-    idnConversion: "int" as "int" | "boolean",
-  });
+  const { advancedSwitch, setAdvancedSwitch } = useAdvancedSwitchContext();
 
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
@@ -89,23 +82,24 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
-      type: data.type && data.type.value,
       auth: data.auth && data.auth.value,
       configuration: {
-        connect_timeout: data.connect_timeout,
+        headers: _.isEqual(source?.configuration.headers, data.headers)
+          ? data.headers
+          : convertArrayToObject(data.headers),
+        query: _.isEqual(source?.configuration.query, data.query) ? data.query : convertArrayToObject(data.query),
         debug: data.debug,
-        decode_content: advancedSwitch.decodeContent === "string" ? data.decode_content_str : data.decode_content_bool,
-        delay: data.delay,
-        expect: advancedSwitch.expect === "int" ? data.expect_int : data.expect_bool,
+        https_errors: data.https_errors,
+        connect_timeout: data.connect_timeout,
         force_ip_resolve: data.force_ip_resolve,
-        verify: advancedSwitch.verify === "string" ? data.verify_str : data.verify_bool,
         version: data.version,
         read_timeout: data.read_timeout,
-        proxy: data.proxy,
         idn_conversion: advancedSwitch.idnConversion === "int" ? data.idn_conversion_int : data.idn_conversion_bool,
-        https_errors: data.https_errors,
-        headers: convertArrayToObject(data.headers),
-        query: convertArrayToObject(data.query),
+        delay: data.delay,
+        expect: advancedSwitch.expect === "int" ? data.expect_int : data.expect_bool,
+        verify: advancedSwitch.verify === "string" ? data.verify_str : data.verify_bool,
+        decode_content: advancedSwitch.decodeContent === "string" ? data.decode_content_str : data.decode_content_bool,
+        proxy: data.proxy,
       },
     };
 
@@ -179,11 +173,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
       "connect_timeout",
     ];
     basicFields.forEach((field) => setValue(field, source[field]));
-
-    setValue(
-      "type",
-      typeSelectOptions.find((option) => source.type === option.value),
-    );
 
     setValue(
       "auth",
@@ -358,361 +347,13 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="3">
-            <div className={styles.gridContainer}>
-              <div className={styles.grid}>
-                <FormField>
-                  <FormFieldInput>
-                    <div className={styles.formFieldHeader}>
-                      <FormFieldLabel>{t("Connect timeout")}</FormFieldLabel>
-                      <ToolTip tooltip="Float describing the number of seconds to wait while trying to connect to a server. Use 0 to wait indefinitely (the default behavior).">
-                        <a
-                          className={styles.infoButton}
-                          onClick={() => {
-                            open("https://docs.guzzlephp.org/en/stable/request-options.html#connect-timeout");
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faInfoCircle}></FontAwesomeIcon>
-                        </a>
-                      </ToolTip>
-                    </div>
-                    <InputFloat disabled={isLoading.sourceForm} {...{ register, errors }} name="connect_timeout" />
-                  </FormFieldInput>
-                </FormField>
-
-                <FormField>
-                  <div className={styles.formFieldHeader}>
-                    <FormFieldLabel>{t("Debug")}</FormFieldLabel>
-                    <ToolTip tooltip="Set to true or set to a PHP stream returned by fopen() to enable debug output with the handler used to send a request. For example, when using cURL to transfer requests, cURL's verbose of CURLOPT_VERBOSE will be emitted. When using the PHP stream wrapper, stream wrapper notifications will be emitted. If set to true, the output is written to PHP's STDOUT. If a PHP stream is provided, output is written to the stream.">
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#debug");
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faInfoCircle}></FontAwesomeIcon>
-                      </a>
-                    </ToolTip>
-                  </div>
-                  <InputCheckbox name="debug" disabled={isLoading.sourceForm} label="True" {...{ register, errors }} />
-                </FormField>
-
-                <FormField>
-                  <div className={styles.formFieldHeader}>
-                    <FormFieldLabel>{t("Decode content")}</FormFieldLabel>
-                    <ToolTip tooltip="Specify whether or not Content-Encoding responses (gzip, deflate, etc.) are automatically decoded.">
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#decode-content");
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                      </a>
-                    </ToolTip>
-                  </div>
-                  <ToggleButton
-                    disabled={isLoading.sourceForm}
-                    layoutClassName={styles.toggleButton}
-                    startLabel="string"
-                    endLabel="boolean"
-                    onChange={() =>
-                      setAdvancedSwitch({
-                        ...advancedSwitch,
-                        decodeContent: advancedSwitch.decodeContent === "string" ? "boolean" : "string",
-                      })
-                    }
-                  />
-                  <div className={styles.expectFormField}>
-                    {advancedSwitch.decodeContent === "string" && (
-                      <Textarea disabled={isLoading.sourceForm} name="decode_content_str" {...{ register, errors }} />
-                    )}
-                    {advancedSwitch.decodeContent === "boolean" && (
-                      <span className={styles.checkboxInput}>
-                        <InputCheckbox name="decode_content_bool" label="True" {...{ register, errors }} />
-                      </span>
-                    )}
-                  </div>
-                </FormField>
-
-                <FormField>
-                  <div className={styles.formFieldHeader}>
-                    <FormFieldLabel>{t("Delay")}</FormFieldLabel>
-                    <ToolTip tooltip="The number of milliseconds to delay before sending the request.">
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#delay");
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                      </a>
-                    </ToolTip>
-                  </div>
-                  <ToggleButton
-                    disabled={isLoading.sourceForm}
-                    layoutClassName={styles.toggleButton}
-                    startLabel="int"
-                    endLabel="float"
-                    onChange={() =>
-                      setAdvancedSwitch({
-                        ...advancedSwitch,
-                        delay: advancedSwitch.delay === "int" ? "float" : "int",
-                      })
-                    }
-                  />
-                  <div className={styles.expectFormField}>
-                    {advancedSwitch.delay === "int" && (
-                      <InputNumber disabled={isLoading.sourceForm} name="delay" {...{ register, errors }} />
-                    )}
-                    {advancedSwitch.delay === "float" && (
-                      <InputFloat disabled={isLoading.sourceForm} name="delay" {...{ register, errors }} />
-                    )}
-                  </div>
-                </FormField>
-
-                <FormField>
-                  <div className={styles.formFieldHeader}>
-                    <FormFieldLabel>{t("Expect")}</FormFieldLabel>
-                    <ToolTip tooltip='Controls the behavior of the "Expect: 100-Continue" header."'>
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#expect");
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                      </a>
-                    </ToolTip>
-                  </div>
-                  <ToggleButton
-                    disabled={isLoading.sourceForm}
-                    layoutClassName={styles.toggleButton}
-                    startLabel="int"
-                    endLabel="boolean"
-                    onChange={() =>
-                      setAdvancedSwitch({
-                        ...advancedSwitch,
-                        expect: advancedSwitch.expect === "int" ? "boolean" : "int",
-                      })
-                    }
-                  />
-                  <div className={styles.expectFormField}>
-                    {advancedSwitch.expect === "boolean" && (
-                      <span className={styles.checkboxInput}>
-                        <InputCheckbox name="expect_bool" label="True" {...{ register, errors }} />
-                      </span>
-                    )}
-                    {advancedSwitch.expect === "int" && (
-                      <InputNumber disabled={isLoading.sourceForm} name="expect_int" {...{ register, errors }} />
-                    )}
-                  </div>
-                </FormField>
-
-                <FormField>
-                  <FormFieldInput>
-                    <div className={styles.formFieldHeader}>
-                      <FormFieldLabel>{t("Force ip resolve")}</FormFieldLabel>
-                      <ToolTip tooltip='Set to "v4" if you want the HTTP handlers to use only ipv4 protocol or "v6" for ipv6 protocol.'>
-                        <a
-                          className={styles.infoButton}
-                          onClick={() => {
-                            open("https://docs.guzzlephp.org/en/stable/request-options.html#force-ip-resolve");
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faInfoCircle} />
-                        </a>
-                      </ToolTip>
-                    </div>
-                    <InputText disabled={isLoading.sourceForm} {...{ register, errors }} name="force_ip_resolve" />
-                  </FormFieldInput>
-                </FormField>
-
-                <FormField>
-                  <div className={styles.formFieldHeader}>
-                    <FormFieldLabel>{t("Verify")}</FormFieldLabel>
-                    <ToolTip tooltip="Describes the SSL certificate verification behavior of a request. \n Set to true to enable SSL certificate verification and use the default CA bundle provided by operating system.\nSet to false to disable certificate verification (this is insecure!). \n Set to a string to provide the path to a CA bundle to enable verification using a custom certificate.">
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#verify");
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                      </a>
-                    </ToolTip>
-                  </div>
-                  <ToggleButton
-                    disabled={isLoading.sourceForm}
-                    layoutClassName={styles.toggleButton}
-                    startLabel="string"
-                    endLabel="boolean"
-                    onChange={() =>
-                      setAdvancedSwitch({
-                        ...advancedSwitch,
-                        verify: advancedSwitch.verify === "string" ? "boolean" : "string",
-                      })
-                    }
-                  />
-                  <div className={styles.expectFormField}>
-                    {advancedSwitch.verify === "boolean" && (
-                      <span className={styles.checkboxInput}>
-                        <InputCheckbox
-                          disabled={isLoading.sourceForm}
-                          name="verify_bool"
-                          label="True"
-                          {...{ register, errors }}
-                        />
-                      </span>
-                    )}
-                    {advancedSwitch.verify === "string" && (
-                      <InputText disabled={isLoading.sourceForm} name="verify_str" {...{ register, errors }} />
-                    )}
-                  </div>
-                </FormField>
-
-                <FormField>
-                  <FormFieldInput>
-                    <div className={styles.formFieldHeader}>
-                      <FormFieldLabel>{t("Version")}</FormFieldLabel>
-                      <ToolTip tooltip="Protocol version to use with the request.">
-                        <a
-                          className={styles.infoButton}
-                          onClick={() => {
-                            open("https://docs.guzzlephp.org/en/stable/request-options.html#version");
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faInfoCircle} />
-                        </a>
-                      </ToolTip>
-                    </div>
-                    <InputText disabled={isLoading.sourceForm} {...{ register, errors }} name="version" />
-                  </FormFieldInput>
-                </FormField>
-
-                <FormField>
-                  <FormFieldInput>
-                    <div className={styles.formFieldHeader}>
-                      <FormFieldLabel>{t("Read timeout")}</FormFieldLabel>
-                      <ToolTip tooltip="Float describing the timeout to use when reading a streamed body">
-                        <a
-                          className={styles.infoButton}
-                          onClick={() => {
-                            open("https://docs.guzzlephp.org/en/stable/request-options.html#read-timeout");
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faInfoCircle} />
-                        </a>
-                      </ToolTip>
-                    </div>
-                    <InputFloat disabled={isLoading.sourceForm} {...{ register, errors }} name="read_timeout" />
-                  </FormFieldInput>
-                </FormField>
-              </div>
-
-              <FormField>
-                <FormFieldInput>
-                  <div className={styles.formFieldHeader}>
-                    <FormFieldLabel>{t("Proxy")}</FormFieldLabel>
-                    <ToolTip tooltip="Pass a string to specify an HTTP proxy, or an array to specify different proxies for different protocols.">
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#proxy");
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                      </a>
-                    </ToolTip>
-                  </div>
-                  <Textarea disabled={isLoading.sourceForm} {...{ register, errors }} name="proxy" />
-                </FormFieldInput>
-              </FormField>
-
-              <div className={styles.grid}>
-                <FormField>
-                  <div className={styles.formFieldHeader}>
-                    <FormFieldLabel>{t("Idn conversion")}</FormFieldLabel>
-                    <ToolTip tooltip="Internationalized Domain Name (IDN) support (enabled by default if intl extension is available).">
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#idn-conversion");
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                      </a>
-                    </ToolTip>
-                  </div>
-                  <ToggleButton
-                    disabled={isLoading.sourceForm}
-                    layoutClassName={styles.toggleButton}
-                    startLabel="int"
-                    endLabel="boolean"
-                    onChange={() =>
-                      setAdvancedSwitch({
-                        ...advancedSwitch,
-                        idnConversion: advancedSwitch.idnConversion === "int" ? "boolean" : "int",
-                      })
-                    }
-                  />
-                  <div className={styles.expectFormField}>
-                    {advancedSwitch.idnConversion === "boolean" && (
-                      <span className={styles.checkboxInput}>
-                        <InputCheckbox
-                          disabled={isLoading.sourceForm}
-                          name="idn_conversion_bool"
-                          label="True"
-                          {...{ register, errors }}
-                        />
-                      </span>
-                    )}
-                    {advancedSwitch.idnConversion === "int" && (
-                      <InputNumber
-                        disabled={isLoading.sourceForm}
-                        name="idn_conversion_int"
-                        {...{ register, errors }}
-                      />
-                    )}
-                  </div>
-                </FormField>
-
-                <FormField>
-                  <div className={styles.formFieldHeader}>
-                    <FormFieldLabel>{t("Http errors")}</FormFieldLabel>
-                    <ToolTip tooltip="Set to false to disable throwing exceptions on an HTTP protocol errors (i.e., 4xx and 5xx responses). Exceptions are thrown by default when HTTP protocol errors are encountered.">
-                      <a
-                        className={styles.infoButton}
-                        onClick={() => {
-                          open("https://docs.guzzlephp.org/en/stable/request-options.html#http-errors");
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faInfoCircle} />
-                      </a>
-                    </ToolTip>
-                  </div>
-                  <InputCheckbox
-                    disabled={isLoading.sourceForm}
-                    name="https_errors"
-                    label="True"
-                    {...{ register, errors }}
-                  />
-                </FormField>
-              </div>
-            </div>
+            <SourceFormAdvancedTemplate configurations={source?.configuration} {...{ isLoading, register, errors }} />
           </TabPanel>
         </TabContext>
       </form>
     </div>
   );
 };
-
-const typeSelectOptions = [
-  { label: "JSON", value: "json" },
-  { label: "SML", value: "xml" },
-  { label: "SOAP", value: "soap" },
-  { label: "FTP", value: "ftp" },
-  { label: "SFTP", value: "sftp" },
-];
 
 const authSelectOptions = [
   { label: "No Auth", value: "none" },
