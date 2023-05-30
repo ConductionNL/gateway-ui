@@ -8,7 +8,7 @@ export const enrichValidation = (validation: TValidation): TValidation => {
   for (const [key, value] of Object.entries(validation)) {
     switch (key) {
       case "required":
-        enrichedValidation[key] = "This field is required";
+        value && (enrichedValidation[key] = "This field is required");
         break;
 
       case "minLength":
