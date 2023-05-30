@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { InputFloat, InputNumber } from "@conduction/components/lib/components/formFields/input";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
-import { useAdvancedSwitchContext } from "../../../context/advancedSwitch";
+import { IAdvancedSwitch, IAdvancedSwitchSetters } from "../../../hooks/useAdvancedSwitch";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -16,19 +16,19 @@ interface ReactHookFormProps {
 }
 
 interface SourceTemplateProps {
-  configurations: any;
+  set: IAdvancedSwitchSetters;
+  advancedSwitchState: IAdvancedSwitch;
   isLoading: any;
 }
 
 export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHookFormProps> = ({
   isLoading,
-  configurations,
   register,
   errors,
+  advancedSwitchState,
+  set,
 }) => {
-  const { t, i18n } = useTranslation();
-
-  const { advancedSwitch, setAdvancedSwitch } = useAdvancedSwitchContext();
+  const { t } = useTranslation();
 
   return (
     <div className={styles.gridContainer}>
@@ -158,20 +158,15 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
             </ToolTip>
           </div>
           <ToggleButton
-            defaultState={advancedSwitch.idnConversion !== "int"}
+            defaultState={advancedSwitchState.idnConversion !== "int"}
             disabled={isLoading.sourceForm}
             layoutClassName={styles.toggleButton}
             startLabel="Integer"
             endLabel="Boolean"
-            onChange={() =>
-              setAdvancedSwitch({
-                ...advancedSwitch,
-                idnConversion: advancedSwitch.idnConversion === "int" ? "boolean" : "int",
-              })
-            }
+            onChange={() => set.idnConversion(advancedSwitchState.idnConversion === "int" ? "boolean" : "int")}
           />
           <div className={styles.expectFormField}>
-            {advancedSwitch.idnConversion === "boolean" && (
+            {advancedSwitchState.idnConversion === "boolean" && (
               <span className={styles.checkboxInput}>
                 <InputCheckbox
                   disabled={isLoading.sourceForm}
@@ -181,7 +176,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 />
               </span>
             )}
-            {advancedSwitch.idnConversion === "int" && (
+            {advancedSwitchState.idnConversion === "int" && (
               <InputNumber disabled={isLoading.sourceForm} name="idn_conversion_int" {...{ register, errors }} />
             )}
           </div>
@@ -202,23 +197,18 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
             </ToolTip>
           </div>
           <ToggleButton
-            defaultState={advancedSwitch.delay !== "int"}
+            defaultState={advancedSwitchState.delay !== "int"}
             disabled={isLoading.sourceForm}
             layoutClassName={styles.toggleButton}
             startLabel="Integer"
             endLabel="Float"
-            onChange={() =>
-              setAdvancedSwitch({
-                ...advancedSwitch,
-                delay: advancedSwitch.delay === "int" ? "float" : "int",
-              })
-            }
+            onChange={() => set.delay(advancedSwitchState.delay === "int" ? "float" : "int")}
           />
           <div className={styles.expectFormField}>
-            {advancedSwitch.delay === "int" && (
+            {advancedSwitchState.delay === "int" && (
               <InputNumber disabled={isLoading.sourceForm} name="delay" {...{ register, errors }} />
             )}
-            {advancedSwitch.delay === "float" && (
+            {advancedSwitchState.delay === "float" && (
               <InputFloat disabled={isLoading.sourceForm} name="delay" {...{ register, errors }} />
             )}
           </div>
@@ -239,25 +229,20 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
             </ToolTip>
           </div>
           <ToggleButton
-            defaultState={advancedSwitch.expect !== "int"}
+            defaultState={advancedSwitchState.expect !== "int"}
             disabled={isLoading.sourceForm}
             layoutClassName={styles.toggleButton}
             startLabel="Integer"
             endLabel="Boolean"
-            onChange={() =>
-              setAdvancedSwitch({
-                ...advancedSwitch,
-                expect: advancedSwitch.expect === "int" ? "boolean" : "int",
-              })
-            }
+            onChange={() => set.expect(advancedSwitchState.expect === "int" ? "boolean" : "int")}
           />
           <div className={styles.expectFormField}>
-            {advancedSwitch.expect === "boolean" && (
+            {advancedSwitchState.expect === "boolean" && (
               <span className={styles.checkboxInput}>
                 <InputCheckbox name="expect_bool" label="True" {...{ register, errors }} />
               </span>
             )}
-            {advancedSwitch.expect === "int" && (
+            {advancedSwitchState.expect === "int" && (
               <InputNumber disabled={isLoading.sourceForm} name="expect_int" {...{ register, errors }} />
             )}
           </div>
@@ -278,20 +263,15 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
             </ToolTip>
           </div>
           <ToggleButton
-            defaultState={advancedSwitch.verify !== "string"}
+            defaultState={advancedSwitchState.verify !== "string"}
             disabled={isLoading.sourceForm}
             layoutClassName={styles.toggleButton}
             startLabel="String"
             endLabel="Boolean"
-            onChange={() =>
-              setAdvancedSwitch({
-                ...advancedSwitch,
-                verify: advancedSwitch.verify === "string" ? "boolean" : "string",
-              })
-            }
+            onChange={() => set.verify(advancedSwitchState.verify === "string" ? "boolean" : "string")}
           />
           <div className={styles.expectFormField}>
-            {advancedSwitch.verify === "boolean" && (
+            {advancedSwitchState.verify === "boolean" && (
               <span className={styles.checkboxInput}>
                 <InputCheckbox
                   disabled={isLoading.sourceForm}
@@ -301,7 +281,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 />
               </span>
             )}
-            {advancedSwitch.verify === "string" && (
+            {advancedSwitchState.verify === "string" && (
               <InputText disabled={isLoading.sourceForm} name="verify_str" {...{ register, errors }} />
             )}
           </div>
@@ -323,24 +303,19 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           </ToolTip>
         </div>
         <ToggleButton
-          defaultState={advancedSwitch.decodeContent !== "string"}
+          defaultState={advancedSwitchState.decodeContent !== "string"}
           disabled={isLoading.sourceForm}
           layoutClassName={styles.toggleButton}
           startLabel="String"
           endLabel="Boolean"
-          onChange={() =>
-            setAdvancedSwitch({
-              ...advancedSwitch,
-              decodeContent: advancedSwitch.decodeContent === "string" ? "boolean" : "string",
-            })
-          }
+          onChange={() => set.decodeContent(advancedSwitchState.decodeContent === "string" ? "boolean" : "string")}
         />
         <div className={styles.expectFormField}>
-          {advancedSwitch.decodeContent === "string" && (
+          {advancedSwitchState.decodeContent === "string" && (
             <Textarea disabled={isLoading.sourceForm} name="decode_content_str" {...{ register, errors }} />
           )}
 
-          {advancedSwitch.decodeContent === "boolean" && (
+          {advancedSwitchState.decodeContent === "boolean" && (
             <span className={styles.checkboxInput}>
               <InputCheckbox name="decode_content_bool" label="True" {...{ register, errors }} />
             </span>

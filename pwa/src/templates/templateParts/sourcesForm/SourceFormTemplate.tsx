@@ -15,8 +15,9 @@ import { translateDate } from "../../../services/dateFormat";
 import { getStatusTag } from "../../../services/getStatusTag";
 import { StatusTag } from "../../../components/statusTag/StatusTag";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
-import { SourceFormAdvancedTemplate, advancedFormKeysToRemove } from "./SourceFormAdvancedTemplate";
+import { advancedFormKeysToRemove } from "./SourceFormAdvancedTemplate";
 import { useAdvancedSwitchContext } from "../../../context/advancedSwitch";
+import { useAdvancedSwitch } from "../../../hooks/useAdvancedSwitch";
 
 interface SourceTemplateProps {
   source?: any;
@@ -46,6 +47,8 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     watch,
     setValue,
   } = useForm();
+
+  const { AdvancedSwitch, advancedSwitchState } = useAdvancedSwitch(isLoading.sourceForm ?? false, register, errors);
 
   const watchAuth = watch("auth");
   const watchHeaders = watch("headers");
@@ -316,7 +319,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="3">
-            <SourceFormAdvancedTemplate configurations={source?.configuration} {...{ isLoading, register, errors }} />
+            <AdvancedSwitch />
           </TabPanel>
         </TabContext>
       </form>
