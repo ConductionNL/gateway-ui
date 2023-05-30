@@ -161,8 +161,8 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
             defaultState={advancedSwitch.idnConversion !== "int"}
             disabled={isLoading.sourceForm}
             layoutClassName={styles.toggleButton}
-            startLabel="int"
-            endLabel="boolean"
+            startLabel="Integer"
+            endLabel="Boolean"
             onChange={() =>
               setAdvancedSwitch({
                 ...advancedSwitch,
@@ -205,8 +205,8 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
             defaultState={advancedSwitch.delay !== "int"}
             disabled={isLoading.sourceForm}
             layoutClassName={styles.toggleButton}
-            startLabel="int"
-            endLabel="float"
+            startLabel="Integer"
+            endLabel="Float"
             onChange={() =>
               setAdvancedSwitch({
                 ...advancedSwitch,
@@ -242,8 +242,8 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
             defaultState={advancedSwitch.expect !== "int"}
             disabled={isLoading.sourceForm}
             layoutClassName={styles.toggleButton}
-            startLabel="int"
-            endLabel="boolean"
+            startLabel="Integer"
+            endLabel="Boolean"
             onChange={() =>
               setAdvancedSwitch({
                 ...advancedSwitch,
@@ -281,8 +281,8 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
             defaultState={advancedSwitch.verify !== "string"}
             disabled={isLoading.sourceForm}
             layoutClassName={styles.toggleButton}
-            startLabel="string"
-            endLabel="boolean"
+            startLabel="String"
+            endLabel="Boolean"
             onChange={() =>
               setAdvancedSwitch({
                 ...advancedSwitch,
@@ -326,8 +326,8 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           defaultState={advancedSwitch.decodeContent !== "string"}
           disabled={isLoading.sourceForm}
           layoutClassName={styles.toggleButton}
-          startLabel="string"
-          endLabel="boolean"
+          startLabel="String"
+          endLabel="Boolean"
           onChange={() =>
             setAdvancedSwitch({
               ...advancedSwitch,

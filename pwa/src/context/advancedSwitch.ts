@@ -9,7 +9,13 @@ export interface IAdvancedSwitchContext {
   idnConversion?: "int" | "boolean";
 }
 
-export const defaultAdvancedSwitchContext: IAdvancedSwitchContext = {};
+export const defaultAdvancedSwitchContext: IAdvancedSwitchContext = {
+  decodeContent: "string",
+  delay: "int",
+  expect: "int",
+  verify: "string",
+  idnConversion: "int",
+};
 
 export const useAdvancedSwitchContext = () => {
   const [globalContext, setGlobalContext] = React.useContext(GlobalContext);
