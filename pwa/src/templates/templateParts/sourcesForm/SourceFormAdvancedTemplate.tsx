@@ -47,7 +47,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               </a>
             </ToolTip>
           </div>
-          <InputCheckbox name="debug" disabled={isLoading.sourceForm} label="True" {...{ register, errors }} />
+          <InputCheckbox name="debug" disabled={isLoading} label="True" {...{ register, errors }} />
         </FormField>
 
         <FormField>
@@ -64,7 +64,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               </a>
             </ToolTip>
           </div>
-          <InputCheckbox disabled={isLoading.sourceForm} name="https_errors" label="True" {...{ register, errors }} />
+          <InputCheckbox disabled={isLoading} name="https_errors" label="True" {...{ register, errors }} />
         </FormField>
 
         <FormField>
@@ -82,7 +82,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 </a>
               </ToolTip>
             </div>
-            <InputFloat disabled={isLoading.sourceForm} {...{ register, errors }} name="connect_timeout" />
+            <InputFloat disabled={isLoading} {...{ register, errors }} name="connect_timeout" />
           </FormFieldInput>
         </FormField>
 
@@ -101,7 +101,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 </a>
               </ToolTip>
             </div>
-            <InputText disabled={isLoading.sourceForm} {...{ register, errors }} name="force_ip_resolve" />
+            <InputText disabled={isLoading} {...{ register, errors }} name="force_ip_resolve" />
           </FormFieldInput>
         </FormField>
 
@@ -120,7 +120,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 </a>
               </ToolTip>
             </div>
-            <InputText disabled={isLoading.sourceForm} {...{ register, errors }} name="version" />
+            <InputText disabled={isLoading} {...{ register, errors }} name="version" />
           </FormFieldInput>
         </FormField>
 
@@ -139,7 +139,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 </a>
               </ToolTip>
             </div>
-            <InputFloat disabled={isLoading.sourceForm} {...{ register, errors }} name="read_timeout" />
+            <InputFloat disabled={isLoading} {...{ register, errors }} name="read_timeout" />
           </FormFieldInput>
         </FormField>
 
@@ -159,7 +159,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           </div>
           <ToggleButton
             defaultState={advancedSwitchState.idnConversion !== "int"}
-            disabled={isLoading.sourceForm}
+            disabled={isLoading}
             layoutClassName={styles.toggleButton}
             startLabel="Integer"
             endLabel="Boolean"
@@ -168,16 +168,11 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           <div className={styles.expectFormField}>
             {advancedSwitchState.idnConversion === "boolean" && (
               <span className={styles.checkboxInput}>
-                <InputCheckbox
-                  disabled={isLoading.sourceForm}
-                  name="idn_conversion_bool"
-                  label="True"
-                  {...{ register, errors }}
-                />
+                <InputCheckbox disabled={isLoading} name="idn_conversion_bool" label="True" {...{ register, errors }} />
               </span>
             )}
             {advancedSwitchState.idnConversion === "int" && (
-              <InputNumber disabled={isLoading.sourceForm} name="idn_conversion_int" {...{ register, errors }} />
+              <InputNumber disabled={isLoading} name="idn_conversion_int" {...{ register, errors }} />
             )}
           </div>
         </FormField>
@@ -198,7 +193,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           </div>
           <ToggleButton
             defaultState={advancedSwitchState.delay !== "int"}
-            disabled={isLoading.sourceForm}
+            disabled={isLoading}
             layoutClassName={styles.toggleButton}
             startLabel="Integer"
             endLabel="Float"
@@ -206,10 +201,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           />
           <div className={styles.expectFormField}>
             {advancedSwitchState.delay === "int" && (
-              <InputNumber disabled={isLoading.sourceForm} name="delay" {...{ register, errors }} />
+              <InputNumber disabled={isLoading} name="delay" {...{ register, errors }} />
             )}
             {advancedSwitchState.delay === "float" && (
-              <InputFloat disabled={isLoading.sourceForm} name="delay" {...{ register, errors }} />
+              <InputFloat disabled={isLoading} name="delay" {...{ register, errors }} />
             )}
           </div>
         </FormField>
@@ -230,7 +225,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           </div>
           <ToggleButton
             defaultState={advancedSwitchState.expect !== "int"}
-            disabled={isLoading.sourceForm}
+            disabled={isLoading}
             layoutClassName={styles.toggleButton}
             startLabel="Integer"
             endLabel="Boolean"
@@ -239,11 +234,11 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           <div className={styles.expectFormField}>
             {advancedSwitchState.expect === "boolean" && (
               <span className={styles.checkboxInput}>
-                <InputCheckbox name="expect_bool" label="True" {...{ register, errors }} />
+                <InputCheckbox disabled={isLoading} name="expect_bool" label="True" {...{ register, errors }} />
               </span>
             )}
             {advancedSwitchState.expect === "int" && (
-              <InputNumber disabled={isLoading.sourceForm} name="expect_int" {...{ register, errors }} />
+              <InputNumber disabled={isLoading} name="expect_int" {...{ register, errors }} />
             )}
           </div>
         </FormField>
@@ -264,7 +259,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           </div>
           <ToggleButton
             defaultState={advancedSwitchState.verify !== "string"}
-            disabled={isLoading.sourceForm}
+            disabled={isLoading}
             layoutClassName={styles.toggleButton}
             startLabel="String"
             endLabel="Boolean"
@@ -273,16 +268,11 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           <div className={styles.expectFormField}>
             {advancedSwitchState.verify === "boolean" && (
               <span className={styles.checkboxInput}>
-                <InputCheckbox
-                  disabled={isLoading.sourceForm}
-                  name="verify_bool"
-                  label="True"
-                  {...{ register, errors }}
-                />
+                <InputCheckbox disabled={isLoading} name="verify_bool" label="True" {...{ register, errors }} />
               </span>
             )}
             {advancedSwitchState.verify === "string" && (
-              <InputText disabled={isLoading.sourceForm} name="verify_str" {...{ register, errors }} />
+              <InputText disabled={isLoading} name="verify_str" {...{ register, errors }} />
             )}
           </div>
         </FormField>
@@ -304,7 +294,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
         </div>
         <ToggleButton
           defaultState={advancedSwitchState.decodeContent !== "string"}
-          disabled={isLoading.sourceForm}
+          disabled={isLoading}
           layoutClassName={styles.toggleButton}
           startLabel="String"
           endLabel="Boolean"
@@ -312,12 +302,12 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
         />
         <div className={styles.expectFormField}>
           {advancedSwitchState.decodeContent === "string" && (
-            <Textarea disabled={isLoading.sourceForm} name="decode_content_str" {...{ register, errors }} />
+            <Textarea disabled={isLoading} name="decode_content_str" {...{ register, errors }} />
           )}
 
           {advancedSwitchState.decodeContent === "boolean" && (
             <span className={styles.checkboxInput}>
-              <InputCheckbox name="decode_content_bool" label="True" {...{ register, errors }} />
+              <InputCheckbox disabled={isLoading} name="decode_content_bool" label="True" {...{ register, errors }} />
             </span>
           )}
         </div>
@@ -338,7 +328,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               </a>
             </ToolTip>
           </div>
-          <Textarea disabled={isLoading.sourceForm} {...{ register, errors }} name="proxy" />
+          <Textarea disabled={isLoading} {...{ register, errors }} name="proxy" />
         </FormFieldInput>
       </FormField>
     </div>

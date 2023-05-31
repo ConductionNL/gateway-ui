@@ -30,7 +30,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   };
 
   return (
-    <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>
+    <div className={clsx(styles.container, [layoutClassName && layoutClassName, disabled && styles.disabled])}>
       {startLabel}
       <div className={styles.switchContainer}>
         <input id={uuid} type="checkbox" checked={isEnabled} onChange={handleChange} {...{ disabled }} />
