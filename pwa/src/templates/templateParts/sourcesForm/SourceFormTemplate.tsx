@@ -33,7 +33,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
   const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
-  const { advancedSwitch, setupAdvancedSwitch } = useAdvancedSwitchContext();
+  // const { advancedSwitch, setupAdvancedSwitch } = useAdvancedSwitchContext();
 
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
@@ -48,7 +48,11 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     setValue,
   } = useForm();
 
-  const { AdvancedSwitch, advancedSwitchState } = useAdvancedSwitch(isLoading.sourceForm ?? false, register, errors);
+  const { AdvancedSwitch, advancedSwitchState, setupAdvancedSwitch } = useAdvancedSwitch(
+    isLoading.sourceForm ?? false,
+    register,
+    errors,
+  );
 
   const watchAuth = watch("auth");
   const watchHeaders = watch("headers");
@@ -97,11 +101,13 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
         force_ip_resolve: data.force_ip_resolve,
         version: data.version,
         read_timeout: data.read_timeout,
-        idn_conversion: advancedSwitch.idnConversion === "int" ? data.idn_conversion_int : data.idn_conversion_bool,
+        idn_conversion:
+          advancedSwitchState.idnConversion === "int" ? data.idn_conversion_int : data.idn_conversion_bool,
         delay: data.delay,
-        expect: advancedSwitch.expect === "int" ? data.expect_int : data.expect_bool,
-        verify: advancedSwitch.verify === "string" ? data.verify_str : data.verify_bool,
-        decode_content: advancedSwitch.decodeContent === "string" ? data.decode_content_str : data.decode_content_bool,
+        expect: advancedSwitchState.expect === "int" ? data.expect_int : data.expect_bool,
+        verify: advancedSwitchState.verify === "string" ? data.verify_str : data.verify_bool,
+        decode_content:
+          advancedSwitchState.decodeContent === "string" ? data.decode_content_str : data.decode_content_bool,
         proxy: data.proxy,
       },
     };

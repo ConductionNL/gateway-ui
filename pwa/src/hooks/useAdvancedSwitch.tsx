@@ -56,9 +56,42 @@ export const useAdvancedSwitch = (
     idnConversion: setIdnConversion,
   };
 
+  const setupAdvancedSwitch = (configuration: any) => {
+    const newAdvancedSwitch = { ...advancedSwitchState };
+
+    for (const [key, value] of Object.entries(configuration)) {
+      if (key === "decode_content") {
+        if (typeof value === "string") newAdvancedSwitch.decodeContent = "string";
+        if (typeof value === "boolean") newAdvancedSwitch.decodeContent = "boolean";
+        continue;
+      }
+      if (key === "delay") {
+        if (Number.isInteger(value)) newAdvancedSwitch.delay = "int";
+        else newAdvancedSwitch.delay = "float";
+        continue;
+      }
+      if (key === "expect") {
+        if (typeof value === "number") newAdvancedSwitch.expect = "int";
+        if (typeof value === "boolean") newAdvancedSwitch.expect = "boolean";
+        continue;
+      }
+      if (key === "verify") {
+        if (typeof value === "string") newAdvancedSwitch.verify = "string";
+        if (typeof value === "boolean") newAdvancedSwitch.verify = "boolean";
+        continue;
+      }
+      if (key === "idn_conversion") {
+        if (typeof value === "number") newAdvancedSwitch.idnConversion = "int";
+        if (typeof value === "boolean") newAdvancedSwitch.idnConversion = "boolean";
+      }
+    }
+
+    setAdvancedSwitchState(newAdvancedSwitch);
+  };
+
   const AdvancedSwitch: React.FC = () => (
     <SourceFormAdvancedTemplate {...{ isLoading, register, errors, set, advancedSwitchState }} />
   );
 
-  return { AdvancedSwitch, advancedSwitchState, set };
+  return { AdvancedSwitch, advancedSwitchState, set, setupAdvancedSwitch };
 };
