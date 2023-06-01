@@ -1,15 +1,17 @@
 import { AxiosInstance, AxiosResponse } from "axios";
-import { Send } from "../apiService";
+import { TSendFunction } from "../apiService";
 
 export default class Me {
   private _instance: AxiosInstance;
+  private _send: TSendFunction;
 
-  constructor(_instance: AxiosInstance) {
-    this._instance = _instance;
+  constructor(instance: AxiosInstance, send: TSendFunction) {
+    this._instance = instance;
+    this._send = send;
   }
 
   public getMe = async (): Promise<AxiosResponse> => {
-    const { data } = await Send(this._instance, "GET", "/me");
+    const { data } = await this._send(this._instance, "GET", "/me");
     return data;
   };
 }

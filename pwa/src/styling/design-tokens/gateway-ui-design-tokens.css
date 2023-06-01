@@ -1,4 +1,7 @@
 :root {
+  /* favicon */
+  --gateway-ui-favicon: url("../../assets/svgs/conduction-logo.svg");
+
   /* Sizes */
   --gateway-ui-size-4xs: 1px;
   --gateway-ui-size-3xs: 2px;
@@ -50,11 +53,68 @@
 
   /* Colors */
   --gateway-ui-color-white: #ffffff;
+  --gateway-ui-color-black: black;
+  --gateway-ui-color-gray: gray;
+  --gateway-ui-color-lightgrey: rgb(238, 238, 238);
+  --gateway-ui-color-grey: rgb(217, 217, 217);
+  --gateway-ui-color-darkgrey: rgb(204, 204, 204);
+  --gateway-ui-color-red: red;
+  --gateway-ui-color-dark-red: rgb(146, 2, 2);
+  --gateway-ui-color-green: #28a745;
+  --gateway-ui-color-dark-green: #218838;
+  --gateway-ui-color-orange: orange;
+  --gateway-ui-color-status-green: #69b090;
+  --gateway-ui-color-status-red: #dd3c49;
+  --gateway-ui-color-method-get: var(--gateway-ui-color-status-green);
+  --gateway-ui-color-method-post: #51b8f4;
+  --gateway-ui-color-method-put: #95507c;
+  --gateway-ui-color-method-patch: #e9743a;
+  --gateway-ui-color-method-update: #e93aac;
+  --gateway-ui-color-method-delete: var(--gateway-ui-color-status-red);
   --gateway-ui-color-primary: #4376fc;
   --gateway-ui-color-primary-hover: #2e5ed9;
   --gateway-ui-background-color: #fafafa;
   --gateway-ui-side-bar-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
+  --gateway-ui-color-disabled: #c2c8cb;
+  --gateway-ui-mapping-header-border-color: 1px solid rgb(209, 209, 209);
+  --gateway-ui-row-background-color: #f9f8f6;
+  --gateway-ui-drop-down-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.8);
+
+  --gateway-ui-color-status-background-debug: #f2f2f2;
+  --gateway-ui-color-status-debug: #4a4a4a;
+  --gateway-ui-color-status-background-success: #d4edda;
+  --gateway-ui-color-status-success: #155724;
+  --gateway-ui-color-status-background-info: #cce5ff;
+  --gateway-ui-color-status-info: #004085;
+  --gateway-ui-color-status-background-notice: #d1ecf1;
+  --gateway-ui-color-status-notice: #0c5460;
+  --gateway-ui-color-status-background-warning: #fff3cd;
+  --gateway-ui-color-status-warning: #856404;
+  --gateway-ui-color-status-background-error: #ffc061;
+  --gateway-ui-color-status-error: #59401a;
+  --gateway-ui-color-status-background-critical: #f8d7da;
+  --gateway-ui-color-status-critical: #721c24;
+  --gateway-ui-color-status-background-alert: #ff959e;
+  --gateway-ui-color-status-alert: #480f14;
+  --gateway-ui-color-status-background-emergency: #000000;
+  --gateway-ui-color-status-emergency: #ffffff;
 
   /* Components */
   --gateway-ui-container-max-width: 2440px;
+  --gateway-ui-card-border-color: 1px solid var(--gateway-ui-color-primary);
+  --gateway-ui-objects-save-button-left-border-radius: 3px 0 0 3px;
+  --gateway-ui-objects-save-button-right-border-radius: 0 3px 3px 0;
+  --gateway-ui-objects-save-button-color: black;
+  --gateway-ui-objects-save-button-background-color: white;
+  --gateway-ui-objects-save-button-border-color: 1px solid rgb(204, 204, 204);
+  --gateway-ui-objects-save-button-triangle-size: 14px;
+  --gateway-ui-objects-save-button-triangle-position-from-right: 16px;
+  --gateway-ui-objects-save-button-options-border-radius: 4px;
+  --gateway-ui-objects-save-button-options-button-border-radius: 4px;
+  --gateway-ui-confirm-popup-overlay-background-color: rgba(0, 0, 0, 0.3);
+  --gateway-ui-confirm-popup-width: 500px;
+  --gateway-ui-logs-table-display-filters-select-width: 200px;
+  --gateway-ui-button-secondary-border: 1px solid;
+  --gateway-ui-code-editor-height: 500px;
+  --gateway-ui-code-editor-border: 1px solid rgba(0, 0, 0, 0.2);
 }

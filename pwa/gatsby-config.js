@@ -11,6 +11,12 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        icon: "./src/assets/svgs/conduction-logo.svg",
+      },
+    },
+    {
       resolve: `gatsby-plugin-breadcrumb`,
       options: {
         useAutoGen: true,
@@ -28,6 +34,98 @@ module.exports = {
           {
             pathname: "/actions/[actionId]",
             crumbLabel: "Action",
+          },
+          {
+            pathname: "/sources/[sourceId]",
+            crumbLabel: "Source",
+          },
+          {
+            pathname: "/cronjobs/[cronjobId]",
+            crumbLabel: "Cronjob",
+          },
+          {
+            pathname: "/endpoints/[endpointId]",
+            crumbLabel: "Endpoint",
+          },
+          {
+            pathname: "/objects",
+            crumbLabel: "Objects",
+          },
+          {
+            pathname: "/objects/[objectId]",
+            crumbLabel: "Object",
+          },
+          {
+            pathname: "/objects/[objectId]/[syncId]",
+            crumbLabel: "Synchronization",
+          },
+          {
+            pathname: "/schemas/[schemaId]",
+            crumbLabel: "Schema",
+          },
+          {
+            pathname: "/schemas/[schemaId]/[propertyId]",
+            crumbLabel: "Property",
+          },
+          {
+            pathname: "/logs/[logId]",
+            crumbLabel: "Log",
+          },
+          {
+            pathname: "/plugins/[pluginId]",
+            crumbLabel: "Plugin",
+          },
+          {
+            pathname: "/plugins/installed",
+            crumbLabel: "Installed Plugins",
+          },
+          {
+            pathname: "/plugins/search",
+            crumbLabel: "Search Plugins",
+          },
+          {
+            pathname: "/plugins/installed/[pluginId]",
+            crumbLabel: "Plugin",
+          },
+          {
+            pathname: "/plugins/search/[pluginId]",
+            crumbLabel: "Plugin",
+          },
+          {
+            pathname: "/collections/[collectionId]",
+            crumbLabel: "collection",
+          },
+          {
+            pathname: "/settings/securitygroups",
+            crumbLabel: "Security Groups",
+          },
+          {
+            pathname: "/settings/securitygroups/[securitygroupId]",
+            crumbLabel: "Security Group",
+          },
+          {
+            pathname: "/settings/gatewayDetail/[gatewayDetailId]",
+            crumbLabel: "Gateway Detail",
+          },
+          {
+            pathname: "/settings/organizations/[organizationsId]",
+            crumbLabel: "Organization",
+          },
+          {
+            pathname: "/settings/applications/[applicationId]",
+            crumbLabel: "Application",
+          },
+          {
+            pathname: "/settings/users/[userId]",
+            crumbLabel: "User Detail",
+          },
+          {
+            pathname: "/settings/authentication/[authenticationId]",
+            crumbLabel: "Authentication",
+          },
+          {
+            pathname: "/mappings/[mappingId]",
+            crumbLabel: "Mapping",
           },
         ],
       },

@@ -1,0 +1,17 @@
+.form {
+  background-color: var(--gateway-ui-color-white);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.gridContainer > *:not(:first-child) {
+  margin-block-start: var(--gateway-ui-size-sm);
+}
+
+.grid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}

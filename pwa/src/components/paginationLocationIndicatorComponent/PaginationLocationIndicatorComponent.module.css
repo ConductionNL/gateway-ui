@@ -1,0 +1,6 @@
+.content {
+  padding-inline-start: var(--gateway-ui-size-sm);
+  padding-inline-end: var(--gateway-ui-size-sm);
+  padding-block-start: var(--gateway-ui-size-sm);
+  padding-block-end: var(--gateway-ui-size-sm);
+}

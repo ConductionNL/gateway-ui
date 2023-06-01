@@ -1,0 +1,62 @@
+.container {
+  box-sizing: border-box;
+  background: var(--gateway-ui-color-white);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.container > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.tabContainer {
+  background: var(--gateway-ui-color-white);
+  margin-block-start: var(--gateway-ui-size-2xl);
+  padding-block: var(--gateway-ui-size-md);
+  padding-inline: var(--gateway-ui-size-md);
+}
+
+.tabPanel {
+  padding-inline-start: var(--gateway-ui-size-lg) !important;
+  padding-inline-end: var(--gateway-ui-size-lg) !important;
+  padding-block-start: var(--gateway-ui-size-lg) !important;
+  padding-block-end: var(--gateway-ui-size-lg) !important;
+}
+
+.tab {
+  max-width: unset !important;
+}
+
+/* Method colors */
+
+.getTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-get);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.postTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-post);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.putTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-put);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.deleteTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-delete);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.patchTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-patch);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}
+
+.updateTag {
+  --conduction-tag-background-color: var(--gateway-ui-color-method-update);
+  --conduction-tag-color: var(--gateway-ui-color-white);
+}

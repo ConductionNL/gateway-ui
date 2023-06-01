@@ -1,0 +1,9 @@
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.cardsGrid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}

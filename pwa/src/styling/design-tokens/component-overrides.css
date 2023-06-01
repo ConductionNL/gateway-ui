@@ -1,10 +1,14 @@
 :root {
   --denhaag-breadcrumb-background-color: var(--gateway-ui-color-white);
-  --denhaag-breacrumb-link-color: var(--gateway-ui-color-primary);
+  --denhaag-breadcrumb-link-color: var(--gateway-ui-color-primary);
+  --denhaag-breadcrumb-link-hover-color: var(--gateway-ui-color-primary-hover);
   --denhaag-breadcrumb-list-max-width: 100%;
 
   --denhaag-sidenav-link-hover-color: var(--gateway-ui-color-primary);
   --denhaag-sidenav-link-active-color: var(--gateway-ui-color-primary);
+  --denhaag-sidenav-link-active-font-weight: var(
+    --denhaag-sidenav-item-font-size
+  );
 
   --denhaag-button-primary-action-background-color: var(
     --gateway-ui-color-primary
@@ -13,5 +17,70 @@
     --gateway-ui-color-primary-hover
   );
 
+  --denhaag-button-secondary-action-border-color: var(
+    --gateway-ui-color-primary
+  );
+  --denhaag-button-secondary-action-color: var(--gateway-ui-color-primary);
+
+  --denhaag-button-secondary-action-hover-border-color: var(
+    --gateway-ui-color-primary-hover
+  );
+  --denhaag-button-secondary-action-hover-color: var(
+    --gateway-ui-color-primary-hover
+  );
+
+  --denhaag-link-color: var(--gateway-ui-color-primary);
+
   --conduction-container-max-width: var(--gateway-ui-container-max-width);
+
+  --conduction-delete-button-background-color: var(--gateway-ui-color-red);
+  --conduction-delete-button-background-hover-color: var(
+    --gateway-ui-color-dark-red
+  );
+
+  --utrecht-form-input-placeholder-color: var(--denhaag-color-grey-2);
+
+  --utrecht-textbox-padding-block-start: var(--gateway-ui-size-xs);
+  --utrecht-textbox-padding-block-end: var(--gateway-ui-size-xs);
+  --utrecht-textbox-padding-inline-start: var(--gateway-ui-size-xs);
+  --utrecht-textbox-padding-inline-end: var(--gateway-ui-size-xs);
+  --utrecht-form-input-padding-block-start: var(--gateway-ui-size-xs);
+  --utrecht-form-input-padding-block-end: var(--gateway-ui-size-xs);
+  --utrecht-form-input-padding-inline-start: var(--gateway-ui-size-xs);
+  --utrecht-form-input-padding-inline-end: var(--gateway-ui-size-xs);
+
+  --utrecht-form-input-font-size: var(--gateway-ui-font-size-md);
+  --utrecht-form-label-font-size: var(--gateway-ui-font-size-md);
+
+  --utrecht-custom-checkbox-checked-background-color: var(
+    --gateway-ui-color-primary
+  );
+  --utrecht-custom-checkbox-checked-border-color: var(
+    --gateway-ui-color-primary
+  );
+
+  --denhaag-checkbox-hover-checked-background-color: var(
+    --gateway-ui-color-primary-hover
+  );
+
+  --denhaag-checkbox-hover-checked-border-color: var(
+    --gateway-ui-color-primary-hover
+  );
+}
+
+.select-module--select--63d48 > div {
+  padding: 0;
+  font-size: var(--gateway-ui-font-size-md);
+}
+
+.denhaag-button:hover {
+  cursor: pointer;
+}
+
+.denhaag-button:disabled {
+  cursor: not-allowed;
+}
+
+.denhaag-table__row:hover {
+  cursor: pointer;
 }

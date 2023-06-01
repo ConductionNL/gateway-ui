@@ -1,0 +1,9 @@
+.gridContainer > *:not(:first-child) {
+  margin-block-start: var(--gateway-ui-size-sm);
+}
+
+.grid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}

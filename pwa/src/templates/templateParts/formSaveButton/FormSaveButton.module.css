@@ -1,0 +1,89 @@
+.button {
+  width: max-content;
+}
+
+.buttonIcon > span > svg,
+.buttonIcon > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.primaryButton {
+  border-radius: var(
+    --gateway-ui-objects-save-button-left-border-radius
+  ) !important;
+  margin-inline-end: 0 !important;
+}
+
+.secondaryButton {
+  border-radius: var(
+    --gateway-ui-objects-save-button-right-border-radius
+  ) !important;
+}
+
+.container {
+  position: relative;
+}
+
+.saveButtonContainer {
+  width: max-content;
+}
+
+.saveButtonContainer > button:focus {
+  z-index: 100;
+}
+
+.optionsContainer {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: max-content;
+  margin-block-start: var(--gateway-ui-size-sm);
+}
+
+.optionsContainerEnabled {
+  display: block;
+  background-color: var(--gateway-ui-objects-save-button-background-color);
+  color: var(--gateway-ui-objects-save-button-color);
+}
+
+.triangle {
+  /* dont ask me how this works, it just does */
+  display: block;
+  height: var(--gateway-ui-objects-save-button-triangle-size);
+  width: var(--gateway-ui-objects-save-button-triangle-size);
+  background-color: var(--gateway-ui-objects-save-button-background-color);
+  border: var(--gateway-ui-objects-save-button-border-color);
+  position: absolute;
+  top: -8px;
+  right: var(--gateway-ui-objects-save-button-triangle-position-from-right);
+  clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+  transform: rotate(135deg);
+  border-radius: 0 0 0 0.25em;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  padding-inline: var(--gateway-ui-size-xs);
+  padding-block: var(--gateway-ui-size-xs);
+  outline: var(--gateway-ui-objects-save-button-border-color);
+  border-radius: var(--gateway-ui-objects-save-button-options-border-radius);
+}
+
+.optionsButton {
+  font-size: var(--gateway-ui-font-size-md);
+  width: 100%;
+  padding-block: var(--gateway-ui-size-2xs);
+  display: flex;
+  gap: var(--gateway-ui-size-xs);
+  background-color: unset;
+  border: none;
+  cursor: pointer;
+}
+.optionsButton:hover {
+  background-color: var(--gateway-ui-color-lightgrey);
+  border-radius: var(
+    --gateway-ui-objects-save-button-options-button-border-radius
+  );
+}
