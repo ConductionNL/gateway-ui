@@ -10,7 +10,7 @@ export const UploadTemplate: React.FC = () => {
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1 className={styles.title}>Upload and import</Heading1>
+      <Heading1>Upload and import</Heading1>
 
       <Alert
         title="Attention"
@@ -27,8 +27,8 @@ export const UploadTemplate: React.FC = () => {
             }}
             variant="scrollable"
           >
-            <Tab className={styles.tab} label={t("Upload")} value={0} />
-            <Tab className={styles.tab} label={t("Import")} value={1} />
+            <Tab label={t("Upload")} value={0} />
+            <Tab label={t("Import")} value={1} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
