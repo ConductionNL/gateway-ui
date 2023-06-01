@@ -12,11 +12,11 @@ export const UploadTemplate: React.FC = () => {
     <Container layoutClassName={styles.container}>
       <Heading1>Upload and import</Heading1>
 
-      <Alert
+      {/* <Alert
         title="Attention"
         text="This page is availabel for development purposes only; it is not yet functional."
         variant="warning"
-      />
+      /> */}
 
       <div className={styles.tabsContainer}>
         <TabContext value={currentTab.toString()}>
