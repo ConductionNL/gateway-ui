@@ -37,16 +37,18 @@ export const useAdvancedSwitch = (
    * Setters
    */
   const setDecodeContent = (value: "string" | "boolean") =>
-    setAdvancedSwitchState({ ...advancedSwitchState, decodeContent: value });
+    setAdvancedSwitchState((oldState) => ({ ...oldState, decodeContent: value }));
 
-  const setDelay = (value: "int" | "float") => setAdvancedSwitchState({ ...advancedSwitchState, delay: value });
+  const setDelay = (value: "int" | "float") => setAdvancedSwitchState((oldState) => ({ ...oldState, delay: value }));
 
-  const setExpect = (value: "int" | "boolean") => setAdvancedSwitchState({ ...advancedSwitchState, expect: value });
+  const setExpect = (value: "int" | "boolean") =>
+    setAdvancedSwitchState((oldState) => ({ ...oldState, expect: value }));
 
-  const setVerify = (value: "string" | "boolean") => setAdvancedSwitchState({ ...advancedSwitchState, verify: value });
+  const setVerify = (value: "string" | "boolean") =>
+    setAdvancedSwitchState((oldState) => ({ ...oldState, verify: value }));
 
   const setIdnConversion = (value: "int" | "boolean") =>
-    setAdvancedSwitchState({ ...advancedSwitchState, idnConversion: value });
+    setAdvancedSwitchState((oldState) => ({ ...oldState, idnConversion: value }));
 
   const set: IAdvancedSwitchSetters = {
     decodeContent: setDecodeContent,

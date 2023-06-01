@@ -48,7 +48,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     setValue,
   } = useForm();
 
-  const { AdvancedSwitch, advancedSwitchState, setupAdvancedSwitch } = useAdvancedSwitch(
+  const { AdvancedSwitch, advancedSwitchState, setupAdvancedSwitch, set } = useAdvancedSwitch(
     isLoading.sourceForm ?? false,
     register,
     errors,
@@ -179,20 +179,52 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           if (item === "query") setQuery(data);
         });
 
-        if (key === "decode_content" && typeof _value === "string") setValue("decode_content_str", _value);
-        if (key === "decode_content" && typeof _value === "boolean") setValue("decode_content_bool", _value);
+        if (key === "decode_content" && typeof _value === "string") {
+          setValue("decode_content_str", _value);
+          set.decodeContent("string");
+        }
+        if (key === "decode_content" && typeof _value === "boolean") {
+          setValue("decode_content_bool", _value);
+          set.decodeContent("boolean");
+        }
 
-        if (key === "expect" && typeof _value === "number") setValue("expect_int", _value);
-        if (key === "expect" && typeof _value === "boolean") setValue("expect_bool", _value);
+        if (key === "expect" && typeof _value === "number") {
+          setValue("expect_int", _value);
+          set.expect("int");
+        }
+        if (key === "expect" && typeof _value === "boolean") {
+          setValue("expect_bool", _value);
+          set.expect("boolean");
+        }
 
-        if (key === "verify" && typeof _value === "string") setValue("verify_str", _value);
-        if (key === "verify" && typeof _value === "boolean") setValue("verify_bool", _value);
+        if (key === "verify" && typeof _value === "string") {
+          setValue("verify_str", _value);
+          set.verify("string");
+        }
+        if (key === "verify" && typeof _value === "boolean") {
+          setValue("verify_bool", _value);
+          set.verify("boolean");
+        }
 
-        if (key === "idn_conversion" && typeof _value === "number") setValue("idn_conversion_int", _value);
-        if (key === "idn_conversion" && typeof _value === "boolean") setValue("idn_conversion_bool", _value);
+        if (key === "idn_conversion" && typeof _value === "number") {
+          setValue("idn_conversion_int", _value);
+          set.idnConversion("int");
+        }
+        if (key === "idn_conversion" && typeof _value === "boolean") {
+          setValue("idn_conversion_bool", _value);
+          set.idnConversion("boolean");
+        }
+
+        // if (Number.isInteger(value)) newAdvancedSwitch.delay = "int";
+        // else newAdvancedSwitch.delay = "float";
+        if (key === "delay" && Number.isInteger(value)) {
+          set.delay("int");
+        } else {
+          set.delay("float");
+        }
       }
 
-      setupAdvancedSwitch(source.configuration);
+      // setupAdvancedSwitch(source.configuration);
     }
   };
 
