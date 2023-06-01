@@ -183,6 +183,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           setValue("decode_content_str", _value);
           set.decodeContent("string");
         }
+
         if (key === "decode_content" && typeof _value === "boolean") {
           setValue("decode_content_bool", _value);
           set.decodeContent("boolean");
@@ -192,6 +193,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           setValue("expect_int", _value);
           set.expect("int");
         }
+
         if (key === "expect" && typeof _value === "boolean") {
           setValue("expect_bool", _value);
           set.expect("boolean");
@@ -201,6 +203,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           setValue("verify_str", _value);
           set.verify("string");
         }
+
         if (key === "verify" && typeof _value === "boolean") {
           setValue("verify_bool", _value);
           set.verify("boolean");
@@ -210,21 +213,18 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           setValue("idn_conversion_int", _value);
           set.idnConversion("int");
         }
+
         if (key === "idn_conversion" && typeof _value === "boolean") {
           setValue("idn_conversion_bool", _value);
           set.idnConversion("boolean");
         }
 
-        // if (Number.isInteger(value)) newAdvancedSwitch.delay = "int";
-        // else newAdvancedSwitch.delay = "float";
         if (key === "delay" && Number.isInteger(value)) {
           set.delay("int");
         } else {
           set.delay("float");
         }
       }
-
-      // setupAdvancedSwitch(source.configuration);
     }
   };
 
