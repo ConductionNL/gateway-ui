@@ -201,10 +201,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           />
           <div className={styles.expectFormField}>
             {advancedSwitchState.delay === "int" && (
-              <InputNumber disabled={isLoading} name="delay" {...{ register, errors }} />
+              <InputNumber disabled={isLoading} name="delay_int" {...{ register, errors }} />
             )}
             {advancedSwitchState.delay === "float" && (
-              <InputFloat disabled={isLoading} name="delay" {...{ register, errors }} />
+              <InputFloat disabled={isLoading} name="delay_float" {...{ register, errors }} />
             )}
           </div>
         </FormField>
@@ -351,6 +351,8 @@ export const advancedFormKeysToRemove: string[] = [
   "decode_content_str",
   "decode_content_bool",
   "delay",
+  "delay_int",
+  "delay_float",
   "expect",
   "expect_bool",
   "expect_int",

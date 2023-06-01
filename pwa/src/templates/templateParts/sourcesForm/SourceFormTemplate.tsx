@@ -16,7 +16,6 @@ import { getStatusTag } from "../../../services/getStatusTag";
 import { StatusTag } from "../../../components/statusTag/StatusTag";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 import { advancedFormKeysToRemove } from "./SourceFormAdvancedTemplate";
-import { useAdvancedSwitchContext } from "../../../context/advancedSwitch";
 import { useAdvancedSwitch } from "../../../hooks/useAdvancedSwitch";
 
 interface SourceTemplateProps {
@@ -33,8 +32,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
   const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
-  // const { advancedSwitch, setupAdvancedSwitch } = useAdvancedSwitchContext();
-
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
   const createOrEditSource = _useSources.createOrEdit(source?.id);
@@ -48,7 +45,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     setValue,
   } = useForm();
 
-  const { AdvancedSwitch, advancedSwitchState, setupAdvancedSwitch, set } = useAdvancedSwitch(
+  const { AdvancedSwitch, advancedSwitchState, set } = useAdvancedSwitch(
     isLoading.sourceForm ?? false,
     register,
     errors,
@@ -103,7 +100,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
         read_timeout: data.read_timeout,
         idn_conversion:
           advancedSwitchState.idnConversion === "int" ? data.idn_conversion_int : data.idn_conversion_bool,
-        delay: data.delay,
+        delay: advancedSwitchState.delay === "int" ? data.delay_int : data.delay_float,
         expect: advancedSwitchState.expect === "int" ? data.expect_int : data.expect_bool,
         verify: advancedSwitchState.verify === "string" ? data.verify_str : data.verify_bool,
         decode_content:
@@ -219,9 +216,12 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           set.idnConversion("boolean");
         }
 
-        if (key === "delay" && Number.isInteger(value)) {
+        if ((key === "delay" && Number.isInteger(_value)) || null || undefined) {
+          setValue("delay_int", _value);
           set.delay("int");
-        } else {
+        }
+        if (key === "delay" && !Number.isInteger(_value)) {
+          setValue("delay_float", _value);
           set.delay("float");
         }
       }
