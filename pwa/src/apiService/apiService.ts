@@ -26,6 +26,7 @@ import User from "./resources/user";
 import Authentication from "./resources/authentication";
 import SecurityGroup from "./resources/securityGroup";
 import Mapping from "./resources/mapping";
+import Template from "./resources/template";
 
 interface PromiseMessage {
   loading?: string;
@@ -196,6 +197,10 @@ export default class APIService {
 
   public get Mapping(): Mapping {
     return new Mapping(this.BaseClient, this.Send);
+  }
+
+  public get Template(): Template {
+    return new Template(this.BaseClient, this.Send);
   }
 
   // Services
