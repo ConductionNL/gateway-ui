@@ -2,36 +2,34 @@ import * as React from "react";
 import * as styles from "./TemplatesTemplate.module.css";
 import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { useAction } from "../../hooks/action";
+import { useTemplate } from "../../hooks/template";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { translateDate } from "../../services/dateFormat";
 import Skeleton from "react-loading-skeleton";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
-import { dateTime } from "../../services/dateTime";
-import { StatusTag } from "../../components/statusTag/StatusTag";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 import { ActionButton } from "../../components/actionButton/ActionButton";
+import { translateDate } from "../../services/dateFormat";
 
 export const TemplatesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
 
-  // const queryClient = useQueryClient();
-  // const _useActions = useAction(queryClient);
-  // const getActions = _useActions.getAll();
-  // const deleteAction = _useActions.remove();
+  const queryClient = useQueryClient();
+  const _useTemplate = useTemplate(queryClient);
+  const getTemplates = _useTemplate.getAll();
+  const deleteTemplate = _useTemplate.remove();
 
-  // const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getActions.data);
+  const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getTemplates.data);
 
-  // const handleBulkDelete = (): void => {
-  //   selectedItems.forEach((item) => deleteAction.mutate({ id: item }));
-  // };
+  const handleBulkDelete = (): void => {
+    selectedItems.forEach((item) => deleteTemplate.mutate({ id: item }));
+  };
 
   return (
     <Container layoutClassName={styles.container}>
@@ -47,38 +45,60 @@ export const TemplatesTemplate: React.FC = () => {
         }
       />
 
-      {/* {getActions.isError && "Error..."} */}
+      {getTemplates.isError && "Error..."}
 
-      {/* {getActions.isSuccess && ( */}
-      <div>
-        {/* <BulkActionButton
+      {getTemplates.isSuccess && (
+        <div>
+          <BulkActionButton
             actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
             selectedItemsCount={selectedItems.length}
-          /> */}
+          />
 
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableHeader>{/* <CheckboxBulkSelectAll /> */}</TableHeader>
-              <TableHeader>{t("Name")}</TableHeader>
-              <TableHeader />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {/* {getActions.data.map((action) => ( */}
-            <TableRow key={"template.id"}>
-              {/* onClick={() => toggleItem(action.id)} */}
-              {/* <TableCell>{<CheckboxBulkSelectOne id={action.id} />}</TableCell> */}
-              <TableCell></TableCell>
-              <TableCell className={styles.actionName}>{"template.name"}</TableCell>
-              <TableCell onClick={() => navigate("/templates/${template.id}")}>
-                <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                  {t("Details")}
-                </Link>
-              </TableCell>
-            </TableRow>
-            {/* ))} */}
-            {/* {!getActions.data.length && (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableHeader>
+                  <CheckboxBulkSelectAll />
+                </TableHeader>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Organization")}</TableHeader>
+                <TableHeader>{t("Date Created")}</TableHeader>
+                <TableHeader>{t("Date Modified")}</TableHeader>
+                <TableHeader>{t("Actions")}</TableHeader>
+                <TableHeader />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {getTemplates.data.map((template) => (
+                <TableRow key={"template.id"} onClick={() => toggleItem(template.id)}>
+                  <TableCell>{<CheckboxBulkSelectOne id={template.id} />}</TableCell>
+
+                  <TableCell>{template.name}</TableCell>
+
+                  <TableCell>{template.organization.name}</TableCell>
+
+                  <TableCell>{translateDate(i18n.language, template.dateCreated) ?? "-"}</TableCell>
+
+                  <TableCell>{translateDate(i18n.language, template.dateModified) ?? "-"}</TableCell>
+
+                  <TableCell>
+                    <ActionButton
+                      actions={[
+                        { type: "delete", onSubmit: () => deleteTemplate.mutate({ id: template.id }) },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
+                      ]}
+                      variant="primary"
+                    />
+                  </TableCell>
+
+                  <TableCell onClick={() => navigate(`/templates/${template.id}`)}>
+                    <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
+                      {t("Details")}
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {!getTemplates.data.length && (
                 <TableRow>
                   <TableCell>{t("No templates found")}</TableCell>
                   <TableCell />
@@ -87,18 +107,14 @@ export const TemplatesTemplate: React.FC = () => {
                   <TableCell />
                   <TableCell />
                   <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
-                  <TableCell />
                 </TableRow>
-              )} */}
-          </TableBody>
-        </Table>
-      </div>
-      {/* )} */}
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      )}
 
-      {/* {getActions.isLoading && <Skeleton height="200px" />} */}
+      {getTemplates.isLoading && <Skeleton height="200px" />}
     </Container>
   );
 };

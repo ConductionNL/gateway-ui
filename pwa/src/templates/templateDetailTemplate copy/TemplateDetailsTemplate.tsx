@@ -1,21 +1,17 @@
 import * as React from "react";
 import * as styles from "./TemplateDetailsTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import { useAction } from "../../hooks/action";
+import { useTemplate } from "../../hooks/template";
 import { useQueryClient } from "react-query";
 import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { TemplateFormTemplate, formId } from "../templateParts/templatesForm/TemplateFormTemplate";
-import action from "../../apiService/resources/action";
 import { useIsLoadingContext } from "../../context/isLoading";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { useLog } from "../../hooks/log";
 import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate";
-import { Button } from "../../components/button/Button";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
 
 interface TemplateDetailsTemplateProps {
@@ -25,58 +21,48 @@ interface TemplateDetailsTemplateProps {
 export const TemplateDetailsTemplate: React.FC<TemplateDetailsTemplateProps> = ({ templateId }) => {
   const { t } = useTranslation();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
-  // const { setIsLoading, isLoading } = useIsLoadingContext();
-  // const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
+  const { setIsLoading, isLoading } = useIsLoadingContext();
+  const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
 
-  // const queryClient = useQueryClient();
-  // const _useAction = useAction(queryClient);
+  const queryClient = useQueryClient();
+  const _useTemplate = useTemplate(queryClient);
 
-  // const getAction = _useAction.getOne(actionId);
-  // const deleteAction = _useAction.remove();
-  // const runAction = _useAction.runAction(actionId);
+  const getTemplate = _useTemplate.getOne(templateId);
+  const deleteTemplate = _useTemplate.remove();
 
-  // const getLogs = useLog(queryClient).getAllFromChannel("action", actionId, currentLogsPage);
+  const getLogs = useLog(queryClient).getAllFromChannel("template", templateId, currentLogsPage);
 
-  // const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
+  const { toggleDashboardCard, getDashboardCard, loading: dashboardToggleLoading } = useDashboardCard();
 
-  // const dashboardCard = getDashboardCard(actionId);
+  const dashboardCard = getDashboardCard(templateId);
 
-  // const toggleFromDashboard = () => {
-  //   toggleDashboardCard(action.name, "action", "Action", actionId, dashboardCard?.id);
-  // };
+  const toggleFromDashboard = () => {
+    toggleDashboardCard(getTemplate.data.name, "template", "Template", templateId, dashboardCard?.id);
+  };
 
-  // const handleRunAction = (data: any) => {
-  //   runAction.mutate({ payload: data, id: actionId });
-  // };
-
-  // React.useEffect(() => {
-  //   setIsLoading({ ...isLoading, actionForm: deleteAction.isLoading || dashboardToggleLoading });
-  // }, [deleteAction.isLoading, dashboardToggleLoading]);
+  React.useEffect(() => {
+    setIsLoading({ ...isLoading, actionForm: deleteTemplate.isLoading || dashboardToggleLoading });
+  }, [deleteTemplate.isLoading, dashboardToggleLoading]);
 
   return (
     <Container layoutClassName={styles.container}>
-      {/* {getAction.isError && "Error..."} */}
+      {getTemplate.isError && "Error..."}
 
-      {/* {getAction.isSuccess && ( */}
+      {getTemplate.isSuccess && (
         <>
           <FormHeaderTemplate
-            title={"Edit ${getAction.data.name}"}
+            title={`Edit ${getTemplate.data.name}`}
             {...{ formId }}
-            // disabled={isLoading.actionForm}
-            // handleDelete={() => deleteAction.mutate({ id: actionId })}
-            // handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            disabled={isLoading.actionForm}
+            handleDelete={() => deleteTemplate.mutate({ id: templateId })}
+            handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
             showTitleTooltip
-            // customElements={
-            //   <Button label={t("Run")} icon={faPlay} variant="success" onClick={() => handleRunAction({})} />
-            // }
           />
 
-          <TemplateFormTemplate template={templateId} />
-
-          
+          <TemplateFormTemplate template={getTemplate.data} />
         </>
-      {/* )} */}
-      {/* {getAction.isLoading && <Skeleton height="200px" />} */}
+      )}
+      {getTemplate.isLoading && <Skeleton height="200px" />}
 
       <div className={styles.tabContainer}>
         <TabContext value={currentTab.toString()}>
@@ -91,9 +77,9 @@ export const TemplateDetailsTemplate: React.FC<TemplateDetailsTemplateProps> = (
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            {/* {getLogs.isLoading && <Skeleton height="200px" />} */}
+            {getLogs.isLoading && <Skeleton height="200px" />}
 
-            {/* {getLogs.isSuccess && (
+            {getLogs.isSuccess && (
               <LogsTableTemplate
                 logs={getLogs.data.results}
                 pagination={{
@@ -107,7 +93,7 @@ export const TemplateDetailsTemplate: React.FC<TemplateDetailsTemplateProps> = (
                   setCurrentPage: setCurrentLogsPage,
                 }}
               />
-            )} */}
+            )}
           </TabPanel>
         </TabContext>
       </div>

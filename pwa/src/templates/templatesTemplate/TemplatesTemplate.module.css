@@ -1,8 +1,3 @@
 .container > *:not(:last-child) {
   margin-block-end: var(--gateway-ui-size-2xl);
 }
-
-.actionName {
-  word-break: break-word;
-  min-width: 250px;
-}

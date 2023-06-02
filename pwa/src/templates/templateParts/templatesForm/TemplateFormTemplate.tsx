@@ -2,19 +2,18 @@ import * as React from "react";
 import * as styles from "./TemplateFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
-import { Divider, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
+import { Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputNumber, InputText, Textarea, SelectSingle } from "@conduction/components";
+import { InputText, SelectSingle, Textarea } from "@conduction/components";
 import { useQueryClient } from "react-query";
-import { useAction } from "../../../hooks/action";
-import { useCronjob } from "../../../hooks/cronjob";
-import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
-import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
-import Skeleton from "react-loading-skeleton";
-import { validateStringAsJSON } from "../../../services/validateJSON";
-import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
+import { useTemplate } from "../../../hooks/template";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
+import { useOrganization } from "../../../hooks/organization";
+import Skeleton from "react-loading-skeleton";
+import { SelectMultiple } from "@conduction/components/lib/components/formFields";
+import { useSchema } from "../../../hooks/schema";
+import { CodeEditor } from "../../../components/codeEditor/CodeEditor";
 
 export const formId: string = "template-form";
 
@@ -24,113 +23,62 @@ interface TemplateFormTemplateProps {
 
 export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ template }) => {
   const { t } = useTranslation();
-  // const { setIsLoading, isLoading } = useIsLoadingContext();
+  const { setIsLoading, isLoading } = useIsLoadingContext();
 
-  // const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
-  // const [selectedHanlderSchema, setSelectedHanlderSchema] = React.useState<any>(null);
-  // const [actionHandlerSchema, setActionHandlerSchema] = React.useState<any>(action?.actionHandlerConfiguration);
   const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [templateContentFieldValue, setTemplateContentFieldValue] = React.useState<string>("");
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-  // const _useAction = useAction(queryClient);
-  // const createOrEditAction = _useAction.createOrEdit();
-  // const getAllHandlers = _useAction.getAllHandlers();
+  const _useTemplate = useTemplate(queryClient);
+  const createOrEditTemplate = _useTemplate.createOrEdit();
 
-  // const _useCronjob = useCronjob(queryClient);
-  // const getCronjobs = _useCronjob.getAll();
+  const _useOrganization = useOrganization(queryClient);
+  const getOrganizations = _useOrganization.getAll();
+
+  const _useSchema = useSchema(queryClient);
+  const getSchemas = _useSchema.getAll();
 
   const {
     register,
     handleSubmit,
     control,
-    watch,
     setValue,
     formState: { errors },
   } = useForm();
 
-  // const watchClass = watch("class");
-
-  // React.useEffect(() => {
-  //   setIsLoading({ actionForm: createOrEditAction.isLoading });
-  // }, [createOrEditAction.isLoading]);
-
-  // React.useEffect(() => {
-  //   if (!watchClass || !getAllHandlers.data) return;
-
-  //   const selectedHandler = getAllHandlers.data.find((handler) => handler.class === watchClass.value);
-
-  //   setSelectedHanlderSchema(selectedHandler.configuration);
-  // }, [watchClass, getAllHandlers.isSuccess]);
-
-  // React.useEffect(() => {
-  //   if (!getCronjobs.data) return;
-
-  //   const cronjobs = getCronjobs.data.map((cronjob) => ({ label: cronjob.name, value: cronjob.name }));
-
-  //   setListensAndThrows([...cronjobs, ...predefinedSubscriberEvents]);
-  // }, [getCronjobs.isSuccess]);
+  React.useEffect(() => {
+    setIsLoading({ templateForm: createOrEditTemplate.isLoading });
+  }, [createOrEditTemplate.isLoading]);
 
   const onSubmit = (data: any): void => {
-    console.log("Template", data);
-    // const payload = {
-    //   ...data,
-    //   listens: data.listens?.map((listener: any) => listener.value),
-    //   throws: data.throws?.map((_throw: any) => _throw.value),
-    //   class: data.class.value,
-    //   conditions: data.conditions ? JSON.parse(data.conditions) : [],
-    //   configuration: {},
-    // };
+    const payload = {
+      ...data,
+      organization: data.organization && `/admin/organisations/${data.organization.value}`,
+      supportedSchemas: data.supportedSchemas,
+      content: templateContentFieldValue,
+    };
 
-    // for (const [key, _] of Object.entries(selectedHanlderSchema.properties)) {
-    //   payload.configuration[key] = data[key];
-    //   delete payload[key];
-    // }
-
-    // createOrEditAction.mutate({ payload, id: action?.id });
-
-    // action && queryClient.setQueryData(["actions", action.id], payload);
+    createOrEditTemplate.mutate({ payload, id: template?.id });
   };
 
-  // const handleSetFormValues = (): void => {
-  //   const basicFields: string[] = ["name", "description", "priority", "async", "isLockable", "isEnabled"];
-  //   basicFields.forEach((field) => setValue(field, action[field]));
+  const handleSetFormValues = (): void => {
+    const basicFields: string[] = ["name", "description"];
+    basicFields.forEach((field) => setValue(field, template[field]));
 
-  //   setValue("conditions", JSON.stringify(action["conditions"]));
+    setValue("organization", { label: template?.organization.name, value: template?.organization.id });
 
-  //   setValue("class", { label: action.class, value: action.class });
+    setValue(
+      "supportedSchemas",
+      template.supportedSchemas?.map((schema: any) => ({ label: schema.label, value: schema.value })),
+    );
 
-  //   setValue(
-  //     "listens",
-  //     action["listens"].map((listen: any) => ({ label: listen, value: listen })),
-  //   );
+    setTemplateContentFieldValue(template.content);
+  };
 
-  //   setValue(
-  //     "throws",
-  //     action["throws"].map((_throw: any) => ({ label: _throw, value: _throw })),
-  //   );
-
-  //   if (actionHandlerSchema?.properties) {
-  //     for (const [key, value] of Object.entries(actionHandlerSchema.properties)) {
-  //       const _value = value as any;
-
-  //       setValue(key, action.configuration[key]);
-
-  //       if (_value.type === "object") {
-  //         action.configuration[key] && setValue(key, JSON.stringify(action.configuration[key]));
-  //       }
-
-  //       setActionHandlerSchema((schema: any) => ({
-  //         ...schema,
-  //         properties: { ...schema.properties, [key]: { ..._value, value: action.configuration[key] } },
-  //       }));
-  //     }
-  //   }
-  // };
-
-  // React.useEffect(() => {
-  //   action && handleSetFormValues();
-  // }, [action]);
+  React.useEffect(() => {
+    template && handleSetFormValues();
+  }, [template]);
 
   return (
     <div className={styles.container}>
@@ -145,7 +93,6 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
               variant="scrollable"
             >
               <Tab className={styles.tab} label={t("General")} value={0} />
-              <Tab className={styles.tab} label={t("Advanced")} value={1} />
             </Tabs>
 
             <TabPanel className={styles.tabPanel} value="0">
@@ -158,17 +105,66 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
                         {...{ register, errors }}
                         name="name"
                         validation={enrichValidation({ required: true, maxLength: 225 })}
-                        // disabled={isLoading.actionForm}
+                        disabled={isLoading.templateForm}
                       />
                     </FormFieldInput>
                   </FormField>
-                </div>
-              </div>
-            </TabPanel>
 
-            <TabPanel className={styles.tabPanel} value="1">
-              <div className={styles.gridContainer}>
-                <div className={styles.grid}></div>
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Organization")}</FormFieldLabel>
+
+                      {getOrganizations.isLoading && <Skeleton height="50px" />}
+                      {getOrganizations.isSuccess && (
+                        <SelectSingle
+                          options={getOrganizations.data.map((organization: any) => ({
+                            label: organization.name,
+                            value: organization.id,
+                          }))}
+                          name="organization"
+                          {...{ register, errors, control }}
+                          disabled={isLoading.templateForm}
+                          validation={enrichValidation({ required: true })}
+                        />
+                      )}
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Supported Schemas")}</FormFieldLabel>
+
+                      {getSchemas.isLoading && <Skeleton height="50px" />}
+                      {getSchemas.isSuccess && (
+                        <SelectMultiple
+                          options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
+                          name="supportedSchemas"
+                          {...{ register, errors, control }}
+                          disabled={isLoading.templateForm}
+                        />
+                      )}
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Description")}</FormFieldLabel>
+                      <Textarea {...{ register, errors }} name="description" disabled={isLoading.templateForm} />
+                    </FormFieldInput>
+                  </FormField>
+                </div>
+
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("Content")}</FormFieldLabel>
+                    <CodeEditor
+                      code={templateContentFieldValue}
+                      setCode={setTemplateContentFieldValue}
+                      readOnly={isLoading.templateForm}
+                      language="xml"
+                    />
+                  </FormFieldInput>
+                </FormField>
               </div>
             </TabPanel>
           </TabContext>
