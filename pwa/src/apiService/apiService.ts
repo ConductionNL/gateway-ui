@@ -35,7 +35,7 @@ interface PromiseMessage {
 
 export type TSendFunction = (
   instance: AxiosInstance,
-  method: "GET" | "POST" | "PUT" | "DELETE",
+  method: "GET" | "POST" | "PUT" | "DELETE" | "DOWNLOAD",
   endpoint: string,
   payload?: JSON,
   promiseMessage?: PromiseMessage,
@@ -259,6 +259,13 @@ export default class APIService {
         return toast.promise(instance.delete(endpoint), {
           loading: promiseMessage?.loading ?? "Deleting item...",
           success: promiseMessage?.success ?? "Succesfully deleted item",
+          error: (err) => err.message,
+        });
+
+      case "DOWNLOAD":
+        return toast.promise(instance.get(endpoint), {
+          loading: promiseMessage?.loading ?? "Downloading item...",
+          success: promiseMessage?.success ?? "Succesfully downloaded item",
           error: (err) => err.message,
         });
     }
