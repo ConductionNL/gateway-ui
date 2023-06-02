@@ -3,6 +3,7 @@ import {
   faClipboardList,
   faDatabase,
   faDiagramProject,
+  faFile,
   faGear,
   faGrip,
   faHome,
@@ -95,6 +96,12 @@ export const mainMenuItems = () => {
       icon: <FontAwesomeIcon icon={faMap} />,
       onClick: () => navigate("/mappings"),
       current: pathname.includes("/mappings"),
+    },
+    {
+      label: "Templates",
+      icon: <FontAwesomeIcon icon={faFile} />,
+      onClick: () => navigate("/templates"),
+      current: pathname.includes("/templates"),
     },
   ];
 };

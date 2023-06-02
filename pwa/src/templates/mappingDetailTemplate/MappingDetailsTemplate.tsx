@@ -107,7 +107,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                       </ToolTip>
                     </div>
 
-                    <CodeEditor code={mappingTestInput} setCode={setMappingTestInput} />
+                    <CodeEditor language="json" code={mappingTestInput} setCode={setMappingTestInput} />
                   </div>
                   <div className={styles.outputContent}>
                     <div> {t("Output")}</div>

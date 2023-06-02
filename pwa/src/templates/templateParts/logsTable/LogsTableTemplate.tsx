@@ -83,6 +83,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
               {logColumns.user && <TableHeader>{t("User")}</TableHeader>}
               {logColumns.organization && <TableHeader>{t("Organization")}</TableHeader>}
               {logColumns.application && <TableHeader>{t("Application")}</TableHeader>}
+              {logColumns.template && <TableHeader>{t("Template")}</TableHeader>}
               <TableHeader></TableHeader>
             </TableRow>
           </TableHead>
@@ -206,6 +207,20 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                     />
                   </TableCell>
                 )}
+
+                {logColumns.template && (
+                  <TableCell>
+                    <Button
+                      variant="primary"
+                      label={t("Template")}
+                      icon={faArrowRight}
+                      className={styles.button}
+                      disabled={!log.context.template}
+                      onClick={(e) => handleResourceClick(e, "templates", log.context.template)}
+                    />
+                  </TableCell>
+                )}
+
                 <TableCell onClick={() => navigate(`/logs/${log._id.$oid}`)}>
                   <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                     {t("Details")}

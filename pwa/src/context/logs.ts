@@ -18,6 +18,7 @@ export interface ILogFiltersContext {
     user?: string;
     organization?: string;
     application?: string;
+    template?: string;
   };
 }
 
@@ -64,5 +65,6 @@ export const channels = [
   "organization",
   "user",
   "collection",
+  "template",
 ] as const;
 export type TLogChannel = (typeof channels)[number];
