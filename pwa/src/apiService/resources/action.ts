@@ -28,6 +28,18 @@ export default class Action {
     return data;
   };
 
+  public downloadPDF = async (id: string): Promise<any> => {
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
+    });
+
+    const { data } = await this._send(this._instance, "GET", `admin/actions/${id}`);
+
+    return data;
+  };
+
   public getAllHandlers = async (): Promise<any> => {
     const { data } = await this._send(this._instance, "GET", "/admin/actionHandlers?limit=1000");
 

@@ -33,6 +33,14 @@ export const useCronjob = (queryClient: QueryClient) => {
       enabled: !!cronjobId && !isDeleted(cronjobId),
     });
 
+  const downloadPDF = (cronjobId: string) =>
+    useQuery<any, Error>(["cronjobs", cronjobId], () => API.Cronjob.downloadPDF(cronjobId), {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+      enabled: !!cronjobId,
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Cronjob.delete, {
       onMutate: ({ id }) => addDeletedItem(id),
@@ -64,5 +72,5 @@ export const useCronjob = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getAllSelectOptions, getOne, remove, createOrEdit };
+  return { getAll, getAllSelectOptions, getOne, remove, createOrEdit, downloadPDF };
 };

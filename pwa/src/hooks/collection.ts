@@ -27,6 +27,14 @@ export const useCollection = (queryClient: QueryClient) => {
       enabled: !!collectionId && !isDeleted(collectionId),
     });
 
+  const downloadPDF = (collectionId: string) =>
+    useQuery<any, Error>(["collections", collectionId], () => API.Collection.downloadPDF(collectionId), {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+      enabled: !!collectionId,
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Collection.delete, {
       onMutate: ({ id }) => addDeletedItem(id),
@@ -58,5 +66,5 @@ export const useCollection = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+  return { getAll, getOne, remove, createOrEdit, downloadPDF };
 };

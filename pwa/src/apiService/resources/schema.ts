@@ -28,6 +28,18 @@ export default class Schema {
     return data;
   };
 
+  public downloadPDF = async (id: string): Promise<any> => {
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
+    });
+
+    const { data } = await this._send(this._instance, "GET", `admin/entities/${id}`);
+
+    return data;
+  };
+
   public getSchema = async (id: string): Promise<any> => {
     const instance = this._instance;
 

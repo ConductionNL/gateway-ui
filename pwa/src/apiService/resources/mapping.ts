@@ -22,6 +22,18 @@ export default class Mapping {
     return data;
   };
 
+  public downloadPDF = async (id: string): Promise<any> => {
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
+    });
+
+    const { data } = await this._send(this._instance, "GET", `admin/mappings/${id}`);
+
+    return data;
+  };
+
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 

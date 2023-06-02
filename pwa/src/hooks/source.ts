@@ -27,6 +27,14 @@ export const useSource = (queryClient: QueryClient) => {
       enabled: !!sourceId && !isDeleted(sourceId),
     });
 
+  const downloadPDF = (sourceId: string) =>
+    useQuery<any, Error>(["sources", sourceId], () => API.Sources.downloadPDF(sourceId), {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+      enabled: !!sourceId,
+    });
+
   const getProxy = (sourceId?: string) =>
     useMutation<any, Error, any>(API.Sources.getProxy, {
       onSuccess: async () => {
@@ -78,5 +86,5 @@ export const useSource = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit, getProxy };
+  return { getAll, getOne, remove, createOrEdit, getProxy, downloadPDF };
 };
