@@ -58,5 +58,12 @@ export const useTemplate = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit };
+    const getAllSelectOptions = () =>
+    useQuery<any[], Error>("template_select_options", API.Template.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
+  return { getAll, getOne, remove, createOrEdit, getAllSelectOptions };
 };

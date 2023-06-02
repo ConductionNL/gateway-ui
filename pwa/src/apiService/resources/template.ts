@@ -16,6 +16,12 @@ export default class Template {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await this._send(this._instance, "GET", "/admin/templates?limit=200");
+
+    return data?.map((template: any) => ({ label: template.name, value: template.id }));
+  };
+
   public getOne = async (id: string): Promise<any> => {
     const { data } = await this._send(this._instance, "GET", `/admin/templates/${id}`);
 
@@ -25,7 +31,10 @@ export default class Template {
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
-    const { data } = await this._send(this._instance, "DELETE", `/admin/templates/${id}`);
+    const { data } = await this._send(this._instance, "DELETE", `/admin/templates/${id}`, undefined, {
+      loading: "Removing template...",
+      success: "Template successfully removed.",
+    });
     return data;
   };
 
@@ -33,11 +42,17 @@ export default class Template {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await this._send(this._instance, "PUT", `/admin/templates/${id}`, payload);
+      const { data } = await this._send(this._instance, "PUT", `/admin/templates/${id}`, payload, {
+        loading: "Updating template...",
+        success: "Template successfully updated.",
+      });
       return data;
     }
 
-    const { data } = await this._send(this._instance, "POST", "/admin/templates", payload);
+    const { data } = await this._send(this._instance, "POST", "/admin/templates", payload, {
+      loading: "Creating template...",
+      success: "Template successfully created.",
+    });
     return data;
   };
 }
