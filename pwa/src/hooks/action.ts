@@ -40,12 +40,11 @@ export const useAction = (queryClient: QueryClient) => {
       enabled: !!actionId && !isDeleted(actionId),
     });
 
-  const downloadPDF = (actionId: string) =>
-    useQuery<any, Error>(["actions", actionId], () => API.Action.downloadPDF(actionId), {
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Action.downloadPDF, {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!actionId,
     });
 
   const remove = () =>

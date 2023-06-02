@@ -26,12 +26,11 @@ export const useMapping = (queryClient: QueryClient) => {
       enabled: !!mappingId && !isDeleted(mappingId),
     });
 
-  const downloadPDF = (mappingId: string) =>
-    useQuery<any, Error>(["mapping", mappingId], () => API.Mapping.downloadPDF(mappingId), {
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Mapping.downloadPDF, {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!mappingId,
     });
 
   const remove = () =>

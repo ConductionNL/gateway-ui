@@ -33,12 +33,11 @@ export const useCronjob = (queryClient: QueryClient) => {
       enabled: !!cronjobId && !isDeleted(cronjobId),
     });
 
-  const downloadPDF = (cronjobId: string) =>
-    useQuery<any, Error>(["cronjobs", cronjobId], () => API.Cronjob.downloadPDF(cronjobId), {
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Cronjob.downloadPDF, {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!cronjobId,
     });
 
   const remove = () =>

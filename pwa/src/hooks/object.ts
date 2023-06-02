@@ -31,12 +31,11 @@ export const useObject = () => {
       enabled: !!objectId && !isDeleted(objectId),
     });
 
-  const downloadPDF = (objectId: string) =>
-    useQuery<any, Error>(["object", objectId], () => API.Object.downloadPDF(objectId), {
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Object.downloadPDF, {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!objectId,
     });
 
   const getAllFromEntity = (entityId: string, currentPage: number, searchQuery?: string) =>

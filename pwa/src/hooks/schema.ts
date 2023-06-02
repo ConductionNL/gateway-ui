@@ -33,12 +33,11 @@ export const useSchema = (queryClient: QueryClient) => {
       enabled: !!schemaId && !isDeleted(schemaId),
     });
 
-  const downloadPDF = (schemaId: string) =>
-    useQuery<any, Error>(["entities", schemaId], () => API.Schema.downloadPDF(schemaId), {
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Schema.downloadPDF, {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!schemaId,
     });
 
   const getSchema = (schemaId: string) =>

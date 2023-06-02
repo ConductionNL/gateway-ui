@@ -22,7 +22,9 @@ export default class Collection {
     return data;
   };
 
-  public downloadPDF = async (id: string): Promise<any> => {
+  public downloadPDF = async (variables: { id: string }): Promise<any> => {
+    const { id } = variables;
+
     const instance = this._instance;
 
     instance.interceptors.request.use(function (config) {

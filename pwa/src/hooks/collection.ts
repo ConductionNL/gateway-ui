@@ -27,12 +27,11 @@ export const useCollection = (queryClient: QueryClient) => {
       enabled: !!collectionId && !isDeleted(collectionId),
     });
 
-  const downloadPDF = (collectionId: string) =>
-    useQuery<any, Error>(["collections", collectionId], () => API.Collection.downloadPDF(collectionId), {
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Collection.downloadPDF, {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!collectionId,
     });
 
   const remove = () =>

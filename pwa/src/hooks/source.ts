@@ -27,12 +27,11 @@ export const useSource = (queryClient: QueryClient) => {
       enabled: !!sourceId && !isDeleted(sourceId),
     });
 
-  const downloadPDF = (sourceId: string) =>
-    useQuery<any, Error>(["sources", sourceId], () => API.Sources.downloadPDF(sourceId), {
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Sources.downloadPDF, {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!sourceId,
     });
 
   const getProxy = (sourceId?: string) =>

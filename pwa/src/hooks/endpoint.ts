@@ -33,12 +33,11 @@ export const useEndpoint = (queryClient: QueryClient) => {
       enabled: !!endpointId && !isDeleted(endpointId),
     });
 
-  const downloadPDF = (endpointId: string) =>
-    useQuery<any, Error>(["endpoint", endpointId], () => API.Endpoints.downloadPDF(endpointId), {
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Endpoints.downloadPDF, {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!endpointId,
     });
 
   const remove = () =>
