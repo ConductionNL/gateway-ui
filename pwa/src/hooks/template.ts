@@ -17,6 +17,13 @@ export const useTemplate = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("template_select_options", API.Template.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getOne = (collectionId: string) =>
     useQuery<any, Error>(["templates", collectionId], () => API?.Template.getOne(collectionId), {
       initialData: () =>
@@ -53,13 +60,6 @@ export const useTemplate = (queryClient: QueryClient) => {
           navigate(`/templates/${newTemplate.id}`);
         }
       },
-      onError: (error) => {
-        console.warn(error.message);
-      },
-    });
-
-    const getAllSelectOptions = () =>
-    useQuery<any[], Error>("template_select_options", API.Template.getAllSelectOptions, {
       onError: (error) => {
         console.warn(error.message);
       },
