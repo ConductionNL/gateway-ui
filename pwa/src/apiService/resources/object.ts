@@ -34,6 +34,23 @@ export default class Sources {
     return data;
   };
 
+  public downloadPDF = async (variables: { id: string }): Promise<any> => {
+    const { id } = variables;
+
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
+    });
+
+    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/objects/${id}`, undefined, {
+      loading: "Downloading PDF of object...",
+      success: "Succesfully downloaded PDF of object.",
+    });
+
+    return data;
+  };
+
   public getAllFromEntity = async (entityId: string, currentPage: number, searchQuery?: string): Promise<any> => {
     const { data } = await this._send(
       this._instance,

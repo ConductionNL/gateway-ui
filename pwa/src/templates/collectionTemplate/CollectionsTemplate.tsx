@@ -23,6 +23,7 @@ export const CollectionsTemplate: React.FC = () => {
   const _useCollection = useCollection(queryClient);
   const getCollection = _useCollection.getAll();
   const deleteCollection = _useCollection.remove();
+  const downloadCollection = _useCollection.downloadPDF();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getCollection.data);
 
@@ -75,8 +76,9 @@ export const CollectionsTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteCollection.mutate({ id: collection.id }) },
-                        { type: "download", onSubmit: () => undefined, disabled: true },
+                        { type: "download", onSubmit: () => downloadCollection.mutate({ id: collection.id }) },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 

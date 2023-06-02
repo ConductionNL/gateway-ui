@@ -26,6 +26,13 @@ export const useMapping = (queryClient: QueryClient) => {
       enabled: !!mappingId && !isDeleted(mappingId),
     });
 
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Mapping.downloadPDF, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Mapping.delete, {
       onMutate: ({ id }) => addDeletedItem(id),
@@ -62,5 +69,5 @@ export const useMapping = (queryClient: QueryClient) => {
         console.warn(error.message);
       },
     });
-  return { getAll, getOne, remove, createOrEdit, testMapping };
+  return { getAll, getOne, remove, createOrEdit, testMapping, downloadPDF };
 };

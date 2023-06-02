@@ -64,6 +64,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
   }, [watchSearchQuery]);
 
   const deleteObject = useObject().remove();
+  const downloadObject = useObject().downloadPDF();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(objectsQuery);
 
@@ -165,7 +166,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
                           actions={[
                             { type: "delete", onSubmit: () => deleteObject.mutate({ id: object._self.id }) },
                             { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
-                            { type: "download", onSubmit: () => undefined, disabled: true },
+                            { type: "download", onSubmit: () => downloadObject.mutate({ id:object._self.id }) },
                           ]}
                           variant="secondary"
                         />

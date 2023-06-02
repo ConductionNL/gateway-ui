@@ -31,6 +31,13 @@ export const useObject = () => {
       enabled: !!objectId && !isDeleted(objectId),
     });
 
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Object.downloadPDF, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getAllFromEntity = (entityId: string, currentPage: number, searchQuery?: string) =>
     useQuery<any, Error>(
       ["objects", entityId, currentPage, searchQuery],
@@ -97,5 +104,5 @@ export const useObject = () => {
       },
     });
 
-  return { getAll, getOne, getAllFromEntity, getAllFromList, getSchema, remove, createOrEdit };
+  return { getAll, getOne, getAllFromEntity, getAllFromList, getSchema, remove, createOrEdit, downloadPDF };
 };
