@@ -37,7 +37,10 @@ export default class Cronjob {
       return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
     });
 
-    const { data } = await this._send(this._instance, "GET", `admin/cronjobs/${id}`);
+    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/cronjobs/${id}`, undefined, {
+      loading: "Downloading PDF of cronjob...",
+      success: "Succesfully downloaded PDF of cronjob.",
+    });
 
     return data;
   };

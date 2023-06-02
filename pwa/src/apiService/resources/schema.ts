@@ -37,7 +37,10 @@ export default class Schema {
       return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
     });
 
-    const { data } = await this._send(this._instance, "GET", `admin/entities/${id}`);
+    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/entities/${id}`, undefined, {
+      loading: "Downloading PDF of schema...",
+      success: "Succesfully downloaded PDF of schema.",
+    });
 
     return data;
   };

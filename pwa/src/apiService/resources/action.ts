@@ -37,7 +37,10 @@ export default class Action {
       return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
     });
 
-    const { data } = await this._send(this._instance, "GET", `admin/actions/${id}`);
+    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/actions/${id}`, undefined, {
+      loading: "Downloading PDF of action...",
+      success: "Succesfully downloaded PDF of action.",
+    });
 
     return data;
   };

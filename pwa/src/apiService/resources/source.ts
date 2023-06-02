@@ -31,7 +31,10 @@ export default class Source {
       return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
     });
 
-    const { data } = await this._send(this._instance, "GET", `admin/gateways/${id}`);
+    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/gateways/${id}`, undefined, {
+      loading: "Downloading PDF of source...",
+      success: "Succesfully downloaded PDF of source.",
+    });
 
     return data;
   };

@@ -37,7 +37,10 @@ export default class Endpoint {
       return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
     });
 
-    const { data } = await this._send(this._instance, "GET", `admin/endpoints/${id}`);
+    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/endpoints/${id}`, undefined, {
+      loading: "Downloading PDF of endpoint...",
+      success: "Succesfully downloaded PDF of endpoint.",
+    });
 
     return data;
   };

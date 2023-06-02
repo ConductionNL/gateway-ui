@@ -31,7 +31,10 @@ export default class Mapping {
       return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
     });
 
-    const { data } = await this._send(this._instance, "GET", `admin/mappings/${id}`);
+    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/mappings/${id}`, undefined, {
+      loading: "Downloading PDF of mapping...",
+      success: "Succesfully downloaded PDF of mapping.",
+    });
 
     return data;
   };

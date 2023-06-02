@@ -31,7 +31,10 @@ export default class Collection {
       return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
     });
 
-    const { data } = await this._send(this._instance, "GET", `admin/collections/${id}`);
+    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/collections/${id}`, undefined, {
+      loading: "Downloading PDF of collection...",
+      success: "Succesfully downloaded PDF of collection.",
+    });
 
     return data;
   };
