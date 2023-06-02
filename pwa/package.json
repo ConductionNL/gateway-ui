@@ -4,7 +4,9 @@
   "private": true,
   "description": "Gatsby Skeleton Application",
   "author": "Conduction B.V.",
-  "keywords": ["gatsby"],
+  "keywords": [
+    "gatsby"
+  ],
   "scripts": {
     "develop": "gatsby develop",
     "start": "gatsby develop",

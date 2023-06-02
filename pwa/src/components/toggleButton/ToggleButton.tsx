@@ -3,9 +3,9 @@ import * as styles from "./ToggleButton.module.css";
 import clsx from "clsx";
 
 interface ToggleButtonProps {
+  defaultState: boolean;
   startLabel?: string;
   endLabel?: string;
-  defaultState?: boolean;
   onChange?: () => any;
   layoutClassName?: any;
   disabled?: boolean;
@@ -19,7 +19,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   layoutClassName,
   disabled,
 }) => {
-  const [isEnabled, setIsEnabled] = React.useState<boolean>(defaultState ?? false);
+  const [isEnabled, setIsEnabled] = React.useState<boolean>(defaultState);
 
   const uuid = Math.floor(Math.random() * Date.now()).toString();
 
@@ -30,7 +30,7 @@ const ToggleButton: React.FC<ToggleButtonProps> = ({
   };
 
   return (
-    <div className={clsx(styles.container, [layoutClassName && layoutClassName])}>
+    <div className={clsx(styles.container, [layoutClassName && layoutClassName, disabled && styles.disabled])}>
       {startLabel}
       <div className={styles.switchContainer}>
         <input id={uuid} type="checkbox" checked={isEnabled} onChange={handleChange} {...{ disabled }} />
