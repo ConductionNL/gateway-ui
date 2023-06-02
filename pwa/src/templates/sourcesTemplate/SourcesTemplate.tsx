@@ -27,6 +27,7 @@ export const SourcesTemplate: React.FC = () => {
   const _useSources = useSource(queryClient);
   const getSources = _useSources.getAll();
   const deleteSource = _useSources.remove();
+  const downloadSource = _useSources.downloadPDF();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getSources.data);
 
@@ -93,8 +94,9 @@ export const SourcesTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteSource.mutate({ id: source.id }) },
-                        { type: "download", onSubmit: () => undefined, disabled: true },
+                        { type: "download", onSubmit: () => downloadSource.mutate({ id: source.id }) },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 
