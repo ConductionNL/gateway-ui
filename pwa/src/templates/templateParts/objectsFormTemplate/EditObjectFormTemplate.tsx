@@ -35,6 +35,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
   const _useObjects = useObject();
   const createOrEditObject = _useObjects.createOrEdit(!inDuplicatingMode ? objectId : undefined);
   const deleteObject = _useObjects.remove();
+  const downloadObject = useObject().downloadPDF();
 
   const dashboardCard = getDashboardCard(object._id);
 
@@ -127,7 +128,10 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
                       icon: !!dashboardCard ? faMinus : faPlus,
                       disabled: loading,
                     },
-                    { type: "download", onSubmit: () => navigate("#"), disabled: true },
+                    {
+                      type: "download",
+                      onSubmit: () => downloadObject.mutate({ id: objectId, name: object.name }),
+                    },
                     { type: "delete", onSubmit: () => handleDeleteObject },
                   ]}
                   variant="secondary"

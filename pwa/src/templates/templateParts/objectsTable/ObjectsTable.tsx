@@ -72,6 +72,13 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
     selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
   };
 
+  const handleBulkDownload = () => {
+    selectedItems.forEach((item) => {
+      const object = objectsQuery.data.results.find((object: any) => object.id === item);
+      return downloadObject.mutate({ id: item, name: object.name });
+    });
+  };
+
   const handleDuplicate = (objectId: string) => {
     setObjectsState({ inDuplicatingMode: true });
     navigate(`/objects/${objectId}`);
@@ -105,7 +112,10 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
         </div>
 
         <BulkActionButton
-          actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+          actions={[
+            { type: "delete", onSubmit: handleBulkDelete },
+            { type: "download", onSubmit: handleBulkDownload },
+          ]}
           selectedItemsCount={selectedItems.length}
         />
       </div>
