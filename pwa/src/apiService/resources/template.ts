@@ -36,7 +36,6 @@ export default class Template {
     instance.interceptors.request.use(function (config) {
       return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
     });
-
     const { data } = await this._send(this._instance, "DOWNLOAD", `admin/templates/${id}`, undefined, {
       loading: "Downloading PDF of template...",
       success: "Succesfully downloaded PDF of template.",
