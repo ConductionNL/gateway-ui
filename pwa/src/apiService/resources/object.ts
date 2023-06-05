@@ -1,6 +1,5 @@
 import { AxiosInstance } from "axios";
 import { TSendFunction } from "../apiService";
-
 export default class Sources {
   private _instance: AxiosInstance;
   private _send: TSendFunction;
@@ -34,13 +33,17 @@ export default class Sources {
     return data;
   };
 
-  public downloadPDF = async (variables: { id: string }): Promise<any> => {
+  public downloadPDF = async (variables: { id: string; name: string }): Promise<any> => {
     const { id } = variables;
 
     const instance = this._instance;
 
     instance.interceptors.request.use(function (config) {
-      return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
+      return {
+        ...config,
+        headers: { ...config.headers, Accept: "application/pdf" },
+        responseType: "arraybuffer",
+      };
     });
 
     const { data } = await this._send(this._instance, "DOWNLOAD", `admin/objects/${id}`, undefined, {

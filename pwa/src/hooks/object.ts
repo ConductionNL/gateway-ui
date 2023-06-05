@@ -33,6 +33,15 @@ export const useObject = () => {
 
   const downloadPDF = () =>
     useMutation<any, Error, any>(API.Object.downloadPDF, {
+      onSuccess: async (data, variables) => {
+        const url = window.URL.createObjectURL(new Blob([data]));
+        const link = document.createElement("a");
+        link.href = url;
+
+        link.setAttribute("download", `${variables.name}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+      },
       onError: (error) => {
         console.warn(error.message);
       },

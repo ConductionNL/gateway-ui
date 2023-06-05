@@ -166,7 +166,10 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
                           actions={[
                             { type: "delete", onSubmit: () => deleteObject.mutate({ id: object._self.id }) },
                             { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
-                            { type: "download", onSubmit: () => downloadObject.mutate({ id:object._self.id }) },
+                            {
+                              type: "download",
+                              onSubmit: () => downloadObject.mutate({ id: object._self.id, name: object.name }),
+                            },
                           ]}
                           variant="secondary"
                         />
