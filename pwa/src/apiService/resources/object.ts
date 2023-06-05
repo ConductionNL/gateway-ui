@@ -47,8 +47,8 @@ export default class Sources {
     });
 
     const { data } = await this._send(this._instance, "DOWNLOAD", `admin/objects/${id}`, undefined, {
-      loading: "Downloading PDF of object...",
-      success: "Succesfully downloaded PDF of object.",
+      loading: "Looking for downloadable PDF...",
+      success: "PDF found starting download.",
     });
 
     return data;
