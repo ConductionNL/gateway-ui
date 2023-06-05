@@ -4,6 +4,7 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { useDeletedItemsContext } from "../context/deletedItems";
+import toast from "react-hot-toast";
 
 export const useObject = () => {
   const API: APIService | null = React.useContext(APIContext);
@@ -43,6 +44,11 @@ export const useObject = () => {
         link.click();
       },
       onError: (error) => {
+        if (error.message === "Request failed with status code 400") {
+          toast.error("No downloadable PDF found");
+        } else {
+          toast.error(error.message);
+        }
         console.warn(error.message);
       },
     });
