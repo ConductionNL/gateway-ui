@@ -80,7 +80,7 @@ export const MappingTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteMapping.mutate({ id: mapping.id }) },
-                        { type: "download", onSubmit: () => downloadMapping.mutate({ id: mapping.id }) },
+                        { type: "download", onSubmit: () => downloadMapping.mutate({ id: mapping.id }), disabled: true },
                       ]}
                       variant="primary"
                     />

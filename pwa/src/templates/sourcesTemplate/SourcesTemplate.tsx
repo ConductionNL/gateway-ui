@@ -94,7 +94,7 @@ export const SourcesTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteSource.mutate({ id: source.id }) },
-                        { type: "download", onSubmit: () => downloadSource.mutate({ id: source.id }) },
+                        { type: "download", onSubmit: () => downloadSource.mutate({ id: source.id }), disabled: true },
                       ]}
                       variant="primary"
                     />

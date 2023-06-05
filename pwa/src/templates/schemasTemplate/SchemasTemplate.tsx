@@ -100,7 +100,7 @@ export const SchemasTemplate: React.FC = () => {
                           label: "Add Object",
                         },
                         { type: "delete", onSubmit: () => deleteSchema.mutate({ id: schema.id }) },
-                        { type: "download", onSubmit: () => downloadSchema.mutate({ id: schema.id }) },
+                        { type: "download", onSubmit: () => downloadSchema.mutate({ id: schema.id }), disabled: true },
                       ]}
                       variant="secondary"
                     />

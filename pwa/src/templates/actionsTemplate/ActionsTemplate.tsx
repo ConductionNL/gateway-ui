@@ -100,7 +100,7 @@ export const ActionsTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteAction.mutate({ id: action.id }) },
-                        { type: "download", onSubmit: () => downloadAction.mutate({ id: action.id }) },
+                        { type: "download", onSubmit: () => downloadAction.mutate({ id: action.id }), disabled: true },
                       ]}
                       variant="primary"
                     />
