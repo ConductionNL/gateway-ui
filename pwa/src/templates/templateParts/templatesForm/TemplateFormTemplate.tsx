@@ -38,6 +38,7 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
 
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
+  const refSchemas = getSchemas.isSuccess && getSchemas.data?.filter((schema) => schema.reference);
 
   const {
     register,
@@ -55,7 +56,7 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
     const payload = {
       ...data,
       organization: data.organization && `/admin/organisations/${data.organization.value}`,
-      supportedSchemas: data.supportedSchemas,
+      supportedSchemas: data.supportedSchemas.map((schema: any) => schema.value),
       content: templateContentFieldValue,
     };
 
@@ -68,17 +69,26 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
 
     setValue("organization", { label: template?.organization.name, value: template?.organization.id });
 
+    setTemplateContentFieldValue(template.content);
+  };
+
+  const getSelectedSchemaByRef = (schema: any) => {
+    const refSchema = refSchemas && refSchemas.find((refSchema: any) => refSchema.reference === schema);
+
+    return { label: refSchema.name, value: refSchema.reference };
+  };
+
+  const handleSetSupportedSchemasFormValues = (): void => {
     setValue(
       "supportedSchemas",
-      template.supportedSchemas?.map((schema: any) => ({ label: schema.label, value: schema.value })),
+      template.supportedSchemas?.map((schema: any) => getSelectedSchemaByRef(schema)),
     );
-
-    setTemplateContentFieldValue(template.content);
   };
 
   React.useEffect(() => {
     template && handleSetFormValues();
-  }, [template]);
+    template && getSchemas.isSuccess && handleSetSupportedSchemasFormValues();
+  }, [template, getSchemas.isSuccess]);
 
   return (
     <div className={styles.container}>
@@ -135,9 +145,12 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
                       <FormFieldLabel>{t("Supported Schemas")}</FormFieldLabel>
 
                       {getSchemas.isLoading && <Skeleton height="50px" />}
-                      {getSchemas.isSuccess && (
+                      {getSchemas.isSuccess && refSchemas && (
                         <SelectMultiple
-                          options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
+                          options={refSchemas.map((schema: any) => ({
+                            label: schema.name,
+                            value: schema.reference,
+                          }))}
                           name="supportedSchemas"
                           {...{ register, errors, control }}
                           disabled={isLoading.templateForm}
@@ -161,7 +174,7 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
                       code={templateContentFieldValue}
                       setCode={setTemplateContentFieldValue}
                       readOnly={isLoading.templateForm}
-                      language="xml"
+                      language="html"
                     />
                   </FormFieldInput>
                 </FormField>
