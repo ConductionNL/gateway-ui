@@ -38,7 +38,6 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
 
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
-  const refSchemas = getSchemas.isSuccess && getSchemas.data?.filter((schema) => schema.reference);
 
   const {
     register,
@@ -73,9 +72,9 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
   };
 
   const getSelectedSchemaByRef = (schema: any) => {
-    const refSchema = refSchemas && refSchemas.find((refSchema: any) => refSchema.reference === schema);
+    const refSchema = getSchemas.isSuccess && getSchemas.data.find((refSchema: any) => refSchema.id === schema);
 
-    return { label: refSchema.name, value: refSchema.reference };
+    return { label: refSchema.name, value: refSchema.id };
   };
 
   const handleSetSupportedSchemasFormValues = (): void => {
@@ -145,11 +144,11 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
                       <FormFieldLabel>{t("Supported Schemas")}</FormFieldLabel>
 
                       {getSchemas.isLoading && <Skeleton height="50px" />}
-                      {getSchemas.isSuccess && refSchemas && (
+                      {getSchemas.isSuccess && (
                         <SelectMultiple
-                          options={refSchemas.map((schema: any) => ({
+                          options={getSchemas.data.map((schema: any) => ({
                             label: schema.name,
-                            value: schema.reference,
+                            value: schema.id,
                           }))}
                           name="supportedSchemas"
                           {...{ register, errors, control }}
