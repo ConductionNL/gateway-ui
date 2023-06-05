@@ -96,7 +96,7 @@ export const EndpointsTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteEndpoint.mutate({ id: endpoint.id }) },
-                        { type: "download", onSubmit: () => downloadEndpoint.mutate({ id: endpoint.id }) },
+                        { type: "download", onSubmit: () => downloadEndpoint.mutate({ id: endpoint.id }), disabled: true },
                       ]}
                       variant="primary"
                     />

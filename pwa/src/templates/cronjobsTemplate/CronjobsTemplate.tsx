@@ -101,7 +101,7 @@ export const CronjobsTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteCronjob.mutate({ id: cronjob.id }) },
-                        { type: "download", onSubmit: () => downloadCronjob.mutate({ id: cronjob.id }) },
+                        { type: "download", onSubmit: () => downloadCronjob.mutate({ id: cronjob.id }), disabled: true },
                       ]}
                       variant="primary"
                     />

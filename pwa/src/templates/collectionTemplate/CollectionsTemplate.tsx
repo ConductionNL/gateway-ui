@@ -76,7 +76,7 @@ export const CollectionsTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteCollection.mutate({ id: collection.id }) },
-                        { type: "download", onSubmit: () => downloadCollection.mutate({ id: collection.id }) },
+                        { type: "download", onSubmit: () => downloadCollection.mutate({ id: collection.id }), disabled: true },
                       ]}
                       variant="primary"
                     />
