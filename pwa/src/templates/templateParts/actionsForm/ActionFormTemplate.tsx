@@ -11,7 +11,6 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import Skeleton from "react-loading-skeleton";
-import { validateStringAsJSON } from "../../../services/validateJSON";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
@@ -97,7 +96,6 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
     const basicFields: string[] = ["name", "description", "priority", "async", "isLockable", "isEnabled"];
     basicFields.forEach((field) => setValue(field, action[field]));
 
-    // setValue("conditions", JSON.stringify(action["conditions"]));
     setActionConditionsFieldValue(JSON.stringify(action["conditions"], null, 2));
 
     setValue("class", { label: action.class, value: action.class });
@@ -281,13 +279,6 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
               <FormField>
                 <FormFieldInput>
                   <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
-
-                  {/* <Textarea
-                    {...{ register, errors }}
-                    name="conditions"
-                    disabled={isLoading.actionForm}
-                    validation={enrichValidation({ validate: validateStringAsJSON })}
-                  /> */}
 
                   <CodeEditor
                     language="json"
