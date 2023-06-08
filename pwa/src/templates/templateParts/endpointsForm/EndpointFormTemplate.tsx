@@ -18,6 +18,7 @@ import { useSchema } from "../../../hooks/schema";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface EndpointFormTemplateProps {
   endpoint?: any;
@@ -118,7 +119,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
               <InputText
                 {...{ register, errors }}
                 name="name"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.endpointForm}
               />
             </FormFieldInput>
@@ -130,7 +131,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
               <InputText
                 {...{ register, errors }}
                 name="path"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.endpointForm}
               />
             </FormFieldInput>

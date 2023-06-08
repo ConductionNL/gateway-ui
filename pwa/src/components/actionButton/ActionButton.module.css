@@ -19,6 +19,7 @@
   border-bottom-left-radius: var(--gateway-ui-size-xs);
   border-bottom-right-radius: var(--gateway-ui-size-xs);
   box-shadow: var(--gateway-ui-drop-down-box-shadow);
+  right: 0;
 }
 
 .actionsContainer.isOpen {
@@ -33,6 +34,7 @@
 }
 
 .actionsContainer > ul > li {
+  width: 100%;
   display: flex;
   align-items: center;
   user-select: none;

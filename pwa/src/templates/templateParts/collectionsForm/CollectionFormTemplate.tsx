@@ -7,6 +7,7 @@ import { InputText } from "@conduction/components";
 import { useQueryClient } from "react-query";
 import { useCollection } from "../../../hooks/collection";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface CollectionFormTemplateProps {
   collection?: any;
@@ -57,7 +58,7 @@ export const CollectionFormTemplate: React.FC<CollectionFormTemplateProps> = ({ 
               <InputText
                 {...{ register, errors }}
                 name="name"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.collectionForm}
               />
             </FormFieldInput>

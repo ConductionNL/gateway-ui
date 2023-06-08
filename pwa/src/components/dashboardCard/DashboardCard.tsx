@@ -40,7 +40,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags,
           </div>
         </div>
 
-        <ActionButton actions={[{ type: "delete", onSubmit: onDelete }]} size="sm" />
+        <ActionButton actions={[{ type: "delete", onSubmit: onDelete }]} size="sm" variant="secondary" />
       </div>
 
       {!!tags.length && (

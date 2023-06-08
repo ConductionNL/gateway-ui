@@ -6,6 +6,10 @@ export const mapSelectInputFormData = (data: any) => {
   for (const [key, _value] of Object.entries(data)) {
     const value = _value as any;
 
+    if (value === null) {
+      continue;
+    }
+
     if (typeof value === "object") {
       data[key] = value.value; // SelectSingle
     }

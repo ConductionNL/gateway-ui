@@ -8,12 +8,12 @@ import { useQueryClient } from "react-query";
 import { useUser } from "../../../hooks/user";
 import Skeleton from "react-loading-skeleton";
 import { validatePassword } from "../../../services/stringValidations";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useOrganization } from "../../../hooks/organization";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { useApplication } from "../../../hooks/application";
 import { IKeyValue } from "@conduction/components/lib/components/formFields";
 import { useSecurityGroup } from "../../../hooks/securityGroup";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface UserFormTemplateProps {
   user?: any;
@@ -124,7 +124,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
               <InputText
                 {...{ register, errors }}
                 name="name"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.userForm}
               />
             </FormFieldInput>
@@ -168,7 +168,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                   options={organisationOptions ?? []}
                   {...{ register, errors, control }}
                   name="organization"
-                  validation={{ required: true }}
+                  validation={enrichValidation({ required: true })}
                   disabled={isLoading.userForm}
                 />
               )}
@@ -184,7 +184,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                   options={applicationOptions ?? []}
                   {...{ register, errors, control }}
                   name="applications"
-                  validation={{ required: true }}
+                  validation={enrichValidation({ required: true })}
                   disabled={isLoading.userForm}
                 />
               )}
@@ -200,7 +200,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                   options={securityGroupOptions ?? []}
                   {...{ register, errors, control }}
                   name="securityGroups"
-                  validation={{ required: true }}
+                  validation={enrichValidation({ required: true })}
                   disabled={isLoading.userForm}
                 />
               )}
@@ -216,11 +216,11 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
               <InputPassword
                 {...{ register, errors }}
                 name="password"
-                validation={{ validate: (value) => validatePassword(value, validationPassword, !user) }}
+                validation={enrichValidation({
+                  validate: (value) => validatePassword(value, validationPassword, !user),
+                })}
                 disabled={isLoading.userForm}
               />
-
-              {errors["password"] && <ErrorMessage message={errors["password"].message} />}
             </FormFieldInput>
           </FormField>
 
@@ -230,11 +230,9 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
               <InputPassword
                 {...{ register, errors }}
                 name="validation_password"
-                validation={{ validate: (value) => validatePassword(password, value, !user) }}
+                validation={enrichValidation({ validate: (value) => validatePassword(password, value, !user) })}
                 disabled={isLoading.userForm}
               />
-
-              {errors["validation_password"] && <ErrorMessage message={errors["validation_password"].message} />}
             </FormFieldInput>
           </FormField>
         </div>

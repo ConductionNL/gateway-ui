@@ -19,6 +19,7 @@ import {
 import { useObject } from "../../../hooks/object";
 import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 export type SchemaInputType =
   | "string"
@@ -217,7 +218,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "string" && !_enum && !multiple && !(format === "url" || format === "text") && (
           <InputText
-            validation={{ required, maxLength, minLength }}
+            validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
           />
@@ -225,7 +226,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "string" && !_enum && !multiple && format === "text" && (
           <Textarea
-            validation={{ required }}
+            validation={enrichValidation({ required })}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
           />
@@ -233,7 +234,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "string" && !_enum && !multiple && format === "url" && (
           <InputURL
-            validation={{ required, maxLength, minLength }}
+            validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
           />
@@ -241,7 +242,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "uuid" && (
           <InputText
-            validation={{ required, maxLength, minLength }}
+            validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
           />
@@ -277,7 +278,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         {type === "boolean" && (
           <InputCheckbox
             label="True"
-            validation={{ required }}
+            validation={enrichValidation({ required })}
             defaultChecked={defaultValue}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name }}
@@ -286,7 +287,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {(type === "integer" || type === "int") && (
           <InputNumber
-            validation={{ required, maxLength, minLength }}
+            validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name, defaultValue }}
           />
@@ -294,7 +295,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "number" && (
           <InputFloat
-            validation={{ required, maxLength, minLength }}
+            validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name, defaultValue }}
           />
@@ -302,7 +303,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "date" && (
           <InputDate
-            validation={{ required }}
+            validation={enrichValidation({ required })}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name, control, defaultValue }}
           />
@@ -310,7 +311,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
 
         {type === "datetime" && (
           <InputDate
-            validation={{ required }}
+            validation={enrichValidation({ required })}
             disabled={disabled || readOnly}
             showTimeSelect
             {...{ register, errors, placeholder, name, control, defaultValue }}
@@ -368,7 +369,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   const _useObject = useObject();
   const property = schema?.properties[name];
 
-  const getAllFromList = _useObject.getAllFromList(`${property?._list}&_limit=200`);
+  const getAllFromList = _useObject.getAllFromList(`${property?._list}&_limit=500`);
 
   const [defaultValue, setDefaultValue] = React.useState<any>(null);
 
@@ -378,21 +379,20 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     let selected;
 
     if (!multiple) {
-      selected = getAllFromList.data.find((item) => item.id === property.value);
+      selected = getAllFromList.data.find((item) => item._id === property.value);
     }
 
     if (multiple) {
-      selected = getAllFromList.data.filter((item) => property.value?.includes(item.id));
+      selected = getAllFromList.data.filter((item) => property.value?.includes(item._id));
     }
 
     if (!selected) {
       setDefaultValue({});
-
       return;
     }
 
     if (!multiple) {
-      setDefaultValue({ label: selected.name, value: selected.id });
+      setDefaultValue({ label: selected.name, value: selected._id });
     }
 
     if (multiple) {
@@ -415,7 +415,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         }
         disabled={disabled || readOnly}
         {...{ register, errors, placeholder, name, control }}
-        validation={{ required }}
+        validation={enrichValidation({ required })}
       />
     );
   }
@@ -426,7 +426,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
       options={getAllFromList.data?.map((object) => ({ label: object._self.name, value: object._self.id })) ?? []}
       disabled={disabled || readOnly}
       {...{ register, errors, placeholder, name, control }}
-      validation={{ required }}
+      validation={enrichValidation({ required })}
     />
   );
 };

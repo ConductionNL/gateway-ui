@@ -13,6 +13,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
 import { faArrowDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "@gemeente-denhaag/components-react";
+import toast from "react-hot-toast";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface MappingFormTemplateProps {
   mapping?: any;
@@ -107,7 +109,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
               <InputText
                 {...{ register, errors }}
                 name="name"
-                validation={{ required: true }}
+                validation={enrichValidation({ required: true })}
                 disabled={isLoading.mappingForm}
               />
             </FormFieldInput>
@@ -175,7 +177,8 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   {...{ register, errors, control }}
                   defaultValue={_mapping}
                   disabled={isLoading.endpointForm}
-                  validation={{ required: true }}
+                  validation={enrichValidation({ required: true })}
+                  copyValue={{ canCopy: true, onCopied: () => toast.success("Copied to clipboard!") }}
                 />
               </div>
             </Collapsible>
@@ -219,6 +222,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   {...{ register, errors, control }}
                   defaultValue={unset}
                   disabled={isLoading.endpointForm}
+                  copyValue={{ canCopy: true, onCopied: () => toast.success("Copied to clipboard!") }}
                 />
               </div>
             </Collapsible>
@@ -263,6 +267,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   {...{ register, errors, control }}
                   defaultValue={cast}
                   disabled={isLoading.endpointForm}
+                  copyValue={{ canCopy: true, onCopied: () => toast.success("Copied to clipboard!") }}
                 />
               </div>
             </Collapsible>

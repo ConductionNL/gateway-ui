@@ -39,3 +39,7 @@
 .switchContainer input:checked ~ label::after {
   left: 70%;
 }
+
+.disabled label {
+  opacity: 0.5;
+}

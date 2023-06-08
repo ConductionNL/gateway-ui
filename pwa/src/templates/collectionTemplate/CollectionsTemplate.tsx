@@ -14,6 +14,7 @@ import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { ActionButton } from "../../components/actionButton/ActionButton";
 
 export const CollectionsTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -59,6 +60,7 @@ export const CollectionsTemplate: React.FC = () => {
                   <CheckboxBulkSelectAll />
                 </TableHeader>
                 <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Actions")}</TableHeader>
                 <TableHeader />
               </TableRow>
             </TableHead>
@@ -68,6 +70,15 @@ export const CollectionsTemplate: React.FC = () => {
                   <TableCell>{<CheckboxBulkSelectOne id={collection.id} />}</TableCell>
 
                   <TableCell>{collection.name}</TableCell>
+
+                  <TableCell>
+                    <ActionButton
+                      actions={[
+                        { type: "delete", onSubmit: () => deleteCollection.mutate({ id: collection.id }) },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
+                      ]}
+                    />
+                  </TableCell>
 
                   <TableCell onClick={() => navigate(`/collections/${collection.id}`)}>
                     <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
@@ -80,6 +91,7 @@ export const CollectionsTemplate: React.FC = () => {
               {!getCollection.data.length && (
                 <TableRow>
                   <TableCell>{t("No collections found")}</TableCell>
+                  <TableCell />
                   <TableCell />
                   <TableCell />
                 </TableRow>
