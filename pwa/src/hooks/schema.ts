@@ -33,6 +33,13 @@ export const useSchema = (queryClient: QueryClient) => {
       enabled: !!schemaId && !isDeleted(schemaId),
     });
 
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Schema.downloadPDF, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getSchema = (schemaId: string) =>
     useQuery<any, Error>(["schema_schema", schemaId], () => API.Schema.getSchema(schemaId), {
       onError: (error) => {
@@ -72,5 +79,5 @@ export const useSchema = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getAllSelectOptions, getOne, getSchema, remove, createOrEdit };
+  return { getAll, getAllSelectOptions, getOne, getSchema, remove, createOrEdit, downloadPDF };
 };

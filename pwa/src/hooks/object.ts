@@ -4,6 +4,7 @@ import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { useDeletedItemsContext } from "../context/deletedItems";
+import toast from "react-hot-toast";
 
 export const useObject = () => {
   const API: APIService | null = React.useContext(APIContext);
@@ -29,6 +30,27 @@ export const useObject = () => {
         console.warn(error.message);
       },
       enabled: !!objectId && !isDeleted(objectId),
+    });
+
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Object.downloadPDF, {
+      onSuccess: async (data, variables) => {
+        const url = window.URL.createObjectURL(new Blob([data]));
+        const link = document.createElement("a");
+        link.href = url;
+
+        link.setAttribute("download", `${variables.name}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+      },
+      onError: (error) => {
+        if (error.message === "Request failed with status code 400") {
+          toast.error("No downloadable PDF found");
+        } else {
+          toast.error(error.message);
+        }
+        console.warn(error.message);
+      },
     });
 
   const getAllFromEntity = (entityId: string, currentPage: number, searchQuery?: string) =>
@@ -97,5 +119,5 @@ export const useObject = () => {
       },
     });
 
-  return { getAll, getOne, getAllFromEntity, getAllFromList, getSchema, remove, createOrEdit };
+  return { getAll, getOne, getAllFromEntity, getAllFromList, getSchema, remove, createOrEdit, downloadPDF };
 };

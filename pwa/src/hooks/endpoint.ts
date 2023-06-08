@@ -33,6 +33,13 @@ export const useEndpoint = (queryClient: QueryClient) => {
       enabled: !!endpointId && !isDeleted(endpointId),
     });
 
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Endpoints.downloadPDF, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Endpoints.delete, {
       onMutate: ({ id }) => addDeletedItem(id),
@@ -65,5 +72,5 @@ export const useEndpoint = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getAllSelectOptions, getOne, remove, createOrEdit };
+  return { getAll, getAllSelectOptions, getOne, remove, createOrEdit, downloadPDF };
 };

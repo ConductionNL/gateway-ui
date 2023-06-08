@@ -28,6 +28,23 @@ export default class Cronjob {
     return data;
   };
 
+  public downloadPDF = async (variables: { id: string }): Promise<any> => {
+    const { id } = variables;
+
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
+    });
+
+    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/cronjobs/${id}`, undefined, {
+      loading: "Downloading PDF of cronjob...",
+      success: "Succesfully downloaded PDF of cronjob.",
+    });
+
+    return data;
+  };
+
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 

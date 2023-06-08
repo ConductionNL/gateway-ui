@@ -64,11 +64,19 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
   }, [watchSearchQuery]);
 
   const deleteObject = useObject().remove();
+  const downloadObject = useObject().downloadPDF();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(objectsQuery);
 
   const handleBulkDelete = () => {
     selectedItems.forEach((item) => deleteObject.mutate({ id: item }));
+  };
+
+  const handleBulkDownload = () => {
+    selectedItems.forEach((item) => {
+      const object = objectsQuery.data.results.find((object: any) => object.id === item);
+      return downloadObject.mutate({ id: item, name: object.name });
+    });
   };
 
   const handleDuplicate = (objectId: string) => {
@@ -104,7 +112,10 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
         </div>
 
         <BulkActionButton
-          actions={[{ type: "delete", onSubmit: handleBulkDelete }]}
+          actions={[
+            { type: "delete", onSubmit: handleBulkDelete },
+            { type: "download", onSubmit: handleBulkDownload },
+          ]}
           selectedItemsCount={selectedItems.length}
         />
       </div>
@@ -165,7 +176,10 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
                           actions={[
                             { type: "delete", onSubmit: () => deleteObject.mutate({ id: object._self.id }) },
                             { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
-                            { type: "download", onSubmit: () => undefined, disabled: true },
+                            {
+                              type: "download",
+                              onSubmit: () => downloadObject.mutate({ id: object._self.id, name: object.name }),
+                            },
                           ]}
                           variant="secondary"
                         />

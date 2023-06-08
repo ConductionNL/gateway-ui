@@ -26,6 +26,7 @@ import User from "./resources/user";
 import Authentication from "./resources/authentication";
 import SecurityGroup from "./resources/securityGroup";
 import Mapping from "./resources/mapping";
+import Template from "./resources/template";
 
 interface PromiseMessage {
   loading?: string;
@@ -34,7 +35,7 @@ interface PromiseMessage {
 
 export type TSendFunction = (
   instance: AxiosInstance,
-  method: "GET" | "POST" | "PUT" | "DELETE",
+  method: "GET" | "POST" | "PUT" | "DELETE" | "DOWNLOAD",
   endpoint: string,
   payload?: JSON,
   promiseMessage?: PromiseMessage,
@@ -198,6 +199,10 @@ export default class APIService {
     return new Mapping(this.BaseClient, this.Send);
   }
 
+  public get Template(): Template {
+    return new Template(this.BaseClient, this.Send);
+  }
+
   // Services
   public get Login(): Login {
     return new Login(this.LoginClient);
@@ -254,6 +259,13 @@ export default class APIService {
         return toast.promise(instance.delete(endpoint), {
           loading: promiseMessage?.loading ?? "Deleting item...",
           success: promiseMessage?.success ?? "Succesfully deleted item",
+          error: (err) => err.message,
+        });
+
+      case "DOWNLOAD":
+        return toast.promise(instance.get(endpoint), {
+          loading: promiseMessage?.loading ?? "Downloading item...",
+          success: promiseMessage?.success ?? "Succesfully downloaded item",
           error: (err) => err.message,
         });
     }

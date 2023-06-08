@@ -25,6 +25,7 @@ export const EndpointsTemplate: React.FC = () => {
   const _useEndpoints = useEndpoint(queryClient);
   const getEndpoints = _useEndpoints.getAll();
   const deleteEndpoint = _useEndpoints.remove();
+  const downloadEndpoint = _useEndpoints.downloadPDF();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getEndpoints.data);
 
@@ -95,8 +96,9 @@ export const EndpointsTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteEndpoint.mutate({ id: endpoint.id }) },
-                        { type: "download", onSubmit: () => undefined, disabled: true },
+                        { type: "download", onSubmit: () => downloadEndpoint.mutate({ id: endpoint.id }), disabled: true },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 

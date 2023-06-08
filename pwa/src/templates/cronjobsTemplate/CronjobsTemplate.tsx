@@ -26,6 +26,7 @@ export const CronjobsTemplate: React.FC = () => {
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
   const deleteCronjob = _useCronjob.remove();
+  const downloadCronjob = _useCronjob.downloadPDF();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getCronjobs.data);
 
@@ -100,8 +101,9 @@ export const CronjobsTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteCronjob.mutate({ id: cronjob.id }) },
-                        { type: "download", onSubmit: () => undefined, disabled: true },
+                        { type: "download", onSubmit: () => downloadCronjob.mutate({ id: cronjob.id }), disabled: true },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 

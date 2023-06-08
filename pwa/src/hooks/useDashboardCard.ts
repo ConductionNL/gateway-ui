@@ -16,7 +16,8 @@ export type TDashboardCardType =
   | "organization"
   | "user"
   | "authentication"
-  | "mapping";
+  | "mapping"
+  | "template";
 
 export interface useDashboardCardProps {
   name: string;

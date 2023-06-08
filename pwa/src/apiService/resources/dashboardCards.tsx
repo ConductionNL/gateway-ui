@@ -12,7 +12,8 @@ export type TEntity =
   | "Organization"
   | "User"
   | "Authentication"
-  | "Mapping";
+  | "Mapping"
+  | "Template";
 
 export default class DashboardCards {
   private _instance: AxiosInstance;

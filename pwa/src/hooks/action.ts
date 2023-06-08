@@ -40,6 +40,13 @@ export const useAction = (queryClient: QueryClient) => {
       enabled: !!actionId && !isDeleted(actionId),
     });
 
+  const downloadPDF = () =>
+    useMutation<any, Error, any>(API.Action.downloadPDF, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const remove = () =>
     useMutation<any, Error, any>(API.Action.delete, {
       onMutate: ({ id }) => addDeletedItem(id),
@@ -78,5 +85,5 @@ export const useAction = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getAllSelectOptions, getAllHandlers, getOne, remove, createOrEdit, runAction };
+  return { getAll, getAllSelectOptions, getAllHandlers, getOne, remove, createOrEdit, runAction, downloadPDF };
 };
