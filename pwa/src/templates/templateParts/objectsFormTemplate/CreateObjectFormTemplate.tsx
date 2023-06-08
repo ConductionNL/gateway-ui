@@ -76,7 +76,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
         onSuccess: (newObject) => {
           switch (afterSuccessfulFormSubmit) {
             case "save":
-              navigate(`/objects/${newObject._id}`);
+              navigate(`/objects/${newObject.id ?? newObject._id}`);
               break;
 
             case "saveAndClose":
