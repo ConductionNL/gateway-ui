@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Paginate } from "../components/paginate/Paginate";
 import { PaginationLocationIndicatorComponent } from "../components/paginationLocationIndicatorComponent/PaginationLocationIndicatorComponent";
+import { PaginationLimitSelectComponent } from "../components/paginationLimitSelect/PaginationLimitSelectComponent";
 
 export interface PaginationDataProps {
   count: number;
@@ -9,12 +10,24 @@ export interface PaginationDataProps {
   total: number;
 }
 
+export const queryLimitDefault = 10;
+
 interface PaginationProps {
   layoutClassName?: string;
 }
 
 interface PaginationLocationIndicator {
   layoutClassName?: string;
+}
+
+interface PaginationLimitSelect {
+  queryLimit: number;
+  setQueryLimit: React.Dispatch<React.SetStateAction<number>>;
+  layoutClassName?: string;
+}
+
+interface ReactHookFormProps {
+  errors: { [x: string]: any };
 }
 
 export const usePagination = (
@@ -35,5 +48,9 @@ export const usePagination = (
     />
   );
 
-  return { Pagination, PaginationLocationIndicator };
+  const PaginationLimitSelect: React.FC<PaginationLimitSelect> = ({ queryLimit, setQueryLimit, layoutClassName }) => (
+    <PaginationLimitSelectComponent {...{ layoutClassName, queryLimit, setQueryLimit }} />
+  );
+
+  return { Pagination, PaginationLocationIndicator, PaginationLimitSelect };
 };

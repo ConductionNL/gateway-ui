@@ -39,3 +39,8 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+}

@@ -9,14 +9,17 @@ import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/
 import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { useObject } from "../../hooks/object";
 import { useObjectsStateContext } from "../../context/objects";
+import { queryLimitDefault } from "../../hooks/usePagination";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
   const { objectsState } = useObjectsStateContext();
   const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [queryLimit, setQueryLimit] = React.useState<number>(queryLimitDefault);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
-  const getObjects = useObject().getAll(currentPage, objectsState.order, undefined, searchQuery);
+  const getObjects = useObject().getAll(currentPage, objectsState.order, queryLimit, searchQuery);
+
 
   return (
     <Container layoutClassName={styles.container}>
@@ -34,6 +37,7 @@ export const ObjectTemplate: React.FC = () => {
           setCurrentPage,
         }}
         search={{ searchQuery, setSearchQuery }}
+        limit={{ queryLimit, setQueryLimit }}
       />
     </Container>
   );
