@@ -1,16 +1,20 @@
 import * as React from "react";
 import * as styles from "./PaginationLimitSelectComponent.module.css";
 
+import clsx from "clsx";
 import { useForm } from "react-hook-form";
 import { SelectSingle } from "@conduction/components";
+import { IQueryLimitContext, useQueryLimitContext } from "../../context/queryLimit";
 
 interface PaginationLimitSelectProps {
-  queryLimit: number;
-  setQueryLimit: React.Dispatch<React.SetStateAction<number>>;
+  queryLimitName: string;
   layoutClassName?: string;
 }
 
-export const PaginationLimitSelectComponent: React.FC<PaginationLimitSelectProps> = ({ queryLimit, setQueryLimit }) => {
+export const PaginationLimitSelectComponent: React.FC<PaginationLimitSelectProps> = ({
+  queryLimitName,
+  layoutClassName,
+}) => {
   const {
     watch,
     register,
@@ -18,26 +22,30 @@ export const PaginationLimitSelectComponent: React.FC<PaginationLimitSelectProps
     setValue,
     formState: { errors },
   } = useForm();
+  const { queryLimit, setQueryLimit } = useQueryLimitContext();
 
   const watchLimit = watch("limit");
 
+  const value = queryLimit[queryLimitName as keyof IQueryLimitContext];
+
   React.useEffect(() => {
     if (!watchLimit) return;
+    if (parseInt(watchLimit.value) === value) return;
 
     const selectedLimit = limitSelectOptions.find((LimitOption) => LimitOption.value === watchLimit.value);
 
-    selectedLimit !== undefined && setQueryLimit(parseInt(selectedLimit.value));
+    selectedLimit !== undefined && setQueryLimit({ ...queryLimit, [queryLimitName]: parseInt(selectedLimit.value) });
   }, [watchLimit]);
 
   React.useEffect(() => {
     setValue(
       "limit",
-      limitSelectOptions.find((LimitOption) => LimitOption.value === queryLimit.toString()),
+      limitSelectOptions.find((LimitOption) => LimitOption.value === (value !== undefined && value.toString())),
     );
-  }, [queryLimit]);
+  }, []);
 
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, layoutClassName && layoutClassName)}>
       <span>Results per page:</span>
       <SelectSingle {...{ register, errors, control }} name="limit" options={limitSelectOptions} />
     </div>

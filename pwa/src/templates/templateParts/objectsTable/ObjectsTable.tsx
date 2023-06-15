@@ -26,12 +26,8 @@ interface ObjectsTableProps {
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   };
   search: {
-    setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
     searchQuery: string;
-  };
-  limit?: {
-    setQueryLimit: React.Dispatch<React.SetStateAction<number>>;
-    queryLimit: number;
+    setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   };
 }
 
@@ -39,7 +35,6 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
   objectsQuery,
   pagination,
   search: { searchQuery, setSearchQuery },
-  limit,
 }) => {
   const {
     columns: { objectColumns },
@@ -202,7 +197,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
           {objectsQuery.data.results && (
             <div className={styles.pagination}>
               <Pagination />
-              {limit && <PaginationLimitSelect queryLimit={limit.queryLimit} setQueryLimit={limit.setQueryLimit} />}
+              <PaginationLimitSelect queryLimitName={"objectsQueryLimit"} />
             </div>
           )}
         </>

@@ -10,8 +10,6 @@ export interface PaginationDataProps {
   total: number;
 }
 
-export const queryLimitDefault = 10;
-
 interface PaginationProps {
   layoutClassName?: string;
 }
@@ -21,8 +19,7 @@ interface PaginationLocationIndicator {
 }
 
 interface PaginationLimitSelect {
-  queryLimit: number;
-  setQueryLimit: React.Dispatch<React.SetStateAction<number>>;
+  queryLimitName: string;
   layoutClassName?: string;
 }
 
@@ -48,8 +45,8 @@ export const usePagination = (
     />
   );
 
-  const PaginationLimitSelect: React.FC<PaginationLimitSelect> = ({ queryLimit, setQueryLimit, layoutClassName }) => (
-    <PaginationLimitSelectComponent {...{ layoutClassName, queryLimit, setQueryLimit }} />
+  const PaginationLimitSelect: React.FC<PaginationLimitSelect> = ({ queryLimitName, layoutClassName }) => (
+    <PaginationLimitSelectComponent {...{ layoutClassName, queryLimitName }} />
   );
 
   return { Pagination, PaginationLocationIndicator, PaginationLimitSelect };
