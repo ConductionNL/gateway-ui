@@ -74,7 +74,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
 
   const handleBulkDownload = () => {
     selectedItems.forEach((item) => {
-      const object = objectsQuery.data.results.find((object: any) => object.id === item);
+      const object = objectsQuery.data.results.find((object: any) => object._id === item);
       return downloadObject.mutate({ id: item, name: object.name });
     });
   };
