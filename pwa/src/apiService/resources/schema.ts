@@ -28,23 +28,6 @@ export default class Schema {
     return data;
   };
 
-  public downloadPDF = async (variables: { id: string }): Promise<any> => {
-    const { id } = variables;
-
-    const instance = this._instance;
-
-    instance.interceptors.request.use(function (config) {
-      return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
-    });
-
-    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/entities/${id}`, undefined, {
-      loading: "Downloading PDF of schema...",
-      success: "Succesfully downloaded PDF of schema.",
-    });
-
-    return data;
-  };
-
   public getSchema = async (id: string): Promise<any> => {
     const instance = this._instance;
 
