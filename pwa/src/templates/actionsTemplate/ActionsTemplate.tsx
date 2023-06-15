@@ -26,7 +26,6 @@ export const ActionsTemplate: React.FC = () => {
   const _useActions = useAction(queryClient);
   const getActions = _useActions.getAll();
   const deleteAction = _useActions.remove();
-  const downloadAction = _useActions.downloadPDF();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getActions.data);
 
@@ -100,7 +99,7 @@ export const ActionsTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteAction.mutate({ id: action.id }) },
-                        { type: "download", onSubmit: () => downloadAction.mutate({ id: action.id }), disabled: true },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
                       variant="primary"
                     />
