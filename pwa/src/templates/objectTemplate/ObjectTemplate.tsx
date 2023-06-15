@@ -20,6 +20,10 @@ export const ObjectTemplate: React.FC = () => {
 
   const getObjects = useObject().getAll(currentPage, objectsState.order, queryLimit.objectsQueryLimit, searchQuery);
 
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [queryLimit.objectsQueryLimit]);
+
   return (
     <Container layoutClassName={styles.container}>
       <OverviewPageHeaderTemplate
