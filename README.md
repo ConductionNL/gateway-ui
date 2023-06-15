@@ -1,4 +1,4 @@
-# Gateway UI documentation
+# Gateway User Interface documentation
 
 ## Work instructions
 
