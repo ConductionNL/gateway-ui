@@ -34,7 +34,7 @@ interface PromiseMessage {
 
 export type TSendFunction = (
   instance: AxiosInstance,
-  method: "GET" | "POST" | "PUT" | "DELETE" | "DOWNLOAD",
+  action: "GET" | "POST" | "PUT" | "DELETE" | "DOWNLOAD",
   endpoint: string,
   payload?: JSON,
   promiseMessage?: PromiseMessage,
@@ -208,7 +208,7 @@ export default class APIService {
   }
 
   // Send method
-  public Send: TSendFunction = (instance, method, endpoint, payload, promiseMessage) => {
+  public Send: TSendFunction = (instance, action, endpoint, payload, promiseMessage) => {
     const _payload = JSON.stringify(payload);
 
     if (!validateSession()) {
@@ -228,7 +228,7 @@ export default class APIService {
       this.renewAuthentication();
     }
 
-    switch (method) {
+    switch (action) {
       case "GET":
         const response = instance.get(endpoint);
 
