@@ -2,4 +2,4 @@
 
 ## Work instructions
 
-1. [User management]("/documentation/work-instructions/user-management.md")
+1. [User management](/documentation/work-instructions/user-management.md)
