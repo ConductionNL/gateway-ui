@@ -22,23 +22,6 @@ export default class Source {
     return data;
   };
 
-  public downloadPDF = async (variables: { id: string }): Promise<any> => {
-    const { id } = variables;
-
-    const instance = this._instance;
-
-    instance.interceptors.request.use(function (config) {
-      return { ...config, headers: { ...config.headers, Accept: "application/pdf" } };
-    });
-
-    const { data } = await this._send(this._instance, "DOWNLOAD", `admin/gateways/${id}`, undefined, {
-      loading: "Downloading PDF of source...",
-      success: "Succesfully downloaded PDF of source.",
-    });
-
-    return data;
-  };
-
   public getProxy = async (variables: { payload: any; id?: string }): Promise<any> => {
     const { id, payload } = variables;
 
