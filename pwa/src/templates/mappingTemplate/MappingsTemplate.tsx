@@ -23,7 +23,6 @@ export const MappingTemplate: React.FC = () => {
   const queryClient = useQueryClient();
   const getMappings = useMapping(queryClient).getAll();
   const deleteMapping = useMapping(queryClient).remove();
-  const downloadMapping = useMapping(queryClient).downloadPDF();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getMappings.data);
 
@@ -80,7 +79,7 @@ export const MappingTemplate: React.FC = () => {
                     <ActionButton
                       actions={[
                         { type: "delete", onSubmit: () => deleteMapping.mutate({ id: mapping.id }) },
-                        { type: "download", onSubmit: () => downloadMapping.mutate({ id: mapping.id }), disabled: true },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
                       variant="primary"
                     />
