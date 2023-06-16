@@ -24,14 +24,13 @@ export const useTemplate = (queryClient: QueryClient) => {
       },
     });
 
-  const getOne = (collectionId: string) =>
-    useQuery<any, Error>(["templates", collectionId], () => API?.Template.getOne(collectionId), {
-      initialData: () =>
-        queryClient.getQueryData<any[]>("templates")?.find((_collection) => _collection.id === collectionId),
+  const getOne = (templateId: string) =>
+    useQuery<any, Error>(["templates", templateId], () => API?.Template.getOne(templateId), {
+      initialData: () => queryClient.getQueryData<any[]>("templates")?.find((_template) => _template.id === templateId),
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!collectionId && !isDeleted(collectionId),
+      enabled: !!templateId && !isDeleted(templateId),
     });
 
   const remove = () =>
@@ -47,16 +46,15 @@ export const useTemplate = (queryClient: QueryClient) => {
       },
     });
 
-  const downloadPDF = () =>
-  const createOrEdit = (collectionId?: string) =>
+  const createOrEdit = (templateId?: string) =>
     useMutation<any, Error, any>(API.Template.createOrUpdate, {
       onSuccess: async (newTemplate) => {
-        if (collectionId) {
+        if (templateId) {
           updateItem(queryClient, "templates", newTemplate);
           navigate("/templates");
         }
 
-        if (!collectionId) {
+        if (!templateId) {
           addItem(queryClient, "templates", newTemplate);
           navigate(`/templates/${newTemplate.id}`);
         }
@@ -66,5 +64,5 @@ export const useTemplate = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit, getAllSelectOptions, downloadPDF };
+  return { getAll, getOne, remove, createOrEdit, getAllSelectOptions };
 };
