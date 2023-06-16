@@ -48,12 +48,6 @@ export const useTemplate = (queryClient: QueryClient) => {
     });
 
   const downloadPDF = () =>
-    useMutation<any, Error, any>(API.Template.downloadPDF, {
-      onError: (error) => {
-        console.warn(error.message);
-      },
-    });
-
   const createOrEdit = (collectionId?: string) =>
     useMutation<any, Error, any>(API.Template.createOrUpdate, {
       onSuccess: async (newTemplate) => {

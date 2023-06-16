@@ -24,7 +24,6 @@ export const TemplatesTemplate: React.FC = () => {
   const _useTemplate = useTemplate(queryClient);
   const getTemplates = _useTemplate.getAll();
   const deleteTemplate = _useTemplate.remove();
-  const downloadTemplate = _useTemplate.downloadPDF();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getTemplates.data);
 
@@ -84,10 +83,7 @@ export const TemplatesTemplate: React.FC = () => {
 
                   <TableCell>
                     <ActionButton
-                      actions={[
-                        { type: "delete", onSubmit: () => deleteTemplate.mutate({ id: template.id }) },
-                        { type: "download", onSubmit: () => downloadTemplate.mutate({ id: template.id }) },
-                      ]}
+                      actions={[{ type: "delete", onSubmit: () => deleteTemplate.mutate({ id: template.id }) }]}
                       variant="primary"
                     />
                   </TableCell>
