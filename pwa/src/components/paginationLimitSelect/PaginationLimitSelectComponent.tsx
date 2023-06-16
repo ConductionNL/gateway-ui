@@ -47,7 +47,7 @@ export const PaginationLimitSelectComponent: React.FC<PaginationLimitSelectProps
   return (
     <div className={clsx(styles.container, layoutClassName && layoutClassName)}>
       <span>Results per page:</span>
-      <SelectSingle {...{ register, errors, control }} name="limit" options={limitSelectOptions} />
+      <SelectSingle {...{ register, errors, control }} name="limit" options={limitSelectOptions} menuPlacement="auto" />
     </div>
   );
 };
