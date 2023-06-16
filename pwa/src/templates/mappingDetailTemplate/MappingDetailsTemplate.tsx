@@ -26,7 +26,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const { toggleDashboardCard, getDashboardCard, loading: dashboardLoading } = useDashboardCard();
-  const [testMappingData, setTestMappingData] = React.useState<object>();
+  const [testMappingData, setTestMappingData] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const getMapping = useMapping(queryClient).getOne(mappingId);
@@ -55,7 +55,7 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
   }, [deleteMapping.isLoading, testMapping.isLoading, dashboardLoading]);
 
   React.useEffect(() => {
-    testMapping.isSuccess && setTestMappingData(testMapping.data);
+    testMapping.isSuccess && setTestMappingData(JSON.stringify(testMapping.data, null, 2));
   }, [testMapping.isSuccess]);
 
   return (
@@ -107,11 +107,14 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                       </ToolTip>
                     </div>
 
-                    <CodeEditor code={mappingTestInput} setCode={setMappingTestInput} />
+                    <CodeEditor language="json" code={mappingTestInput} setCode={setMappingTestInput} />
                   </div>
                   <div className={styles.outputContent}>
                     <div> {t("Output")}</div>
-                    {testMappingData && <pre>{JSON.stringify(testMappingData, null, 2)}</pre>}
+
+                    {testMappingData && (
+                      <CodeEditor language="json" code={testMappingData} setCode={setTestMappingData} readOnly />
+                    )}
                     {!testMappingData && (
                       <div>When the mapping has been succesfully tested the output will be shown here.</div>
                     )}

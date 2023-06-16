@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as styles from "./TestSourceConnectionFormTemplate.module.css";
-
-import { SelectSingle, InputText, Textarea } from "@conduction/components";
+import { SelectSingle, InputText } from "@conduction/components";
 import { faArrowsRotate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@gemeente-denhaag/components-react";
@@ -12,8 +11,8 @@ import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { useSource } from "../../../hooks/source";
-import { validateStringAsJSON } from "../../../services/validateJSON";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
+import { CodeEditor } from "../../../components/codeEditor/CodeEditor";
 
 interface TestSourceConnectionFormTemplateProps {
   sourceId: string;
@@ -22,19 +21,25 @@ interface TestSourceConnectionFormTemplateProps {
 export const TestSourceConnectionFormTemplate: React.FC<TestSourceConnectionFormTemplateProps> = ({ sourceId }) => {
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const testProxy = useSource(useQueryClient()).getProxy(sourceId);
+  const [testProxyInput, setTestProxyInput] = React.useState<string>("");
+  const [selectedBodyLanguage, setSelectedBodyLanguage] = React.useState<any>("json");
 
   const {
     register,
     control,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data: any) => {
     const payload = {
       ...data,
-      body: data.body ? JSON.parse(data.body) : [],
+      body: testProxyInput ? JSON.parse(testProxyInput) : [],
     };
+
+    delete payload.bodyLanguage;
 
     testProxy.mutate({ id: sourceId, payload: payload });
   };
@@ -42,6 +47,25 @@ export const TestSourceConnectionFormTemplate: React.FC<TestSourceConnectionForm
   React.useEffect(() => {
     setIsLoading({ sourceForm: testProxy.isLoading });
   }, [testProxy.isLoading]);
+
+  const watchBodyLanguage = watch("bodyLanguage");
+
+  React.useEffect(() => {
+    if (!watchBodyLanguage) return;
+
+    const selectedLanguage = bodyLanguageSelectOptions.find(
+      (bodyLanguageOption) => bodyLanguageOption.value === watchBodyLanguage.value,
+    );
+
+    setSelectedBodyLanguage(selectedLanguage?.value);
+  }, [watchBodyLanguage]);
+
+  React.useEffect(() => {
+    const defaultLanguage = bodyLanguageSelectOptions.find(
+      (bodyLanguageOption) => bodyLanguageOption.value === selectedBodyLanguage,
+    );
+    setValue("bodyLanguage", defaultLanguage);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,24 +92,35 @@ export const TestSourceConnectionFormTemplate: React.FC<TestSourceConnectionForm
               />
             </FormFieldInput>
           </FormField>
+
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Endpoint")}</FormFieldLabel>
               <InputText {...{ register, errors }} name="endpoint" disabled={isLoading.sourceForm} />
             </FormFieldInput>
           </FormField>
+
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("Body")}</FormFieldLabel>
-              <Textarea
-                {...{ register, errors }}
-                name="body"
-                validation={enrichValidation({ validate: validateStringAsJSON })}
+              <FormFieldLabel>{t("Body Language")}</FormFieldLabel>
+              <SelectSingle
+                {...{ register, errors, control }}
+                name="bodyLanguage"
+                options={bodyLanguageSelectOptions}
+                defaultValue={selectedBodyLanguage}
                 disabled={isLoading.sourceForm}
               />
             </FormFieldInput>
           </FormField>
         </div>
+
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>{t("Body")}</FormFieldLabel>
+
+            <CodeEditor language={selectedBodyLanguage} code={testProxyInput} setCode={setTestProxyInput} />
+          </FormFieldInput>
+        </FormField>
       </div>
     </form>
   );
@@ -98,4 +133,9 @@ const methodSelectOptions = [
   { label: "UPDATE", value: "UPDATE" },
   { label: "GET", value: "GET" },
   { label: "DELETE", value: "DELETE" },
+];
+
+const bodyLanguageSelectOptions = [
+  { label: "JSON", value: "json" },
+  { label: "XML", value: "xml" },
 ];
