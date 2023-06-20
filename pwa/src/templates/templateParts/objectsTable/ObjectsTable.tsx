@@ -21,31 +21,24 @@ import Skeleton from "react-loading-skeleton";
 
 interface ObjectsTableProps {
   objectsQuery: UseQueryResult<any, Error>;
-  pagination: {
-    currentPage: number;
-    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  };
   search: {
     setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
     searchQuery: string;
   };
+  paginationKey: string;
 }
 
 export const ObjectsTable: React.FC<ObjectsTableProps> = ({
   objectsQuery,
-  pagination,
   search: { searchQuery, setSearchQuery },
+  paginationKey,
 }) => {
   const {
     columns: { objectColumns },
     setColumns,
   } = useTableColumnsContext();
   const { toggleOrder, objectsState, setObjectsState } = useObjectsStateContext();
-  const { Pagination, PaginationLocationIndicator } = usePagination(
-    { ...objectsQuery.data },
-    pagination.currentPage,
-    pagination.setCurrentPage,
-  );
+  const { Pagination, PaginationLocationIndicator } = usePagination({ ...objectsQuery.data }, paginationKey);
   const searchQueryTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const { t } = useTranslation();
 

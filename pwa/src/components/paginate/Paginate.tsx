@@ -10,7 +10,7 @@ import clsx from "clsx";
 interface PaginateProps {
   totalPages: number;
   currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  setCurrentPage: (newPage: number) => void;
   layoutClassName?: string;
 }
 

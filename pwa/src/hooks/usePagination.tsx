@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Paginate } from "../components/paginate/Paginate";
 import { PaginationLocationIndicatorComponent } from "../components/paginationLocationIndicatorComponent/PaginationLocationIndicatorComponent";
+import { usePaginationContext } from "../context/pagination";
 
 export interface PaginationDataProps {
   count: number;
@@ -17,13 +18,17 @@ interface PaginationLocationIndicator {
   layoutClassName?: string;
 }
 
-export const usePagination = (
-  data: PaginationDataProps,
-  currentPage: number,
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>,
-) => {
+export const usePagination = (data: PaginationDataProps, key: string) => {
+  const { getPagination, setPagination } = usePaginationContext();
+
+  const pagination = getPagination(key);
+
+  const setCurrentPage = (newPage: number) => {
+    setPagination({ currentPage: newPage }, key);
+  };
+
   const Pagination: React.FC<PaginationProps> = ({ layoutClassName }) => (
-    <Paginate totalPages={data.pages} {...{ currentPage, setCurrentPage, layoutClassName }} />
+    <Paginate totalPages={data.pages} currentPage={pagination.currentPage} {...{ setCurrentPage, layoutClassName }} />
   );
 
   const PaginationLocationIndicator: React.FC<PaginationLocationIndicator> = ({ layoutClassName }) => (

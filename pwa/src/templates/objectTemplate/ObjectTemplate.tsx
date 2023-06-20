@@ -9,14 +9,18 @@ import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/
 import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { useObject } from "../../hooks/object";
 import { useObjectsStateContext } from "../../context/objects";
+import { usePaginationContext } from "../../context/pagination";
+
+const PAGINATION_KEY = "objects";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
   const { objectsState } = useObjectsStateContext();
   const [searchQuery, setSearchQuery] = React.useState<string>("");
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
 
-  const getObjects = useObject().getAll(currentPage, objectsState.order, undefined, searchQuery);
+  const { getCurrentPage } = usePaginationContext();
+
+  const getObjects = useObject().getAll(getCurrentPage(PAGINATION_KEY), objectsState.order, undefined, searchQuery);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -27,14 +31,7 @@ export const ObjectTemplate: React.FC = () => {
         }
       />
 
-      <ObjectsTable
-        objectsQuery={getObjects}
-        pagination={{
-          currentPage,
-          setCurrentPage,
-        }}
-        search={{ searchQuery, setSearchQuery }}
-      />
+      <ObjectsTable objectsQuery={getObjects} search={{ searchQuery, setSearchQuery }} paginationKey={PAGINATION_KEY} />
     </Container>
   );
 };
