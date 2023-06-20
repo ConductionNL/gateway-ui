@@ -18,9 +18,14 @@ export const ObjectTemplate: React.FC = () => {
   const { objectsState } = useObjectsStateContext();
   const [searchQuery, setSearchQuery] = React.useState<string>("");
 
-  const { getCurrentPage } = usePaginationContext();
+  const { getCurrentPage, getPerPage } = usePaginationContext();
 
-  const getObjects = useObject().getAll(getCurrentPage(PAGINATION_KEY), objectsState.order, undefined, searchQuery);
+  const getObjects = useObject().getAll(
+    getCurrentPage(PAGINATION_KEY),
+    objectsState.order,
+    getPerPage(PAGINATION_KEY),
+    searchQuery,
+  );
 
   return (
     <Container layoutClassName={styles.container}>
