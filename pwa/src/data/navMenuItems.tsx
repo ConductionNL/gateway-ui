@@ -3,6 +3,7 @@ import {
   faClipboardList,
   faDatabase,
   faDiagramProject,
+  faFile,
   faGear,
   faGrip,
   faHome,
@@ -73,12 +74,6 @@ export const mainMenuItems = () => {
       current: pathname.includes("/schemas"),
     },
     {
-      label: "Logs",
-      icon: <FontAwesomeIcon icon={faList} />,
-      onClick: () => navigate("/logs"),
-      current: pathname.includes("/logs"),
-    },
-    {
       label: "Plugins",
       icon: <FontAwesomeIcon icon={faPuzzlePiece} />,
       onClick: () => navigate("/plugins"),
@@ -95,6 +90,18 @@ export const mainMenuItems = () => {
       icon: <FontAwesomeIcon icon={faMap} />,
       onClick: () => navigate("/mappings"),
       current: pathname.includes("/mappings"),
+    },
+    {
+      label: "Templates",
+      icon: <FontAwesomeIcon icon={faFile} />,
+      onClick: () => navigate("/templates"),
+      current: pathname.includes("/templates"),
+    },
+    {
+      label: "Logs",
+      icon: <FontAwesomeIcon icon={faList} />,
+      onClick: () => navigate("/logs"),
+      current: pathname.includes("/logs"),
     },
   ];
 };
