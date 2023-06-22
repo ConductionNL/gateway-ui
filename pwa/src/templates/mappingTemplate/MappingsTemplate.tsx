@@ -81,6 +81,7 @@ export const MappingTemplate: React.FC = () => {
                         { type: "delete", onSubmit: () => deleteMapping.mutate({ id: mapping.id }) },
                         { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 

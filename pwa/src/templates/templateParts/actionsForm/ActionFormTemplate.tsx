@@ -11,10 +11,10 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
 import Skeleton from "react-loading-skeleton";
-import { validateStringAsJSON } from "../../../services/validateJSON";
 import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
+import { CodeEditor } from "../../../components/codeEditor/CodeEditor";
 
 export const formId: string = "action-form";
 
@@ -30,6 +30,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
   const [selectedHanlderSchema, setSelectedHanlderSchema] = React.useState<any>(null);
   const [actionHandlerSchema, setActionHandlerSchema] = React.useState<any>(action?.actionHandlerConfiguration);
   const [currentTab, setCurrentTab] = React.useState<number>(0);
+  const [actionConditionsFieldValue, setActionConditionsFieldValue] = React.useState<string>("");
 
   const queryClient = useQueryClient();
 
@@ -77,7 +78,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
       listens: data.listens?.map((listener: any) => listener.value),
       throws: data.throws?.map((_throw: any) => _throw.value),
       class: data.class.value,
-      conditions: data.conditions ? JSON.parse(data.conditions) : [],
+      conditions: actionConditionsFieldValue ? JSON.parse(actionConditionsFieldValue) : [],
       configuration: {},
     };
 
@@ -95,7 +96,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
     const basicFields: string[] = ["name", "description", "priority", "async", "isLockable", "isEnabled"];
     basicFields.forEach((field) => setValue(field, action[field]));
 
-    setValue("conditions", JSON.stringify(action["conditions"]));
+    setActionConditionsFieldValue(JSON.stringify(action["conditions"], null, 2));
 
     setValue("class", { label: action.class, value: action.class });
 
@@ -275,22 +276,17 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
             </TabPanel>
 
             <TabPanel className={styles.tabPanel} value="1">
-              <div className={styles.gridContainer}>
-                <div className={styles.grid}>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
+              <FormField>
+                <FormFieldInput>
+                  <FormFieldLabel>{t("Conditions")}</FormFieldLabel>
 
-                      <Textarea
-                        {...{ register, errors }}
-                        name="conditions"
-                        disabled={isLoading.actionForm}
-                        validation={enrichValidation({ validate: validateStringAsJSON })}
-                      />
-                    </FormFieldInput>
-                  </FormField>
-                </div>
-              </div>
+                  <CodeEditor
+                    language="json"
+                    code={actionConditionsFieldValue}
+                    setCode={setActionConditionsFieldValue}
+                  />
+                </FormFieldInput>
+              </FormField>
             </TabPanel>
           </TabContext>
         </div>

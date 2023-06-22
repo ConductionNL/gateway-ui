@@ -97,6 +97,7 @@ export const EndpointsTemplate: React.FC = () => {
                         { type: "delete", onSubmit: () => deleteEndpoint.mutate({ id: endpoint.id }) },
                         { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 
