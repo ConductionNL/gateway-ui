@@ -102,6 +102,7 @@ export const CronjobsTemplate: React.FC = () => {
                         { type: "delete", onSubmit: () => deleteCronjob.mutate({ id: cronjob.id }) },
                         { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 

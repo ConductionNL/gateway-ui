@@ -101,6 +101,7 @@ export const ActionsTemplate: React.FC = () => {
                         { type: "delete", onSubmit: () => deleteAction.mutate({ id: action.id }) },
                         { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 

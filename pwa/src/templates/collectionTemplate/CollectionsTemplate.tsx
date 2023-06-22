@@ -77,6 +77,7 @@ export const CollectionsTemplate: React.FC = () => {
                         { type: "delete", onSubmit: () => deleteCollection.mutate({ id: collection.id }) },
                         { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 
