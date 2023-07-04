@@ -9,14 +9,20 @@ import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/
 import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { useObject } from "../../hooks/object";
 import { useObjectsStateContext } from "../../context/objects";
+import { useQueryLimitContext } from "../../context/queryLimit";
 
 export const ObjectTemplate: React.FC = () => {
   const { t } = useTranslation();
   const { objectsState } = useObjectsStateContext();
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const { queryLimit } = useQueryLimitContext();
 
-  const getObjects = useObject().getAll(currentPage, objectsState.order, undefined, searchQuery);
+  const getObjects = useObject().getAll(currentPage, objectsState.order, queryLimit.objectsQueryLimit, searchQuery);
+
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [queryLimit.objectsQueryLimit]);
 
   return (
     <Container layoutClassName={styles.container}>
