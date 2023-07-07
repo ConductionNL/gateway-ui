@@ -10,7 +10,7 @@ services:
       - "81:80"
 
   php: &php
-    image: ghcr.io/conductionnl/commonground-gateway-php:cleanup
+    image: ghcr.io/conductionnl/commonground-gateway-php:latest
     depends_on:
       - db
     volumes:
@@ -34,7 +34,7 @@ services:
       - "82:80"
 
   api: &nginx
-    image: ghcr.io/conductionnl/commonground-gateway-nginx:cleanup
+    image: ghcr.io/conductionnl/commonground-gateway-nginx:latest
     depends_on:
       - php
     ports:

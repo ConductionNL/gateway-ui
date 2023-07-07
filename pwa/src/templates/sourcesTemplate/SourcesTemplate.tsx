@@ -11,7 +11,6 @@ import { translateDate } from "../../services/dateFormat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Skeleton from "react-loading-skeleton";
-import TableWrapper from "../../components/tableWrapper/TableWrapper";
 import { dateTime } from "../../services/dateTime";
 import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
@@ -95,6 +94,7 @@ export const SourcesTemplate: React.FC = () => {
                         { type: "delete", onSubmit: () => deleteSource.mutate({ id: source.id }) },
                         { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
+                      variant="primary"
                     />
                   </TableCell>
 

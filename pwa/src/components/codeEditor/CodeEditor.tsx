@@ -6,7 +6,7 @@ import clsx from "clsx";
 interface CodeEditorProps {
   code: string;
   setCode: React.Dispatch<React.SetStateAction<string>>;
-  language?: "json" | "xml";
+  language?: "json" | "xml" | "html";
   layoutClassName?: string;
   readOnly?: boolean;
 }

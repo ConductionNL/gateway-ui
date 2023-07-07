@@ -43,5 +43,8 @@ export const getPath = (value: any): any => {
 
     case "mapping":
       return "mappings";
+
+    case "template":
+      return "templates";
   }
 };

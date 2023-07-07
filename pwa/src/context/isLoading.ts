@@ -15,6 +15,7 @@ export interface IIsLoadingContext {
   organizationForm?: boolean;
   mappingForm?: boolean;
   loginForm?: boolean;
+  templateForm?: boolean;
 }
 
 export const defaultIsLoadingContext: IIsLoadingContext = {};
