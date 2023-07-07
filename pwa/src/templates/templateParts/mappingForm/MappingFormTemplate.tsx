@@ -320,7 +320,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                     <>
                       <div onClick={(e) => handleSwitchEditor(e, "unset")}>
                         <Link icon={<FontAwesomeIcon icon={faEdit} />} iconAlign="start">
-                          {t(!editMappingInEditor ? "Edit as JSON" : "Edit as Key-Value")}
+                          {t(!editUnsetInEditor ? "Edit as JSON" : "Edit as Key-Value")}
                         </Link>
                       </div>
                       <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, unsetRefBottom)}>
@@ -377,7 +377,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                     <>
                       <div onClick={(e) => handleSwitchEditor(e, "unset")}>
                         <Link icon={<FontAwesomeIcon icon={faEdit} />} iconAlign="start">
-                          {t(!editMappingInEditor ? "Edit as JSON" : "Edit as Key-Value")}
+                          {t(!editCastInEditor ? "Edit as JSON" : "Edit as Key-Value")}
                         </Link>
                       </div>
                       <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, castRefBottom)}>
