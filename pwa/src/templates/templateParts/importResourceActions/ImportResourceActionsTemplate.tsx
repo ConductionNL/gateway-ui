@@ -9,6 +9,8 @@ import Collapsible from "react-collapsible";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const ImportResourceActionsTemplate: React.FC = () => {
+  const [uploadSent, setUploadSent] = React.useState<boolean>(false);
+
   const REGISTER_FILE_NAME = "file"; // used to register the file field in React Hook Form
   const [fileAvailable, setFileAvailable] = React.useState<boolean>(false);
 
@@ -30,6 +32,8 @@ export const ImportResourceActionsTemplate: React.FC = () => {
 
   const onSubmit = (data: any) => {
     console.log({ data });
+
+    setUploadSent(true);
   };
 
   return (
@@ -38,6 +42,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
         <Collapsible
           contentInnerClassName={styles.collapsibleContent}
           openedClassName={styles.collapsibleIsOpen}
+          triggerDisabled={uploadSent}
           trigger={
             <CollapsibleTrigger
               label={
@@ -57,7 +62,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
               isCompleted={fileAvailable}
             />
           }
-          open={!fileAvailable}
+          open={!fileAvailable && !uploadSent}
           transitionTime={200}
         >
           <FormStepFileSelect registerFileName={REGISTER_FILE_NAME} {...{ setValue }} />
@@ -66,6 +71,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
         <Collapsible
           contentInnerClassName={styles.collapsibleContent}
           openedClassName={styles.collapsibleIsOpen}
+          triggerDisabled={uploadSent}
           trigger={
             <CollapsibleTrigger
               label={
@@ -73,23 +79,26 @@ export const ImportResourceActionsTemplate: React.FC = () => {
                   <strong>Step two:</strong> select configuration
                 </span>
               }
+              isCompleted={uploadSent}
             />
           }
-          open={fileAvailable}
+          open={fileAvailable && !uploadSent}
           transitionTime={200}
         >
           <FormStepOptionsSelect {...{ register, errors, control }} />
         </Collapsible>
 
-        <div className={styles.submitContainer}>
-          <Button
-            label="Upload file and configuration"
-            variant="primary"
-            type="submit"
-            icon={faUpload}
-            disabled={!fileAvailable || !watchSchema}
-          />
-        </div>
+        {!uploadSent && (
+          <div className={styles.submitContainer}>
+            <Button
+              label="Upload file and configuration"
+              variant="primary"
+              type="submit"
+              icon={faUpload}
+              disabled={!fileAvailable || !watchSchema}
+            />
+          </div>
+        )}
       </form>
     </div>
   );
