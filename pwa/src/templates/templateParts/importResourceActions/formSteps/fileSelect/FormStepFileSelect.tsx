@@ -31,6 +31,7 @@ export const FormStepFileSelect: React.FC<FormStepFileSelect> = ({ setValue, reg
       "application/xml": [".xml"],
       "application/json": [".json"],
       "text/yaml": [".yaml"],
+      "application/xlsx": [".xlsx"],
     },
   });
 

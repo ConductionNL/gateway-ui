@@ -102,6 +102,7 @@ export default class Sources {
         loading: "Updating object...",
         success: "Object successfully updated.",
       });
+
       return data;
     }
 
@@ -109,7 +110,7 @@ export default class Sources {
       this._instance,
       "POST",
       "/admin/objects",
-      { ...payload, _self: { schema: { id: entityId } } },
+      { ...payload, _self: payload._self ?? { schema: { id: entityId } } },
       {
         loading: "Creating object...",
         success: "Object successfully created.",

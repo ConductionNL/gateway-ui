@@ -7,12 +7,16 @@ import { FormStepFileSelect } from "./formSteps/fileSelect/FormStepFileSelect";
 import { FormStepOptionsSelect } from "./formSteps/optionsSelect/FormStepOptionsSelect";
 import Collapsible from "react-collapsible";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useUpload } from "../../../hooks/upload";
+import { FormStepFinalizeImport } from "./formSteps/finalizeImport/FormStepFinalizeImport";
 
 export const ImportResourceActionsTemplate: React.FC = () => {
   const [uploadSent, setUploadSent] = React.useState<boolean>(false);
 
   const REGISTER_FILE_NAME = "file"; // used to register the file field in React Hook Form
   const [fileAvailable, setFileAvailable] = React.useState<boolean>(false);
+
+  const upload = useUpload().upload();
 
   const {
     control,
@@ -30,8 +34,16 @@ export const ImportResourceActionsTemplate: React.FC = () => {
     setFileAvailable(!!watchFile);
   }, [watchFile]);
 
-  const onSubmit = (data: any) => {
-    console.log({ data });
+  const onSubmit = async (data: any) => {
+    const formData = new FormData();
+
+    formData.append("upload", data.file);
+    formData.append("schema", data.schema?.value);
+    formData.append("mapping", data.mapping?.value);
+    formData.append("headers", data.headers);
+    formData.append("delimiter", data.delimiter);
+
+    upload.mutate(formData);
 
     setUploadSent(true);
   };
@@ -76,7 +88,16 @@ export const ImportResourceActionsTemplate: React.FC = () => {
             <CollapsibleTrigger
               label={
                 <span>
-                  <strong>Step two:</strong> select configuration
+                  {!uploadSent && (
+                    <>
+                      <strong>Step two:</strong> select configuration
+                    </>
+                  )}
+                  {uploadSent && (
+                    <>
+                      <strong>Configuration completed</strong>
+                    </>
+                  )}
                 </span>
               }
               isCompleted={uploadSent}
@@ -86,6 +107,25 @@ export const ImportResourceActionsTemplate: React.FC = () => {
           transitionTime={200}
         >
           <FormStepOptionsSelect {...{ register, errors, control }} />
+        </Collapsible>
+
+        <Collapsible
+          contentInnerClassName={styles.collapsibleContent}
+          openedClassName={styles.collapsibleIsOpen}
+          trigger={
+            <CollapsibleTrigger
+              label={
+                <span>
+                  <strong>Finalize import:</strong> select and import the objects
+                </span>
+              }
+            />
+          }
+          triggerDisabled={!uploadSent}
+          open={uploadSent}
+          transitionTime={200}
+        >
+          <FormStepFinalizeImport uploadQuery={upload} />
         </Collapsible>
 
         {!uploadSent && (
