@@ -13,6 +13,7 @@ import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { mapSelectInputFormData } from "../../../services/mapSelectInputFormData";
 import { FormSaveButton, TAfterSuccessfulFormSubmit } from "../formSaveButton/FormSaveButton";
 import { navigate } from "gatsby";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface CreateObjectFormTemplateProps {
   predefinedSchema?: string;
@@ -121,7 +122,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
                     <SelectSingle
                       options={getSchemas.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                       name="schema"
-                      validation={{ required: true }}
+                      validation={enrichValidation({ required: true })}
                       {...{ register, errors, control }}
                       disabled={loading || getSchemaSchema.isLoading}
                     />

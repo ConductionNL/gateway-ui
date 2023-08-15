@@ -91,7 +91,7 @@ const getIconFromBulkAction = (action: TBulkAction) => {
     case "delete":
       return faTrash;
     case "download":
-      return faSave;
+      return faDownload;
     case "execute":
       return faPlay;
   }

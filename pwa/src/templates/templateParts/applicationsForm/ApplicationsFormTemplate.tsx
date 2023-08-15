@@ -5,13 +5,13 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { useTranslation } from "react-i18next";
 import { InputText, Textarea } from "@conduction/components";
 import { useQueryClient } from "react-query";
-import { ErrorMessage } from "../../../components/errorMessage/ErrorMessage";
 import { useApplication } from "../../../hooks/application";
 import Skeleton from "react-loading-skeleton";
 import { SelectCreate, SelectSingle } from "@conduction/components/lib/components/formFields/select/select";
 import { InputURL } from "@conduction/components/lib/components/formFields";
 import { useOrganization } from "../../../hooks/organization";
 import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface ApplicationFormTemplateProps {
   application?: any;
@@ -90,10 +90,9 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
               <InputText
                 {...{ register, errors }}
                 name="name"
-                validation={{ required: true, maxLength: 225 }}
+                validation={enrichValidation({ required: true, maxLength: 225 })}
                 disabled={isLoading.applicationForm}
               />
-              {errors["name"] && <ErrorMessage message={errors["name"].message} />}
             </FormFieldInput>
           </FormField>
 
@@ -162,7 +161,7 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
                   name="organization"
                   {...{ register, errors, control }}
                   disabled={isLoading.applicationForm}
-                  validation={{ required: true }}
+                  validation={enrichValidation({ required: true })}
                 />
               )}
             </FormFieldInput>

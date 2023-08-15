@@ -6,18 +6,12 @@ import clsx from "clsx";
 interface CodeEditorProps {
   code: string;
   setCode: React.Dispatch<React.SetStateAction<string>>;
-  language?: "json";
+  language?: "json" | "xml" | "html";
   layoutClassName?: string;
   readOnly?: boolean;
 }
 
-export const CodeEditor: React.FC<CodeEditorProps> = ({
-  code,
-  setCode,
-  language = "json",
-  layoutClassName,
-  readOnly,
-}) => {
+export const CodeEditor: React.FC<CodeEditorProps> = ({ code, setCode, language, layoutClassName, readOnly }) => {
   return (
     <MonacoEditor
       value={code}

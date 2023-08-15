@@ -18,6 +18,7 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { InputDate } from "@conduction/components";
 import clsx from "clsx";
 import { validateStringAs24DigitHex } from "../../../services/validateJSON";
+import { useTemplate } from "../../../hooks/template";
 
 interface LogFiltersTemplateProps {
   layoutClassName?: string;
@@ -36,6 +37,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
   const getUsers = useUser(queryClient).getAllSelectOptions();
   const getOrganizations = useOrganization(queryClient).getAllSelectOptions();
   const getApplications = useApplication(queryClient).getAllSelectOptions();
+  const getTemplates = useTemplate(queryClient).getAllSelectOptions();
 
   const {
     register,
@@ -73,6 +75,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
         user: formValues.users?.value,
         organization: formValues.organizations?.value,
         application: formValues.applications?.value,
+        template: formValues.templates?.value,
       },
     };
 
@@ -131,6 +134,11 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
     setValue(
       "applications",
       getApplications.data?.find((application) => application.value === logFilters.context?.application),
+    );
+
+    setValue(
+      "templates",
+      getTemplates.data?.find((template) => template.value === logFilters.context?.template),
     );
   }, []);
 
@@ -280,6 +288,23 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
             )}
 
             {getApplications.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
+
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Templates</FormFieldLabel>
+
+            {getTemplates.isSuccess && (
+              <SelectSingle
+                isClearable
+                name="templates"
+                {...{ register, errors, control }}
+                options={getTemplates.data}
+              />
+            )}
+
+            {getTemplates.isLoading && <Skeleton height="50px" />}
           </FormFieldInput>
         </FormField>
 

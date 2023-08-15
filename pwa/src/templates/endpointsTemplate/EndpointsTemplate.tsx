@@ -16,6 +16,7 @@ import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
 import { Link } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ActionButton } from "../../components/actionButton/ActionButton";
 
 export const EndpointsTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -60,11 +61,12 @@ export const EndpointsTemplate: React.FC = () => {
                 <TableHeader>
                   <CheckboxBulkSelectAll />
                 </TableHeader>
-                <TableHeader>Name</TableHeader>
-                <TableHeader>Status</TableHeader>
-                <TableHeader>Path regex</TableHeader>
-                <TableHeader>Date Created</TableHeader>
-                <TableHeader>Date Modified</TableHeader>
+                <TableHeader>{t("Name")}</TableHeader>
+                <TableHeader>{t("Status")}</TableHeader>
+                <TableHeader>{t("Path regex")}</TableHeader>
+                <TableHeader>{t("Date Created")}</TableHeader>
+                <TableHeader>{t("Date Modified")}</TableHeader>
+                <TableHeader>{t("Actions")}</TableHeader>
                 <TableHeader></TableHeader>
               </TableRow>
             </TableHead>
@@ -89,6 +91,16 @@ export const EndpointsTemplate: React.FC = () => {
 
                   <TableCell>{translateDate(i18n.language, endpoint.dateModified)}</TableCell>
 
+                  <TableCell>
+                    <ActionButton
+                      actions={[
+                        { type: "delete", onSubmit: () => deleteEndpoint.mutate({ id: endpoint.id }) },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
+                      ]}
+                      variant="primary"
+                    />
+                  </TableCell>
+
                   <TableCell onClick={() => navigate(`/endpoints/${endpoint.id}`)}>
                     <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
                       {t("Details")}
@@ -99,6 +111,7 @@ export const EndpointsTemplate: React.FC = () => {
               {!getEndpoints.data.length && (
                 <TableRow>
                   <TableCell>{t("No endpoints found")}</TableCell>
+                  <TableCell />
                   <TableCell />
                   <TableCell />
                   <TableCell />

@@ -235,7 +235,12 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
           <TabPanel className={styles.tabPanel} value="3">
             {getObject.isLoading && <Skeleton height="200px" />}
             {getObject.isSuccess && (
-              <CodeEditor code={JSON.stringify(getObject.data, null, 2)} setCode={setObjectJsonData} readOnly />
+              <CodeEditor
+                language="json"
+                code={JSON.stringify(getObject.data, null, 2)}
+                setCode={setObjectJsonData}
+                readOnly
+              />
             )}
           </TabPanel>
 

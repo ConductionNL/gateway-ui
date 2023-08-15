@@ -99,6 +99,7 @@ export const SchemasTemplate: React.FC = () => {
                           label: "Add Object",
                         },
                         { type: "delete", onSubmit: () => deleteSchema.mutate({ id: schema.id }) },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
                       variant="secondary"
                     />
