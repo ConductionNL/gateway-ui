@@ -4,19 +4,14 @@ import { Container } from "@conduction/components";
 import { Alert, Heading1, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/components-react";
 import { t } from "i18next";
 import { UploadResourceActionsTemplate } from "../templateParts/uploadResourceActions/UploadResourceActionsTemplate";
+import { ImportResourceActionsTemplate } from "../templateParts/importResourceActions/ImportResourceActionsTemplate";
 
 export const UploadTemplate: React.FC = () => {
   const [currentTab, setCurrentTab] = React.useState<number>(0);
 
   return (
     <Container layoutClassName={styles.container}>
-      <Heading1>Upload and import</Heading1>
-
-      {/* <Alert
-        title="Attention"
-        text="This page is availabel for development purposes only; it is not yet functional."
-        variant="warning"
-      /> */}
+      <Heading1>Import and upload</Heading1>
 
       <div className={styles.tabsContainer}>
         <TabContext value={currentTab.toString()}>
@@ -27,16 +22,16 @@ export const UploadTemplate: React.FC = () => {
             }}
             variant="scrollable"
           >
-            <Tab label={t("Upload")} value={0} />
-            <Tab label={t("Import")} value={1} />
+            <Tab label={t("Import")} value={0} />
+            <Tab label={t("Upload")} value={1} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
-            <UploadResourceActionsTemplate />
+            <ImportResourceActionsTemplate />
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="1">
-            Import
+            <UploadResourceActionsTemplate />
           </TabPanel>
         </TabContext>
       </div>

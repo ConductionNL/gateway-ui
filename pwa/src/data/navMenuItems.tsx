@@ -120,7 +120,7 @@ export const bottomMenuItems = () => {
 
   return [
     {
-      label: "Upload and import",
+      label: "Import and upload",
       icon: <FontAwesomeIcon icon={faCloudUpload} />,
       onClick: () => navigate("/upload"),
       current: pathname === "/upload",

@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  gap: var(--gateway-ui-size-md);
+
+  --utrecht-textbox-padding-block-end: 14px;
+  --utrecht-textbox-padding-block-start: 14px;
+}
+
+.container > * {
+  flex: 1;
+}

@@ -1,17 +1,16 @@
 import * as React from "react";
 import * as styles from "./UploadResourceActionsTemplate.module.css";
-import _, { reject } from "lodash";
+import _ from "lodash";
 import clsx from "clsx";
 
 import { FileRejection, useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faFileImport } from "@fortawesome/free-solid-svg-icons";
+import { faFileImport } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../../../components/button/Button";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { useBulkSelect } from "../../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../../components/bulkActionButton/BulkActionButton";
-import { Alert, Link } from "@gemeente-denhaag/components-react";
-import { navigate } from "gatsby";
+import { Alert } from "@gemeente-denhaag/components-react";
 import { toast } from "react-hot-toast";
 import { StatusTag } from "../../../components/statusTag/StatusTag";
 import { ToolTip } from "@conduction/components";
