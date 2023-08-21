@@ -27,6 +27,14 @@ export const ImportResourceActionsTemplate: React.FC = () => {
     watch,
   } = useForm();
 
+  const onResetForm = () => {
+    setValue("file", "");
+    setValue("schema", "");
+    setValue("mapping", "");
+    setUploadSent(false);
+    setFileAvailable(false);
+  };
+
   const watchFile = watch("file");
   const watchSchema = watch("schema");
 
@@ -131,7 +139,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
           open={uploadSent}
           transitionTime={200}
         >
-          <FormStepFinalizeImport uploadQuery={upload} />
+          <FormStepFinalizeImport uploadQuery={upload} handleResetForm={onResetForm} />
         </Collapsible>
       </form>
     </div>

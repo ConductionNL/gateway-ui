@@ -9,15 +9,17 @@ import { BulkActionButton } from "../../../../../components/bulkActionButton/Bul
 import { StatusTag } from "../../../../../components/statusTag/StatusTag";
 import { useBulkSelect } from "../../../../../hooks/useBulkSelect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faInfoCircle, faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { useObject } from "../../../../../hooks/object";
 import { navigate } from "gatsby";
+import { Button } from "../../../../../components/button/Button";
 
 interface FormStepFinalizeImportProps {
   uploadQuery: UseMutationResult<any, Error, FormData, unknown>;
+  handleResetForm: () => any;
 }
 
-export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ uploadQuery }) => {
+export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ uploadQuery, handleResetForm }) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [executedActions, setExecutedActions] = React.useState<any[]>([]);
   const createOrEdit = useObject().createOrEdit();
@@ -40,6 +42,12 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
       setIsLoading(false);
       setExecutedActions(responses);
     });
+  };
+
+  const onResetForm = () => {
+    setIsLoading(false);
+    setExecutedActions([]);
+    handleResetForm();
   };
 
   if (uploadQuery.isLoading || isLoading) return <Skeleton height="200px" />;
@@ -134,6 +142,8 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
           </Table>
         </>
       )}
+
+      <Button variant="secondary" label="Select a new file and configuration" icon={faRefresh} onClick={onResetForm} />
     </div>
   );
 };
