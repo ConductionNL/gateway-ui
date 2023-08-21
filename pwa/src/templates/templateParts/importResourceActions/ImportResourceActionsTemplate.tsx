@@ -41,7 +41,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
     formData.append("schema", data.schema?.value);
     formData.append("mapping", data.mapping?.value);
     formData.append("headers", data.headers);
-    formData.append("delimiter", data.delimiter);
+    // formData.append("delimiter", data.delimiter); required when adding .csv functionality
 
     upload.mutate(formData);
 
@@ -49,7 +49,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Collapsible
           contentInnerClassName={styles.collapsibleContent}
@@ -109,6 +109,20 @@ export const ImportResourceActionsTemplate: React.FC = () => {
           <FormStepOptionsSelect {...{ register, errors, control }} />
         </Collapsible>
 
+        {!uploadSent && (
+          <div className={styles.submitContainer}>
+            <Button
+              label="Upload file and configuration"
+              variant="primary"
+              type="submit"
+              icon={faUpload}
+              disabled={!fileAvailable || !watchSchema}
+            />
+          </div>
+        )}
+
+        <hr />
+
         <Collapsible
           contentInnerClassName={styles.collapsibleContent}
           openedClassName={styles.collapsibleIsOpen}
@@ -127,18 +141,6 @@ export const ImportResourceActionsTemplate: React.FC = () => {
         >
           <FormStepFinalizeImport uploadQuery={upload} />
         </Collapsible>
-
-        {!uploadSent && (
-          <div className={styles.submitContainer}>
-            <Button
-              label="Upload file and configuration"
-              variant="primary"
-              type="submit"
-              icon={faUpload}
-              disabled={!fileAvailable || !watchSchema}
-            />
-          </div>
-        )}
       </form>
     </div>
   );

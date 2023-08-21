@@ -43,11 +43,7 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
     <div className={styles.container}>
       <Alert variant="info" title="" text="Select the object action(s) you want to import." />
 
-      <BulkActionButton
-        layoutClassName={styles.bulkActionButton}
-        actions={[{ type: "import", onSubmit: onSubmit }]}
-        selectedItemsCount={selectedItems.length}
-      />
+      <BulkActionButton actions={[{ type: "import", onSubmit: onSubmit }]} selectedItemsCount={selectedItems.length} />
 
       <Table>
         <TableHead>
@@ -96,7 +92,6 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
 
       {uploadQuery.data?.results.length > 15 && (
         <BulkActionButton
-          layoutClassName={styles.bulkActionButton}
           actions={[{ type: "import", onSubmit: () => alert(`Sending to gateway: ${selectedItems.toString()}`) }]}
           selectedItemsCount={selectedItems.length}
         />

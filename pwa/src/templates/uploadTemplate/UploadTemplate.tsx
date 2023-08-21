@@ -23,7 +23,7 @@ export const UploadTemplate: React.FC = () => {
             variant="scrollable"
           >
             <Tab label={t("Import")} value={0} />
-            <Tab label={t("Upload")} value={1} />
+            <Tab label={t("Upload")} value={1} disabled />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">

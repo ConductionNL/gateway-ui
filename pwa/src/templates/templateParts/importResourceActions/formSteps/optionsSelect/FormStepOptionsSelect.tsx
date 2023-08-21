@@ -74,7 +74,8 @@ export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({ co
         </FormFieldInput>
       </FormField>
 
-      <FormField>
+      {/* Required when adding .csv functionality */}
+      {/* <FormField>
         <FormFieldInput>
           <FormFieldLabel>
             Delimiter{" "}
@@ -84,7 +85,7 @@ export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({ co
           </FormFieldLabel>
           <InputText name="delimiter" defaultValue="," {...{ register, errors }} />
         </FormFieldInput>
-      </FormField>
+      </FormField> */}
 
       <FormField>
         <FormFieldInput>

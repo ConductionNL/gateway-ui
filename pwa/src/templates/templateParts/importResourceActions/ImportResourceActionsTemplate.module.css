@@ -7,6 +7,12 @@
   padding-inline-end: var(--gateway-ui-size-lg);
   padding-block-start: var(--gateway-ui-size-lg);
   padding-block-end: var(--gateway-ui-size-lg);
+
+  border-inline-start: var(--gateway-ui-color-grey) 1px solid;
+  border-inline-end: var(--gateway-ui-color-grey) 1px solid;
+  border-block-end: var(--gateway-ui-color-grey) 1px solid;
+
+  border-radius: var(--gateway-ui-border-radius-md);
 }
 
 .triggerContainer {
