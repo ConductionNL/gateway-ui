@@ -126,15 +126,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
         <Collapsible
           contentInnerClassName={styles.collapsibleContent}
           openedClassName={styles.collapsibleIsOpen}
-          trigger={
-            <CollapsibleTrigger
-              label={
-                <span>
-                  <strong>Finalize import:</strong> select and import the objects
-                </span>
-              }
-            />
-          }
+          trigger={<CollapsibleTrigger label={<strong>Select and exectute actions</strong>} />}
           triggerDisabled={!uploadSent}
           open={uploadSent}
           transitionTime={200}
