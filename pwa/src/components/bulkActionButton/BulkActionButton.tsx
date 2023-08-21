@@ -10,7 +10,7 @@ import _ from "lodash";
 import { ConfirmPopUp } from "../confirmPopUp/ConfirmPopUp";
 
 type TBulkAction = {
-  type: "delete" | "download" | "execute" | "import";
+  type: "delete" | "download" | "execute";
   onSubmit: () => any;
 };
 
@@ -94,7 +94,5 @@ const getIconFromBulkAction = (action: TBulkAction) => {
       return faDownload;
     case "execute":
       return faPlay;
-    case "import":
-      return faFileImport;
   }
 };
