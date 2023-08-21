@@ -31,7 +31,7 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
   const onSubmit = async () => {
     setIsLoading(true);
 
-    const mutationPromises = selectedItems.map((selectedItem, idx) => {
+    const mutationPromises = selectedItems.map((selectedItem) => {
       return createOrEdit.mutateAsync({
         payload: uploadQuery.data?.results[selectedItem].object,
       });
@@ -70,7 +70,9 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
             <TableHead>
               <TableRow>
                 <TableHeader>
-                  <CheckboxBulkSelectAll />
+                  <CheckboxBulkSelectAll
+                    disabled={uploadQuery.data?.results.some((object: any) => object.validations !== null)}
+                  />
                 </TableHeader>
                 <TableHeader>Object</TableHeader>
                 <TableHeader>Action (method)</TableHeader>
@@ -80,8 +82,8 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
 
             <TableBody>
               {uploadQuery.data?.results.map((object: any, idx: any) => (
-                <TableRow key={idx} onClick={() => toggleItem(idx.toString())}>
-                  <TableCell>{<CheckboxBulkSelectOne id={idx.toString()} />}</TableCell>
+                <TableRow key={idx} onClick={() => !object.validations && toggleItem(idx.toString())}>
+                  <TableCell>{<CheckboxBulkSelectOne disabled={object.validations} id={idx.toString()} />}</TableCell>
 
                   <TableCell>
                     <ToolTip tooltip={JSON.stringify(object.object)}>

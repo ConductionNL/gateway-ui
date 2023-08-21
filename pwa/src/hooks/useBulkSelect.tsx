@@ -18,23 +18,23 @@ export const useBulkSelect = (data: any) => {
     !shouldCheck && setSelectedItems((oldSelectedItems) => oldSelectedItems.filter((item) => item !== id));
   };
 
-  const CheckboxBulkSelectAll: React.FC = () => (
+  const CheckboxBulkSelectAll: React.FC<{ disabled?: boolean }> = ({ disabled }) => (
     <input
       type="checkbox"
       checked={items.length > 0 && items.length === selectedItems.length}
       onChange={(e) => setSelectedItems(e.target.checked ? items : [])}
-      disabled={!items.length}
+      disabled={!items.length || disabled}
     />
   );
 
-  const CheckboxBulkSelectOne: React.FC<{ id: string }> = ({ id }) => {
+  const CheckboxBulkSelectOne: React.FC<{ id: string; disabled?: boolean }> = ({ id, disabled }) => {
     React.useEffect(() => {
       if (items.includes(id)) return; // already registered
 
       setItems((items) => [...items, id]);
     }, [id]);
 
-    return <input type="checkbox" checked={selectedItems.includes(id)} readOnly />; // readOnly due to it being controlled elsewhere
+    return <input type="checkbox" checked={selectedItems.includes(id)} disabled={disabled} readOnly />; // readOnly due to it being controlled elsewhere
   };
 
   return { selectedItems, CheckboxBulkSelectAll, CheckboxBulkSelectOne, toggleItem };
