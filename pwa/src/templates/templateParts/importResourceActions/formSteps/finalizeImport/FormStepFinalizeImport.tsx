@@ -38,7 +38,6 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
     });
 
     Promise.all(mutationPromises).then((responses) => {
-      console.log({ responses });
       setIsLoading(false);
       setExecutedActions(responses);
     });
