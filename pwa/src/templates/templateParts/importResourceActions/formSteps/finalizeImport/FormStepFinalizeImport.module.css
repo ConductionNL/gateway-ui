@@ -1,0 +1,7 @@
+.container {
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
+}

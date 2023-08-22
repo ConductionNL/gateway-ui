@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./BulkActionButton.module.css";
 import clsx from "clsx";
 
-import { faEllipsisH, faDownload, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faEllipsisH, faFileImport, faPlay, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
 import { NotificationPopUp, ToolTip } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,7 +10,7 @@ import _ from "lodash";
 import { ConfirmPopUp } from "../confirmPopUp/ConfirmPopUp";
 
 type TBulkAction = {
-  type: "delete" | "download";
+  type: "delete" | "download" | "execute";
   onSubmit: () => any;
 };
 
@@ -92,5 +92,7 @@ const getIconFromBulkAction = (action: TBulkAction) => {
       return faTrash;
     case "download":
       return faDownload;
+    case "execute":
+      return faPlay;
   }
 };
