@@ -147,11 +147,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
           open={uploadSent}
           transitionTime={200}
         >
-          <FormStepFinalizeImport
-            uploadQuery={upload}
-            handleResetForm={onResetForm}
-            {...{ executedActions, setExecutedActions }}
-          />
+          <FormStepFinalizeImport uploadQuery={upload} {...{ executedActions, setExecutedActions }} />
         </Collapsible>
       </form>
     </div>

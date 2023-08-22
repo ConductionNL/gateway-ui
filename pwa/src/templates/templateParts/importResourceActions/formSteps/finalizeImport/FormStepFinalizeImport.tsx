@@ -15,14 +15,12 @@ import { navigate } from "gatsby";
 
 interface FormStepFinalizeImportProps {
   uploadQuery: UseMutationResult<any, Error, FormData, unknown>;
-  handleResetForm: () => any;
   executedActions: any[];
   setExecutedActions: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({
   uploadQuery,
-  handleResetForm,
   executedActions,
   setExecutedActions,
 }) => {
