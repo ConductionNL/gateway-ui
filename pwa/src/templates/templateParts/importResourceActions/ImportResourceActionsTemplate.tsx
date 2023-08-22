@@ -12,6 +12,7 @@ import { FormStepFinalizeImport } from "./formSteps/finalizeImport/FormStepFinal
 
 export const ImportResourceActionsTemplate: React.FC = () => {
   const [uploadSent, setUploadSent] = React.useState<boolean>(false);
+  const [executedActions, setExecutedActions] = React.useState<any[]>([]);
 
   const REGISTER_FILE_NAME = "file"; // used to register the file field in React Hook Form
   const [fileAvailable, setFileAvailable] = React.useState<boolean>(false);
@@ -33,6 +34,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
     setValue("mapping", "");
     setUploadSent(false);
     setFileAvailable(false);
+    setExecutedActions([]);
   };
 
   const watchFile = watch("file");
@@ -145,7 +147,11 @@ export const ImportResourceActionsTemplate: React.FC = () => {
           open={uploadSent}
           transitionTime={200}
         >
-          <FormStepFinalizeImport uploadQuery={upload} handleResetForm={onResetForm} />
+          <FormStepFinalizeImport
+            uploadQuery={upload}
+            handleResetForm={onResetForm}
+            {...{ executedActions, setExecutedActions }}
+          />
         </Collapsible>
       </form>
     </div>

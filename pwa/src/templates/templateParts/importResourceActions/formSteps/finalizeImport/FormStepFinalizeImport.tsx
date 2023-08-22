@@ -16,11 +16,17 @@ import { navigate } from "gatsby";
 interface FormStepFinalizeImportProps {
   uploadQuery: UseMutationResult<any, Error, FormData, unknown>;
   handleResetForm: () => any;
+  executedActions: any[];
+  setExecutedActions: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ uploadQuery, handleResetForm }) => {
+export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({
+  uploadQuery,
+  handleResetForm,
+  executedActions,
+  setExecutedActions,
+}) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [executedActions, setExecutedActions] = React.useState<any[]>([]);
   const createOrEdit = useObject().createOrEdit();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(
@@ -40,12 +46,6 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
       setIsLoading(false);
       setExecutedActions(responses);
     });
-  };
-
-  const onResetForm = () => {
-    setIsLoading(false);
-    setExecutedActions([]);
-    handleResetForm();
   };
 
   if (uploadQuery.isLoading || isLoading) return <Skeleton height="200px" />;
