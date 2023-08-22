@@ -74,7 +74,7 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({
                 </TableHeader>
                 <TableHeader>Object</TableHeader>
                 <TableHeader>Action (method)</TableHeader>
-                <TableHeader>Ready to execute</TableHeader>
+                <TableHeader>Validations succesful</TableHeader>
               </TableRow>
             </TableHead>
 
@@ -85,7 +85,9 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({
 
                   <TableCell>
                     <ToolTip tooltip={JSON.stringify(object.object)}>
-                      View object <FontAwesomeIcon icon={faInfoCircle} />
+                      <div>
+                        View object {idx + 1} <FontAwesomeIcon icon={faInfoCircle} />
+                      </div>
                     </ToolTip>
                   </TableCell>
 
