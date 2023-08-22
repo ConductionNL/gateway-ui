@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./ImportResourceActionsTemplate.module.css";
 import { useForm } from "react-hook-form";
 import { Button } from "../../../components/button/Button";
-import { faCheckCircle, faChevronRight, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faChevronRight, faRefresh, faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FormStepFileSelect } from "./formSteps/fileSelect/FormStepFileSelect";
 import { FormStepOptionsSelect } from "./formSteps/optionsSelect/FormStepOptionsSelect";
 import Collapsible from "react-collapsible";
@@ -58,6 +58,12 @@ export const ImportResourceActionsTemplate: React.FC = () => {
 
   return (
     <div>
+      {fileAvailable && (
+        <div className={styles.restartFormContainer}>
+          <Button variant="secondary" label="Restart form" icon={faRefresh} onClick={onResetForm} />
+        </div>
+      )}
+
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <Collapsible
           contentInnerClassName={styles.collapsibleContent}

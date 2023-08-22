@@ -2,6 +2,15 @@
   margin-block-end: var(--gateway-ui-size-lg);
 }
 
+.restartFormContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-end: var(--gateway-ui-size-md);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
 .collapsibleContent {
   padding-inline-start: var(--gateway-ui-size-lg);
   padding-inline-end: var(--gateway-ui-size-lg);

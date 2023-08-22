@@ -9,10 +9,9 @@ import { BulkActionButton } from "../../../../../components/bulkActionButton/Bul
 import { StatusTag } from "../../../../../components/statusTag/StatusTag";
 import { useBulkSelect } from "../../../../../hooks/useBulkSelect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faInfoCircle, faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useObject } from "../../../../../hooks/object";
 import { navigate } from "gatsby";
-import { Button } from "../../../../../components/button/Button";
 
 interface FormStepFinalizeImportProps {
   uploadQuery: UseMutationResult<any, Error, FormData, unknown>;
@@ -143,8 +142,6 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({ 
           </Table>
         </>
       )}
-
-      <Button variant="secondary" label="Select a new file and configuration" icon={faRefresh} onClick={onResetForm} />
     </div>
   );
 };
