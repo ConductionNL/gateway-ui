@@ -36,7 +36,7 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({
 
     const mutationPromises = selectedItems.map((selectedItem) => {
       return createOrEdit.mutateAsync({
-        payload: uploadQuery.data?.results[selectedItem].object,
+        payload: { ...uploadQuery.data?.results[selectedItem].object, id: uploadQuery.data?.results[selectedItem].id },
       });
     });
 
