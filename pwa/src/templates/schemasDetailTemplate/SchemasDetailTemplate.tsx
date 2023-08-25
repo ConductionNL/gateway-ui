@@ -22,6 +22,7 @@ import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate"
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
 import { useObject } from "../../hooks/object";
+import { usePaginationContext } from "../../context/pagination";
 
 interface SchemasDetailPageProps {
   schemaId: string;
@@ -33,7 +34,6 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
 
   const queryClient = useQueryClient();
@@ -41,7 +41,9 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const getSchema = _useSchema.getOne(schemaId);
   const deleteSchema = _useSchema.remove();
 
-  const getAllObjectsFromEntity = useObject().getAllFromEntity(schemaId, currentPage, searchQuery);
+  const { getCurrentPage } = usePaginationContext();
+
+  const getAllObjectsFromEntity = useObject().getAllFromEntity(schemaId, getCurrentPage(schemaId), searchQuery);
 
   const getSchemaSchema = _useSchema.getSchema(schemaId);
 
@@ -105,10 +107,7 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
 
             <ObjectsTable
               objectsQuery={getAllObjectsFromEntity}
-              pagination={{
-                currentPage,
-                setCurrentPage,
-              }}
+              paginationKey={schemaId}
               search={{ searchQuery, setSearchQuery }}
             />
           </TabPanel>

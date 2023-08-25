@@ -28,10 +28,9 @@ interface ObjectDetailTemplateProps {
 export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ objectId }) => {
   const { t, i18n } = useTranslation();
   const { currentTabs, setCurrentTabs } = useCurrentTabContext();
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [currentLogsPage, setCurrentLogsPage] = React.useState<number>(1);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
-  const [objectJsonData, setObjectJsonData] = React.useState<string>("");
+  const [_, setObjectJsonData] = React.useState<string>("");
 
   const queryClient = useQueryClient();
   const _useObject = useObject();
@@ -245,14 +244,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
           </TabPanel>
 
           <TabPanel className={styles.tabPanel} value="4">
-            <ObjectsTable
-              objectsQuery={getObject}
-              pagination={{
-                currentPage,
-                setCurrentPage,
-              }}
-              search={{ searchQuery, setSearchQuery }}
-            />
+            <ObjectsTable objectsQuery={getObject} paginationKey={objectId} search={{ searchQuery, setSearchQuery }} />
           </TabPanel>
         </TabContext>
       </div>

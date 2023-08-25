@@ -15,7 +15,7 @@ export const useObject = () => {
 
   const getAll = (currentPage: number, order: string, limit?: number, searchQuery?: string) =>
     useQuery<any, Error>(
-      ["objects", order, currentPage, searchQuery],
+      ["objects", order, currentPage, limit, searchQuery],
       () => API.Object.getAll(currentPage, order, limit, searchQuery),
       {
         onError: (error) => {
