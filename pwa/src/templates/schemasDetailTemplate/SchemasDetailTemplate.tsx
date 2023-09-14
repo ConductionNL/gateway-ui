@@ -10,7 +10,7 @@ import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
 import { translateDate } from "../../services/dateFormat";
-import { faArrowRight, faDownload, faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faFloppyDisk, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCurrentTabContext } from "../../context/tabs";
 import { useDashboardCard } from "../../hooks/useDashboardCard";
@@ -22,6 +22,7 @@ import { LogsTableTemplate } from "../templateParts/logsTable/LogsTableTemplate"
 import { FormHeaderTemplate } from "../templateParts/formHeader/FormHeaderTemplate";
 import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
 import { useObject } from "../../hooks/object";
+import { ActionButton } from "../../components/actionButton/ActionButton";
 
 interface SchemasDetailPageProps {
   schemaId: string;
@@ -40,6 +41,8 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
   const _useSchema = useSchema(queryClient);
   const getSchema = _useSchema.getOne(schemaId);
   const deleteSchema = _useSchema.remove();
+  const downloadSchema = _useSchema.downloadSchema();
+  const downloadObjects = _useSchema.downloadObjects();
 
   const getAllObjectsFromEntity = useObject().getAllFromEntity(schemaId, currentPage, searchQuery);
 
@@ -65,18 +68,48 @@ export const SchemasDetailTemplate: React.FC<SchemasDetailPageProps> = ({ schema
           handleDelete={() => deleteSchema.mutate({ id: schemaId })}
           handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
           customElements={
-            <a
-              className={clsx(styles.downloadSchemaButton, [
-                (isLoading.schemaForm || !getSchemaSchema.isSuccess) && styles.disabled,
-              ])}
-              href={`data: text/json;charset=utf-8, ${JSON.stringify(getSchemaSchema.data)}`}
-              download="schema.json"
-            >
-              <Button className={styles.downloadButton} disabled={!getSchemaSchema.isSuccess || isLoading.schemaForm}>
-                <FontAwesomeIcon icon={faDownload} />
-                Download
-              </Button>
-            </a>
+            <>
+              <ActionButton
+                actions={[
+                  {
+                    type: "download",
+                    label: "as CSV",
+                    disabled: !getSchemaSchema.isSuccess || isLoading.schemaForm,
+                    onSubmit: () =>
+                      downloadObjects.mutate({ id: schemaId, name: `${getSchema.data?.name}-objects`, type: "CSV" }),
+                  },
+                  {
+                    type: "download",
+                    label: "as XLSX",
+                    disabled: !getSchemaSchema.isSuccess || isLoading.schemaForm,
+                    onSubmit: () =>
+                      downloadObjects.mutate({ id: schemaId, name: `${getSchema.data?.name}-objects`, type: "XLSX" }),
+                  },
+                ]}
+                size="md"
+                variant="primary"
+                label="Download objects"
+              />
+              <ActionButton
+                actions={[
+                  {
+                    type: "download",
+                    label: "as CSV",
+                    disabled: !getSchemaSchema.isSuccess || isLoading.schemaForm,
+                    onSubmit: () => downloadSchema.mutate({ id: schemaId, name: getSchema.data?.name, type: "CSV" }),
+                  },
+                  {
+                    type: "download",
+                    label: "as JSON",
+                    disabled: !getSchemaSchema.isSuccess || isLoading.schemaForm,
+                    onSubmit: () => downloadSchema.mutate({ id: schemaId, name: getSchema.data?.name, type: "JSON" }),
+                  },
+                ]}
+                size="md"
+                variant="primary"
+                label="Download schema"
+              />
+            </>
           }
         />
 

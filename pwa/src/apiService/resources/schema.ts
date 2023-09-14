@@ -1,5 +1,6 @@
 import { AxiosInstance } from "axios";
 import { TSendFunction } from "../apiService";
+import { TDownloadType, downloadTypes } from "../../data/downloadTypes";
 
 export default class Schema {
   private _instance: AxiosInstance;
@@ -65,6 +66,52 @@ export default class Schema {
       loading: "Creating schema...",
       success: "Schema successfully created.",
     });
+    return data;
+  };
+
+  public downloadSchema = async (variables: { id: string; name: string; type: TDownloadType }): Promise<any> => {
+    const { id, type } = variables;
+
+    const acceptType = downloadTypes.find((_type) => _type.label === type);
+
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      return {
+        ...config,
+        headers: { ...config.headers, Accept: acceptType?.accept },
+        responseType: "arraybuffer",
+      };
+    });
+
+    const { data } = await this._send(this._instance, "DOWNLOAD", `/admin/entities/${id}`, undefined, {
+      loading: `Looking for downloadable ${type}...`,
+      success: `${type} found starting download.`,
+    });
+
+    return data;
+  };
+
+  public downloadObjects = async (variables: { id: string; name: string; type: TDownloadType }): Promise<any> => {
+    const { id, type } = variables;
+
+    const acceptType = downloadTypes.find((_type) => _type.label === type);
+
+    const instance = this._instance;
+
+    instance.interceptors.request.use(function (config) {
+      return {
+        ...config,
+        headers: { ...config.headers, Accept: acceptType?.accept },
+        responseType: "arraybuffer",
+      };
+    });
+
+    const { data } = await this._send(this._instance, "DOWNLOAD", `/admin/objects?_self.schema.id=${id}`, undefined, {
+      loading: `Looking for downloadable ${type}...`,
+      success: `${type} found starting download.`,
+    });
+
     return data;
   };
 }
