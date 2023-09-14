@@ -1,0 +1,27 @@
+.form {
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--gateway-ui-color-white);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.form,
+.textFiltersContainer,
+.selectFiltersContainer {
+  gap: var(--gateway-ui-size-md);
+}
+
+.textFiltersContainer {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.selectFiltersContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}

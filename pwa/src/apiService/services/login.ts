@@ -15,4 +15,12 @@ export default class Login {
   public login = (data: IUser): Promise<AxiosResponse> => {
     return this._instance.post("/users/login", JSON.stringify(data));
   };
+
+  public getExternalToken = (): Promise<AxiosResponse> => {
+    return this._instance.get("/users/reset_token", { withCredentials: true });
+  };
+
+  public logout = (): Promise<AxiosResponse> => {
+    return this._instance.post("/users/logout");
+  };
 }

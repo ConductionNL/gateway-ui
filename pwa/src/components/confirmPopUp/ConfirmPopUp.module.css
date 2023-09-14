@@ -1,0 +1,44 @@
+.popup {
+  position: fixed;
+  width: var(--gateway-ui-confirm-popup-width);
+  top: var(--gateway-ui-size-md);
+  left: calc(50% - (var(--gateway-ui-confirm-popup-width) / 2));
+  z-index: 2;
+  outline: 0;
+}
+
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gateway-ui-confirm-popup-overlay-background-color);
+  z-index: 1000; /* TODO: rewrite this entire pop-up to a React.Portal */
+  display: block;
+  pointer-events: none;
+}
+
+.button.danger {
+  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
+}
+
+.button.danger:hover {
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-red
+  );
+}
+
+.success {
+  --denhaag-button-primary-action-background-color: var(
+    --gateway-ui-color-green
+  );
+}
+
+.success:hover {
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-green
+  );
+}

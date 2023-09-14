@@ -1,0 +1,72 @@
+.container {
+  background-color: var(--gateway-ui-color-white);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}
+
+.gridContainer > *:not(:first-child) {
+  margin-block-start: var(--gateway-ui-size-sm);
+}
+
+.testConnectionButton {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.tabPanel {
+  padding-inline-start: var(--gateway-ui-size-lg) !important;
+  padding-inline-end: var(--gateway-ui-size-lg) !important;
+  padding-block-start: var(--gateway-ui-size-lg) !important;
+  padding-block-end: var(--gateway-ui-size-lg) !important;
+}
+
+.tab {
+  max-width: unset !important;
+}
+
+.grid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}
+
+.tooltip {
+  max-width: 250px;
+  background-color: var(--gateway-ui-color-black) !important;
+}
+
+.formFieldHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--gateway-ui-size-xs);
+}
+
+.name {
+  flex: 1;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+}
+
+.expectFormField {
+  display: flex;
+}
+
+.expectFormField > :not(:last-child) {
+  padding-inline-end: var(--gateway-ui-size-lg) !important;
+}
+
+.infoButton:hover {
+  cursor: pointer;
+}
+
+.toggleButton {
+  margin-block: var(--gateway-ui-size-xs);
+}
+
+.checkboxInput {
+  margin-block-start: var(--gateway-ui-size-xs);
+}

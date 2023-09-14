@@ -1,11 +1,16 @@
-FROM node:14 AS builder
+FROM node:18 AS builder
 # Set working directory
 WORKDIR /app
+
 # Copy all files from current directory to working dir in image
-COPY . .
 # install node modules and build assets
+
+COPY . .
+
 RUN yarn install && yarn build
 
 FROM nginx
-EXPOSE 80
 COPY --from=builder /app/public /usr/share/nginx/html
+
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/default.conf /etc/nginx/conf.d/default.conf

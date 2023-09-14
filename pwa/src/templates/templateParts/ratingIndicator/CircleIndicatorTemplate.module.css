@@ -1,0 +1,6 @@
+:export {
+  ratingFontFamily: --gateway-ui-primary-font-family;
+  ratingFontSize: --gateway-ui-font-size-md;
+  ratingActiveColor: --gateway-ui-color-primary;
+  ratingDisabledColor: --gateway-ui-color-darkgrey;
+}

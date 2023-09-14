@@ -1,0 +1,39 @@
+.button {
+  white-space: nowrap;
+}
+
+.button > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.secondary {
+  --denhaag-button-primary-action-background-color: var(
+    --gateway-ui-color-white
+  );
+
+  --denhaag-button-primary-action-color: var(--gateway-ui-color-primary);
+
+  border: var(--gateway-ui-button-secondary-border) !important;
+}
+
+.success {
+  --denhaag-button-primary-action-background-color: var(
+    --gateway-ui-color-green
+  );
+}
+
+.success:hover {
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-green
+  );
+}
+
+.danger {
+  --denhaag-button-primary-action-background-color: var(--gateway-ui-color-red);
+}
+
+.danger:hover {
+  --denhaag-button-primary-action-hover-background-color: var(
+    --gateway-ui-color-dark-red
+  );
+}

@@ -1,0 +1,48 @@
+.container {
+  white-space: nowrap;
+}
+
+.debug {
+  background-color: var(--gateway-ui-color-status-background-debug);
+  color: var(--gateway-ui-color-status-debug);
+}
+
+.success {
+  background-color: var(--gateway-ui-color-status-background-success);
+  color: var(--gateway-ui-color-status-success);
+}
+
+.info {
+  background-color: var(--gateway-ui-color-status-background-info);
+  color: var(--gateway-ui-color-status-info);
+}
+
+.notice {
+  background-color: var(--gateway-ui-color-status-background-notice);
+  color: var(--gateway-ui-color-status-notice);
+}
+
+.warning {
+  background-color: var(--gateway-ui-color-status-background-warning);
+  color: var(--gateway-ui-color-status-warning);
+}
+
+.error {
+  background-color: var(--gateway-ui-color-status-background-error);
+  color: var(--gateway-ui-color-status-error);
+}
+
+.critical {
+  background-color: var(--gateway-ui-color-status-background-critical);
+  color: var(--gateway-ui-color-status-critical);
+}
+
+.alert {
+  background-color: var(--gateway-ui-color-status-background-alert);
+  color: var(--gateway-ui-color-status-alert);
+}
+
+.emergency {
+  background-color: var(--gateway-ui-color-status-background-emergency);
+  color: var(--gateway-ui-color-status-emergency);
+}

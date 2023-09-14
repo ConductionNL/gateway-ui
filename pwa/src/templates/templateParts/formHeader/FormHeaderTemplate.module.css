@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: column-reverse;
+  gap: var(--gateway-ui-size-lg);
+  margin-block-end: var(--gateway-ui-size-xl);
+  white-space: nowrap;
+}
+
+.container > * {
+  flex: 1;
+}
+
+.tooltipContainer,
+.container .title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.container .title {
+  font-size: var(--gateway-ui-font-size-2xl);
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttonsContainer > *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+@media only screen and (min-width: 992px) {
+  .container {
+    flex-direction: row;
+  }
+}

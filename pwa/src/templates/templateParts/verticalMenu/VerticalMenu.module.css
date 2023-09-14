@@ -1,11 +1,16 @@
-.container {
-  --denhaag-sidenav-link-hover-color: #4376fc;
-  --denhaag-sidenav-link-active-color: #4376fc;
-}
-
 .icon {
   display: flex;
   align-items: center;
   width: 18px;
   height: 18px;
+}
+
+.hasSubitems {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}
+
+.subItem * {
+  margin-inline-start: var(--gateway-ui-size-2xs);
 }

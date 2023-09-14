@@ -3,3 +3,7 @@ body {
   margin: 0;
   --utrecht-document-background-color: #fafafa;
 }
+
+button:hover {
+  cursor: pointer;
+}

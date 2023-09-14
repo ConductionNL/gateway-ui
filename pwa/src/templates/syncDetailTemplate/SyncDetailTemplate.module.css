@@ -1,0 +1,49 @@
+.container > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.tabContainer {
+  background: var(--gateway-ui-color-white);
+  margin-block-start: var(--gateway-ui-size-2xl);
+  padding-block: var(--gateway-ui-size-md);
+  padding-inline: var(--gateway-ui-size-md);
+}
+
+.tabPanel {
+  padding-inline-start: var(--gateway-ui-size-lg) !important;
+  padding-inline-end: var(--gateway-ui-size-lg) !important;
+  padding-block-start: var(--gateway-ui-size-lg) !important;
+  padding-block-end: var(--gateway-ui-size-lg) !important;
+}
+
+.tab {
+  max-width: unset !important;
+}
+
+.grid {
+  display: grid;
+  grid-gap: var(--gateway-ui-size-lg);
+  grid-template-columns: 1fr 1fr;
+}
+
+.gridContainer > *:not(:first-child) {
+  margin-block-start: var(--gateway-ui-size-sm);
+}
+
+.testConnectionButton {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttonIcon > span > svg {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}

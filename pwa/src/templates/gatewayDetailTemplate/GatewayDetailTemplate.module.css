@@ -1,0 +1,85 @@
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-2xl);
+}
+
+.section {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.buttons > * {
+  display: flex;
+  align-items: center;
+}
+
+.buttons *:not(:last-child) {
+  margin-inline-end: var(--gateway-ui-size-xs);
+}
+
+.gatewayDetailContainer > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.type {
+  color: var(--gateway-ui-color-darkgrey);
+  font-size: var(--gateway-ui-font-size-md);
+  display: flex;
+  gap: var(--gateway-ui-size-xl);
+}
+
+.extraInfo {
+  width: 100%;
+  display: flex;
+  gap: var(--gateway-ui-size-md);
+}
+
+.sectionContainer {
+  display: flex;
+  gap: 14px;
+}
+
+.mainSection {
+  flex: 5;
+}
+
+.mainSection > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.sideBarSection {
+  flex: 1;
+}
+
+.sideBarSection > :not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-md);
+}
+
+.requiredTable {
+  flex-basis: 100%;
+}
+
+.requiredTableHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
+.requiredSideNav {
+  --denhaag-sidenav-link-padding-block-end: 2px;
+  --denhaag-sidenav-link-padding-block-start: 2px;
+}
+
+.showmoreVersionsButton :hover {
+  cursor: pointer;
+  color: var(--gateway-ui-color-primary);
+}
+
+.showmoreVersionsButton {
+  text-align: center;
+}

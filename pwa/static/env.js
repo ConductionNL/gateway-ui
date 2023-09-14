@@ -1,22 +1,22 @@
 window.sessionStorage.setItem(
   "GATSBY_ME_URL",
-  "https://kissdevelopment.commonground.nu/me"
+  "https://api.gateway.commonground.nu/me"
 );
 window.sessionStorage.setItem(
   "GATSBY_API_URL",
-  "https://kissdevelopment.commonground.nu/api"
+  "https://api.gateway.commonground.nu/api"
 );
 window.sessionStorage.setItem(
   "GATSBY_ADMIN_URL",
-  "https://kissdevelopment.commonground.nu/admin"
+  "https://api.gateway.commonground.nu/admin"
 );
 window.sessionStorage.setItem(
   "GATSBY_BASE_URL",
-  "https://kissdevelopment.commonground.nu"
+  "https://api.gateway.commonground.nu"
 );
 window.sessionStorage.setItem(
   "GATSBY_FRONTEND_URL",
-  "https://kissdevelopment.commonground.nu:8000"
+  "https://api.gateway.commonground.nu:8000"
 );
 window.sessionStorage.setItem(
   "GATSBY_ORGANIZATION",

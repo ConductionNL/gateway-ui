@@ -1,18 +1,20 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { handleLogin } from "../../../services/auth";
-import APIContext from "../../../apiService/apiContext";
-import { Alert, Button, FormField, FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/components-react";
+import { Button, FormField, FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/components-react";
 import * as styles from "./LoginFormTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import APIService from "../../../apiService/apiService";
 import { InputText, InputPassword } from "@conduction/components";
+import { navigate } from "gatsby";
+import { useGatsbyContext } from "../../../context/gatsby";
+import { useAuthentication } from "../../../hooks/useAuthentication";
+import { useIsLoadingContext } from "../../../context/isLoading";
+import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 export const LoginFormTemplate: React.FC = () => {
   const { t } = useTranslation();
-  const API: APIService | null = React.useContext(APIContext);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [formError, setFormError] = React.useState<string>("");
+  const { gatsbyContext } = useGatsbyContext();
+  const { handleInternalLogin, isLoading: authenticationIsLoading } = useAuthentication();
+  const { isLoading, setIsLoading } = useIsLoadingContext();
 
   const {
     register,
@@ -20,38 +22,40 @@ export const LoginFormTemplate: React.FC = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data: any) => {
-    setLoading(true);
-    setFormError("");
-
-    API &&
-      handleLogin(data, API)
-        .catch((err) => {
-          setFormError(err.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+  const onSubmit = (data: any) => {
+    handleInternalLogin(data).then(() => {
+      navigate(gatsbyContext.previousPath ?? "/");
+    });
   };
+
+  React.useEffect(() => setIsLoading({ loginForm: authenticationIsLoading }), [authenticationIsLoading]);
 
   return (
     <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
-      {formError && <Alert text={formError} title={t("Oops, something went wrong")} variant="error" />}
-
       <FormField>
         <FormFieldInput>
           <FormFieldLabel>{t("Username")}</FormFieldLabel>
-          <InputText {...{ register, errors }} name="username" validation={{ required: true }} disabled={loading} />
+          <InputText
+            {...{ register, errors }}
+            name="username"
+            validation={enrichValidation({ required: true })}
+            disabled={isLoading?.loginForm}
+          />
         </FormFieldInput>
       </FormField>
       <FormField>
         <FormFieldLabel>{t("Password")}</FormFieldLabel>
         <FormFieldInput>
-          <InputPassword {...{ register, errors }} name="password" validation={{ required: true }} disabled={loading} />
+          <InputPassword
+            {...{ register, errors }}
+            name="password"
+            validation={enrichValidation({ required: true })}
+            disabled={isLoading?.loginForm}
+          />
         </FormFieldInput>
       </FormField>
 
-      <Button size="large" type="submit" disabled={loading}>
+      <Button disabled={isLoading?.loginForm} size="large" type="submit">
         {t("Send")}
       </Button>
     </form>

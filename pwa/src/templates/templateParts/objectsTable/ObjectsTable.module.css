@@ -1,0 +1,41 @@
+.container {
+  position: relative;
+}
+
+.container > *:not(.actionsContainer) {
+  z-index: 1;
+}
+
+.container > :last-child {
+  margin-block-start: var(--gateway-ui-size-lg);
+}
+
+.actionsContainer {
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  gap: var(--gateway-ui-size-md);
+}
+
+.searchAndFilterContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gateway-ui-size-md);
+  width: 100%;
+}
+
+.searchAndFilterContainer > :last-child {
+  min-width: 200px;
+  max-width: 400px;
+}
+
+.searchAndFilterContainer > div > input {
+  height: 49.5px; /* height of DisplayFiltersButton */
+}
+
+.pageAndTotalResults {
+  display: flex;
+  justify-content: flex-end;
+}
