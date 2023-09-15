@@ -30,7 +30,6 @@ export const FormStepFileSelect: React.FC<FormStepFileSelect> = ({ setValue, reg
     accept: {
       "application/xlsx": [".xlsx"],
       "application/xls": [".xls"],
-      "application/csv": [".csv"],
       "application/ods": [".ods"],
     },
   });
@@ -42,7 +41,7 @@ export const FormStepFileSelect: React.FC<FormStepFileSelect> = ({ setValue, reg
 
         <FontAwesomeIcon className={styles.icon} icon={faFileImport} />
 
-        <span>Drag your file (.xlsx, .xls, csv or .ods) here to start uploading.</span>
+        <span>Drag your file (.xlsx, .xls, or .ods) here to start uploading.</span>
 
         <span className={styles.otherOptionIndicator}>— or —</span>
 
