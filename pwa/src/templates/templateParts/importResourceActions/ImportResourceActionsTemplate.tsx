@@ -51,7 +51,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
     formData.append("schema", data.schema?.value);
     formData.append("mapping", data.mapping?.value);
     formData.append("headers", data.headers);
-    // formData.append("delimiter", data.delimiter); required when adding .csv functionality
+    formData.append("delimiter", data.delimiter);
 
     upload.mutate(formData);
 
@@ -122,7 +122,7 @@ export const ImportResourceActionsTemplate: React.FC = () => {
           open={fileAvailable && !uploadSent}
           transitionTime={200}
         >
-          <FormStepOptionsSelect {...{ register, errors, control }} />
+          <FormStepOptionsSelect needsDelimiter={watchFile?.type === 'text/csv'} {...{ register, errors, control }} />
         </Collapsible>
 
         {!uploadSent && (

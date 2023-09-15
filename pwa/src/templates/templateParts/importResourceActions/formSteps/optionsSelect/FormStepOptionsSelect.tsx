@@ -19,9 +19,15 @@ interface FormStepOptionsSelectProps {
     [x: string]: any;
   };
   setValue?: UseFormSetValue<FieldValues>;
+  needsDelimiter?: boolean;
 }
 
-export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({ control, register, errors }) => {
+export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({
+  control,
+  register,
+  errors,
+  needsDelimiter,
+}) => {
   const queryClient = useQueryClient();
 
   const getSchemas = useSchema(queryClient).getAll();
@@ -74,19 +80,6 @@ export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({ co
         </FormFieldInput>
       </FormField>
 
-      {/* Required when adding .csv functionality */}
-      {/* <FormField>
-        <FormFieldInput>
-          <FormFieldLabel>
-            Delimiter{" "}
-            <ToolTip tooltip="Objects are separated by the delimiter, defaults to ','. Only applicable in .csv files.">
-              <FontAwesomeIcon icon={faInfoCircle} />
-            </ToolTip>
-          </FormFieldLabel>
-          <InputText name="delimiter" defaultValue="," {...{ register, errors }} />
-        </FormFieldInput>
-      </FormField> */}
-
       <FormField>
         <FormFieldInput>
           <FormFieldLabel>
@@ -98,6 +91,25 @@ export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({ co
           <InputCheckbox name="headers" label="Yes" defaultChecked {...{ register, errors }} />
         </FormFieldInput>
       </FormField>
+
+      {needsDelimiter && (
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>
+              Delimiter*{" "}
+              <ToolTip tooltip="Objects are separated by the delimiter, defaults to ','. Only applicable in .csv files.">
+                <FontAwesomeIcon icon={faInfoCircle} />
+              </ToolTip>
+            </FormFieldLabel>
+            <InputText
+              name="delimiter"
+              defaultValue=","
+              {...{ register, errors }}
+              validation={enrichValidation({ required: true })}
+            />
+          </FormFieldInput>
+        </FormField>
+      )}
     </div>
   );
 };
