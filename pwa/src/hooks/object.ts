@@ -5,7 +5,7 @@ import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { useDeletedItemsContext } from "../context/deletedItems";
 import toast from "react-hot-toast";
-import { downloadAsExtention } from "../services/downloadBlob";
+import { downloadAsPDF } from "../services/downloadBlob";
 
 export const useObject = () => {
   const API: APIService | null = React.useContext(APIContext);
@@ -36,7 +36,7 @@ export const useObject = () => {
   const downloadPDF = () =>
     useMutation<any, Error, any>(API.Object.downloadPDF, {
       onSuccess: async (data, variables) => {
-        downloadAsExtention(data, variables.name, variables.type);
+        downloadAsPDF(data, variables.name);
       },
       onError: (error) => {
         if (error.message === "Request failed with status code 400") {

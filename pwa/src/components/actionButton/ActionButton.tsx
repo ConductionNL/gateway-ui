@@ -21,10 +21,9 @@ interface ActionButtonProps {
   variant: "primary" | "danger" | "success" | "secondary";
   size?: "sm" | "md";
   layoutClassName?: string;
-  label?: string
 }
 
-export const ActionButton: React.FC<ActionButtonProps> = ({ actions, size = "md", layoutClassName, variant, label }) => {
+export const ActionButton: React.FC<ActionButtonProps> = ({ actions, size = "md", layoutClassName, variant }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const [action, setAction] = React.useState<() => any>(() => actions[0].onSubmit);
   const { isVisible, show, hide } = NotificationPopUp.controller();
@@ -55,7 +54,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({ actions, size = "md"
     <div className={clsx(styles.container, layoutClassName && layoutClassName)}>
       <Button
         variant={variant}
-        label={size !== "sm" ? label ? label :"Actions" : ""}
+        label={size !== "sm" ? "Actions" : ""}
         onBlur={() => setTimeout(() => setIsOpen(false), 200)}
         onClick={(e) => handleActionButtonClick(e)}
         icon={faEllipsisH}

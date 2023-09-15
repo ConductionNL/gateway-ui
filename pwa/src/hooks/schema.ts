@@ -5,8 +5,6 @@ import APIContext from "../apiService/apiContext";
 import { navigate } from "gatsby";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { useDeletedItemsContext } from "../context/deletedItems";
-import { downloadAsExtention } from "../services/downloadBlob";
-import toast from "react-hot-toast";
 
 export const useSchema = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
@@ -74,35 +72,5 @@ export const useSchema = (queryClient: QueryClient) => {
       },
     });
 
-  const downloadSchema = () =>
-    useMutation<any, Error, any>(API.Schema.downloadSchema, {
-      onSuccess: async (data, variables) => {
-        downloadAsExtention(data, variables.name, variables.type);
-      },
-      onError: (error) => {
-        if (error.message === "Request failed with status code 400") {
-          toast.error("No downloadable PDF found");
-        } else {
-          toast.error(error.message);
-        }
-        console.warn(error.message);
-      },
-    });
-
-  const downloadObjects = () =>
-    useMutation<any, Error, any>(API.Schema.downloadObjects, {
-      onSuccess: async (data, variables) => {
-        downloadAsExtention(data, variables.name, variables.type);
-      },
-      onError: (error) => {
-        if (error.message === "Request failed with status code 400") {
-          toast.error("No downloadable PDF found");
-        } else {
-          toast.error(error.message);
-        }
-        console.warn(error.message);
-      },
-    });
-
-  return { getAll, getAllSelectOptions, getOne, getSchema, remove, createOrEdit, downloadSchema, downloadObjects };
+  return { getAll, getAllSelectOptions, getOne, getSchema, remove, createOrEdit };
 };

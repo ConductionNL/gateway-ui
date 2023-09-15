@@ -25,7 +25,6 @@ export const SchemasTemplate: React.FC = () => {
   const _useSchema = useSchema(queryClient);
   const getSchemas = _useSchema.getAll();
   const deleteSchema = _useSchema.remove();
-  const downloadSchema = _useSchema.downloadSchema();
 
   const _useObject = useObject();
   const getObjects = _useObject.getAll(1, "asc", 200);
@@ -100,16 +99,7 @@ export const SchemasTemplate: React.FC = () => {
                           label: "Add Object",
                         },
                         { type: "delete", onSubmit: () => deleteSchema.mutate({ id: schema.id }) },
-                        {
-                          type: "download",
-                          label: "as CSV",
-                          onSubmit: () => downloadSchema.mutate({ id: schema.id, name: schema.name, type: "CSV" }),
-                        },
-                        {
-                          type: "download",
-                          label: "as JSON",
-                          onSubmit: () => downloadSchema.mutate({ id: schema.id, name: schema.name, type: "JSON" }),
-                        },
+                        { type: "download", onSubmit: () => undefined, disabled: true },
                       ]}
                       variant="secondary"
                     />
