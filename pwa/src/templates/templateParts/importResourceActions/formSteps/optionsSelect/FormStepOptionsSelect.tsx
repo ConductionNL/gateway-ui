@@ -19,15 +19,9 @@ interface FormStepOptionsSelectProps {
     [x: string]: any;
   };
   setValue?: UseFormSetValue<FieldValues>;
-  needsDelimiter?: boolean;
 }
 
-export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({
-  control,
-  register,
-  errors,
-  needsDelimiter,
-}) => {
+export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({ control, register, errors }) => {
   const queryClient = useQueryClient();
 
   const getSchemas = useSchema(queryClient).getAll();
@@ -80,6 +74,19 @@ export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({
         </FormFieldInput>
       </FormField>
 
+      {/* Required when adding .csv functionality */}
+      {/* <FormField>
+        <FormFieldInput>
+          <FormFieldLabel>
+            Delimiter{" "}
+            <ToolTip tooltip="Objects are separated by the delimiter, defaults to ','. Only applicable in .csv files.">
+              <FontAwesomeIcon icon={faInfoCircle} />
+            </ToolTip>
+          </FormFieldLabel>
+          <InputText name="delimiter" defaultValue="," {...{ register, errors }} />
+        </FormFieldInput>
+      </FormField> */}
+
       <FormField>
         <FormFieldInput>
           <FormFieldLabel>
@@ -91,25 +98,6 @@ export const FormStepOptionsSelect: React.FC<FormStepOptionsSelectProps> = ({
           <InputCheckbox name="headers" label="Yes" defaultChecked {...{ register, errors }} />
         </FormFieldInput>
       </FormField>
-
-      {needsDelimiter && (
-        <FormField>
-          <FormFieldInput>
-            <FormFieldLabel>
-              Delimiter*{" "}
-              <ToolTip tooltip="Objects are separated by the delimiter, defaults to ','. Only applicable in .csv files.">
-                <FontAwesomeIcon icon={faInfoCircle} />
-              </ToolTip>
-            </FormFieldLabel>
-            <InputText
-              name="delimiter"
-              defaultValue=","
-              {...{ register, errors }}
-              validation={enrichValidation({ required: true })}
-            />
-          </FormFieldInput>
-        </FormField>
-      )}
     </div>
   );
 };
