@@ -51,7 +51,7 @@ export default class Sources {
 
     const { data } = await this._send(this._instance, "DOWNLOAD", `admin/objects/${id}`, undefined, {
       loading: `Looking for downloadable ${type}...`,
-      success: `${type} found starting download.`,
+      success: `${type}, found starting download.`,
     });
 
     return data;

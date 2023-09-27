@@ -79,9 +79,9 @@ export const useSchema = (queryClient: QueryClient) => {
       onSuccess: async (data, variables) => {
         downloadAsExtention(data, variables.name, variables.type);
       },
-      onError: (error) => {
+      onError: (error, variables) => {
         if (error.message === "Request failed with status code 400") {
-          toast.error("No downloadable PDF found");
+          toast.error(`No downloadable ${variables.type} found`);
         } else {
           toast.error(error.message);
         }
@@ -94,9 +94,9 @@ export const useSchema = (queryClient: QueryClient) => {
       onSuccess: async (data, variables) => {
         downloadAsExtention(data, variables.name, variables.type);
       },
-      onError: (error) => {
+      onError: (error, variables) => {
         if (error.message === "Request failed with status code 400") {
-          toast.error("No downloadable PDF found");
+          toast.error(`No downloadable ${variables.type} found`);
         } else {
           toast.error(error.message);
         }
