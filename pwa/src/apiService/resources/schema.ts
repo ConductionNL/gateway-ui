@@ -86,7 +86,7 @@ export default class Schema {
 
     const { data } = await this._send(this._instance, "DOWNLOAD", `/admin/entities/${id}`, undefined, {
       loading: `Looking for downloadable ${type}...`,
-      success: `${type} found starting download.`,
+      success: `${type}, found starting download.`,
     });
 
     return data;
@@ -109,7 +109,7 @@ export default class Schema {
 
     const { data } = await this._send(this._instance, "DOWNLOAD", `/admin/objects?_self.schema.id=${id}`, undefined, {
       loading: `Looking for downloadable ${type}...`,
-      success: `${type} found starting download.`,
+      success: `${type}, found starting download.`,
     });
 
     return data;
