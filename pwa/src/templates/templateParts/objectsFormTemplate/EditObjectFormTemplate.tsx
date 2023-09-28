@@ -130,7 +130,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
                     },
                     {
                       type: "download",
-                      onSubmit: () => downloadObject.mutate({ id: objectId, name: object.name }),
+                      onSubmit: () => downloadObject.mutate({ id: objectId, name: object.name, type: "PDF" }),
                     },
                     { type: "delete", onSubmit: () => handleDeleteObject },
                   ]}
