@@ -30,6 +30,8 @@ export const UsersTemplate: React.FC = () => {
     selectedItems.forEach((item) => deleteUser.mutate({ id: item }));
   };
 
+  console.log(getUsers);
+
   return (
     <Container layoutClassName={styles.container}>
       <OverviewPageHeaderTemplate
@@ -74,7 +76,7 @@ export const UsersTemplate: React.FC = () => {
 
                   <TableCell>{user.name}</TableCell>
 
-                  <TableCell>{user.organisation.name ?? "-"}</TableCell>
+                  <TableCell>{user.organization.name ?? "-"}</TableCell>
 
                   <TableCell>
                     <ToolTip tooltip={user.applications.map((application: any) => application.name).join(", ")}>
