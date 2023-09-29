@@ -30,8 +30,6 @@ export const UsersTemplate: React.FC = () => {
     selectedItems.forEach((item) => deleteUser.mutate({ id: item }));
   };
 
-  console.log(getUsers);
-
   return (
     <Container layoutClassName={styles.container}>
       <OverviewPageHeaderTemplate
