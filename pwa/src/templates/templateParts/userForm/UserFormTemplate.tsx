@@ -32,9 +32,9 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const getApplications = useApplication(queryClient).getAll();
   const getSecurityGroups = useSecurityGroup(queryClient).getAll();
 
-  const organisationOptions = getOrganization.data?.map((_organisation: any) => ({
-    label: _organisation.name,
-    value: _organisation.id,
+  const organizationOptions = getOrganization.data?.map((_organization: any) => ({
+    label: _organization.name,
+    value: _organization.id,
   }));
 
   const applicationOptions = getApplications.data?.map((application: any) => ({
@@ -85,14 +85,13 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
-      organisation: data.organization && `/admin/organisations/${data.organization.value}`,
+      organization: data.organization && `/admin/organizations/${data.organization.value}`,
       applications: data.applications?.map((application: IKeyValue) => `/admin/applications/${application.value}`),
       securityGroups: data.securityGroups?.map(
         (securityGroup: IKeyValue) => `admin/user_groups/${securityGroup.value}`,
       ),
     };
 
-    delete payload.organization;
     data.password === "" && delete payload.password;
 
     createOrEditUser.mutate({ payload, id: user?.id });
@@ -110,7 +109,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   React.useEffect(() => {
     setValue(
       "organization",
-      organisationOptions?.find((_organisation) => _organisation.value === user?.organisation.id),
+      organizationOptions?.find((_organization) => _organization.value === user?.organization.id),
     );
   }, [getOrganization.isSuccess]);
 
@@ -165,7 +164,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
               <FormFieldLabel>{t("Organization")}</FormFieldLabel>
               {getOrganization.isSuccess && (
                 <SelectSingle
-                  options={organisationOptions ?? []}
+                  options={organizationOptions ?? []}
                   {...{ register, errors, control }}
                   name="organization"
                   validation={enrichValidation({ required: true })}
