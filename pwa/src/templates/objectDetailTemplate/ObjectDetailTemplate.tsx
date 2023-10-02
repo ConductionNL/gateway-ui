@@ -117,7 +117,7 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
                   </TableRow>
 
                   <TableRow>
-                    <TableHeader>Organisation</TableHeader>
+                    <TableHeader>Organization</TableHeader>
                     <TableCell>
                       <ToolTip tooltip={getObject.data._self?.organization.name ?? ""}>
                         {getObject.data._self?.organization.id ?? "-"}
