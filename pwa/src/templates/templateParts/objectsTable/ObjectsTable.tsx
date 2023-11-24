@@ -154,7 +154,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
                       <TableCell>
                         <span onClick={() => handleNavigateToDetail(object._self.id)}>
                           <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                            {object.name ?? "-"}
+                            {object._self?.name ?? "-"}
                           </Link>
                         </span>
                       </TableCell>
