@@ -60,6 +60,13 @@ export const useObject = () => {
       },
     );
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("objects_select_options", API.Object.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getAllFromList = (list: string) =>
     useQuery<any[], Error>(["objects", list], () => API.Object.getAllFromList(list), {
       onError: (error) => {
@@ -114,5 +121,5 @@ export const useObject = () => {
       },
     });
 
-  return { getAll, getOne, getAllFromEntity, getAllFromList, getSchema, remove, createOrEdit, downloadPDF };
+  return { getAll, getOne, getAllFromEntity, getAllFromList, getSchema, remove, createOrEdit, downloadPDF, getAllSelectOptions };
 };

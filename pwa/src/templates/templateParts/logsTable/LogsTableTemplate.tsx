@@ -83,7 +83,8 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
               {logColumns.user && <TableHeader>{t("User")}</TableHeader>}
               {logColumns.organization && <TableHeader>{t("Organization")}</TableHeader>}
               {logColumns.application && <TableHeader>{t("Application")}</TableHeader>}
-              {logColumns.template && <TableHeader>{t("Template")}</TableHeader>}
+              {logColumns.object && <TableHeader>{t("Object")}</TableHeader>}
+              {logColumns.mapping && <TableHeader>{t("Mapping")}</TableHeader>}
               <TableHeader></TableHeader>
             </TableRow>
           </TableHead>
@@ -208,15 +209,28 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                   </TableCell>
                 )}
 
-                {logColumns.template && (
+                {logColumns.object && (
                   <TableCell>
                     <Button
                       variant="primary"
-                      label={t("Template")}
+                      label={t("Object")}
                       icon={faArrowRight}
                       className={styles.button}
-                      disabled={!log.context.template}
-                      onClick={(e) => handleResourceClick(e, "templates", log.context.template)}
+                      disabled={!log.context.object}
+                      onClick={(e) => handleResourceClick(e, "objects", log.context.object)}
+                    />
+                  </TableCell>
+                )}
+
+                {logColumns.mapping && (
+                  <TableCell>
+                    <Button
+                      variant="primary"
+                      label={t("Mapping")}
+                      icon={faArrowRight}
+                      className={styles.button}
+                      disabled={!log.context.mapping}
+                      onClick={(e) => handleResourceClick(e, "mappings", log.context.mapping)}
                     />
                   </TableCell>
                 )}
