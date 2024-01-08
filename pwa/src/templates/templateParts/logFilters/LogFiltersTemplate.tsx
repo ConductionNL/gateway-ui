@@ -8,6 +8,8 @@ import Skeleton from "react-loading-skeleton";
 import { useUser } from "../../../hooks/user";
 import { useSchema } from "../../../hooks/schema";
 import { useAction } from "../../../hooks/action";
+import { useObject } from "../../../hooks/object";
+import { useMapping } from "../../../hooks/mapping";
 import { useCronjob } from "../../../hooks/cronjob";
 import { useEndpoint } from "../../../hooks/endpoint";
 import { useApplication } from "../../../hooks/application";
@@ -18,7 +20,6 @@ import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/for
 import { InputDate } from "@conduction/components";
 import clsx from "clsx";
 import { validateStringAs24DigitHex } from "../../../services/validateJSON";
-import { useTemplate } from "../../../hooks/template";
 
 interface LogFiltersTemplateProps {
   layoutClassName?: string;
@@ -37,7 +38,8 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
   const getUsers = useUser(queryClient).getAllSelectOptions();
   const getOrganizations = useOrganization(queryClient).getAllSelectOptions();
   const getApplications = useApplication(queryClient).getAllSelectOptions();
-  const getTemplates = useTemplate(queryClient).getAllSelectOptions();
+  const getObjects = useObject().getAllSelectOptions();
+  const getMappings = useMapping(queryClient).getAllSelectOptions();
 
   const {
     register,
@@ -75,7 +77,8 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
         user: formValues.users?.value,
         organization: formValues.organizations?.value,
         application: formValues.applications?.value,
-        template: formValues.templates?.value,
+        object: formValues.objects?.value,
+        mapping: formValues.mappings?.value,
       },
     };
 
@@ -137,8 +140,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
     );
 
     setValue(
-      "templates",
-      getTemplates.data?.find((template) => template.value === logFilters.context?.template),
+      "objects",
+      getObjects.data?.find((object) => object.value === logFilters.context?.object),
+    );
+
+    setValue(
+      "mappings",
+      getMappings.data?.find((mapping) => mapping.value === logFilters.context?.mapping),
     );
   }, []);
 
@@ -293,20 +301,28 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
 
         <FormField>
           <FormFieldInput>
-            <FormFieldLabel>Templates</FormFieldLabel>
+            <FormFieldLabel>Objects</FormFieldLabel>
 
-            {getTemplates.isSuccess && (
-              <SelectSingle
-                isClearable
-                name="templates"
-                {...{ register, errors, control }}
-                options={getTemplates.data}
-              />
+            {getObjects.isSuccess && (
+              <SelectSingle isClearable name="objects" {...{ register, errors, control }} options={getObjects.data} />
             )}
 
-            {getTemplates.isLoading && <Skeleton height="50px" />}
+            {getObjects.isLoading && <Skeleton height="50px" />}
           </FormFieldInput>
         </FormField>
+
+        <FormField>
+          <FormFieldInput>
+            <FormFieldLabel>Mappings</FormFieldLabel>
+
+            {getMappings.isSuccess && (
+              <SelectSingle isClearable name="mappings" {...{ register, errors, control }} options={getMappings.data} />
+            )}
+
+            {getMappings.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
+        <br />
 
         <FormField>
           <FormFieldInput>

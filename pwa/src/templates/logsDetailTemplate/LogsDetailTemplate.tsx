@@ -21,6 +21,8 @@ import { useLog } from "../../hooks/log";
 import { useLogFiltersContext } from "../../context/logs";
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMapping } from "../../hooks/mapping";
+import { useObject } from "../../hooks/object";
 
 interface LogsDetailTemplateProps {
   logId: string;
@@ -40,6 +42,8 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
   const getAction = useAction(queryClient).getOne(getLog.data?.context?.action);
   const getUser = useUser(queryClient).getOne(getLog.data?.context?.user);
   const getOrganization = useOrganization(queryClient).getOne(getLog.data?.context?.organization);
+  const getMapping = useMapping(queryClient).getOne(getLog.data?.context?.mapping);
+  const getObject = useObject().getOne(getLog.data?.context?.object);
 
   const handleSetContextFilter = (
     context:
@@ -51,10 +55,17 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
       | "action"
       | "user"
       | "organization"
-      | "application",
+      | "application"
+      | "mapping"
+      | "object",
     value: string,
   ) => {
-    setLogFilters({ context: { [context]: value } });
+    setLogFilters({
+      context: { [context]: value },
+      "_order[datetime]": "asc",
+      "datetime[before]": "",
+      "datetime[after]": "",
+    });
 
     navigate("/logs");
   };
@@ -262,13 +273,36 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 <TableRow>
                   <TableHeader>Mapping</TableHeader>
                   {getLog.data.context?.mapping ? (
-                    <TableCell>{getLog.data.context?.mapping}</TableCell>
+                    getMapping.isSuccess && (
+                      <TableCell>{getMapping.data.name ?? getLog.data.context?.mapping}</TableCell>
+                    )
                   ) : (
                     <TableCell>-</TableCell>
                   )}
 
-                  <TableCell>-</TableCell>
-                  <TableCell>-</TableCell>
+                  {getMapping.isLoading && (
+                    <TableCell>
+                      <Skeleton />
+                    </TableCell>
+                  )}
+                  <TableCell>
+                    <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
+                      disabled={!getMapping.data?.id}
+                      onClick={() => handleSetContextFilter("mapping", getMapping.data.id)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
+                      disabled={!getLog.data.context?.mapping}
+                      onClick={() => navigate(`/mappings/${getLog.data.context?.mapping}`)}
+                    />
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableHeader>User</TableHeader>
@@ -364,6 +398,39 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                       icon={faArrowRight}
                       disabled={!getLog.data.context?.application}
                       onClick={() => navigate(`/settings/applications/${getLog.data.context?.application}`)}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHeader>Object</TableHeader>
+                  {getLog.data.context?.object ? (
+                    getObject.isSuccess && (
+                      <TableCell>{getObject.data.titel ?? getLog.data.context?.object}</TableCell>
+                    )
+                  ) : (
+                    <TableCell>-</TableCell>
+                  )}
+                  {getObject.isLoading && (
+                    <TableCell>
+                      <Skeleton />
+                    </TableCell>
+                  )}
+                  <TableCell>
+                    <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
+                      disabled={!getObject.data?.id}
+                      onClick={() => handleSetContextFilter("object", getObject.data.id)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
+                      disabled={!getLog.data.context?.object}
+                      onClick={() => navigate(`/objects/${getLog.data.context?.object}`)}
                     />
                   </TableCell>
                 </TableRow>

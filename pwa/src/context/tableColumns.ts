@@ -26,7 +26,8 @@ const logColumns = {
   user: true,
   organization: true,
   application: true,
-  template: true,
+  object: true,
+  mapping: true,
 };
 
 // Interface combining all above columns
