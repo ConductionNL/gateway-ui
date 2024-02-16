@@ -15,6 +15,9 @@ import { SchemaFormTemplate } from "../schemaForm/SchemaFormTemplate";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 import { CodeEditor } from "../../../components/codeEditor/CodeEditor";
+import { translateDate } from "../../../services/dateFormat";
+import { StatusTag } from "../../../components/statusTag/StatusTag";
+import { formatDateTime } from "../../../services/dateTime";
 
 export const formId: string = "action-form";
 
@@ -23,7 +26,7 @@ interface ActionFormTemplateProps {
 }
 
 export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const [listensAndThrows, setListensAndThrows] = React.useState<any[]>([]);
@@ -149,7 +152,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
             </Tabs>
 
             <TabPanel className={styles.tabPanel} value="0">
-              <div className={styles.gridContainer}>
+              <div>
                 <div className={styles.grid}>
                   <FormField>
                     <FormFieldInput>
@@ -268,6 +271,46 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                         disabled={isLoading.actionForm}
                         label="on"
                         name="isLockable"
+                      />
+                    </FormFieldInput>
+                  </FormField>
+                </div>
+                <Divider />
+                <div className={styles.grid}>
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Date Created")}</FormFieldLabel>
+                      <div>{translateDate(i18n.language, action.dateCreated) ?? "-"}</div>
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Date Modified")}</FormFieldLabel>
+                      <div>{translateDate(i18n.language, action.dateModified) ?? "-"}</div>
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Last run")}</FormFieldLabel>
+                      <div> {action.lastRun ? formatDateTime(t(i18n.language), action.lastRun) : "-"}</div>
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Last run time")}</FormFieldLabel>
+                      <div>{`${action.lastRunTime}s` ?? "-"}</div>
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Status")}</FormFieldLabel>
+                      <StatusTag
+                        type={action.status ? "success" : "default"}
+                        label={action.status ? "Success" : "No status"}
                       />
                     </FormFieldInput>
                   </FormField>

@@ -6,10 +6,6 @@
   padding-block-end: var(--gateway-ui-size-md);
 }
 
-.gridContainer > *:not(:first-child) {
-  margin-block-start: var(--gateway-ui-size-sm);
-}
-
 .grid {
   display: grid;
   grid-gap: var(--gateway-ui-size-lg);
