@@ -1,0 +1,52 @@
+:root {
+  --conduction-horizontal-overflow-wrapper-background-color: unset;
+  --conduction-horizontal-overflow-wrapper-buttons-top: 12px;
+
+  --conduction-horizontal-overflow-wrapper-margin-inline-start: 8px;
+  --conduction-horizontal-overflow-wrapper-margin-inline-end: 8px;
+  --conduction-horizontal-overflow-wrapper-margin-block-start: 8px;
+  --conduction-horizontal-overflow-wrapper-margin-block-end: 8px;
+}
+
+.container {
+  position: relative;
+  background-color: var(
+    --conduction-horizontal-overflow-wrapper-background-color
+  );
+}
+
+.wrapper {
+  overflow-x: scroll;
+}
+
+.scrollButton {
+  position: sticky;
+  top: var(--conduction-horizontal-overflow-wrapper-buttons-top);
+
+  margin-inline-start: var(
+    --conduction-horizontal-overflow-wrapper-margin-inline-start
+  );
+  margin-inline-end: var(
+    --conduction-horizontal-overflow-wrapper-margin-inline-end
+  );
+  margin-block-start: var(
+    --conduction-horizontal-overflow-wrapper-margin-block-start
+  );
+  margin-block-end: var(
+    --conduction-horizontal-overflow-wrapper-margin-block-end
+  );
+  z-index: 10000;
+}
+
+.scrollButton.right {
+  left: 100%;
+}
+
+/* Hide scrollbar */
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+.wrapper {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
