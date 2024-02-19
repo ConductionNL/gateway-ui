@@ -32,6 +32,7 @@ import Upload from "./resources/upload";
 interface PromiseMessage {
   loading?: string;
   success?: string;
+  error?: string;
 }
 
 export type TSendFunction = (
@@ -255,37 +256,35 @@ export default class APIService {
     switch (action) {
       case "GET":
         const response = instance.get(endpoint);
-
-        response.catch((err) => toast.error(err.message));
-
+        response.catch((err) => toast.error(promiseMessage?.error ?? err.message));
         return response;
 
       case "POST":
         return toast.promise(instance.post(endpoint, _payload), {
           loading: promiseMessage?.loading ?? "Creating item...",
           success: promiseMessage?.success ?? "Succesfully created item",
-          error: (err) => err.message,
+          error: (err) => promiseMessage?.error ?? err.message,
         });
 
       case "PUT":
         return toast.promise(instance.put(endpoint, _payload), {
           loading: promiseMessage?.loading ?? "Updating item...",
           success: promiseMessage?.success ?? "Succesfully updated item",
-          error: (err) => err.message,
+          error: (err) => promiseMessage?.error ?? err.message,
         });
 
       case "DELETE":
         return toast.promise(instance.delete(endpoint), {
           loading: promiseMessage?.loading ?? "Deleting item...",
           success: promiseMessage?.success ?? "Succesfully deleted item",
-          error: (err) => err.message,
+          error: (err) => promiseMessage?.error ?? err.message,
         });
 
       case "DOWNLOAD":
         return toast.promise(instance.get(endpoint), {
           loading: promiseMessage?.loading ?? "Downloading item...",
           success: promiseMessage?.success ?? "Succesfully downloaded item",
-          error: (err) => err.message,
+          error: (err) => promiseMessage?.error ?? err.message,
         });
     }
   };
