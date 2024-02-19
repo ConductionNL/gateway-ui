@@ -9,6 +9,7 @@ import { useUser } from "../../../hooks/user";
 import { useSchema } from "../../../hooks/schema";
 import { useAction } from "../../../hooks/action";
 import { useObject } from "../../../hooks/object";
+import { useSource } from "../../../hooks/source";
 import { useMapping } from "../../../hooks/mapping";
 import { useCronjob } from "../../../hooks/cronjob";
 import { useEndpoint } from "../../../hooks/endpoint";
@@ -33,6 +34,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
 
   const getEndpoints = useEndpoint(queryClient).getAllSelectOptions();
   const getSchemas = useSchema(queryClient).getAllSelectOptions();
+  const getSources = useSource(queryClient).getAllSelectOptions();
   const getCronjobs = useCronjob(queryClient).getAllSelectOptions();
   const getActions = useAction(queryClient).getAllSelectOptions();
   const getUsers = useUser(queryClient).getAllSelectOptions();
@@ -72,6 +74,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
         process: formValues.process,
         endpoint: formValues.endpoints?.value,
         schema: formValues.schemas?.value,
+        source: formValues.sources?.value,
         cronjob: formValues.cronjobs?.value,
         action: formValues.actions?.value,
         user: formValues.users?.value,
@@ -112,6 +115,11 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
     setValue(
       "schemas",
       getSchemas.data?.find((schema) => schema.value === logFilters.context?.schema),
+    );
+
+    setValue(
+      "sources",
+      getSources.data?.find((source) => source.value === logFilters.context?.source),
     );
 
     setValue(
@@ -231,6 +239,18 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
 
         <FormField>
           <FormFieldInput>
+            <FormFieldLabel>Sources</FormFieldLabel>
+
+            {getSources.isSuccess && (
+              <SelectSingle isClearable name="sources" {...{ register, errors, control }} options={getSources.data} />
+            )}
+
+            {getSources.isLoading && <Skeleton height="50px" />}
+          </FormFieldInput>
+        </FormField>
+
+        <FormField>
+          <FormFieldInput>
             <FormFieldLabel>Cronjobs</FormFieldLabel>
 
             {getCronjobs.isSuccess && (
@@ -322,7 +342,6 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
             {getMappings.isLoading && <Skeleton height="50px" />}
           </FormFieldInput>
         </FormField>
-        <br />
 
         <FormField>
           <FormFieldInput>

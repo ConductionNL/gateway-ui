@@ -21,6 +21,7 @@ const logColumns = {
   created: true,
   endpoint: true,
   schema: true,
+  source: true,
   cronjob: true,
   action: true,
   user: true,

@@ -275,46 +275,50 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                     </FormFieldInput>
                   </FormField>
                 </div>
-                <Divider />
-                <div className={styles.grid}>
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Date Created")}</FormFieldLabel>
-                      <div>{translateDate(i18n.language, action.dateCreated) ?? "-"}</div>
-                    </FormFieldInput>
-                  </FormField>
+                {action && (
+                  <>
+                    <Divider />
+                    <div className={styles.grid}>
+                      <FormField>
+                        <FormFieldInput>
+                          <FormFieldLabel>{t("Date Created")}</FormFieldLabel>
+                          <div>{translateDate(i18n.language, action.dateCreated) ?? "-"}</div>
+                        </FormFieldInput>
+                      </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Date Modified")}</FormFieldLabel>
-                      <div>{translateDate(i18n.language, action.dateModified) ?? "-"}</div>
-                    </FormFieldInput>
-                  </FormField>
+                      <FormField>
+                        <FormFieldInput>
+                          <FormFieldLabel>{t("Date Modified")}</FormFieldLabel>
+                          <div>{translateDate(i18n.language, action.dateModified) ?? "-"}</div>
+                        </FormFieldInput>
+                      </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Last run")}</FormFieldLabel>
-                      <div> {action.lastRun ? formatDateTime(t(i18n.language), action.lastRun) : "-"}</div>
-                    </FormFieldInput>
-                  </FormField>
+                      <FormField>
+                        <FormFieldInput>
+                          <FormFieldLabel>{t("Last run")}</FormFieldLabel>
+                          <div> {action.lastRun ? formatDateTime(t(i18n.language), action.lastRun) : "-"}</div>
+                        </FormFieldInput>
+                      </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Last run time")}</FormFieldLabel>
-                      <div>{`${action.lastRunTime}s` ?? "-"}</div>
-                    </FormFieldInput>
-                  </FormField>
+                      <FormField>
+                        <FormFieldInput>
+                          <FormFieldLabel>{t("Last run time")}</FormFieldLabel>
+                          <div>{`${action.lastRunTime}s` ?? "-"}</div>
+                        </FormFieldInput>
+                      </FormField>
 
-                  <FormField>
-                    <FormFieldInput>
-                      <FormFieldLabel>{t("Status")}</FormFieldLabel>
-                      <StatusTag
-                        type={action.status ? "success" : "default"}
-                        label={action.status ? "Success" : "No status"}
-                      />
-                    </FormFieldInput>
-                  </FormField>
-                </div>
+                      <FormField>
+                        <FormFieldInput>
+                          <FormFieldLabel>{t("Status")}</FormFieldLabel>
+                          <StatusTag
+                            type={action.status ? "success" : "default"}
+                            label={action.status ? "Success" : "No status"}
+                          />
+                        </FormFieldInput>
+                      </FormField>
+                    </div>
+                  </>
+                )}
               </div>
             </TabPanel>
 

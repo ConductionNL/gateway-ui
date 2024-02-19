@@ -78,6 +78,7 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
               {logColumns.created && <TableHeader>{t("Created")}</TableHeader>}
               {logColumns.endpoint && <TableHeader>{t("Endpoint")}</TableHeader>}
               {logColumns.schema && <TableHeader>{t("Schema")}</TableHeader>}
+              {logColumns.source && <TableHeader>{t("Source")}</TableHeader>}
               {logColumns.cronjob && <TableHeader>{t("Cronjob")}</TableHeader>}
               {logColumns.action && <TableHeader>{t("Action")}</TableHeader>}
               {logColumns.user && <TableHeader>{t("User")}</TableHeader>}
@@ -140,6 +141,19 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
                       className={styles.button}
                       disabled={!log.context.schema}
                       onClick={(e) => handleResourceClick(e, "schemas", log.context.schema)}
+                    />
+                  </TableCell>
+                )}
+
+                {logColumns.source && (
+                  <TableCell>
+                    <Button
+                      variant="primary"
+                      label={t("Source")}
+                      icon={faArrowRight}
+                      className={styles.button}
+                      disabled={!log.context.source}
+                      onClick={(e) => handleResourceClick(e, "sources", log.context.source)}
                     />
                   </TableCell>
                 )}
