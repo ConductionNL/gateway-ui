@@ -22,8 +22,6 @@ export const LoginTemplate: React.FC = () => {
   const [API] = React.useState<APIService>(React.useContext(APIContext));
 
   const [dexRedirectURL, setDexRedirectURL] = React.useState<string>("");
-  console.log(window.sessionStorage.getItem("GATSBY_BASE_URL"));
-  console.log(dexRedirectURL);
 
   const queryClient = useQueryClient();
 
