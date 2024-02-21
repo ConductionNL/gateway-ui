@@ -1,0 +1,60 @@
+.container {
+  background-color: var(--gateway-ui-color-white);
+}
+
+.container > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
+.dropzone:hover {
+  cursor: pointer;
+}
+
+.dropzoneContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.dropzone > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-md);
+}
+
+.dropzone {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: var(--gateway-ui-size-3xs) dashed var(--gateway-ui-color-darkgrey);
+  border-radius: var(--gateway-ui-border-radius-lg);
+  background-color: var(--gateway-ui-row-background-color);
+
+  padding-inline-start: var(--gateway-ui-size-3xl);
+  padding-inline-end: var(--gateway-ui-size-3xl);
+  padding-block-end: var(--gateway-ui-size-3xl);
+  padding-block-start: var(--gateway-ui-size-3xl);
+}
+
+.dropzone .icon {
+  font-size: 75px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.dropzone.active .icon {
+  color: var(--gateway-ui-color-primary);
+}
+
+.otherOptionIndicator {
+  color: var(--gateway-ui-color-darkgrey);
+}
+
+.filesContainer > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-md);
+}
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gateway-ui-size-sm);
+}

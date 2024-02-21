@@ -43,7 +43,7 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
     const payload = {
       ...data,
       domains: data.domains?.map((domain: any) => domain.value),
-      organization: data.organization && `/admin/organisations/${data.organization.value}`,
+      organization: data.organization && `/admin/organizations/${data.organization.value}`,
     };
 
     createOrEditApplication.mutate({ payload: payload, id: application?.id });

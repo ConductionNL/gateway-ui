@@ -27,17 +27,19 @@ import Authentication from "./resources/authentication";
 import SecurityGroup from "./resources/securityGroup";
 import Mapping from "./resources/mapping";
 import Template from "./resources/template";
+import Upload from "./resources/upload";
 
 interface PromiseMessage {
   loading?: string;
   success?: string;
+  error?: string;
 }
 
 export type TSendFunction = (
   instance: AxiosInstance,
   action: "GET" | "POST" | "PUT" | "DELETE" | "DOWNLOAD",
   endpoint: string,
-  payload?: JSON,
+  payload?: JSON | FormData,
   promiseMessage?: PromiseMessage,
 ) => Promise<AxiosResponse>;
 
@@ -113,11 +115,21 @@ export default class APIService {
     });
   }
 
-  public get gitClient(): AxiosInstance {
+  public get GitClient(): AxiosInstance {
     return axios.create({
       baseURL: window.sessionStorage.getItem("GATSBY_BASE_URL") ?? "",
       headers: {
         Accept: "application/vnd.github.html",
+      },
+    });
+  }
+
+  public get MultipartFormClient(): AxiosInstance {
+    return axios.create({
+      baseURL: window.sessionStorage.getItem("GATSBY_BASE_URL") ?? "",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + this.getJWT(),
       },
     });
   }
@@ -132,7 +144,7 @@ export default class APIService {
   }
 
   public get PluginReadMe(): PluginReadMe {
-    return new PluginReadMe(this.gitClient, this.Send);
+    return new PluginReadMe(this.GitClient, this.Send);
   }
 
   public get Sources(): Source {
@@ -203,6 +215,10 @@ export default class APIService {
     return new Template(this.BaseClient, this.Send);
   }
 
+  public get Upload(): Upload {
+    return new Upload(this.MultipartFormClient, this.Send);
+  }
+
   // Services
   public get Login(): Login {
     return new Login(this.LoginClient);
@@ -214,7 +230,11 @@ export default class APIService {
 
   // Send method
   public Send: TSendFunction = (instance, action, endpoint, payload, promiseMessage) => {
-    const _payload = JSON.stringify(payload);
+    let _payload: any = payload;
+
+    if (typeof _payload === "object" && !(_payload instanceof FormData)) {
+      _payload = JSON.stringify(_payload);
+    }
 
     if (!validateSession()) {
       handleAutomaticLogout();
@@ -236,37 +256,35 @@ export default class APIService {
     switch (action) {
       case "GET":
         const response = instance.get(endpoint);
-
-        response.catch((err) => toast.error(err.message));
-
+        response.catch((err) => toast.error(promiseMessage?.error ?? err.message));
         return response;
 
       case "POST":
         return toast.promise(instance.post(endpoint, _payload), {
           loading: promiseMessage?.loading ?? "Creating item...",
           success: promiseMessage?.success ?? "Succesfully created item",
-          error: (err) => err.message,
+          error: (err) => promiseMessage?.error ?? err.message,
         });
 
       case "PUT":
         return toast.promise(instance.put(endpoint, _payload), {
           loading: promiseMessage?.loading ?? "Updating item...",
           success: promiseMessage?.success ?? "Succesfully updated item",
-          error: (err) => err.message,
+          error: (err) => promiseMessage?.error ?? err.message,
         });
 
       case "DELETE":
         return toast.promise(instance.delete(endpoint), {
           loading: promiseMessage?.loading ?? "Deleting item...",
           success: promiseMessage?.success ?? "Succesfully deleted item",
-          error: (err) => err.message,
+          error: (err) => promiseMessage?.error ?? err.message,
         });
 
       case "DOWNLOAD":
         return toast.promise(instance.get(endpoint), {
           loading: promiseMessage?.loading ?? "Downloading item...",
           success: promiseMessage?.success ?? "Succesfully downloaded item",
-          error: (err) => err.message,
+          error: (err) => promiseMessage?.error ?? err.message,
         });
     }
   };

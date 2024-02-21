@@ -1,5 +1,6 @@
 import { AxiosInstance } from "axios";
 import { TSendFunction } from "../apiService";
+import { TDownloadType, downloadTypes } from "../../data/downloadTypes";
 export default class Sources {
   private _instance: AxiosInstance;
   private _send: TSendFunction;
@@ -33,22 +34,24 @@ export default class Sources {
     return data;
   };
 
-  public downloadPDF = async (variables: { id: string; name: string }): Promise<any> => {
-    const { id } = variables;
+  public downloadPDF = async (variables: { id: string; name: string; type: TDownloadType }): Promise<any> => {
+    const { id, type } = variables;
+
+    const acceptType = downloadTypes.find((_type) => _type.label === type);
 
     const instance = this._instance;
 
     instance.interceptors.request.use(function (config) {
       return {
         ...config,
-        headers: { ...config.headers, Accept: "application/pdf" },
+        headers: { ...config.headers, Accept: acceptType?.accept },
         responseType: "arraybuffer",
       };
     });
 
     const { data } = await this._send(this._instance, "DOWNLOAD", `admin/objects/${id}`, undefined, {
-      loading: "Looking for downloadable PDF...",
-      success: "PDF found starting download.",
+      loading: `Looking for downloadable ${type}...`,
+      success: `${type}, found starting download.`,
     });
 
     return data;
@@ -64,6 +67,12 @@ export default class Sources {
     );
 
     return data;
+  };
+
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await this._send(this._instance, "GET", "/admin/objects?limit=200");
+
+    return data?.results?.map((object: any) => ({ label: object.titel, value: object.id }));
   };
 
   public getAllFromList = async (list: string): Promise<any> => {
@@ -97,11 +106,12 @@ export default class Sources {
   public createOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
     const { payload, entityId, objectId } = variables;
 
-    if (objectId) {
-      const { data } = await this._send(this._instance, "PUT", `/admin/objects/${objectId}`, payload, {
+    if (objectId || payload.id) {
+      const { data } = await this._send(this._instance, "PUT", `/admin/objects/${objectId ?? payload.id}`, payload, {
         loading: "Updating object...",
         success: "Object successfully updated.",
       });
+
       return data;
     }
 
@@ -109,7 +119,7 @@ export default class Sources {
       this._instance,
       "POST",
       "/admin/objects",
-      { ...payload, _self: { schema: { id: entityId } } },
+      { ...payload, _self: payload._self ?? { schema: { id: entityId } } },
       {
         loading: "Creating object...",
         success: "Object successfully created.",

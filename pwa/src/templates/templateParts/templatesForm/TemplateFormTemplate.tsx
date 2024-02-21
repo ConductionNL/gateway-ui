@@ -54,8 +54,8 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
   const onSubmit = (data: any): void => {
     const payload = {
       ...data,
-      organization: data.organization && `/admin/organisations/${data.organization.value}`,
-      supportedSchemas: data.supportedSchemas.map((schema: any) => schema.value),
+      organization: data.organization && `/admin/organizations/${data.organization.value}`,
+      supportedSchemas: data.supportedSchemas?.map((schema: any) => schema.value),
       content: templateContentFieldValue,
     };
 

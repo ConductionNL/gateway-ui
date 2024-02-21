@@ -89,7 +89,7 @@ export const ActionsTemplate: React.FC = () => {
 
                   <TableCell>{action.lastRun ? dateTime(t(i18n.language), action.lastRun) : "-"}</TableCell>
 
-                  <TableCell>{`${action.lastRunTime}ms` ?? "-"}</TableCell>
+                  <TableCell>{`${action.lastRunTime}s` ?? "-"}</TableCell>
 
                   <TableCell>{translateDate(i18n.language, action.dateCreated) ?? "-"}</TableCell>
 

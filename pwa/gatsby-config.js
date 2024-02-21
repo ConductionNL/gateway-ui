@@ -128,6 +128,10 @@ module.exports = {
             crumbLabel: "Mapping",
           },
           {
+            pathname: "/upload",
+            crumbLabel: "Import and upload",
+          },
+          {
             pathname: "/templates/[templateId]",
             crumbLabel: "Template",
           },

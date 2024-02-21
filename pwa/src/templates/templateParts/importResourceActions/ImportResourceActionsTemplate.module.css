@@ -1,0 +1,56 @@
+.form > *:not(:last-child) {
+  margin-block-end: var(--gateway-ui-size-lg);
+}
+
+.restartFormContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-end: var(--gateway-ui-size-md);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.collapsibleContent {
+  padding-inline-start: var(--gateway-ui-size-lg);
+  padding-inline-end: var(--gateway-ui-size-lg);
+  padding-block-start: var(--gateway-ui-size-lg);
+  padding-block-end: var(--gateway-ui-size-lg);
+
+  border-inline-start: var(--gateway-ui-color-grey) 1px solid;
+  border-inline-end: var(--gateway-ui-color-grey) 1px solid;
+  border-block-end: var(--gateway-ui-color-grey) 1px solid;
+
+  border-radius: var(--gateway-ui-border-radius-md);
+}
+
+.triggerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  user-select: none;
+
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+  background-color: var(--gateway-ui-row-background-color);
+}
+
+.triggerContainer:hover {
+  cursor: pointer;
+}
+
+.collapsibleIsOpen .triggerIcon {
+  transform: rotate(90deg);
+}
+
+.triggerIcon {
+  transition: transform 200ms;
+}
+
+.submitContainer {
+  display: flex;
+  justify-content: flex-end;
+}

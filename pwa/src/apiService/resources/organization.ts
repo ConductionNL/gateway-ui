@@ -11,19 +11,19 @@ export default class Organization {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/organisations");
+    const { data } = await this._send(this._instance, "GET", "/admin/organizations");
 
     return data;
   };
 
   public getAllSelectOptions = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/organisations?limit=200");
+    const { data } = await this._send(this._instance, "GET", "/admin/organizations?limit=200");
 
     return data?.map((organization: any) => ({ label: organization.name, value: organization.id }));
   };
 
   public getOne = async (id: string): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", `/admin/organisations/${id}`);
+    const { data } = await this._send(this._instance, "GET", `/admin/organizations/${id}`);
 
     return data;
   };
@@ -32,14 +32,14 @@ export default class Organization {
     const { payload, id } = variables;
 
     if (id) {
-      const { data } = await this._send(this._instance, "PUT", `/admin/organisations/${id}`, payload, {
+      const { data } = await this._send(this._instance, "PUT", `/admin/organizations/${id}`, payload, {
         loading: "Updating organization...",
         success: "Organization successfully updated.",
       });
       return data;
     }
 
-    const { data } = await this._send(this._instance, "POST", "/admin/organisations", payload, {
+    const { data } = await this._send(this._instance, "POST", "/admin/organizations", payload, {
       loading: "Creating organization...",
       success: "Organization successfully created.",
     });

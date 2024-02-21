@@ -75,7 +75,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
   const handleBulkDownload = () => {
     selectedItems.forEach((item) => {
       const object = objectsQuery.data.results.find((object: any) => object._id === item);
-      return downloadObject.mutate({ id: item, name: object.name });
+      return downloadObject.mutate({ id: item, name: object.name, type: "PDF" });
     });
   };
 
@@ -154,7 +154,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
                       <TableCell>
                         <span onClick={() => handleNavigateToDetail(object._self.id)}>
                           <Link icon={<FontAwesomeIcon icon={faArrowRight} />} iconAlign="start">
-                            {object.name ?? "-"}
+                            {object._self?.name ?? "-"}
                           </Link>
                         </span>
                       </TableCell>
@@ -178,7 +178,8 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
                             { type: "duplicate", onSubmit: () => handleDuplicate(object._self.id) },
                             {
                               type: "download",
-                              onSubmit: () => downloadObject.mutate({ id: object._self.id, name: object.name }),
+                              onSubmit: () =>
+                                downloadObject.mutate({ id: object._self.id, name: object.name, type: "PDF" }),
                             },
                           ]}
                           variant="secondary"

@@ -17,8 +17,8 @@
 }
 
 .logoContainer {
-  max-height: 100px;
-  max-width: 100px;
+  max-height: 75px;
+  max-width: 75px;
   display: flex;
   justify-content: center;
   margin-inline-end: auto;
@@ -31,4 +31,10 @@
   max-height: 100%;
   object-fit: contain;
   cursor: pointer;
+}
+
+.divider {
+  width: 100%;
+  opacity: 0.5;
+  margin-block: var(--gateway-ui-size-lg);
 }

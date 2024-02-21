@@ -5,7 +5,7 @@ import APIContext from "../apiService/apiContext";
 import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { useDeletedItemsContext } from "../context/deletedItems";
 import toast from "react-hot-toast";
-import { downloadAsPDF } from "../services/downloadBlob";
+import { downloadAsExtention } from "../services/downloadBlob";
 
 export const useObject = () => {
   const API: APIService | null = React.useContext(APIContext);
@@ -36,7 +36,7 @@ export const useObject = () => {
   const downloadPDF = () =>
     useMutation<any, Error, any>(API.Object.downloadPDF, {
       onSuccess: async (data, variables) => {
-        downloadAsPDF(data, variables.name);
+        downloadAsExtention(data, variables.name, variables.type);
       },
       onError: (error) => {
         if (error.message === "Request failed with status code 400") {
@@ -59,6 +59,13 @@ export const useObject = () => {
         enabled: !!entityId,
       },
     );
+
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("objects_select_options", API.Object.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
 
   const getAllFromList = (list: string) =>
     useQuery<any[], Error>(["objects", list], () => API.Object.getAllFromList(list), {
@@ -114,5 +121,5 @@ export const useObject = () => {
       },
     });
 
-  return { getAll, getOne, getAllFromEntity, getAllFromList, getSchema, remove, createOrEdit, downloadPDF };
+  return { getAll, getOne, getAllFromEntity, getAllFromList, getSchema, remove, createOrEdit, downloadPDF, getAllSelectOptions };
 };

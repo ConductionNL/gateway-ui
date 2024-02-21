@@ -16,6 +16,12 @@ export default class Source {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await this._send(this._instance, "GET", "/admin/gateways?limit=200");
+
+    return data?.map((source: any) => ({ label: source.name, value: source.id }));
+  };
+
   public getOne = async (id: string): Promise<any> => {
     const { data } = await this._send(this._instance, "GET", `/admin/gateways/${id}`);
 

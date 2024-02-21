@@ -21,12 +21,14 @@ const logColumns = {
   created: true,
   endpoint: true,
   schema: true,
+  source: true,
   cronjob: true,
   action: true,
   user: true,
   organization: true,
   application: true,
-  template: true,
+  object: true,
+  mapping: true,
 };
 
 // Interface combining all above columns

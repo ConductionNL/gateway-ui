@@ -12,6 +12,7 @@ import { useAuthentication } from "../../hooks/useAuthentication";
 import { useIsLoadingContext } from "../../context/isLoading";
 import APIService from "../../apiService/apiService";
 import APIContext from "../../apiService/apiContext";
+import { removeTrailingSlash } from "../../services/removeTrailingSlash";
 
 export const LoginTemplate: React.FC = () => {
   const { t } = useTranslation();
@@ -54,7 +55,9 @@ export const LoginTemplate: React.FC = () => {
 
   React.useEffect(() => {
     window.sessionStorage.getItem("GATSBY_BASE_URL") &&
-      setDexRedirectURL(`${window.sessionStorage.getItem("GATSBY_BASE_URL")}/login/oidc/dex`);
+      setDexRedirectURL(
+        `${removeTrailingSlash(window.sessionStorage.getItem("GATSBY_BASE_URL") ?? "")}/login/oidc/dex`,
+      );
   });
 
   return (

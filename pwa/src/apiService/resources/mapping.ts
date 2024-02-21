@@ -22,6 +22,13 @@ export default class Mapping {
     return data;
   };
 
+  public getAllSelectOptions = async (): Promise<any> => {
+    const { data } = await this._send(this._instance, "GET", "/admin/mappings?limit=200");
+
+    return data?.map((mapping: any) => ({ label: mapping.name, value: mapping.id }));
+  };
+
+
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;
 
