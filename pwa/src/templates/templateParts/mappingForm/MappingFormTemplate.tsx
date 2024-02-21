@@ -375,7 +375,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
 
                   {isOpenCast && (
                     <>
-                      <div onClick={(e) => handleSwitchEditor(e, "unset")}>
+                      <div onClick={(e) => handleSwitchEditor(e, "cast")}>
                         <Link icon={<FontAwesomeIcon icon={faEdit} />} iconAlign="start">
                           {t(!editCastInEditor ? "Edit as JSON" : "Edit as Key-Value")}
                         </Link>
