@@ -71,7 +71,7 @@ export const GatewayDetailTemplate: React.FC = () => {
                   } `}</p>
                 )}
                 <p>{`last update time: ${new Date(
-                  getPlugins.data?.versions[getPlugins.data?.version].time,
+                  getPlugins.data?.versions[getPlugins.data?.version]?.time,
                 ).toLocaleString()}`}</p>
               </div>
 
