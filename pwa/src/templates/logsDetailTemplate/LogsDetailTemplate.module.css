@@ -48,7 +48,7 @@
 }
 
 .warningLevel {
-  --denhaag-alert-info-background-color: #var(
+  --denhaag-alert-info-background-color: var(
     --gateway-ui-color-status-background-warning
   );
   --denhaag-alert-info-icon-color: var(--gateway-ui-color-status-warning);
