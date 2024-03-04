@@ -13,6 +13,7 @@ export const useDashboardCards = (queryClient: QueryClient) => {
       onError: (error) => {
         console.warn(error.message);
       },
+      retry: 0,
     });
 
   const getOne = (dashboardCardsId: string) =>

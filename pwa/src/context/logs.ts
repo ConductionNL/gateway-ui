@@ -13,6 +13,7 @@ export interface ILogFiltersContext {
     process?: string;
     endpoint?: string;
     schema?: string;
+    source?: string;
     cronjob?: string;
     action?: string;
     user?: string;

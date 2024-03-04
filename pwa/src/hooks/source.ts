@@ -18,6 +18,13 @@ export const useSource = (queryClient: QueryClient) => {
       },
     });
 
+  const getAllSelectOptions = () =>
+    useQuery<any[], Error>("source_select_options", API.Sources.getAllSelectOptions, {
+      onError: (error) => {
+        console.warn(error.message);
+      },
+    });
+
   const getOne = (sourceId: string) =>
     useQuery<any, Error>(["sources", sourceId], () => API?.Sources.getOne(sourceId), {
       initialData: () => queryClient.getQueryData<any[]>("sources")?.find((_sources) => _sources.id === sourceId),
@@ -78,5 +85,5 @@ export const useSource = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getOne, remove, createOrEdit, getProxy };
+  return { getAll, getOne, remove, createOrEdit, getProxy, getAllSelectOptions };
 };

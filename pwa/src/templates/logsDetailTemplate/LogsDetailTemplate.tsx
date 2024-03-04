@@ -23,6 +23,8 @@ import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMapping } from "../../hooks/mapping";
 import { useObject } from "../../hooks/object";
+import { CodeEditor } from "../../components/codeEditor/CodeEditor";
+import { useSource } from "../../hooks/source";
 
 interface LogsDetailTemplateProps {
   logId: string;
@@ -31,6 +33,10 @@ interface LogsDetailTemplateProps {
 export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId }) => {
   const { t } = useTranslation();
   const { setLogFilters } = useLogFiltersContext();
+  const [bodyData, setBodyData] = React.useState<any>("");
+  const [exceptionData, setExceptionData] = React.useState<any>("");
+  const [routeParametersData, setRouteParametersData] = React.useState<any>("");
+  const [sourceCallData, setSourceCallData] = React.useState<any>("");
 
   const queryClient = useQueryClient();
 
@@ -44,6 +50,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
   const getOrganization = useOrganization(queryClient).getOne(getLog.data?.context?.organization);
   const getMapping = useMapping(queryClient).getOne(getLog.data?.context?.mapping);
   const getObject = useObject().getOne(getLog.data?.context?.object);
+  const getSource = useSource(queryClient).getOne(getLog.data?.context?.source);
 
   const handleSetContextFilter = (
     context:
@@ -51,6 +58,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
       | "process"
       | "endpoint"
       | "schema"
+      | "source"
       | "cronjob"
       | "action"
       | "user"
@@ -69,6 +77,13 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
 
     navigate("/logs");
   };
+
+  React.useEffect(() => {
+    setBodyData(JSON.stringify(getLog.data?.context?.body, null, 2));
+    setExceptionData(JSON.stringify(getLog.data?.context?.exception, null, 2));
+    setRouteParametersData(JSON.stringify(getLog.data?.context?.route_parameters, null, 2));
+    setSourceCallData(JSON.stringify(getLog.data?.context?.sourceCall, null, 2));
+  }, [getLog]);
 
   return (
     <Container layoutClassName={styles.container}>
@@ -99,22 +114,120 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableHeader>Host</TableHeader>
-                  <TableCell>{getLog.data.context?.host !== "" ? getLog.data.context?.host : "-"}</TableCell>
-                  <TableCell>-</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableHeader>IP</TableHeader>
-                  <TableCell>{getLog.data.context?.ip !== "" ? getLog.data.context?.ip : "-"}</TableCell>
-                  <TableCell>-</TableCell>
-                  <TableCell>-</TableCell>
-                </TableRow>
+                {getLog.data.context?.exception && (
+                  <TableRow>
+                    <TableHeader>Exception</TableHeader>
+                    <TableCell colSpan={3}>
+                      <CodeEditor language="json" code={exceptionData} setCode={setExceptionData} readOnly />
+                    </TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.method && (
+                  <TableRow>
+                    <TableHeader>Method</TableHeader>
+                    <TableCell>{getLog.data.context?.method !== "" ? getLog.data.context?.method : "-"}</TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.querystring && (
+                  <TableRow>
+                    <TableHeader>Querystring</TableHeader>
+                    <TableCell>
+                      {getLog.data.context?.querystring !== "" ? getLog.data.context?.querystring : "-"}
+                    </TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.pathRaw && (
+                  <TableRow>
+                    <TableHeader>pathRaw</TableHeader>
+                    <TableCell>{getLog.data.context?.pathRaw !== "" ? getLog.data.context?.pathRaw : "-"}</TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.request_uri && (
+                  <TableRow>
+                    <TableHeader>Request URI</TableHeader>
+                    <TableCell>
+                      {getLog.data.context?.request_uri !== "" ? getLog.data.context?.request_uri : "-"}
+                    </TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.route && (
+                  <TableRow>
+                    <TableHeader>Route</TableHeader>
+                    <TableCell>{getLog.data.context?.route !== "" ? getLog.data.context?.route : "-"}</TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.route_parameters && (
+                  <TableRow>
+                    <TableHeader>Route Parameters</TableHeader>
+                    <TableCell colSpan={3}>
+                      <CodeEditor
+                        language="json"
+                        code={routeParametersData}
+                        setCode={setRouteParametersData}
+                        readOnly
+                      />
+                    </TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.contentType && (
+                  <TableRow>
+                    <TableHeader>Content Type</TableHeader>
+                    <TableCell>
+                      {getLog.data.context?.contentType !== "" ? getLog.data.context?.contentType : "-"}
+                    </TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.body && (
+                  <TableRow>
+                    <TableHeader>Body</TableHeader>
+                    <TableCell colSpan={3}>
+                      <CodeEditor language="json" code={bodyData} setCode={setBodyData} readOnly />
+                    </TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.crude_body && (
+                  <TableRow>
+                    <TableHeader>Crude Body</TableHeader>
+                    <TableCell colSpan={3}>{getLog.data.context?.crude_body}</TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.mongoDBFilter && (
+                  <TableRow>
+                    <TableHeader>MongoDB Filter</TableHeader>
+                    <TableCell colSpan={3}>{getLog.data.context?.mongoDBFilter}</TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.plugin && (
+                  <TableRow>
+                    <TableHeader>Plugin</TableHeader>
+                    <TableCell>{getLog.data.context?.plugin !== "" ? getLog.data.context?.plugin : "-"}</TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>-</TableCell>
+                  </TableRow>
+                )}
+                {getLog.data.context?.sourceCall && (
+                  <TableRow>
+                    <TableHeader>Source Call</TableHeader>
+                    <TableCell colSpan={3}>
+                      <CodeEditor language="json" code={sourceCallData} setCode={setSourceCallData} readOnly />
+                    </TableCell>
+                  </TableRow>
+                )}
                 <TableRow>
                   <TableHeader>Session</TableHeader>
                   <TableCell>{getLog.data.context?.session !== "" ? getLog.data.context?.session : "-"}</TableCell>
-
                   <TableCell>
                     <Button
                       variant="primary"
@@ -130,7 +243,6 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 <TableRow>
                   <TableHeader>Process</TableHeader>
                   <TableCell>{getLog.data.context?.process !== "" ? getLog.data.context?.process : "-"}</TableCell>
-
                   <TableCell>
                     <Button
                       variant="primary"
@@ -192,8 +304,8 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                       variant="primary"
                       label={t("Set filter")}
                       icon={faFilter}
-                      disabled={!getEndpoint.data?.id}
-                      onClick={() => handleSetContextFilter("schema", getEndpoint.data.id)}
+                      disabled={!getSchema.data?.id}
+                      onClick={() => handleSetContextFilter("schema", getSchema.data.id)}
                     />
                   </TableCell>
                   <TableCell>
@@ -203,6 +315,37 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                       icon={faArrowRight}
                       disabled={!getLog.data.context?.schema}
                       onClick={() => navigate(`/schemas/${getLog.data.context?.schema}`)}
+                    />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHeader>Source</TableHeader>
+                  {getLog.data.context?.source ? (
+                    getSource.isSuccess && <TableCell>{getSource.data.name ?? getLog.data.context?.source}</TableCell>
+                  ) : (
+                    <TableCell>-</TableCell>
+                  )}
+                  {getSource.isLoading && (
+                    <TableCell>
+                      <Skeleton />
+                    </TableCell>
+                  )}
+                  <TableCell>
+                    <Button
+                      variant="primary"
+                      label={t("Set filter")}
+                      icon={faFilter}
+                      disabled={!getSource.data?.id}
+                      onClick={() => handleSetContextFilter("source", getSource.data.id)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="primary"
+                      label={t("Details")}
+                      icon={faArrowRight}
+                      disabled={!getLog.data.context?.source}
+                      onClick={() => navigate(`/sources/${getLog.data.context?.source}`)}
                     />
                   </TableCell>
                 </TableRow>
@@ -404,9 +547,7 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                 <TableRow>
                   <TableHeader>Object</TableHeader>
                   {getLog.data.context?.object ? (
-                    getObject.isSuccess && (
-                      <TableCell>{getObject.data.titel ?? getLog.data.context?.object}</TableCell>
-                    )
+                    getObject.isSuccess && <TableCell>{getObject.data.titel ?? getLog.data.context?.object}</TableCell>
                   ) : (
                     <TableCell>-</TableCell>
                   )}
@@ -433,6 +574,18 @@ export const LogsDetailTemplate: React.FC<LogsDetailTemplateProps> = ({ logId })
                       onClick={() => navigate(`/objects/${getLog.data.context?.object}`)}
                     />
                   </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHeader>Host</TableHeader>
+                  <TableCell>{getLog.data.context?.host !== "" ? getLog.data.context?.host : "-"}</TableCell>
+                  <TableCell>-</TableCell>
+                  <TableCell>-</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableHeader>IP</TableHeader>
+                  <TableCell>{getLog.data.context?.ip !== "" ? getLog.data.context?.ip : "-"}</TableCell>
+                  <TableCell>-</TableCell>
+                  <TableCell>-</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
