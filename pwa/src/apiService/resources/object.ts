@@ -107,7 +107,7 @@ export default class Sources {
     const { payload, entityId, objectId } = variables;
 
     if (objectId || payload.id) {
-      const { data } = await this._send(this._instance, "PUT", `/admin/objects/${objectId ?? payload.id}`, payload, {
+      const { data } = await this._send(this._instance, "PATCH", `/admin/objects/${objectId ?? payload.id}`, payload, {
         loading: "Updating object...",
         success: "Object successfully updated.",
       });

@@ -28,7 +28,7 @@ export const SchemasTemplate: React.FC = () => {
   const downloadSchema = _useSchema.downloadSchema();
 
   const _useObject = useObject();
-  const getObjects = _useObject.getAll(1, "asc", 200);
+  const getObjects = _useObject.getAll(1, "asc", 20000);
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(getSchemas.data);
 

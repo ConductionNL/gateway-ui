@@ -20,6 +20,7 @@ import { useObject } from "../../../hooks/object";
 import { useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
+import { getIdFromObjectId } from "../../../services/getIdFromObjectId";
 
 export type SchemaInputType =
   | "string"
@@ -40,11 +41,13 @@ interface ReactHookFormProps {
 }
 
 interface SchemaFormTemplateProps {
+  object?: any;
   schema: any;
   disabled?: boolean;
 }
 
 export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFormProps> = ({
+  object,
   schema,
   register,
   errors,
@@ -129,6 +132,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
                 maxLength,
                 minLength,
                 schema,
+                object,
               }}
             />
           ),
@@ -156,6 +160,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps & ReactHookFor
                 maxLength,
                 minLength,
                 schema,
+                object,
               }}
             />
           ),
@@ -180,6 +185,7 @@ interface FormFieldGroupProps {
   maxLength?: number;
   minLength?: number;
   schema: any;
+  object: any;
 }
 
 const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
@@ -200,6 +206,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   maxLength,
   minLength,
   schema,
+  object,
 }) => {
   return (
     <FormField>
@@ -344,6 +351,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
               multiple,
               type,
               schema,
+              object,
             }}
           />
         )}
@@ -364,12 +372,15 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
   _enum,
   multiple,
   schema,
+  object,
 }) => {
   const queryClient = useQueryClient();
   const _useObject = useObject();
   const property = schema?.properties[name];
 
   const getAllFromList = _useObject.getAllFromList(`${property?._list}&_limit=500`);
+
+  const objectValues = object && (object[name] as any);
 
   const [defaultValue, setDefaultValue] = React.useState<any>(null);
 
@@ -383,7 +394,11 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
     }
 
     if (multiple) {
-      selected = getAllFromList.data.filter((item) => property.value?.includes(item._id));
+      if (!schema.properties[name].value && !_.isEmpty(objectValues)) {
+        selected = getAllFromList.data.filter((item) => getIdFromObjectId(objectValues)?.includes(item._id));
+      } else {
+        selected = getAllFromList.data.filter((item) => property.value?.includes(item._id));
+      }
     }
 
     if (!selected) {
