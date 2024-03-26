@@ -121,5 +121,15 @@ export const useObject = () => {
       },
     });
 
-  return { getAll, getOne, getAllFromEntity, getAllFromList, getSchema, remove, createOrEdit, downloadPDF, getAllSelectOptions };
+  return {
+    getAll,
+    getOne,
+    getAllFromEntity,
+    getAllFromList,
+    getSchema,
+    remove,
+    createOrEdit,
+    downloadPDF,
+    getAllSelectOptions,
+  };
 };
