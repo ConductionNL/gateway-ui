@@ -37,7 +37,7 @@ interface PromiseMessage {
 
 export type TSendFunction = (
   instance: AxiosInstance,
-  action: "GET" | "POST" | "PUT" | "DELETE" | "DOWNLOAD",
+  action: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "DOWNLOAD",
   endpoint: string,
   payload?: JSON | FormData,
   promiseMessage?: PromiseMessage,
@@ -269,6 +269,13 @@ export default class APIService {
       case "PUT":
         return toast.promise(instance.put(endpoint, _payload), {
           loading: promiseMessage?.loading ?? "Updating item...",
+          success: promiseMessage?.success ?? "Succesfully updated item",
+          error: (err) => promiseMessage?.error ?? err.message,
+        });
+
+      case "PATCH":
+        return toast.promise(instance.patch(endpoint, _payload), {
+          loading: promiseMessage?.loading ?? "Patching item...",
           success: promiseMessage?.success ?? "Succesfully updated item",
           error: (err) => promiseMessage?.error ?? err.message,
         });

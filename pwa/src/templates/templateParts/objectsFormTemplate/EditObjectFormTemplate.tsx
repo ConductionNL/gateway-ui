@@ -132,7 +132,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
                       type: "download",
                       onSubmit: () => downloadObject.mutate({ id: objectId, name: object.name, type: "PDF" }),
                     },
-                    { type: "delete", onSubmit: () => handleDeleteObject },
+                    { type: "delete", onSubmit: () => handleDeleteObject() },
                   ]}
                   variant="secondary"
                 />
@@ -140,7 +140,7 @@ export const EditObjectFormTemplate: React.FC<EditObjectFormTemplateProps> = ({ 
             }
           />
 
-          <SchemaFormTemplate {...{ register, errors, control, schema }} disabled={loading} />
+          <SchemaFormTemplate {...{ register, errors, control, schema, object }} disabled={loading} />
         </form>
       </div>
     </>
