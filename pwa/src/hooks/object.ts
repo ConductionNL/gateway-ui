@@ -97,6 +97,30 @@ export const useObject = () => {
       },
     });
 
+  const importCreateOrEdit = (objectId?: string) =>
+    useMutation<any, Error, any>(API.Object.importCreateOrUpdate, {
+      onSuccess: async (newObject) => {
+        if (objectId) {
+          updateItem(queryClient, "object", newObject);
+        }
+
+        if (!objectId) {
+          addItem(queryClient, "object", newObject);
+        }
+      },
+      onError: (error) => {
+        queryClient.invalidateQueries(["object", objectId]);
+
+        console.warn(error.message);
+      },
+      onSettled: () => {
+        if (objectId) {
+          queryClient.resetQueries(["object", objectId]);
+          queryClient.resetQueries(["object_schema", objectId]);
+        }
+      },
+    });
+
   const createOrEdit = (objectId?: string) =>
     useMutation<any, Error, any>(API.Object.createOrUpdate, {
       onSuccess: async (newObject) => {
@@ -129,6 +153,7 @@ export const useObject = () => {
     getSchema,
     remove,
     createOrEdit,
+    importCreateOrEdit,
     downloadPDF,
     getAllSelectOptions,
   };
