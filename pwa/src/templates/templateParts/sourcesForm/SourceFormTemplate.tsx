@@ -29,7 +29,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   const { setIsLoading, isLoading } = useIsLoadingContext();
   const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
-  const [selectedAuthorizationPassthroughMethod, setSelectedAuthorizationPassthroughMethod] = React.useState<any>(null);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
   const [query, setQuery] = React.useState<IKeyValue[]>([]);
 
@@ -53,7 +52,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   );
 
   const watchAuth = watch("auth");
-  const watchAuthorizationPassthroughMethod = watch("authorizationPassthroughMethod");
   const watchHeaders = watch("headers");
   const watchQuery = watch("query");
 
@@ -68,17 +66,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
     setSelectedAuth(selectedAuth?.value);
   }, [watchAuth]);
-
-  React.useEffect(() => {
-    if (!watchAuthorizationPassthroughMethod) return;
-
-    const selectedAuthorizationPassthroughMethod = authorizationPassthroughMethodSelectOptions.find(
-      (authorizationPassthroughOption) =>
-        authorizationPassthroughOption.value === watchAuthorizationPassthroughMethod.value,
-    );
-
-    setSelectedAuthorizationPassthroughMethod(selectedAuthorizationPassthroughMethod?.value);
-  }, [watchAuthorizationPassthroughMethod]);
 
   React.useEffect(() => {
     if (!watchHeaders || !Array.isArray(watchHeaders)) return;
@@ -100,7 +87,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     const payload = {
       ...data,
       auth: data.auth && data.auth.value,
-      authorizationPassthroughMethod: data.authorizationPassthroughMethod.value ?? 'Authorization',
+      authorizationPassthroughMethod: data.authorizationPassthroughMethod.value ?? "Authorization",
       configuration: {
         headers: _.isEqual(source?.configuration.headers, data.headers)
           ? data.headers

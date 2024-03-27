@@ -157,11 +157,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Reference")}</FormFieldLabel>
-                      <InputText
-                        {...{ register, errors }}
-                        name="reference"
-                        disabled={isLoading.actionForm}
-                      />
+                      <InputText {...{ register, errors }} name="reference" disabled={isLoading.actionForm} />
                     </FormFieldInput>
                   </FormField>
 
