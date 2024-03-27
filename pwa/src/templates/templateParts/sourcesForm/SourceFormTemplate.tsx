@@ -87,6 +87,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     const payload = {
       ...data,
       auth: data.auth && data.auth.value,
+      authorizationPassthroughMethod: data.authorizationPassthroughMethod.value ?? "Authorization",
       configuration: {
         headers: _.isEqual(source?.configuration.headers, data.headers)
           ? data.headers
@@ -131,12 +132,14 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     };
 
     const basicFields: string[] = [
+      "reference",
       "name",
       "isEnabled",
       "status",
       "description",
       "location",
       "accept",
+      "authorizationHeader",
       "dateCreated",
       "dateModified",
       "documentation",
@@ -152,6 +155,13 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     setValue(
       "auth",
       authSelectOptions.find((option) => source.auth === option.value),
+    );
+
+    setValue(
+      "authorizationPassthroughMethod",
+      authorizationPassthroughMethodSelectOptions.find(
+        (option) => source.authorizationPassthroughMethod === option.value,
+      ),
     );
 
     if (source.configuration) {
@@ -251,7 +261,37 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
           <TabPanel className={styles.tabPanel} value="0">
             <div className={styles.gridContainer}>
+              {source && (
+                <div className={styles.statusContainer}>
+                  <FormField>
+                    <FormFieldLabel>{t("Status")}</FormFieldLabel>
+
+                    <div>{getStatusTag(source.status)}</div>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Created")}</FormFieldLabel>
+                      <StatusTag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Modified")}</FormFieldLabel>
+                      <StatusTag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
+                    </FormFieldInput>
+                  </FormField>
+                </div>
+              )}
               <div className={styles.grid}>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+                    <InputText {...{ register, errors }} name="reference" disabled={isLoading.actionForm} />
+                  </FormFieldInput>
+                </FormField>
+
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("Name")}</FormFieldLabel>
@@ -263,30 +303,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     />
                   </FormFieldInput>
                 </FormField>
-
-                {source && (
-                  <>
-                    <FormField>
-                      <FormFieldLabel>{t("Status")}</FormFieldLabel>
-
-                      <div>{getStatusTag(source.status)}</div>
-                    </FormField>
-
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Created")}</FormFieldLabel>
-                        <StatusTag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
-                      </FormFieldInput>
-                    </FormField>
-
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Modified")}</FormFieldLabel>
-                        <StatusTag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
-                      </FormFieldInput>
-                    </FormField>
-                  </>
-                )}
               </div>
               <FormField>
                 <FormFieldInput>
@@ -310,18 +326,30 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
                 <FormField>
                   <FormFieldInput>
-                    <FormFieldLabel>{t("authType")}</FormFieldLabel>
-                    <SelectSingle
-                      {...{ register, errors, control }}
-                      name="auth"
-                      options={authSelectOptions}
-                      validation={enrichValidation({ required: true })}
+                    <FormFieldLabel>{t("Authorization header")}</FormFieldLabel>
+                    <InputText
+                      {...{ register, errors }}
+                      name="authorizationHeader"
                       disabled={isLoading.sourceForm}
+                      defaultValue={"Authorization"}
                     />
                   </FormFieldInput>
                 </FormField>
 
-                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} />}
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("Authorization passthrough method")}</FormFieldLabel>
+                    <SelectSingle
+                      {...{ register, errors, control }}
+                      name="authorizationPassthroughMethod"
+                      options={authorizationPassthroughMethodSelectOptions}
+                      disabled={isLoading.sourceForm}
+                      defaultValue={authorizationPassthroughMethodSelectOptions.find(
+                        (option) => option.value === "header",
+                      )}
+                    />
+                  </FormFieldInput>
+                </FormField>
 
                 <FormField>
                   <FormFieldInput>
@@ -334,6 +362,21 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     />
                   </FormFieldInput>
                 </FormField>
+
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("authType")}</FormFieldLabel>
+                    <SelectSingle
+                      {...{ register, errors, control }}
+                      name="auth"
+                      options={authSelectOptions}
+                      disabled={isLoading.sourceForm}
+                      defaultValue={authSelectOptions.find((option) => option.value === "none")}
+                    />
+                  </FormFieldInput>
+                </FormField>
+
+                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} />}
               </div>
             </div>
           </TabPanel>
@@ -372,6 +415,13 @@ const authSelectOptions = [
   { label: "Username and Password", value: "username-password" },
   { label: "VrijBRP-JWT", value: "vrijbrp-jwt" },
   { label: "Pink-JWT", value: "pink-jwt" },
+];
+
+const authorizationPassthroughMethodSelectOptions = [
+  { label: "header", value: "header" },
+  { label: "query", value: "query" },
+  { label: "form_params", value: "form_params" },
+  { label: "json", value: "json" },
 ];
 
 const convertArrayToObject = (array: IKeyValue[]): Record<string, string> => {
