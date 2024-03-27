@@ -103,11 +103,37 @@ export default class Sources {
     return data;
   };
 
-  public createOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
+  public importCreateOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
     const { payload, entityId, objectId } = variables;
 
     if (objectId || payload.id) {
       const { data } = await this._send(this._instance, "PATCH", `/admin/objects/${objectId ?? payload.id}`, payload, {
+        loading: "Updating object...",
+        success: "Object successfully updated.",
+      });
+
+      return data;
+    }
+
+    const { data } = await this._send(
+      this._instance,
+      "POST",
+      "/admin/objects",
+      { ...payload, _self: payload._self ?? { schema: { id: entityId } } },
+      {
+        loading: "Creating object...",
+        success: "Object successfully created.",
+      },
+    );
+
+    return data;
+  };
+
+  public createOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
+    const { payload, entityId, objectId } = variables;
+
+    if (objectId || payload.id) {
+      const { data } = await this._send(this._instance, "PUT", `/admin/objects/${objectId ?? payload.id}`, payload, {
         loading: "Updating object...",
         success: "Object successfully updated.",
       });

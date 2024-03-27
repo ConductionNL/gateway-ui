@@ -25,7 +25,7 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({
   setExecutedActions,
 }) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const createOrEdit = useObject().createOrEdit();
+  const createOrEdit = useObject().importCreateOrEdit();
 
   const { CheckboxBulkSelectAll, CheckboxBulkSelectOne, selectedItems, toggleItem } = useBulkSelect(
     uploadQuery.data?.results,
