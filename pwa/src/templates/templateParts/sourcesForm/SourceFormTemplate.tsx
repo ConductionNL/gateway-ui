@@ -17,6 +17,7 @@ import { StatusTag } from "../../../components/statusTag/StatusTag";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 import { advancedFormKeysToRemove } from "./SourceFormAdvancedTemplate";
 import { useAdvancedSwitch } from "../../../hooks/useAdvancedSwitch";
+import { useLoggingConfigSwitch } from "../../../hooks/useLoggingConfigSwitch";
 
 interface SourceTemplateProps {
   source?: any;
@@ -31,6 +32,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   const [selectedAuth, setSelectedAuth] = React.useState<any>(null);
   const [headers, setHeaders] = React.useState<IKeyValue[]>([]);
   const [query, setQuery] = React.useState<IKeyValue[]>([]);
+  const [loggingConfig, setLoggingConfig] = React.useState<IKeyValue[]>([]);
 
   const queryClient = useQueryClient();
   const _useSources = useSource(queryClient);
@@ -46,6 +48,12 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
   } = useForm();
 
   const { AdvancedSwitch, advancedSwitchState, set } = useAdvancedSwitch(
+    isLoading.sourceForm ?? false,
+    register,
+    errors,
+  );
+
+  const { LoggingConfigSwitch, loggingConfigSwitchState, set2 } = useLoggingConfigSwitch(
     isLoading.sourceForm ?? false,
     register,
     errors,
@@ -170,7 +178,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
         setValue(key, source.configuration[key]);
 
-        ["headers", "query"].forEach((item) => {
+        ["headers", "query", "loggingConfig"].forEach((item) => {
           let data: any = [];
 
           if (Array.isArray(source.configuration[item]) || source.configuration[item] === undefined) {
@@ -184,6 +192,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
           if (item === "headers") setHeaders(data);
           if (item === "query") setQuery(data);
+          if (item === "loggingConfig") setLoggingConfig(data);
         });
 
         if (key === "decode_content" && typeof _value === "string") {
@@ -234,6 +243,11 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           setValue("delay_float", _value);
           set.delay("float");
         }
+
+        if (key === "callBody") {
+          setValue("callBody", _value);
+          set2.delay("boolean");
+        }
       }
     }
   };
@@ -257,6 +271,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
             <Tab className={styles.tab} label={t("Query")} value={1} />
             <Tab className={styles.tab} label={t("Header")} value={2} />
             <Tab className={styles.tab} label={t("Advanced")} value={3} />
+            {source?.loggingConfig && <Tab className={styles.tab} label={t("Logging config")} value={4} />}
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
@@ -402,6 +417,12 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           <TabPanel className={styles.tabPanel} value="3">
             <AdvancedSwitch />
           </TabPanel>
+
+          {source?.loggingConfig && (
+            <TabPanel className={styles.tabPanel} value="4">
+              <LoggingConfigSwitch defaultValue={source.logginConfig} />
+            </TabPanel>
+          )}
         </TabContext>
       </form>
     </div>

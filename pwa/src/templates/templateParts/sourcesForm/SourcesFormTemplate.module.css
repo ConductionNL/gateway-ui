@@ -37,6 +37,10 @@
   margin-block-end: var(--gateway-ui-size-xl);
 }
 
+.infoParagraph {
+  margin-block-end: var(--gateway-ui-size-xl);
+}
+
 .tooltip {
   max-width: 250px;
   background-color: var(--gateway-ui-color-black) !important;
