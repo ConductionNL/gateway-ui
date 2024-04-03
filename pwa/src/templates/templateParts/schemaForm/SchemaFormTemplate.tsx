@@ -228,6 +228,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
+            ariaLabel={`Enter ${name}`}
           />
         )}
 
@@ -236,6 +237,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             validation={enrichValidation({ required })}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
+            ariaLabel={`Enter ${name}`}
           />
         )}
 
@@ -244,6 +246,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
+            ariaLabel={`Enter ${name}`}
           />
         )}
 
@@ -252,6 +255,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, control, placeholder, name, defaultValue }}
+            ariaLabel={`Enter ${name}`}
           />
         )}
 
@@ -261,6 +265,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             options={defaultValue}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name, control }}
+            ariaLabel={`Select or create ${name}`}
           />
         )}
 
@@ -270,6 +275,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             options={defaultValue.options}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name, control }}
+            ariaLabel={`Select ${name}`}
           />
         )}
 
@@ -279,6 +285,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             options={defaultValue.options}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name, control }}
+            ariaLabel={`Select one or more ${name}`}
           />
         )}
 
@@ -297,6 +304,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name, defaultValue }}
+            ariaLabel={`Enter ${name}`}
           />
         )}
 
@@ -305,6 +313,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
             validation={enrichValidation({ required, maxLength, minLength })}
             disabled={disabled || readOnly}
             {...{ register, errors, placeholder, name, defaultValue }}
+            ariaLabel={`Enter ${name}`}
           />
         )}
 
@@ -431,6 +440,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
         disabled={disabled || readOnly}
         {...{ register, errors, placeholder, name, control }}
         validation={enrichValidation({ required })}
+        ariaLabel={`Select one or more ${name}`}
       />
     );
   }
@@ -442,6 +452,7 @@ const SchemaTypeObject: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
       disabled={disabled || readOnly}
       {...{ register, errors, placeholder, name, control }}
       validation={enrichValidation({ required })}
+      ariaLabel={`Select ${name}`}
     />
   );
 };

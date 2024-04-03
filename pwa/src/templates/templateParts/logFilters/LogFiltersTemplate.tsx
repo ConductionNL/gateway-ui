@@ -170,6 +170,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
               placeholder="Log id"
               validation={{ validate: validateStringAs24DigitHex }}
               {...{ register, errors }}
+              ariaLabel="Enter log"
             />
           </FormFieldInput>
         </FormField>
@@ -178,7 +179,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
           <FormFieldInput>
             <FormFieldLabel>Session</FormFieldLabel>
 
-            <InputText name="session" placeholder="Session id" {...{ register, errors }} />
+            <InputText name="session" placeholder="Session id" {...{ register, errors }} ariaLabel="Enter session" />
           </FormFieldInput>
         </FormField>
 
@@ -186,7 +187,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
           <FormFieldInput>
             <FormFieldLabel>Process</FormFieldLabel>
 
-            <InputText name="process" placeholder="Process id" {...{ register, errors }} />
+            <InputText name="process" placeholder="Process id" {...{ register, errors }} ariaLabel="Enter process" />
           </FormFieldInput>
         </FormField>
       </div>
@@ -196,7 +197,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
           <FormFieldInput>
             <FormFieldLabel>Levels</FormFieldLabel>
 
-            <SelectSingle isClearable options={levelNameOptions} name="level_name" {...{ register, errors, control }} />
+            <SelectSingle
+              isClearable
+              options={levelNameOptions}
+              name="level_name"
+              {...{ register, errors, control }}
+              ariaLabel="Select level"
+            />
           </FormFieldInput>
         </FormField>
 
@@ -204,7 +211,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
           <FormFieldInput>
             <FormFieldLabel>Channels</FormFieldLabel>
 
-            <SelectSingle isClearable options={channelOptions} name="channels" {...{ register, errors, control }} />
+            <SelectSingle
+              isClearable
+              options={channelOptions}
+              name="channels"
+              {...{ register, errors, control }}
+              ariaLabel="Select channel"
+            />
           </FormFieldInput>
         </FormField>
 
@@ -218,6 +231,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
                 name="endpoints"
                 {...{ register, errors, control }}
                 options={getEndpoints.data}
+                ariaLabel="Select endpoint"
               />
             )}
 
@@ -230,7 +244,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
             <FormFieldLabel>Schemas</FormFieldLabel>
 
             {getSchemas.isSuccess && (
-              <SelectSingle isClearable name="schemas" {...{ register, errors, control }} options={getSchemas.data} />
+              <SelectSingle
+                isClearable
+                name="schemas"
+                {...{ register, errors, control }}
+                options={getSchemas.data}
+                ariaLabel="Select schema"
+              />
             )}
 
             {getSchemas.isLoading && <Skeleton height="50px" />}
@@ -242,7 +262,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
             <FormFieldLabel>Sources</FormFieldLabel>
 
             {getSources.isSuccess && (
-              <SelectSingle isClearable name="sources" {...{ register, errors, control }} options={getSources.data} />
+              <SelectSingle
+                isClearable
+                name="sources"
+                {...{ register, errors, control }}
+                options={getSources.data}
+                ariaLabel="Select source"
+              />
             )}
 
             {getSources.isLoading && <Skeleton height="50px" />}
@@ -254,7 +280,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
             <FormFieldLabel>Cronjobs</FormFieldLabel>
 
             {getCronjobs.isSuccess && (
-              <SelectSingle isClearable name="cronjobs" {...{ register, errors, control }} options={getCronjobs.data} />
+              <SelectSingle
+                isClearable
+                name="cronjobs"
+                {...{ register, errors, control }}
+                options={getCronjobs.data}
+                ariaLabel="Select cronjob"
+              />
             )}
 
             {getCronjobs.isLoading && <Skeleton height="50px" />}
@@ -266,7 +298,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
             <FormFieldLabel>Actions</FormFieldLabel>
 
             {getActions.isSuccess && (
-              <SelectSingle isClearable name="actions" {...{ register, errors, control }} options={getActions.data} />
+              <SelectSingle
+                isClearable
+                name="actions"
+                {...{ register, errors, control }}
+                options={getActions.data}
+                ariaLabel="Select action"
+              />
             )}
 
             {getActions.isLoading && <Skeleton height="50px" />}
@@ -278,7 +316,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
             <FormFieldLabel>Users</FormFieldLabel>
 
             {getUsers.isSuccess && (
-              <SelectSingle isClearable name="users" {...{ register, errors, control }} options={getUsers.data} />
+              <SelectSingle
+                isClearable
+                name="users"
+                {...{ register, errors, control }}
+                options={getUsers.data}
+                ariaLabel="Select user"
+              />
             )}
 
             {getUsers.isLoading && <Skeleton height="50px" />}
@@ -295,6 +339,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
                 name="organizations"
                 {...{ register, errors, control }}
                 options={getOrganizations.data}
+                ariaLabel="Select organizatie"
               />
             )}
 
@@ -312,6 +357,7 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
                 name="applications"
                 {...{ register, errors, control }}
                 options={getApplications.data}
+                ariaLabel="Select application"
               />
             )}
 
@@ -324,7 +370,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
             <FormFieldLabel>Objects</FormFieldLabel>
 
             {getObjects.isSuccess && (
-              <SelectSingle isClearable name="objects" {...{ register, errors, control }} options={getObjects.data} />
+              <SelectSingle
+                isClearable
+                name="objects"
+                {...{ register, errors, control }}
+                options={getObjects.data}
+                ariaLabel="Select object"
+              />
             )}
 
             {getObjects.isLoading && <Skeleton height="50px" />}
@@ -336,7 +388,13 @@ export const LogFiltersTemplate: React.FC<LogFiltersTemplateProps> = ({ layoutCl
             <FormFieldLabel>Mappings</FormFieldLabel>
 
             {getMappings.isSuccess && (
-              <SelectSingle isClearable name="mappings" {...{ register, errors, control }} options={getMappings.data} />
+              <SelectSingle
+                isClearable
+                name="mappings"
+                {...{ register, errors, control }}
+                options={getMappings.data}
+                ariaLabel="Select mapping"
+              />
             )}
 
             {getMappings.isLoading && <Skeleton height="50px" />}

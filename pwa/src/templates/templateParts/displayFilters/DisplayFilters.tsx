@@ -70,6 +70,7 @@ export const DisplayFilters: React.FC<DisplayFiltersProps> = ({
             options={orderOptions}
             defaultValue={orderOptions.find((option) => option.value === sortOrder ?? "desc")}
             {...{ register, errors, control }}
+            ariaLabel={"Select an order"}
           />
         </div>
 

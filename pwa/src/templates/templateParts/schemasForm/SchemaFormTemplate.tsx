@@ -60,6 +60,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }
                 name="name"
                 validation={enrichValidation({ required: true, maxLength: 225 })}
                 disabled={isLoading.schemaForm}
+                ariaLabel={t("Enter name")}
               />
             </FormFieldInput>
           </FormField>
@@ -68,7 +69,12 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }
             <FormFieldInput>
               <FormFieldLabel>{t("Description")}</FormFieldLabel>
 
-              <Textarea {...{ register, errors }} name="description" disabled={isLoading.schemaForm} />
+              <Textarea
+                {...{ register, errors }}
+                name="description"
+                disabled={isLoading.schemaForm}
+                ariaLabel={t("Enter description")}
+              />
             </FormFieldInput>
           </FormField>
 
@@ -81,6 +87,7 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }
                 name="reference"
                 validation={enrichValidation({ maxLength: 225 })}
                 disabled={isLoading.schemaForm}
+                ariaLabel={t("Enter reference")}
               />
             </FormFieldInput>
           </FormField>

@@ -54,4 +54,5 @@ export const en = {
   "No endpoints found": "No endpoints found",
   "Search on name": "Search on name",
   "Update to": "Update to",
+  "Enter search query": "Enter search query",
 };

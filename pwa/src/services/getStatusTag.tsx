@@ -15,7 +15,7 @@ export const getStatusTag = (value: unknown): JSX.Element => {
   };
 
   if (isInSuccesRange(_.toNumber(value)) || value === true) {
-    return <StatusTag type="success" label={_.toString(value)} />;
+    return <StatusTag type="success" label={_.toString(value === true ? "Success" : value)} />;
   }
 
   if (isInInfoRange(_.toNumber(value))) {

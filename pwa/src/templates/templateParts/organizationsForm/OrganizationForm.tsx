@@ -61,6 +61,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
                 name="name"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.organizationForm}
+                ariaLabel={t("Enter name")}
               />
             </FormFieldInput>
           </FormField>
@@ -73,6 +74,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
                 name="description"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.organizationForm}
+                ariaLabel={t("Enter description")}
               />
             </FormFieldInput>
           </FormField>

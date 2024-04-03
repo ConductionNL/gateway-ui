@@ -368,6 +368,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         name="name"
                         validation={enrichValidation({ required: true })}
                         disabled={loading || isImmutable}
+                        ariaLabel={t("Enter name")}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -380,6 +381,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         name="type"
                         options={typeSelectOptions}
                         disabled={loading || isImmutable}
+                        ariaLabel={t("Select type")}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -411,14 +413,24 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("minLength")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="minLength" disabled={loading || isImmutable} />
+                      <InputNumber
+                        {...{ register, errors }}
+                        name="minLength"
+                        disabled={loading || isImmutable}
+                        ariaLabel={t("Enter minLength")}
+                      />
                     </FormFieldInput>
                   </FormField>
 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("maxLength")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="maxLength" disabled={loading || isImmutable} />
+                      <InputNumber
+                        {...{ register, errors }}
+                        name="maxLength"
+                        disabled={loading || isImmutable}
+                        ariaLabel={t("Enter maxLength")}
+                      />
                     </FormFieldInput>
                   </FormField>
 
@@ -430,6 +442,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         name="format"
                         options={formatSelectOptions}
                         disabled={loading || isImmutable}
+                        ariaLabel={t("Select format")}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -449,6 +462,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                           }))}
                           disabled={loading}
                           validation={enrichValidation({ required: true })}
+                          ariaLabel={t("Select schema")}
                         />
                       </FormFieldInput>
                     </FormField>
@@ -461,7 +475,12 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                    <Textarea {...{ register, errors }} name="description" disabled={loading || isImmutable} />
+                    <Textarea
+                      {...{ register, errors }}
+                      name="description"
+                      disabled={loading || isImmutable}
+                      ariaLabel={t("Enter description")}
+                    />
                   </FormFieldInput>
                 </FormField>
 
@@ -499,6 +518,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                           name="function"
                           options={functionSelectOptions}
                           disabled={loading || isImmutable}
+                          ariaLabel={t("Select function")}
                         />
                       </FormFieldInput>
                     </FormField>
@@ -512,6 +532,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                               {...{ register, errors }}
                               name="multipleOf"
                               disabled={loading || isImmutable}
+                              ariaLabel={t("Enter multipleOf")}
                             />
                           </FormFieldInput>
                         </FormField>
@@ -519,14 +540,24 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("minimum")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="minimum" disabled={loading || isImmutable} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="minimum"
+                              disabled={loading || isImmutable}
+                              ariaLabel={t("Enter minimum")}
+                            />
                           </FormFieldInput>
                         </FormField>
 
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("maximum")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="maximum" disabled={loading || isImmutable} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="maximum"
+                              disabled={loading || isImmutable}
+                              ariaLabel={t("Enter maximum")}
+                            />
                           </FormFieldInput>
                         </FormField>
 
@@ -566,6 +597,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                               name="fileTypes"
                               {...{ register, errors, control }}
                               disabled={loading || isImmutable}
+                              ariaLabel={t("Select or create a file type")}
                             />
                           </FormFieldInput>
                         </FormField>
@@ -576,6 +608,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                               {...{ register, errors }}
                               name="minFileSize"
                               disabled={loading || isImmutable}
+                              ariaLabel={t("Enter minFileSize")}
                             />
                           </FormFieldInput>
                         </FormField>
@@ -587,6 +620,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                               {...{ register, errors }}
                               name="maxFileSize"
                               disabled={loading || isImmutable}
+                              ariaLabel={t("Enter maxFileSize")}
                             />
                           </FormFieldInput>
                         </FormField>
@@ -638,6 +672,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                               {...{ register, errors }}
                               name="minProperties"
                               disabled={loading || isImmutable}
+                              ariaLabel={t("Enter minProperties")}
                             />
                           </FormFieldInput>
                         </FormField>
@@ -649,6 +684,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                               {...{ register, errors }}
                               name="maxProperties"
                               disabled={loading || isImmutable}
+                              ariaLabel={t("Enter maxProperties")}
                             />
                           </FormFieldInput>
                         </FormField>
@@ -672,14 +708,24 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("minItems")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="minItems" disabled={loading || isImmutable} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="minItems"
+                              disabled={loading || isImmutable}
+                              ariaLabel={t("Enter minItems")}
+                            />
                           </FormFieldInput>
                         </FormField>
 
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("maxItems")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="maxItems" disabled={loading || isImmutable} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="maxItems"
+                              disabled={loading || isImmutable}
+                              ariaLabel={t("Enter maxItems")}
+                            />
                           </FormFieldInput>
                         </FormField>
                       </>
@@ -698,6 +744,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         options={getProperties.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                         disabled={loading || isImmutable}
                         isClearable
+                        ariaLabel={t("Select inversedBy")}
                       />
                     )}
                   </FormFieldInput>
@@ -708,14 +755,24 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("defaultValue")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="defaultValue" disabled={loading || isImmutable} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="defaultValue"
+                          disabled={loading || isImmutable}
+                          ariaLabel={t("Enter defaultValue")}
+                        />
                       </FormFieldInput>
                     </FormField>
 
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("schema")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="schema" disabled={loading || isImmutable} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="schema"
+                          disabled={loading || isImmutable}
+                          ariaLabel={t("Enter schema")}
+                        />
                       </FormFieldInput>
                     </FormField>
 
@@ -795,7 +852,12 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("example")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="example" disabled={loading || isImmutable} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="example"
+                          disabled={loading || isImmutable}
+                          ariaLabel={t("Enter example")}
+                        />
                       </FormFieldInput>
                     </FormField>
 
@@ -803,7 +865,12 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("pattern")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="pattern" disabled={loading || isImmutable} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="pattern"
+                          disabled={loading || isImmutable}
+                          ariaLabel={t("Enter pattern")}
+                        />
                       </FormFieldInput>
                     </FormField>
                   </div>

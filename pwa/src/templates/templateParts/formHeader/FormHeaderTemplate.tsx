@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as styles from "./FormHeaderTemplate.module.css";
-
 import { t } from "i18next";
 import { Heading1 } from "@gemeente-denhaag/components-react";
 import { faMinus, faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { ToolTip, NotificationPopUp } from "@conduction/components";
+import { NotificationPopUp } from "@conduction/components";
 import { Button } from "../../../components/button/Button";
 import { ConfirmPopUp } from "../../../components/confirmPopUp/ConfirmPopUp";
+import { TOOLTIP_ID } from "../../../layout/Layout";
 
 interface FormHeaderTemplateProps {
   title: string;
@@ -36,9 +36,9 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
   return (
     <section className={styles.container}>
       {showTitleTooltip && (
-        <ToolTip layoutClassName={styles.tooltipContainer} tooltip={title}>
+        <span className={styles.tooltipContainer} data-tooltip-id={TOOLTIP_ID} data-tooltip-content={title}>
           <Heading1 className={styles.title}>{title}</Heading1>
-        </ToolTip>
+        </span>
       )}
 
       {!showTitleTooltip && <Heading1 className={styles.title}>{title}</Heading1>}
@@ -72,6 +72,7 @@ export const FormHeaderTemplate: React.FC<FormHeaderTemplateProps> = ({
                 label: "Delete item",
                 icon: faTrash,
               }}
+              cancelButton={{ href: location.href }}
               handleConfirm={handleDelete}
               {...{ isVisible, hide }}
             />

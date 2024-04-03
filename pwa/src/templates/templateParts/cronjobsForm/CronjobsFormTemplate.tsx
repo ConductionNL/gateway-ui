@@ -80,6 +80,7 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
                   name="name"
                   validation={enrichValidation({ required: true, maxLength: 225 })}
                   disabled={isLoading.cronjobForm}
+                  ariaLabel={t("Enter name")}
                 />
               </FormFieldInput>
             </FormField>
@@ -92,6 +93,7 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
                   name="description"
                   validation={enrichValidation({ required: true, maxLength: 225 })}
                   disabled={isLoading.cronjobForm}
+                  ariaLabel={t("Enter description")}
                 />
               </FormFieldInput>
             </FormField>
@@ -104,6 +106,7 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
                   name="crontab"
                   validation={enrichValidation({ validate: validateStringAsCronTab, required: true })}
                   disabled={isLoading.cronjobForm}
+                  ariaLabel={t("Enter crontab")}
                 />
               </FormFieldInput>
             </FormField>
@@ -119,6 +122,7 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
                     disabled={isLoading.cronjobForm}
                     name="throws"
                     {...{ register, errors, control }}
+                    ariaLabel={t("Select or create a throw")}
                   />
                 )}
               </FormFieldInput>

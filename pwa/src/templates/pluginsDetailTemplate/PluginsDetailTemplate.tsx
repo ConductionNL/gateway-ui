@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as styles from "./PluginsDetailTemplate.module.css";
 import { useTranslation } from "react-i18next";
-import { Container, Tag, ToolTip } from "@conduction/components";
+import { Container, Tag } from "@conduction/components";
 import { Divider, Heading1, Heading3, Paragraph } from "@gemeente-denhaag/components-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -22,6 +22,7 @@ import Skeleton from "react-loading-skeleton";
 import { GitHubLogo } from "../../assets/svgs/GitHub";
 import { VerticalMenu } from "../templateParts/verticalMenu/VerticalMenu";
 import { Button } from "../../components/button/Button";
+import { TOOLTIP_ID } from "../../layout/Layout";
 
 interface PluginsDetailPageProps {
   pluginName: string;
@@ -155,19 +156,19 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                   {getPlugin.data?.license &&
                     getPlugin.data.license.length > 0 &&
                     getPlugin.data.license.map((_license: any, idx: number) => (
-                      <ToolTip tooltip={`License ${_license}`} key={idx}>
+                      <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content={`License ${_license}`} key={idx}>
                         <Tag icon={<FontAwesomeIcon icon={faScroll} />} label={_.upperFirst(_license)} />
-                      </ToolTip>
+                      </span>
                     ))}
 
                   {getPlugin.data?.source && (
-                    <ToolTip tooltip={`Source`}>
+                    <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content={"Source"}>
                       <Tag
                         icon={<GitHubLogo />}
                         label={_.upperFirst(getPlugin.data.source?.type)}
                         onClick={() => open(getPlugin.data.source?.url)}
                       />
-                    </ToolTip>
+                    </span>
                   )}
 
                   {getPlugin.data?.homepage && (
@@ -335,11 +336,11 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                       <Heading3>Maintainers</Heading3>
                       <div className={styles.maintainersContainer}>
                         {getPlugin.data.maintainers.map((maintainer: any, idx: number) => (
-                          <ToolTip tooltip={maintainer.name} key={idx}>
+                          <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content={maintainer.name} key={idx}>
                             <div className={styles.maintainer}>
                               <img src={maintainer.avatar_url} />
                             </div>
-                          </ToolTip>
+                          </span>
                         ))}
                       </div>
                     </div>

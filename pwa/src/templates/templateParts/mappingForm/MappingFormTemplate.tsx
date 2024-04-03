@@ -111,6 +111,7 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                 name="name"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.mappingForm}
+                ariaLabel={t("Enter name")}
               />
             </FormFieldInput>
           </FormField>
@@ -118,13 +119,23 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Reference")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="reference" disabled={isLoading.mappingForm} />
+              <InputText
+                {...{ register, errors }}
+                name="reference"
+                disabled={isLoading.mappingForm}
+                ariaLabel={t("Enter reference")}
+              />
             </FormFieldInput>
           </FormField>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Version")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="version" disabled={isLoading.mappingForm} />
+              <InputText
+                {...{ register, errors }}
+                name="version"
+                disabled={isLoading.mappingForm}
+                ariaLabel={t("Enter version")}
+              />
             </FormFieldInput>
           </FormField>
           <FormField>
@@ -137,7 +148,12 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
         <FormField>
           <FormFieldInput>
             <FormFieldLabel>{t("Description")}</FormFieldLabel>
-            <Textarea {...{ register, errors }} name="description" disabled={isLoading.mappingForm} />
+            <Textarea
+              {...{ register, errors }}
+              name="description"
+              disabled={isLoading.mappingForm}
+              ariaLabel={t("Enter description")}
+            />
           </FormFieldInput>
         </FormField>
         <FormField>

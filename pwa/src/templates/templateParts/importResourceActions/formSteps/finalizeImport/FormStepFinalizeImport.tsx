@@ -3,7 +3,6 @@ import * as styles from "./FormStepFinalizeImport.module.css";
 import { UseMutationResult } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { Alert, Link } from "@gemeente-denhaag/components-react";
-import { ToolTip } from "@conduction/components";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { BulkActionButton } from "../../../../../components/bulkActionButton/BulkActionButton";
 import { StatusTag } from "../../../../../components/statusTag/StatusTag";
@@ -12,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useObject } from "../../../../../hooks/object";
 import { navigate } from "gatsby";
+import { TOOLTIP_ID } from "../../../../../layout/Layout";
 
 interface FormStepFinalizeImportProps {
   uploadQuery: UseMutationResult<any, Error, FormData, unknown>;
@@ -82,11 +82,11 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({
                   <TableCell>{<CheckboxBulkSelectOne disabled={object.validations} id={idx.toString()} />}</TableCell>
 
                   <TableCell>
-                    <ToolTip tooltip={JSON.stringify(object.object)}>
+                    <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content={JSON.stringify(object.object)}>
                       <div>
                         View object {idx + 1} <FontAwesomeIcon icon={faInfoCircle} />
                       </div>
-                    </ToolTip>
+                    </span>
                   </TableCell>
 
                   <TableCell>
@@ -97,9 +97,9 @@ export const FormStepFinalizeImport: React.FC<FormStepFinalizeImportProps> = ({
                     {!object.validations && <StatusTag label="Yes" type="success" />}
 
                     {object.validations && (
-                      <ToolTip tooltip={JSON.stringify(object.validations)}>
+                      <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content={JSON.stringify(object.validations)}>
                         <StatusTag label="No" type="critical" />
-                      </ToolTip>
+                      </span>
                     )}
                   </TableCell>
                 </TableRow>

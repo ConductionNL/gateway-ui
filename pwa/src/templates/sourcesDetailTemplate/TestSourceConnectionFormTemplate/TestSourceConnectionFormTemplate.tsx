@@ -89,6 +89,7 @@ export const TestSourceConnectionFormTemplate: React.FC<TestSourceConnectionForm
                 name="method"
                 options={methodSelectOptions}
                 disabled={isLoading.sourceForm}
+                ariaLabel={t("Select method")}
               />
             </FormFieldInput>
           </FormField>
@@ -96,7 +97,12 @@ export const TestSourceConnectionFormTemplate: React.FC<TestSourceConnectionForm
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Endpoint")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="endpoint" disabled={isLoading.sourceForm} />
+              <InputText
+                {...{ register, errors }}
+                name="endpoint"
+                disabled={isLoading.sourceForm}
+                ariaLabel={t("Enter endpoint")}
+              />
             </FormFieldInput>
           </FormField>
 
@@ -109,6 +115,7 @@ export const TestSourceConnectionFormTemplate: React.FC<TestSourceConnectionForm
                 options={bodyLanguageSelectOptions}
                 defaultValue={selectedBodyLanguage}
                 disabled={isLoading.sourceForm}
+                ariaLabel={t("Select body language")}
               />
             </FormFieldInput>
           </FormField>

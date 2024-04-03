@@ -1,7 +1,7 @@
 import * as React from "react";
+import * as styles from "./LoginFormTemplate.module.css";
 import { useForm } from "react-hook-form";
 import { Button, FormField, FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/components-react";
-import * as styles from "./LoginFormTemplate.module.css";
 import { useTranslation } from "react-i18next";
 import { InputText, InputPassword } from "@conduction/components";
 import { navigate } from "gatsby";
@@ -40,6 +40,7 @@ export const LoginFormTemplate: React.FC = () => {
             name="username"
             validation={enrichValidation({ required: true })}
             disabled={isLoading?.loginForm}
+            ariaLabel={t("Enter username")}
           />
         </FormFieldInput>
       </FormField>
@@ -51,6 +52,7 @@ export const LoginFormTemplate: React.FC = () => {
             name="password"
             validation={enrichValidation({ required: true })}
             disabled={isLoading?.loginForm}
+            ariaLabel={t("Enter password")}
           />
         </FormFieldInput>
       </FormField>

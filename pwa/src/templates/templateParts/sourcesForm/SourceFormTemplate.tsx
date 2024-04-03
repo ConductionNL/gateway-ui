@@ -288,7 +288,12 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("Reference")}</FormFieldLabel>
-                    <InputText {...{ register, errors }} name="reference" disabled={isLoading.actionForm} />
+                    <InputText
+                      {...{ register, errors }}
+                      name="reference"
+                      disabled={isLoading.actionForm}
+                      ariaLabel={t("Enter reference")}
+                    />
                   </FormFieldInput>
                 </FormField>
 
@@ -300,6 +305,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                       name="name"
                       validation={enrichValidation({ required: true, maxLength: 225 })}
                       disabled={isLoading.sourceForm}
+                      ariaLabel={t("Enter name")}
                     />
                   </FormFieldInput>
                 </FormField>
@@ -307,7 +313,12 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
               <FormField>
                 <FormFieldInput>
                   <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                  <Textarea {...{ register, errors }} name="description" disabled={isLoading.sourceForm} />
+                  <Textarea
+                    {...{ register, errors }}
+                    name="description"
+                    disabled={isLoading.sourceForm}
+                    ariaLabel={t("Enter description")}
+                  />
                 </FormFieldInput>
               </FormField>
 
@@ -320,6 +331,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                       name="location"
                       validation={enrichValidation({ required: true, maxLength: 225 })}
                       disabled={isLoading.sourceForm}
+                      ariaLabel={t("Enter location")}
                     />
                   </FormFieldInput>
                 </FormField>
@@ -332,6 +344,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                       name="authorizationHeader"
                       disabled={isLoading.sourceForm}
                       defaultValue={"Authorization"}
+                      ariaLabel={t("Enter authorization header")}
                     />
                   </FormFieldInput>
                 </FormField>
@@ -347,6 +360,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                       defaultValue={authorizationPassthroughMethodSelectOptions.find(
                         (option) => option.value === "header",
                       )}
+                      ariaLabel={t("Select authorization passthrough method")}
                     />
                   </FormFieldInput>
                 </FormField>
@@ -372,6 +386,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                       options={authSelectOptions}
                       disabled={isLoading.sourceForm}
                       defaultValue={authSelectOptions.find((option) => option.value === "none")}
+                      ariaLabel={t("Select authType")}
                     />
                   </FormFieldInput>
                 </FormField>

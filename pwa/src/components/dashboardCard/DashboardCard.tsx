@@ -3,11 +3,12 @@ import * as styles from "./DashboardCard.module.css";
 import _ from "lodash";
 import clsx from "clsx";
 import { navigate } from "gatsby";
-import { Tag, ToolTip } from "@conduction/components";
+import { Tag } from "@conduction/components";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "../button/Button";
 import { getStatusTag } from "../../services/getStatusTag";
 import { ActionButton } from "../actionButton/ActionButton";
+import { TOOLTIP_ID } from "../../layout/Layout";
 
 export type TDashboardCardTag = { label: string; tooltip: string };
 
@@ -33,9 +34,11 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags,
             <span className={styles.typeLabel}>{type}</span>
 
             {isEnabled !== undefined && (
-              <ToolTip tooltip={isEnabled ? "Enabled" : "Disabled"}>
-                <span className={clsx(styles.enabledIndicator, isEnabled && styles.enabled)} />
-              </ToolTip>
+              <span
+                data-tooltip-id={TOOLTIP_ID}
+                data-tooltip-content={isEnabled ? "Enabled" : "Disabled"}
+                className={clsx(styles.enabledIndicator, isEnabled && styles.enabled)}
+              />
             )}
           </div>
         </div>
@@ -47,9 +50,13 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags,
         <ul className={styles.tagsList}>
           {tags.map((tag, idx) => (
             <li key={idx}>
-              <ToolTip tooltip={tag.tooltip}>
-                {tag.tooltip === "Status" ? getStatusTag(tag.label) : <Tag label={tag.label} />}
-              </ToolTip>
+              <div data-tooltip-id={TOOLTIP_ID} data-tooltip-content={tag.tooltip}>
+                {tag.tooltip === "Status" ? (
+                  getStatusTag(tag.label)
+                ) : (
+                  <Tag layoutClassName={styles.tag} label={tag.label} />
+                )}
+              </div>
             </li>
           ))}
         </ul>

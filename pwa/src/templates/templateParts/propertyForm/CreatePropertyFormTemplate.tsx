@@ -166,6 +166,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         name="name"
                         validation={enrichValidation({ required: true })}
                         disabled={loading}
+                        ariaLabel={t("Enter name")}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -178,6 +179,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         name="type"
                         options={typeSelectOptions}
                         disabled={loading}
+                        ariaLabel={t("Select type")}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -199,14 +201,24 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("minLength")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="minLength" disabled={loading} />
+                      <InputNumber
+                        {...{ register, errors }}
+                        name="minLength"
+                        disabled={loading}
+                        ariaLabel={t("Enter minLength")}
+                      />
                     </FormFieldInput>
                   </FormField>
 
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("maxLength")}</FormFieldLabel>
-                      <InputNumber {...{ register, errors }} name="maxLength" disabled={loading} />
+                      <InputNumber
+                        {...{ register, errors }}
+                        name="maxLength"
+                        disabled={loading}
+                        ariaLabel={t("Enter maxLength")}
+                      />
                     </FormFieldInput>
                   </FormField>
 
@@ -218,6 +230,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         name="format"
                         options={formatSelectOptions}
                         disabled={loading}
+                        ariaLabel={t("Select format")}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -237,6 +250,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                           }))}
                           disabled={loading}
                           validation={enrichValidation({ required: true })}
+                          ariaLabel={t("Select schema")}
                         />
                       </FormFieldInput>
                     </FormField>
@@ -249,7 +263,12 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                    <Textarea {...{ register, errors }} name="description" disabled={loading} />
+                    <Textarea
+                      {...{ register, errors }}
+                      name="description"
+                      disabled={loading}
+                      ariaLabel={t("Enter description")}
+                    />
                   </FormFieldInput>
                 </FormField>
 
@@ -277,6 +296,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                           name="function"
                           options={functionSelectOptions}
                           disabled={loading}
+                          ariaLabel={t("Select function")}
                         />
                       </FormFieldInput>
                     </FormField>
@@ -286,21 +306,36 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("multipleOf")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="multipleOf" disabled={loading} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="multipleOf"
+                              disabled={loading}
+                              ariaLabel={t("Enter multipleOf")}
+                            />
                           </FormFieldInput>
                         </FormField>
 
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("minimum")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="minimum" disabled={loading} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="minimum"
+                              disabled={loading}
+                              ariaLabel={t("Enter minimum")}
+                            />
                           </FormFieldInput>
                         </FormField>
 
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("maximum")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="maximum" disabled={loading} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="maximum"
+                              disabled={loading}
+                              ariaLabel={t("Enter maximum")}
+                            />
                           </FormFieldInput>
                         </FormField>
 
@@ -340,20 +375,31 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                               name="fileTypes"
                               {...{ register, errors, control }}
                               disabled={loading}
+                              ariaLabel={t("Select or create a file type")}
                             />
                           </FormFieldInput>
                         </FormField>
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("minFileSize")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="minFileSize" disabled={loading} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="minFileSize"
+                              disabled={loading}
+                              ariaLabel={t("Enter minFileSize")}
+                            />
                           </FormFieldInput>
                         </FormField>
 
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("maxFileSize")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="maxFileSize" disabled={loading} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="maxFileSize"
+                              disabled={loading}
+                              ariaLabel={t("Enter maxFileSize")}
+                            />
                           </FormFieldInput>
                         </FormField>
                       </>
@@ -395,14 +441,24 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("minProperties")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="minProperties" disabled={loading} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="minProperties"
+                              disabled={loading}
+                              ariaLabel={t("Enter minProperties")}
+                            />
                           </FormFieldInput>
                         </FormField>
 
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("maxProperties")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="maxProperties" disabled={loading} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="maxProperties"
+                              disabled={loading}
+                              ariaLabel={t("Enter maxProperties")}
+                            />
                           </FormFieldInput>
                         </FormField>
                       </>
@@ -420,14 +476,24 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("minItems")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="minItems" disabled={loading} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="minItems"
+                              disabled={loading}
+                              ariaLabel={t("Enter minItems")}
+                            />
                           </FormFieldInput>
                         </FormField>
 
                         <FormField>
                           <FormFieldInput>
                             <FormFieldLabel>{t("maxItems")}</FormFieldLabel>
-                            <InputNumber {...{ register, errors }} name="maxItems" disabled={loading} />
+                            <InputNumber
+                              {...{ register, errors }}
+                              name="maxItems"
+                              disabled={loading}
+                              ariaLabel={t("Enter maxItems")}
+                            />
                           </FormFieldInput>
                         </FormField>
                       </>
@@ -446,6 +512,7 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                         options={getProperties.data.map((schema: any) => ({ label: schema.name, value: schema.id }))}
                         disabled={loading}
                         isClearable
+                        ariaLabel={t("Select inversedBy")}
                       />
                     )}
                   </FormFieldInput>
@@ -456,14 +523,24 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("defaultValue")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="defaultValue" disabled={loading} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="defaultValue"
+                          disabled={loading}
+                          ariaLabel={t("Enter defaultValue")}
+                        />
                       </FormFieldInput>
                     </FormField>
 
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("schema")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="schema" disabled={loading} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="schema"
+                          disabled={loading}
+                          ariaLabel={t("Enter schema")}
+                        />
                       </FormFieldInput>
                     </FormField>
 
@@ -513,7 +590,12 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("example")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="example" disabled={loading} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="example"
+                          disabled={loading}
+                          ariaLabel={t("Enter example")}
+                        />
                       </FormFieldInput>
                     </FormField>
 
@@ -521,7 +603,12 @@ export const CreatePropertyFormTemplate: React.FC<CreatePropertyFormTemplateProp
                     <FormField>
                       <FormFieldInput>
                         <FormFieldLabel>{t("pattern")}</FormFieldLabel>
-                        <InputText {...{ register, errors }} name="pattern" disabled={loading} />
+                        <InputText
+                          {...{ register, errors }}
+                          name="pattern"
+                          disabled={loading}
+                          ariaLabel={t("Enter pattern")}
+                        />
                       </FormFieldInput>
                     </FormField>
                   </div>
