@@ -442,7 +442,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {...{ register, errors, control }}
                     name="callBody"
                     disabled={isLoading.sourceForm}
-                    defaultChecked={true}
+                    defaultChecked={source?.loggingConfig?.callBody ?? true}
                     label="True"
                   />
                 </FormField>
@@ -454,7 +454,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {...{ register, errors, control }}
                     name="callContentType"
                     disabled={isLoading.sourceForm}
-                    defaultChecked={true}
+                    defaultChecked={source?.loggingConfig?.callContentType ?? true}
                     label="True"
                   />
                 </FormField>
@@ -466,7 +466,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {...{ register, errors, control }}
                     name="callQuery"
                     disabled={isLoading.sourceForm}
-                    defaultChecked={true}
+                    defaultChecked={source?.loggingConfig?.callQuery ?? true}
                     label="True"
                   />
                 </FormField>
@@ -478,7 +478,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {...{ register, errors, control }}
                     name="callUrl"
                     disabled={isLoading.sourceForm}
-                    defaultChecked={true}
+                    defaultChecked={source?.loggingConfig?.callUrl ?? true}
                     label="True"
                   />
                 </FormField>
@@ -490,7 +490,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {...{ register, errors, control }}
                     name="maxCharCountBody"
                     disabled={isLoading.sourceForm}
-                    defaultValue="500"
+                    defaultValue={source?.loggingConfig?.maxCharCountBody ?? "500"}
                   />
                 </FormField>
                 <FormField>
@@ -501,7 +501,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {...{ register, errors, control }}
                     name="maxCharCountErrorBody"
                     disabled={isLoading.sourceForm}
-                    defaultValue="2000"
+                    defaultValue={source?.loggingConfig?.maxCharCountErrorBody ?? "2000"}
                   />
                 </FormField>
                 <FormField>
@@ -512,7 +512,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {...{ register, errors, control }}
                     name="responseBody"
                     disabled={isLoading.sourceForm}
-                    defaultChecked={true}
+                    defaultChecked={source?.loggingConfig?.responseBody ?? true}
                     label="True"
                   />
                 </FormField>
@@ -524,7 +524,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {...{ register, errors, control }}
                     name="responseContentType"
                     disabled={isLoading.sourceForm}
-                    defaultChecked={true}
+                    defaultChecked={source?.loggingConfig?.responseContentType ?? true}
                     label="True"
                   />
                 </FormField>
@@ -536,7 +536,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     {...{ register, errors, control }}
                     name="responseStatusCode"
                     disabled={isLoading.sourceForm}
-                    defaultChecked={true}
+                    defaultChecked={source?.loggingConfig?.responseStatusCode ?? true}
                     label="True"
                   />
                 </FormField>
