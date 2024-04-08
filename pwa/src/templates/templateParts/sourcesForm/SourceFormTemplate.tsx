@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
-import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, IKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { translateDate } from "../../../services/dateFormat";
@@ -108,6 +108,17 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           advancedSwitchState.decodeContent === "string" ? data.decode_content_str : data.decode_content_bool,
         proxy: data.proxy,
       },
+      loggingConfig: {
+        callBody: data.callBody,
+        callContentType: data.callContentType,
+        callQuery: data.callQuery,
+        callUrl: data.callUrl,
+        maxCharCountBody: data.maxCharCountBody,
+        maxCharCountErrorBody: data.maxCharCountErrorBody,
+        responseBody: data.responseBody,
+        responseContentType: data.responseContentType,
+        responseStatusCode: data.responseStatusCode,
+      },
     };
 
     Object.keys(payload)
@@ -151,6 +162,19 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
       "jwt",
     ];
     basicFields.forEach((field) => setValue(field, source[field]));
+
+    const loggingConfigFields: string[] = [
+      "callBody",
+      "callContentType",
+      "callQuery",
+      "callUrl",
+      "maxCharCountBody",
+      "maxCharCountErrorBody",
+      "responseBody",
+      "responseContentType",
+      "responseStatusCode",
+    ];
+    loggingConfigFields.forEach((field) => setValue(field, source["loggingConfig"]?.field));
 
     setValue(
       "auth",
@@ -257,6 +281,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
             <Tab className={styles.tab} label={t("Query")} value={1} />
             <Tab className={styles.tab} label={t("Header")} value={2} />
             <Tab className={styles.tab} label={t("Advanced")} value={3} />
+            <Tab className={styles.tab} label={t("Logging config")} value={4} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
@@ -288,7 +313,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("Reference")}</FormFieldLabel>
-                    <InputText {...{ register, errors }} name="reference" disabled={isLoading.actionForm} />
+                    <InputText {...{ register, errors }} name="reference" disabled={isLoading.sourceForm} />
                   </FormFieldInput>
                 </FormField>
 
@@ -401,6 +426,122 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
           <TabPanel className={styles.tabPanel} value="3">
             <AdvancedSwitch />
+          </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="4">
+            <div className={styles.gridContainer}>
+              <p className={styles.infoParagraph}>
+                {t("Here you can configure what you want to log for requests that are made to this source.")}
+              </p>
+              <div className={styles.grid}>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Call body")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="callBody"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Call content type")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="callContentType"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Call query")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="callQuery"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Call url")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="callUrl"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Max character count body")}</FormFieldLabel>
+                  </div>
+                  <InputNumber
+                    {...{ register, errors, control }}
+                    name="maxCharCountBody"
+                    disabled={isLoading.sourceForm}
+                    defaultValue="500"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Max character count error body")}</FormFieldLabel>
+                  </div>
+                  <InputNumber
+                    {...{ register, errors, control }}
+                    name="maxCharCountErrorBody"
+                    disabled={isLoading.sourceForm}
+                    defaultValue="2000"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Response body")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="responseBody"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Response content type")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="responseContentType"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Response status code")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="responseStatusCode"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={true}
+                    label="True"
+                  />
+                </FormField>
+              </div>
+            </div>
           </TabPanel>
         </TabContext>
       </form>
