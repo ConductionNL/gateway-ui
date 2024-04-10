@@ -96,7 +96,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
   };
 
   const handleSetFormValues = (): void => {
-    const basicFields: string[] = ["name", "description", "priority", "async", "isLockable", "isEnabled"];
+    const basicFields: string[] = ["reference", "name", "description", "priority", "async", "isLockable", "isEnabled"];
     basicFields.forEach((field) => setValue(field, action[field]));
 
     setActionConditionsFieldValue(JSON.stringify(action["conditions"], null, 2));
