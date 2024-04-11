@@ -114,7 +114,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                         </TableRow>
                       ))}
 
-                    {!getOrganization.data.applications.length && (
+                    {!getOrganization.data?.applications?.length && (
                       <TableRow>
                         <TableCell>{t("No applications found")}</TableCell>
                         <TableCell />
@@ -139,7 +139,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                   </TableHead>
 
                   <TableBody>
-                    {getOrganization.data.users.map((user: any) => (
+                    {getOrganization.data?.users?.map((user: any) => (
                       <TableRow onClick={() => navigate(`/settings/users/${user.id}`)} key={user.id}>
                         <TableCell>{user.name}</TableCell>
                         <TableCell>{user.securityGroups?.length ?? "-"}</TableCell>
@@ -153,7 +153,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
                       </TableRow>
                     ))}
 
-                    {!getOrganization.data.users.length && (
+                    {!getOrganization.data?.users?.length && (
                       <TableRow>
                         <TableCell>No users found</TableCell>
                         <TableCell />
