@@ -23,6 +23,7 @@ import Synchroniation from "./resources/synchronization";
 import Application from "./resources/application";
 import Organization from "./resources/organization";
 import User from "./resources/user";
+import Database from "./resources/database";
 import Authentication from "./resources/authentication";
 import SecurityGroup from "./resources/securityGroup";
 import Mapping from "./resources/mapping";
@@ -197,6 +198,10 @@ export default class APIService {
 
   public get User(): User {
     return new User(this.BaseClient, this.Send);
+  }
+
+  public get Database(): Database {
+    return new Database(this.BaseClient, this.Send);
   }
 
   public get Authentication(): Authentication {
