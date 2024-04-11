@@ -7,7 +7,11 @@ import { Topbar } from "../topbar/Topbar";
 import { useGatsbyContext } from "../../context/gatsby";
 import { useAuthentication } from "../../hooks/useAuthentication";
 
-export const DashboardTemplate: React.FC = ({ children }) => {
+interface DashboardProps {
+  children: React.ReactNode;
+}
+
+export const DashboardTemplate: React.FC<DashboardProps> = ({ children }) => {
   const { isLoggedIn } = useAuthentication();
   const { gatsbyContext } = useGatsbyContext();
   const [translatedCrumbs, setTranslatedCrumbs] = React.useState<any>(null);

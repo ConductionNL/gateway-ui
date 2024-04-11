@@ -32,7 +32,7 @@ export default class Schema {
   public getSchema = async (id: string): Promise<any> => {
     const instance = this._instance;
 
-    instance.interceptors.request.use(function (config) {
+    instance.interceptors.request.use(function (config: any) {
       return { ...config, headers: { ...config.headers, Accept: "application/json+schema" } };
     });
 
@@ -76,7 +76,7 @@ export default class Schema {
 
     const instance = this._instance;
 
-    instance.interceptors.request.use(function (config) {
+    instance.interceptors.request.use(function (config: any) {
       return {
         ...config,
         headers: { ...config.headers, Accept: acceptType?.accept },
@@ -99,7 +99,7 @@ export default class Schema {
 
     const instance = this._instance;
 
-    instance.interceptors.request.use(function (config) {
+    instance.interceptors.request.use(function (config: any) {
       return {
         ...config,
         headers: { ...config.headers, Accept: acceptType?.accept },

@@ -207,7 +207,7 @@ export const PluginsDetailTemplate: React.FC<PluginsDetailPageProps> = ({ plugin
                           <ul>
                             {currentRequire &&
                               Object.entries(getPlugin.data.versions[currentRequire]?.require).map(
-                                ([key, value], idx) => (
+                                ([key, value]: any, idx) => (
                                   <li key={idx}>
                                     {key}: {value}
                                   </li>
