@@ -115,6 +115,7 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
                         name="name"
                         validation={enrichValidation({ required: true, maxLength: 225 })}
                         disabled={isLoading.templateForm}
+                        ariaLabel={t("Enter name")}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -134,6 +135,7 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
                           {...{ register, errors, control }}
                           disabled={isLoading.templateForm}
                           validation={enrichValidation({ required: true })}
+                          ariaLabel={t("Select an organization")}
                         />
                       )}
                     </FormFieldInput>
@@ -153,6 +155,7 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
                           name="supportedSchemas"
                           {...{ register, errors, control }}
                           disabled={isLoading.templateForm}
+                          ariaLabel={t("Select one or more supported schemas")}
                         />
                       )}
                     </FormFieldInput>
@@ -161,7 +164,12 @@ export const TemplateFormTemplate: React.FC<TemplateFormTemplateProps> = ({ temp
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                      <Textarea {...{ register, errors }} name="description" disabled={isLoading.templateForm} />
+                      <Textarea
+                        {...{ register, errors }}
+                        name="description"
+                        disabled={isLoading.templateForm}
+                        ariaLabel={t("Enter description")}
+                      />
                     </FormFieldInput>
                   </FormField>
                 </div>

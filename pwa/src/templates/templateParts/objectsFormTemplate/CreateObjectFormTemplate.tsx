@@ -125,6 +125,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
                       validation={enrichValidation({ required: true })}
                       {...{ register, errors, control }}
                       disabled={loading || getSchemaSchema.isLoading}
+                      ariaLabel={t("Select schema")}
                     />
                   )}
                 </FormFieldInput>
@@ -141,6 +142,7 @@ export const CreateObjectFormTemplate: React.FC<CreateObjectFormTemplateProps> =
                     defaultValue={predefinedSchema}
                     name="schema"
                     {...{ register, errors, control }}
+                    ariaLabel={t("Selected schema")}
                   />
                 </FormFieldInput>
               </FormField>

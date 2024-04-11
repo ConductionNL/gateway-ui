@@ -41,7 +41,7 @@ export default class Sources {
 
     const instance = this._instance;
 
-    instance.interceptors.request.use(function (config) {
+    instance.interceptors.request.use(function (config: any) {
       return {
         ...config,
         headers: { ...config.headers, Accept: acceptType?.accept },
@@ -84,7 +84,7 @@ export default class Sources {
   public getSchema = async (id: string): Promise<any> => {
     const instance = this._instance;
 
-    instance.interceptors.request.use(function (config) {
+    instance.interceptors.request.use(function (config: any) {
       return { ...config, headers: { ...config.headers, Accept: "application/json+schema" } };
     });
 
@@ -103,7 +103,11 @@ export default class Sources {
     return data;
   };
 
-  public importCreateOrUpdate = async (variables: { payload: any; entityId: string; objectId?: string }): Promise<any> => {
+  public importCreateOrUpdate = async (variables: {
+    payload: any;
+    entityId: string;
+    objectId?: string;
+  }): Promise<any> => {
     const { payload, entityId, objectId } = variables;
 
     if (objectId || payload.id) {

@@ -4,7 +4,7 @@ import { Link, Tab, TabContext, TabPanel, Tabs } from "@gemeente-denhaag/compone
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "react-query";
 import { useObject } from "../../hooks/object";
-import { Container, ToolTip } from "@conduction/components";
+import { Container } from "@conduction/components";
 import Skeleton from "react-loading-skeleton";
 import { EditObjectFormTemplate } from "../templateParts/objectsFormTemplate/EditObjectFormTemplate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,6 +20,7 @@ import { CodeEditor } from "../../components/codeEditor/CodeEditor";
 import { formatDateTime } from "../../services/dateTime";
 import { CHANNEL_LOG_LIMIT } from "../../apiService/resources/log";
 import { ObjectsTable } from "../templateParts/objectsTable/ObjectsTable";
+import { TOOLTIP_ID } from "../../layout/Layout";
 
 interface ObjectDetailTemplateProps {
   objectId: string;
@@ -110,27 +111,33 @@ export const ObjectDetailTemplate: React.FC<ObjectDetailTemplateProps> = ({ obje
                   <TableRow>
                     <TableHeader>Owner</TableHeader>
                     <TableCell>
-                      <ToolTip tooltip={getObject.data._self?.owner.name ?? ""}>
+                      <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content={getObject.data._self?.owner.name ?? ""}>
                         {getObject.data._self?.owner.id ?? "-"}
-                      </ToolTip>
+                      </span>
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableHeader>Organization</TableHeader>
                     <TableCell>
-                      <ToolTip tooltip={getObject.data._self?.organization.name ?? ""}>
+                      <span
+                        data-tooltip-id={TOOLTIP_ID}
+                        data-tooltip-content={getObject.data._self?.organization.name ?? ""}
+                      >
                         {getObject.data._self?.organization.id ?? "-"}
-                      </ToolTip>
+                      </span>
                     </TableCell>
                   </TableRow>
 
                   <TableRow>
                     <TableHeader>Application</TableHeader>
                     <TableCell>
-                      <ToolTip tooltip={getObject.data._self?.organization.name ?? ""}>
+                      <span
+                        data-tooltip-id={TOOLTIP_ID}
+                        data-tooltip-content={getObject.data._self?.organization.name ?? ""}
+                      >
                         {getObject.data._self?.application.id ?? "-"}
-                      </ToolTip>
+                      </span>
                     </TableCell>
                   </TableRow>
 

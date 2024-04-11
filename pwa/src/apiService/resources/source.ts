@@ -35,7 +35,7 @@ export default class Source {
       payload.endpoint = `/${payload.endpoint}`;
     }
 
-    this._instance.interceptors.request.use(function (config) {
+    this._instance.interceptors.request.use(function (config: any) {
       return {
         ...config,
         headers: { ...config.headers, "x-method": payload.method.value, "x-endpoint": payload.endpoint },

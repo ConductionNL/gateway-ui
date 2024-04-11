@@ -121,6 +121,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
                 name="name"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.endpointForm}
+                ariaLabel={t("Enter name")}
               />
             </FormFieldInput>
           </FormField>
@@ -133,6 +134,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
                 name="path"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.endpointForm}
+                ariaLabel={t("Enter path")}
               />
             </FormFieldInput>
           </FormField>
@@ -140,7 +142,12 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Path Regex")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="pathRegex" disabled={isLoading.endpointForm} />
+              <InputText
+                {...{ register, errors }}
+                name="pathRegex"
+                disabled={isLoading.endpointForm}
+                ariaLabel={t("Enter path regex")}
+              />
             </FormFieldInput>
           </FormField>
 
@@ -167,6 +174,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
                   name="throws"
                   {...{ register, errors, control }}
                   disabled={isLoading.endpointForm}
+                  ariaLabel={t("Select or create a throw")}
                 />
               )}
             </FormFieldInput>
@@ -175,7 +183,12 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Tag")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="tag" disabled={isLoading.endpointForm} />
+              <InputText
+                {...{ register, errors }}
+                name="tag"
+                disabled={isLoading.endpointForm}
+                ariaLabel={t("Enter tag")}
+              />
             </FormFieldInput>
           </FormField>
 
@@ -191,6 +204,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
                   name="source"
                   {...{ register, errors, control }}
                   disabled={isLoading.endpointForm}
+                  ariaLabel={t("Select a source")}
                 />
               )}
             </FormFieldInput>
@@ -206,6 +220,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
                   name="schemas"
                   {...{ register, errors, control }}
                   disabled={isLoading.endpointForm}
+                  ariaLabel={t("Select one or more schemas")}
                 />
               )}
             </FormFieldInput>
@@ -217,7 +232,12 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
         <FormField>
           <FormFieldInput>
             <FormFieldLabel>{t("Description")}</FormFieldLabel>
-            <Textarea {...{ register, errors }} name="description" disabled={isLoading.endpointForm} />
+            <Textarea
+              {...{ register, errors }}
+              name="description"
+              disabled={isLoading.endpointForm}
+              ariaLabel={t("Enter description")}
+            />
           </FormFieldInput>
         </FormField>
       </section>

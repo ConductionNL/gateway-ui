@@ -77,6 +77,7 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
                 name="name"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.authenticationForm}
+                ariaLabel={t("Enter the provider name")}
               />
             </FormFieldInput>
           </FormField>
@@ -84,28 +85,48 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Authenticate Url")}</FormFieldLabel>
-              <InputURL name="authenticateUrl" {...{ register, errors }} disabled={isLoading.authenticationForm} />
+              <InputURL
+                name="authenticateUrl"
+                {...{ register, errors }}
+                disabled={isLoading.authenticationForm}
+                ariaLabel={t("Enter the authenticate url")}
+              />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Token Url")}</FormFieldLabel>
-              <InputURL name="tokenUrl" {...{ register, errors }} disabled={isLoading.authenticationForm} />
+              <InputURL
+                name="tokenUrl"
+                {...{ register, errors }}
+                disabled={isLoading.authenticationForm}
+                ariaLabel={t("Enter the token url")}
+              />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Keys Url")}</FormFieldLabel>
-              <InputURL name="keysUrl" {...{ register, errors }} disabled={isLoading.authenticationForm} />
+              <InputURL
+                name="keysUrl"
+                {...{ register, errors }}
+                disabled={isLoading.authenticationForm}
+                ariaLabel={t("Enter the keys url")}
+              />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Client Id")}</FormFieldLabel>
-              <InputText name="clientId" {...{ register, errors }} disabled={isLoading.authenticationForm} />
+              <InputText
+                name="clientId"
+                {...{ register, errors }}
+                disabled={isLoading.authenticationForm}
+                ariaLabel={t("Enter the client id")}
+              />
             </FormFieldInput>
           </FormField>
 
@@ -123,6 +144,7 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
                   name="scopes"
                   {...{ register, errors, control }}
                   disabled={isLoading.authenticationForm}
+                  ariaLabel={t("Select or create a scope")}
                 />
               )}
             </FormFieldInput>
@@ -131,7 +153,12 @@ export const AuthenticationFormTemplate: React.FC<AuthenticationFormTemplateProp
         <FormField>
           <FormFieldInput>
             <FormFieldLabel>{t("Secret")}</FormFieldLabel>
-            <Textarea {...{ register, errors }} name="secret" disabled={isLoading.authenticationForm} />
+            <Textarea
+              {...{ register, errors }}
+              name="secret"
+              disabled={isLoading.authenticationForm}
+              ariaLabel={t("Enter the secret")}
+            />
           </FormFieldInput>
         </FormField>
       </div>

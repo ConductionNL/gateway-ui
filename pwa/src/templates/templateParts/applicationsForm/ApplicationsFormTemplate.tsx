@@ -92,6 +92,7 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
                 name="name"
                 validation={enrichValidation({ required: true, maxLength: 225 })}
                 disabled={isLoading.applicationForm}
+                ariaLabel={t("Enter name")}
               />
             </FormFieldInput>
           </FormField>
@@ -99,7 +100,12 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Description")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="description" disabled={isLoading.applicationForm} />
+              <Textarea
+                {...{ register, errors }}
+                name="description"
+                disabled={isLoading.applicationForm}
+                ariaLabel={t("Enter description")}
+              />
             </FormFieldInput>
           </FormField>
           <FormField>
@@ -115,6 +121,7 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
                   disabled={isLoading.applicationForm}
                   name="domains"
                   {...{ register, errors, control }}
+                  ariaLabel={t("Select or create a domain")}
                 />
               )}
             </FormFieldInput>
@@ -122,28 +129,48 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Public")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="public" disabled={isLoading.applicationForm} />
+              <Textarea
+                {...{ register, errors }}
+                name="public"
+                disabled={isLoading.applicationForm}
+                ariaLabel={t("Enter public")}
+              />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Secret")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="secret" disabled={isLoading.applicationForm} />
+              <Textarea
+                {...{ register, errors }}
+                name="secret"
+                disabled={isLoading.applicationForm}
+                ariaLabel={t("Enter secret")}
+              />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("publicKey")}</FormFieldLabel>
-              <Textarea {...{ register, errors }} name="publicKey" disabled={isLoading.applicationForm} />
+              <Textarea
+                {...{ register, errors }}
+                name="publicKey"
+                disabled={isLoading.applicationForm}
+                ariaLabel={t("Enter publicKey")}
+              />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Resource")}</FormFieldLabel>
-              <InputURL {...{ register, errors }} name="resource" disabled={isLoading.applicationForm} />
+              <InputURL
+                {...{ register, errors }}
+                name="resource"
+                disabled={isLoading.applicationForm}
+                ariaLabel={t("Enter resource")}
+              />
             </FormFieldInput>
           </FormField>
 
@@ -162,6 +189,7 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
                   {...{ register, errors, control }}
                   disabled={isLoading.applicationForm}
                   validation={enrichValidation({ required: true })}
+                  ariaLabel={t("Select an organization")}
                 />
               )}
             </FormFieldInput>

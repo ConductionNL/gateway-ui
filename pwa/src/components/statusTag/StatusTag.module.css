@@ -1,5 +1,6 @@
 .container {
   white-space: nowrap;
+  user-select: none;
 }
 
 .debug {

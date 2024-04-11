@@ -11,7 +11,7 @@ export default class PluginReadMe {
   }
 
   public getReadMe = async (url: string): Promise<any> => {
-    this._instance.interceptors.request.use(function (config) {
+    this._instance.interceptors.request.use(function (config: any) {
       return {
         ...config,
         headers: { ...config.headers, Accept: "application/vnd.github.html" },

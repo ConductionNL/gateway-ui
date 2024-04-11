@@ -1,13 +1,14 @@
 import * as React from "react";
 import * as styles from "./BulkActionButton.module.css";
 import clsx from "clsx";
-
-import { faDownload, faEllipsisH, faFileImport, faPlay, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "../button/Button";
-import { NotificationPopUp, ToolTip } from "@conduction/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _ from "lodash";
+
+import { Button } from "../button/Button";
+import { TOOLTIP_ID } from "../../layout/Layout";
+import { NotificationPopUp } from "@conduction/components";
 import { ConfirmPopUp } from "../confirmPopUp/ConfirmPopUp";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload, faEllipsisH, faPlay, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 type TBulkAction = {
   type: "delete" | "download" | "execute";
@@ -43,21 +44,21 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, sel
 
   return (
     <div className={clsx(styles.container, layoutClassName && layoutClassName)}>
-      <ToolTip tooltip={disabled ? "Select one or more rows" : ""}>
-        <Button
-          variant="primary"
-          label={
-            <span className={styles.buttonContainer}>
-              <span>Bulk actions</span>
-              <span className={styles.amountIndicator}>{Math.min(selectedItemsCount, 99)}</span>
-            </span>
-          }
-          onBlur={() => setTimeout(() => setIsOpen(false), 200)}
-          onClick={() => setIsOpen((isOpen) => !isOpen)}
-          icon={faEllipsisH}
-          {...{ disabled }}
-        />
-      </ToolTip>
+      <Button
+        variant="primary"
+        label={
+          <span className={styles.buttonContainer}>
+            <span>Bulk actions</span>
+            <span className={styles.amountIndicator}>{Math.min(selectedItemsCount, 99)}</span>
+          </span>
+        }
+        onBlur={() => setTimeout(() => setIsOpen(false), 200)}
+        onClick={() => setIsOpen((isOpen) => !isOpen)}
+        icon={faEllipsisH}
+        {...{ disabled }}
+        data-tooltip-id={TOOLTIP_ID}
+        data-tooltip-content={disabled ? "Select one or more rows" : ""}
+      />
 
       <div className={clsx(styles.actionsContainer, isOpen && styles.isOpen)}>
         <ul>
@@ -76,6 +77,9 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({ actions, sel
           variant: "danger",
           label: "Delete",
           icon: faTrash,
+        }}
+        cancelButton={{
+          href: location.href,
         }}
         handleConfirm={action}
         {...{ isVisible, hide }}

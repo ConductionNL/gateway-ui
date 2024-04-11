@@ -1,3 +1,7 @@
 import * as React from "react";
 import "./../../styling/design-tokens/component-overrides.css";
-export const ThemeProvider: React.FC = ({ children }) => <>{children}</>;
+interface ThemeProviderProps {
+  children: React.ReactNode;
+}
+
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => <>{children}</>;

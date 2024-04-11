@@ -11,6 +11,9 @@ import { ThemeProvider } from "../templates/themeProvider/ThemeProvider";
 import { getScreenSize } from "../services/getScreenSize";
 import { Toaster } from "react-hot-toast";
 import { defaultGlobalContext, GlobalProvider, IGlobalContext } from "../context/global";
+import { ToolTip } from "@conduction/components";
+
+export const TOOLTIP_ID = "cb8f47c3-7151-4a46-954d-784a531b01e6";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -57,6 +60,8 @@ const Layout: React.FC<LayoutProps> = ({ children, pageContext, location }) => {
       <GlobalProvider value={[globalContext, setGlobalContext]}>
         <APIProvider value={API}>
           <StylesProvider>
+            <ToolTip id={TOOLTIP_ID} />
+
             <Toaster position="bottom-right" />
 
             <ThemeProvider>

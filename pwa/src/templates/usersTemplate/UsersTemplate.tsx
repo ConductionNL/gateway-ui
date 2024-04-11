@@ -4,7 +4,7 @@ import { Link } from "@gemeente-denhaag/components-react";
 import { useTranslation } from "react-i18next";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@gemeente-denhaag/table";
 import { navigate } from "gatsby";
-import { Container, ToolTip } from "@conduction/components";
+import { Container } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useQueryClient } from "react-query";
@@ -15,6 +15,7 @@ import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { TOOLTIP_ID } from "../../layout/Layout";
 
 export const UsersTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -77,15 +78,23 @@ export const UsersTemplate: React.FC = () => {
                   <TableCell>{user.organization.name ?? "-"}</TableCell>
 
                   <TableCell>
-                    <ToolTip tooltip={user.applications.map((application: any) => application.name).join(", ")}>
+                    <span
+                      data-tooltip-id={TOOLTIP_ID}
+                      data-tooltip-content={user.applications.map((application: any) => application.name).join(", ")}
+                    >
                       {user.applications?.length ?? "-"}
-                    </ToolTip>
+                    </span>
                   </TableCell>
 
                   <TableCell>
-                    <ToolTip tooltip={user.securityGroups.map((securityGroup: any) => securityGroup.name).join(", ")}>
+                    <span
+                      data-tooltip-id={TOOLTIP_ID}
+                      data-tooltip-content={user.securityGroups
+                        .map((securityGroup: any) => securityGroup.name)
+                        .join(", ")}
+                    >
                       {user.securityGroups?.length ?? "-"}
-                    </ToolTip>
+                    </span>
                   </TableCell>
 
                   <TableCell>{translateDate(i18n.language, user.dateCreated) ?? "-"}</TableCell>

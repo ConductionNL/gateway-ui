@@ -157,7 +157,12 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Reference")}</FormFieldLabel>
-                      <InputText {...{ register, errors }} name="reference" disabled={isLoading.actionForm} />
+                      <InputText
+                        {...{ register, errors }}
+                        name="reference"
+                        disabled={isLoading.actionForm}
+                        ariaLabel={t("Enter reference")}
+                      />
                     </FormFieldInput>
                   </FormField>
 
@@ -169,6 +174,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                         name="name"
                         validation={enrichValidation({ required: true, maxLength: 225 })}
                         disabled={isLoading.actionForm}
+                        ariaLabel={t("Enter name")}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -176,7 +182,12 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                   <FormField>
                     <FormFieldInput>
                       <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                      <Textarea {...{ register, errors }} name="description" disabled={isLoading.actionForm} />
+                      <Textarea
+                        {...{ register, errors }}
+                        name="description"
+                        disabled={isLoading.actionForm}
+                        ariaLabel={t("Enter description")}
+                      />
                     </FormFieldInput>
                   </FormField>
 
@@ -192,6 +203,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                           name="listens"
                           validation={enrichValidation({ required: true })}
                           {...{ register, errors, control }}
+                          ariaLabel={t("Select or create a listen")}
                         />
                       )}
                     </FormFieldInput>
@@ -208,6 +220,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                           disabled={isLoading.actionForm}
                           name="throws"
                           {...{ register, errors, control }}
+                          ariaLabel={t("Select or create a throw")}
                         />
                       )}
                     </FormFieldInput>
@@ -229,6 +242,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                           validation={enrichValidation({ required: true })}
                           {...{ register, errors, control }}
                           disabled={isLoading.actionForm}
+                          ariaLabel={t("Select an action handler")}
                         />
                       )}
                     </FormFieldInput>
@@ -242,6 +256,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                         name="priority"
                         validation={enrichValidation({ required: true })}
                         disabled={isLoading.actionForm}
+                        ariaLabel={t("Enter priority")}
                       />
                     </FormFieldInput>
                   </FormField>

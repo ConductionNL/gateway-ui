@@ -1,7 +1,7 @@
 import * as React from "react";
 import { navigate } from "gatsby-link";
 import APIService from "../apiService/apiService";
-import jwtDecode, { JwtPayload } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import toast from "react-hot-toast";
 import APIContext from "../apiService/apiContext";
 

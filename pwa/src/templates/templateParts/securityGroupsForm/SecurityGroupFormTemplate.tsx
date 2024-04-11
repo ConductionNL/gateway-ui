@@ -70,6 +70,7 @@ export const SecurityGroupFormTemplate: React.FC<SecurityGroupFormTemplateProps>
                 name="name"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.securityGroupForm}
+                ariaLabel={t("Enter name")}
               />
             </FormFieldInput>
           </FormField>
@@ -77,7 +78,12 @@ export const SecurityGroupFormTemplate: React.FC<SecurityGroupFormTemplateProps>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Config")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="config" disabled={isLoading.securityGroupForm} />
+              <InputText
+                {...{ register, errors }}
+                name="config"
+                disabled={isLoading.securityGroupForm}
+                ariaLabel={t("Enter config")}
+              />
             </FormFieldInput>
           </FormField>
 
@@ -89,6 +95,7 @@ export const SecurityGroupFormTemplate: React.FC<SecurityGroupFormTemplateProps>
                 name="description"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.securityGroupForm}
+                ariaLabel={t("Enter description")}
               />
             </FormFieldInput>
           </FormField>
@@ -101,6 +108,7 @@ export const SecurityGroupFormTemplate: React.FC<SecurityGroupFormTemplateProps>
                 name="scopes"
                 {...{ register, errors, control }}
                 disabled={isLoading.securityGroupForm}
+                ariaLabel={t("Select or create a scope")}
               />
             </FormFieldInput>
           </FormField>

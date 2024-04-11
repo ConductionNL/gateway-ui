@@ -2,7 +2,6 @@ import * as React from "react";
 import * as styles from "./LogsTableTemplate.module.css";
 import _ from "lodash";
 import { navigate } from "gatsby";
-import { ToolTip } from "@conduction/components";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Table, TableHead, TableRow, TableHeader, TableBody, TableCell } from "@gemeente-denhaag/table";
 import { useLogFiltersContext } from "../../../context/logs";
@@ -17,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePagination } from "../../../hooks/usePagination";
 import clsx from "clsx";
 import { HorizontalOverflowWrapper } from "../../../components/horizontalOverflowWrapper/HorizontalOverflowWrapper";
+import { TOOLTIP_ID } from "../../../layout/Layout";
 
 interface LogsTableTemplateProps {
   logs: any[];
@@ -107,19 +107,21 @@ export const LogsTableTemplate: React.FC<LogsTableTemplateProps> = ({ logs, pagi
 
                   {logColumns.message && (
                     <TableCell>
-                      <ToolTip tooltip={log.message}>
-                        <div className={styles.message}>{log.message}</div>
-                      </ToolTip>
+                      <div data-tooltip-id={TOOLTIP_ID} data-tooltip-content={log.message} className={styles.message}>
+                        {log.message}
+                      </div>
                     </TableCell>
                   )}
 
                   {logColumns.created && (
                     <TableCell>
-                      <ToolTip tooltip={formatUnixDateTime(t(i18n.language), log.datetime.$date.$numberLong)}>
-                        <div className={styles.created}>
-                          {formatUnixDateTime(t(i18n.language), log.datetime.$date.$numberLong)}
-                        </div>
-                      </ToolTip>
+                      <div
+                        data-tooltip-id={TOOLTIP_ID}
+                        data-tooltip-content={formatUnixDateTime(t(i18n.language), log.datetime.$date.$numberLong)}
+                        className={styles.created}
+                      >
+                        {formatUnixDateTime(t(i18n.language), log.datetime.$date.$numberLong)}
+                      </div>
                     </TableCell>
                   )}
 
