@@ -51,11 +51,7 @@ export const DashboardCard: React.FC<DashboardCardProps> = ({ title, type, tags,
           {tags.map((tag, idx) => (
             <li key={idx}>
               <div data-tooltip-id={TOOLTIP_ID} data-tooltip-content={tag.tooltip}>
-                {tag.tooltip === "Status" ? (
-                  getStatusTag(tag.label)
-                ) : (
-                  <Tag layoutClassName={styles.tag} label={tag.label} />
-                )}
+                {tag.tooltip === "Status" ? getStatusTag(tag.label) : <Tag label={tag.label} />}
               </div>
             </li>
           ))}
