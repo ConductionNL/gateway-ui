@@ -15,6 +15,7 @@ import { Button } from "../../components/button/Button";
 import { OverviewPageHeaderTemplate } from "../templateParts/overviewPageHeader/OverviewPageHeaderTemplate";
 import { useBulkSelect } from "../../hooks/useBulkSelect";
 import { BulkActionButton } from "../../components/bulkActionButton/BulkActionButton";
+import { TOOLTIP_ID } from "../../layout/Layout";
 
 export const DatabasesTemplate: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -73,9 +74,18 @@ export const DatabasesTemplate: React.FC = () => {
                   <TableCell>{database.name}</TableCell>
 
                   <TableCell>
-                    {database.organizations.length > 1
-                      ? `${database.organizations.length} organizations`
-                      : database.organizations[0]?.name}
+                    {database.organizations.length > 1 ? (
+                      <span
+                        data-tooltip-id={TOOLTIP_ID}
+                        data-tooltip-content={database.organizations
+                          .map((organizations: any) => organizations.name)
+                          .join(", ")}
+                      >
+                        {database.organizations.length} organizations
+                      </span>
+                    ) : (
+                      database.organizations[0]?.name
+                    )}
                   </TableCell>
 
                   <TableCell>{translateDate(i18n.language, database.dateCreated) ?? "-"}</TableCell>

@@ -92,7 +92,7 @@ export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ data
                 name="name"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.databaseForm}
-                // ariaLabel={t("Enter name")}
+                ariaLabel={t("Enter name")}
               />
             </FormFieldInput>
           </FormField>
@@ -104,7 +104,7 @@ export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ data
                 name="reference"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.databaseForm}
-                // ariaLabel={t("Enter name")}
+                ariaLabel={t("Enter reference")}
               />
             </FormFieldInput>
           </FormField>
@@ -116,7 +116,7 @@ export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ data
                 {...{ register, errors }}
                 name="description"
                 disabled={isLoading.databaseForm}
-                // ariaLabel={t("Enter description")}
+                ariaLabel={t("Enter description")}
               />
             </FormFieldInput>
           </FormField>
@@ -129,7 +129,7 @@ export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ data
                 name="version"
                 disabled={isLoading.databaseForm}
                 defaultValue={database?.version ?? "0.0.0"}
-                // ariaLabel={t("Enter version")}
+                ariaLabel={t("Enter version")}
               />
             </FormFieldInput>
           </FormField>
@@ -141,14 +141,16 @@ export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ data
               {getOrganizations.isLoading && <Skeleton height="50px" />}
               {getOrganizations.isSuccess && (
                 <SelectMultiple
-                  options={getOrganizations.data.map((organization: any) => ({
-                    label: organization.name,
-                    value: organization.id,
-                  }))}
+                  options={getOrganizations.data
+                    .filter((organization: any) => !organization.database || organization.database.id === database.id)
+                    .map((organization: any) => ({
+                      label: organization.name,
+                      value: organization.id,
+                    }))}
                   name="organizations"
                   {...{ register, errors, control }}
                   disabled={isLoading.databaseForm}
-                  // ariaLabel={t("Select one or more organizations")}
+                  ariaLabel={t("Select one or more organizations")}
                 />
               )}
             </FormFieldInput>
@@ -161,7 +163,7 @@ export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ data
                 {...{ register, errors }}
                 name="uri"
                 disabled={isLoading.databaseForm}
-                // ariaLabel={t("Enter password")}
+                ariaLabel={t("Enter database uri")}
               />
             </FormFieldInput>
           </FormField>
