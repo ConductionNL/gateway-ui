@@ -108,6 +108,7 @@ export const ObjectsTable: React.FC<ObjectsTableProps> = ({
             placeholder="Type to search..."
             defaultValue={searchQuery}
             {...{ register, errors }}
+            ariaLabel={t("Enter search query")}
           />
         </div>
 

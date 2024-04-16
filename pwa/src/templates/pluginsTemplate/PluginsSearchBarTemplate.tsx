@@ -45,7 +45,12 @@ export const PluginsSearchBarTemplate: React.FC<PluginsSearchBarTemplateProps> =
       <FormField>
         <FormFieldInput>
           <FormFieldLabel>{t("Search on name")}</FormFieldLabel>
-          <InputText name="search" validation={enrichValidation({ required: true })} {...{ errors, register }} />
+          <InputText
+            name="search"
+            validation={enrichValidation({ required: true })}
+            {...{ errors, register }}
+            ariaLabel={t("Enter search query")}
+          />
         </FormFieldInput>
       </FormField>
     </form>

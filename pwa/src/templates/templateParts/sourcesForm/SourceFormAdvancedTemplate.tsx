@@ -3,12 +3,13 @@ import * as styles from "./SourcesFormTemplate.module.css";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { useTranslation } from "react-i18next";
-import { InputCheckbox, InputText, Textarea, ToolTip } from "@conduction/components";
+import { InputCheckbox, InputText, Textarea } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { InputFloat, InputNumber } from "@conduction/components/lib/components/formFields/input";
 import ToggleButton from "../../../components/toggleButton/ToggleButton";
 import { IAdvancedSwitch, IAdvancedSwitchSetters } from "../../../hooks/useAdvancedSwitch";
+import { TOOLTIP_ID } from "../../../layout/Layout";
 
 interface ReactHookFormProps {
   register: UseFormRegister<FieldValues>;
@@ -36,7 +37,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
         <FormField>
           <div className={styles.formFieldHeader}>
             <FormFieldLabel>{t("Debug")}</FormFieldLabel>
-            <ToolTip tooltip="Set to true or set to a PHP stream returned by fopen() to enable debug output with the handler used to send a request. For example, when using cURL to transfer requests, cURL's verbose of CURLOPT_VERBOSE will be emitted. When using the PHP stream wrapper, stream wrapper notifications will be emitted. If set to true, the output is written to PHP's STDOUT. If a PHP stream is provided, output is written to the stream.">
+            <span
+              data-tooltip-id={TOOLTIP_ID}
+              data-tooltip-content="Set to true or set to a PHP stream returned by fopen() to enable debug output with the handler used to send a request. For example, when using cURL to transfer requests, cURL's verbose of CURLOPT_VERBOSE will be emitted. When using the PHP stream wrapper, stream wrapper notifications will be emitted. If set to true, the output is written to PHP's STDOUT. If a PHP stream is provided, output is written to the stream."
+            >
               <a
                 className={styles.infoButton}
                 onClick={() => {
@@ -45,7 +49,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               >
                 <FontAwesomeIcon icon={faInfoCircle}></FontAwesomeIcon>
               </a>
-            </ToolTip>
+            </span>
           </div>
           <InputCheckbox name="debug" disabled={isLoading} label="True" {...{ register, errors }} />
         </FormField>
@@ -53,7 +57,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
         <FormField>
           <div className={styles.formFieldHeader}>
             <FormFieldLabel>{t("Http errors")}</FormFieldLabel>
-            <ToolTip tooltip="Set to false to disable throwing exceptions on an HTTP protocol errors (i.e., 4xx and 5xx responses). Exceptions are thrown by default when HTTP protocol errors are encountered.">
+            <span
+              data-tooltip-id={TOOLTIP_ID}
+              data-tooltip-content="Set to false to disable throwing exceptions on an HTTP protocol errors (i.e., 4xx and 5xx responses). Exceptions are thrown by default when HTTP protocol errors are encountered."
+            >
               <a
                 className={styles.infoButton}
                 onClick={() => {
@@ -62,7 +69,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               >
                 <FontAwesomeIcon icon={faInfoCircle} />
               </a>
-            </ToolTip>
+            </span>
           </div>
           <InputCheckbox disabled={isLoading} name="https_errors" label="True" {...{ register, errors }} />
         </FormField>
@@ -71,7 +78,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           <FormFieldInput>
             <div className={styles.formFieldHeader}>
               <FormFieldLabel>{t("Connect timeout")}</FormFieldLabel>
-              <ToolTip tooltip="Float describing the number of seconds to wait while trying to connect to a server. Use 0 to wait indefinitely (the default behavior).">
+              <span
+                data-tooltip-id={TOOLTIP_ID}
+                data-tooltip-content="Float describing the number of seconds to wait while trying to connect to a server. Use 0 to wait indefinitely (the default behavior)."
+              >
                 <a
                   className={styles.infoButton}
                   onClick={() => {
@@ -80,9 +90,14 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 >
                   <FontAwesomeIcon icon={faInfoCircle}></FontAwesomeIcon>
                 </a>
-              </ToolTip>
+              </span>
             </div>
-            <InputFloat disabled={isLoading} {...{ register, errors }} name="connect_timeout" />
+            <InputFloat
+              disabled={isLoading}
+              {...{ register, errors }}
+              name="connect_timeout"
+              ariaLabel={t("Enter Connect timeout")}
+            />
           </FormFieldInput>
         </FormField>
 
@@ -90,7 +105,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           <FormFieldInput>
             <div className={styles.formFieldHeader}>
               <FormFieldLabel>{t("Force ip resolve")}</FormFieldLabel>
-              <ToolTip tooltip='Set to "v4" if you want the HTTP handlers to use only ipv4 protocol or "v6" for ipv6 protocol.'>
+              <span
+                data-tooltip-id={TOOLTIP_ID}
+                data-tooltip-content='Set to "v4" if you want the HTTP handlers to use only ipv4 protocol or "v6" for ipv6 protocol.'
+              >
                 <a
                   className={styles.infoButton}
                   onClick={() => {
@@ -99,9 +117,14 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 >
                   <FontAwesomeIcon icon={faInfoCircle} />
                 </a>
-              </ToolTip>
+              </span>
             </div>
-            <InputText disabled={isLoading} {...{ register, errors }} name="force_ip_resolve" />
+            <InputText
+              disabled={isLoading}
+              {...{ register, errors }}
+              name="force_ip_resolve"
+              ariaLabel={t("Enter force ip resolve")}
+            />
           </FormFieldInput>
         </FormField>
 
@@ -109,7 +132,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           <FormFieldInput>
             <div className={styles.formFieldHeader}>
               <FormFieldLabel>{t("Version")}</FormFieldLabel>
-              <ToolTip tooltip="Protocol version to use with the request.">
+              <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content="Protocol version to use with the request.">
                 <a
                   className={styles.infoButton}
                   onClick={() => {
@@ -118,9 +141,9 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 >
                   <FontAwesomeIcon icon={faInfoCircle} />
                 </a>
-              </ToolTip>
+              </span>
             </div>
-            <InputText disabled={isLoading} {...{ register, errors }} name="version" />
+            <InputText disabled={isLoading} {...{ register, errors }} name="version" ariaLabel={t("Enter version")} />
           </FormFieldInput>
         </FormField>
 
@@ -128,7 +151,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           <FormFieldInput>
             <div className={styles.formFieldHeader}>
               <FormFieldLabel>{t("Read timeout")}</FormFieldLabel>
-              <ToolTip tooltip="Float describing the timeout to use when reading a streamed body">
+              <span
+                data-tooltip-id={TOOLTIP_ID}
+                data-tooltip-content="Float describing the timeout to use when reading a streamed body"
+              >
                 <a
                   className={styles.infoButton}
                   onClick={() => {
@@ -137,16 +163,24 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
                 >
                   <FontAwesomeIcon icon={faInfoCircle} />
                 </a>
-              </ToolTip>
+              </span>
             </div>
-            <InputFloat disabled={isLoading} {...{ register, errors }} name="read_timeout" />
+            <InputFloat
+              disabled={isLoading}
+              {...{ register, errors }}
+              name="read_timeout"
+              ariaLabel={t("Enter read timeout")}
+            />
           </FormFieldInput>
         </FormField>
 
         <FormField>
           <div className={styles.formFieldHeader}>
             <FormFieldLabel>{t("Idn conversion")}</FormFieldLabel>
-            <ToolTip tooltip="Internationalized Domain Name (IDN) support (enabled by default if intl extension is available).">
+            <span
+              data-tooltip-id={TOOLTIP_ID}
+              data-tooltip-content="Internationalized Domain Name (IDN) support (enabled by default if intl extension is available)."
+            >
               <a
                 className={styles.infoButton}
                 onClick={() => {
@@ -155,7 +189,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               >
                 <FontAwesomeIcon icon={faInfoCircle} />
               </a>
-            </ToolTip>
+            </span>
           </div>
           <ToggleButton
             defaultState={advancedSwitchState.idnConversion !== "int"}
@@ -172,7 +206,12 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               </span>
             )}
             {advancedSwitchState.idnConversion === "int" && (
-              <InputNumber disabled={isLoading} name="idn_conversion_int" {...{ register, errors }} />
+              <InputNumber
+                disabled={isLoading}
+                name="idn_conversion_int"
+                {...{ register, errors }}
+                ariaLabel={t("Enter idn conversion")}
+              />
             )}
           </div>
         </FormField>
@@ -180,7 +219,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
         <FormField>
           <div className={styles.formFieldHeader}>
             <FormFieldLabel>{t("Delay")}</FormFieldLabel>
-            <ToolTip tooltip="The number of milliseconds to delay before sending the request.">
+            <span
+              data-tooltip-id={TOOLTIP_ID}
+              data-tooltip-content="The number of milliseconds to delay before sending the request."
+            >
               <a
                 className={styles.infoButton}
                 onClick={() => {
@@ -189,7 +231,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               >
                 <FontAwesomeIcon icon={faInfoCircle} />
               </a>
-            </ToolTip>
+            </span>
           </div>
           <ToggleButton
             defaultState={advancedSwitchState.delay !== "int"}
@@ -201,10 +243,20 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
           />
           <div className={styles.expectFormField}>
             {advancedSwitchState.delay === "int" && (
-              <InputNumber disabled={isLoading} name="delay_int" {...{ register, errors }} />
+              <InputNumber
+                disabled={isLoading}
+                name="delay_int"
+                {...{ register, errors }}
+                ariaLabel={t("Enter delay")}
+              />
             )}
             {advancedSwitchState.delay === "float" && (
-              <InputFloat disabled={isLoading} name="delay_float" {...{ register, errors }} />
+              <InputFloat
+                disabled={isLoading}
+                name="delay_float"
+                {...{ register, errors }}
+                ariaLabel={t("Enter delay")}
+              />
             )}
           </div>
         </FormField>
@@ -212,7 +264,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
         <FormField>
           <div className={styles.formFieldHeader}>
             <FormFieldLabel>{t("Expect")}</FormFieldLabel>
-            <ToolTip tooltip='Controls the behavior of the "Expect: 100-Continue" header."'>
+            <span
+              data-tooltip-id={TOOLTIP_ID}
+              data-tooltip-content='Controls the behavior of the "Expect: 100-Continue" header."'
+            >
               <a
                 className={styles.infoButton}
                 onClick={() => {
@@ -221,7 +276,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               >
                 <FontAwesomeIcon icon={faInfoCircle} />
               </a>
-            </ToolTip>
+            </span>
           </div>
           <ToggleButton
             defaultState={advancedSwitchState.expect !== "int"}
@@ -238,7 +293,12 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               </span>
             )}
             {advancedSwitchState.expect === "int" && (
-              <InputNumber disabled={isLoading} name="expect_int" {...{ register, errors }} />
+              <InputNumber
+                disabled={isLoading}
+                name="expect_int"
+                {...{ register, errors }}
+                ariaLabel={t("Enter expect")}
+              />
             )}
           </div>
         </FormField>
@@ -246,7 +306,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
         <FormField>
           <div className={styles.formFieldHeader}>
             <FormFieldLabel>{t("Verify")}</FormFieldLabel>
-            <ToolTip tooltip="Describes the SSL certificate verification behavior of a request. \n Set to true to enable SSL certificate verification and use the default CA bundle provided by operating system.\nSet to false to disable certificate verification (this is insecure!). \n Set to a string to provide the path to a CA bundle to enable verification using a custom certificate.">
+            <span
+              data-tooltip-id={TOOLTIP_ID}
+              data-tooltip-content="Describes the SSL certificate verification behavior of a request. \n Set to true to enable SSL certificate verification and use the default CA bundle provided by operating system.\nSet to false to disable certificate verification (this is insecure!). \n Set to a string to provide the path to a CA bundle to enable verification using a custom certificate."
+            >
               <a
                 className={styles.infoButton}
                 onClick={() => {
@@ -255,7 +318,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               >
                 <FontAwesomeIcon icon={faInfoCircle} />
               </a>
-            </ToolTip>
+            </span>
           </div>
           <ToggleButton
             defaultState={advancedSwitchState.verify !== "string"}
@@ -272,7 +335,12 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               </span>
             )}
             {advancedSwitchState.verify === "string" && (
-              <InputText disabled={isLoading} name="verify_str" {...{ register, errors }} />
+              <InputText
+                disabled={isLoading}
+                name="verify_str"
+                {...{ register, errors }}
+                ariaLabel={t("Enter verify")}
+              />
             )}
           </div>
         </FormField>
@@ -281,7 +349,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
       <FormField>
         <div className={styles.formFieldHeader}>
           <FormFieldLabel>{t("Decode content")}</FormFieldLabel>
-          <ToolTip tooltip="Specify whether or not Content-Encoding responses (gzip, deflate, etc.) are automatically decoded.">
+          <span
+            data-tooltip-id={TOOLTIP_ID}
+            data-tooltip-content="Specify whether or not Content-Encoding responses (gzip, deflate, etc.) are automatically decoded."
+          >
             <a
               className={styles.infoButton}
               onClick={() => {
@@ -290,7 +361,7 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
             >
               <FontAwesomeIcon icon={faInfoCircle} />
             </a>
-          </ToolTip>
+          </span>
         </div>
         <ToggleButton
           defaultState={advancedSwitchState.decodeContent !== "string"}
@@ -302,7 +373,12 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
         />
         <div className={styles.expectFormField}>
           {advancedSwitchState.decodeContent === "string" && (
-            <Textarea disabled={isLoading} name="decode_content_str" {...{ register, errors }} />
+            <Textarea
+              disabled={isLoading}
+              name="decode_content_str"
+              {...{ register, errors }}
+              ariaLabel={t("Enter decode content")}
+            />
           )}
 
           {advancedSwitchState.decodeContent === "boolean" && (
@@ -317,7 +393,10 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
         <FormFieldInput>
           <div className={styles.formFieldHeader}>
             <FormFieldLabel>{t("Proxy")}</FormFieldLabel>
-            <ToolTip tooltip="Pass a string to specify an HTTP proxy, or an array to specify different proxies for different protocols.">
+            <span
+              data-tooltip-id={TOOLTIP_ID}
+              data-tooltip-content="Pass a string to specify an HTTP proxy, or an array to specify different proxies for different protocols."
+            >
               <a
                 className={styles.infoButton}
                 onClick={() => {
@@ -326,9 +405,9 @@ export const SourceFormAdvancedTemplate: React.FC<SourceTemplateProps & ReactHoo
               >
                 <FontAwesomeIcon icon={faInfoCircle} />
               </a>
-            </ToolTip>
+            </span>
           </div>
-          <Textarea disabled={isLoading} {...{ register, errors }} name="proxy" />
+          <Textarea disabled={isLoading} {...{ register, errors }} name="proxy" ariaLabel={t("Enter proxy")} />
         </FormFieldInput>
       </FormField>
     </div>

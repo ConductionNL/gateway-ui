@@ -49,6 +49,9 @@
 
 .tags > *:not(:last-child) {
   margin-inline-end: var(--gateway-ui-size-xs);
+  margin-block-end: var(--gateway-ui-size-xs);
+  display: inline-block;
+  position: relative;
 }
 
 .statusTypeContainer {

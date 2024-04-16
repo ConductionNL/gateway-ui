@@ -125,6 +125,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                 name="name"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.userForm}
+                ariaLabel={t("Enter name")}
               />
             </FormFieldInput>
           </FormField>
@@ -132,7 +133,12 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Email")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="email" disabled={isLoading.userForm} />
+              <InputText
+                {...{ register, errors }}
+                name="email"
+                disabled={isLoading.userForm}
+                ariaLabel={t("Enter email")}
+              />
             </FormFieldInput>
           </FormField>
         </div>
@@ -140,7 +146,12 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
         <FormField>
           <FormFieldInput>
             <FormFieldLabel>{t("Description")}</FormFieldLabel>
-            <Textarea {...{ register, errors }} name="description" disabled={isLoading.userForm} />
+            <Textarea
+              {...{ register, errors }}
+              name="description"
+              disabled={isLoading.userForm}
+              ariaLabel={t("Enter description")}
+            />
           </FormFieldInput>
         </FormField>
 
@@ -148,14 +159,24 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Locale")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="locale" disabled={isLoading.userForm} />
+              <InputText
+                {...{ register, errors }}
+                name="locale"
+                disabled={isLoading.userForm}
+                ariaLabel={t("Enter locale")}
+              />
             </FormFieldInput>
           </FormField>
 
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Person")}</FormFieldLabel>
-              <InputText {...{ register, errors }} name="person" disabled={isLoading.userForm} />
+              <InputText
+                {...{ register, errors }}
+                name="person"
+                disabled={isLoading.userForm}
+                ariaLabel={t("Enter person")}
+              />
             </FormFieldInput>
           </FormField>
 
@@ -169,6 +190,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                   name="organization"
                   validation={enrichValidation({ required: true })}
                   disabled={isLoading.userForm}
+                  ariaLabel={t("Select an organization")}
                 />
               )}
               {getOrganization.isLoading && <Skeleton height={50} />}
@@ -185,6 +207,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                   name="applications"
                   validation={enrichValidation({ required: true })}
                   disabled={isLoading.userForm}
+                  ariaLabel={t("Select one or more applications")}
                 />
               )}
               {getApplications.isLoading && <Skeleton height={50} />}
@@ -201,6 +224,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                   name="securityGroups"
                   validation={enrichValidation({ required: true })}
                   disabled={isLoading.userForm}
+                  ariaLabel={t("Select one or more security groups")}
                 />
               )}
               {getSecurityGroups.isLoading && <Skeleton height={50} />}
@@ -219,6 +243,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                   validate: (value) => validatePassword(value, validationPassword, !user),
                 })}
                 disabled={isLoading.userForm}
+                ariaLabel={t("Enter password")}
               />
             </FormFieldInput>
           </FormField>
@@ -231,6 +256,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
                 name="validation_password"
                 validation={enrichValidation({ validate: (value) => validatePassword(password, value, !user) })}
                 disabled={isLoading.userForm}
+                ariaLabel={t("Retype password")}
               />
             </FormFieldInput>
           </FormField>

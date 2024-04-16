@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { InputCheckbox, InputText, SelectSingle, Textarea } from "@conduction/components";
 import { useSource } from "../../../hooks/source";
 import { useQueryClient } from "react-query";
-import { CreateKeyValue, IKeyValue } from "@conduction/components/lib/components/formFields";
+import { CreateKeyValue, IKeyValue, InputNumber } from "@conduction/components/lib/components/formFields";
 import { SourcesAuthFormTemplate } from "./SourcesAuthFormTemplate";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { translateDate } from "../../../services/dateFormat";
@@ -87,6 +87,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     const payload = {
       ...data,
       auth: data.auth && data.auth.value,
+      authorizationPassthroughMethod: data.authorizationPassthroughMethod.value ?? "Authorization",
       configuration: {
         headers: _.isEqual(source?.configuration.headers, data.headers)
           ? data.headers
@@ -106,6 +107,17 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
         decode_content:
           advancedSwitchState.decodeContent === "string" ? data.decode_content_str : data.decode_content_bool,
         proxy: data.proxy,
+      },
+      loggingConfig: {
+        callBody: data.callBody,
+        callContentType: data.callContentType,
+        callQuery: data.callQuery,
+        callUrl: data.callUrl,
+        maxCharCountBody: data.maxCharCountBody,
+        maxCharCountErrorBody: data.maxCharCountErrorBody,
+        responseBody: data.responseBody,
+        responseContentType: data.responseContentType,
+        responseStatusCode: data.responseStatusCode,
       },
     };
 
@@ -131,12 +143,14 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     };
 
     const basicFields: string[] = [
+      "reference",
       "name",
       "isEnabled",
       "status",
       "description",
       "location",
       "accept",
+      "authorizationHeader",
       "dateCreated",
       "dateModified",
       "documentation",
@@ -149,9 +163,29 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
     ];
     basicFields.forEach((field) => setValue(field, source[field]));
 
+    const loggingConfigFields: string[] = [
+      "callBody",
+      "callContentType",
+      "callQuery",
+      "callUrl",
+      "maxCharCountBody",
+      "maxCharCountErrorBody",
+      "responseBody",
+      "responseContentType",
+      "responseStatusCode",
+    ];
+    loggingConfigFields.forEach((field) => setValue(field, source["loggingConfig"]?.field));
+
     setValue(
       "auth",
       authSelectOptions.find((option) => source.auth === option.value),
+    );
+
+    setValue(
+      "authorizationPassthroughMethod",
+      authorizationPassthroughMethodSelectOptions.find(
+        (option) => source.authorizationPassthroughMethod === option.value,
+      ),
     );
 
     if (source.configuration) {
@@ -247,11 +281,47 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
             <Tab className={styles.tab} label={t("Query")} value={1} />
             <Tab className={styles.tab} label={t("Header")} value={2} />
             <Tab className={styles.tab} label={t("Advanced")} value={3} />
+            <Tab className={styles.tab} label={t("Logging config")} value={4} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
             <div className={styles.gridContainer}>
+              {source && (
+                <div className={styles.statusContainer}>
+                  <FormField>
+                    <FormFieldLabel>{t("Status")}</FormFieldLabel>
+
+                    <div>{getStatusTag(source.status)}</div>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Created")}</FormFieldLabel>
+                      <StatusTag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Modified")}</FormFieldLabel>
+                      <StatusTag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
+                    </FormFieldInput>
+                  </FormField>
+                </div>
+              )}
               <div className={styles.grid}>
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+                    <InputText
+                      {...{ register, errors }}
+                      name="reference"
+                      disabled={isLoading.sourceForm}
+                      ariaLabel={t("Enter reference")}
+                    />
+                  </FormFieldInput>
+                </FormField>
+
                 <FormField>
                   <FormFieldInput>
                     <FormFieldLabel>{t("Name")}</FormFieldLabel>
@@ -260,38 +330,20 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                       name="name"
                       validation={enrichValidation({ required: true, maxLength: 225 })}
                       disabled={isLoading.sourceForm}
+                      ariaLabel={t("Enter name")}
                     />
                   </FormFieldInput>
                 </FormField>
-
-                {source && (
-                  <>
-                    <FormField>
-                      <FormFieldLabel>{t("Status")}</FormFieldLabel>
-
-                      <div>{getStatusTag(source.status)}</div>
-                    </FormField>
-
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Created")}</FormFieldLabel>
-                        <StatusTag label={translateDate(i18n.language, source.dateCreated) ?? "-"} />
-                      </FormFieldInput>
-                    </FormField>
-
-                    <FormField>
-                      <FormFieldInput>
-                        <FormFieldLabel>{t("Modified")}</FormFieldLabel>
-                        <StatusTag label={translateDate(i18n.language, source.dateModified) ?? "-"} />
-                      </FormFieldInput>
-                    </FormField>
-                  </>
-                )}
               </div>
               <FormField>
                 <FormFieldInput>
                   <FormFieldLabel>{t("Description")}</FormFieldLabel>
-                  <Textarea {...{ register, errors }} name="description" disabled={isLoading.sourceForm} />
+                  <Textarea
+                    {...{ register, errors }}
+                    name="description"
+                    disabled={isLoading.sourceForm}
+                    ariaLabel={t("Enter description")}
+                  />
                 </FormFieldInput>
               </FormField>
 
@@ -304,24 +356,39 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                       name="location"
                       validation={enrichValidation({ required: true, maxLength: 225 })}
                       disabled={isLoading.sourceForm}
+                      ariaLabel={t("Enter location")}
                     />
                   </FormFieldInput>
                 </FormField>
 
                 <FormField>
                   <FormFieldInput>
-                    <FormFieldLabel>{t("authType")}</FormFieldLabel>
-                    <SelectSingle
-                      {...{ register, errors, control }}
-                      name="auth"
-                      options={authSelectOptions}
-                      validation={enrichValidation({ required: true })}
+                    <FormFieldLabel>{t("Authorization header")}</FormFieldLabel>
+                    <InputText
+                      {...{ register, errors }}
+                      name="authorizationHeader"
                       disabled={isLoading.sourceForm}
+                      defaultValue={"Authorization"}
+                      ariaLabel={t("Enter authorization header")}
                     />
                   </FormFieldInput>
                 </FormField>
 
-                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} />}
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("Authorization passthrough method")}</FormFieldLabel>
+                    <SelectSingle
+                      {...{ register, errors, control }}
+                      name="authorizationPassthroughMethod"
+                      options={authorizationPassthroughMethodSelectOptions}
+                      disabled={isLoading.sourceForm}
+                      defaultValue={authorizationPassthroughMethodSelectOptions.find(
+                        (option) => option.value === "header",
+                      )}
+                      ariaLabel={t("Select authorization passthrough method")}
+                    />
+                  </FormFieldInput>
+                </FormField>
 
                 <FormField>
                   <FormFieldInput>
@@ -334,6 +401,22 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     />
                   </FormFieldInput>
                 </FormField>
+
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("authType")}</FormFieldLabel>
+                    <SelectSingle
+                      {...{ register, errors, control }}
+                      name="auth"
+                      options={authSelectOptions}
+                      disabled={isLoading.sourceForm}
+                      defaultValue={authSelectOptions.find((option) => option.value === "none")}
+                      ariaLabel={t("Select authType")}
+                    />
+                  </FormFieldInput>
+                </FormField>
+
+                {selectedAuth && <SourcesAuthFormTemplate {...{ selectedAuth, register, errors }} />}
               </div>
             </div>
           </TabPanel>
@@ -359,6 +442,126 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
           <TabPanel className={styles.tabPanel} value="3">
             <AdvancedSwitch />
           </TabPanel>
+
+          <TabPanel className={styles.tabPanel} value="4">
+            <div className={styles.gridContainer}>
+              <p className={styles.infoParagraph}>
+                {t("Here you can configure what you want to log for requests that are made to this source.")}
+              </p>
+              <div className={styles.grid}>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Call body")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="callBody"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={source?.loggingConfig?.callBody ?? true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Call content type")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="callContentType"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={source?.loggingConfig?.callContentType ?? true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Call query")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="callQuery"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={source?.loggingConfig?.callQuery ?? true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Call url")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="callUrl"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={source?.loggingConfig?.callUrl ?? true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Max character count body")}</FormFieldLabel>
+                  </div>
+                  <InputNumber
+                    {...{ register, errors, control }}
+                    name="maxCharCountBody"
+                    disabled={isLoading.sourceForm}
+                    defaultValue={source?.loggingConfig?.maxCharCountBody ?? "500"}
+                    ariaLabel={t("Enter max character count body")}
+
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Max character count error body")}</FormFieldLabel>
+                  </div>
+                  <InputNumber
+                    {...{ register, errors, control }}
+                    name="maxCharCountErrorBody"
+                    disabled={isLoading.sourceForm}
+                    defaultValue={source?.loggingConfig?.maxCharCountErrorBody ?? "2000"}
+                    ariaLabel={t("Enter max character count error body")}
+
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Response body")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="responseBody"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={source?.loggingConfig?.responseBody ?? true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Response content type")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="responseContentType"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={source?.loggingConfig?.responseContentType ?? true}
+                    label="True"
+                  />
+                </FormField>
+                <FormField>
+                  <div className={styles.formFieldHeader}>
+                    <FormFieldLabel>{t("Response status code")}</FormFieldLabel>
+                  </div>
+                  <InputCheckbox
+                    {...{ register, errors, control }}
+                    name="responseStatusCode"
+                    disabled={isLoading.sourceForm}
+                    defaultChecked={source?.loggingConfig?.responseStatusCode ?? true}
+                    label="True"
+                  />
+                </FormField>
+              </div>
+            </div>
+          </TabPanel>
         </TabContext>
       </form>
     </div>
@@ -372,6 +575,13 @@ const authSelectOptions = [
   { label: "Username and Password", value: "username-password" },
   { label: "VrijBRP-JWT", value: "vrijbrp-jwt" },
   { label: "Pink-JWT", value: "pink-jwt" },
+];
+
+const authorizationPassthroughMethodSelectOptions = [
+  { label: "header", value: "header" },
+  { label: "query", value: "query" },
+  { label: "form_params", value: "form_params" },
+  { label: "json", value: "json" },
 ];
 
 const convertArrayToObject = (array: IKeyValue[]): Record<string, string> => {

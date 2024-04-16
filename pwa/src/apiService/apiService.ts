@@ -37,7 +37,7 @@ interface PromiseMessage {
 
 export type TSendFunction = (
   instance: AxiosInstance,
-  action: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "DOWNLOAD",
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "DOWNLOAD",
   endpoint: string,
   payload?: JSON | FormData,
   promiseMessage?: PromiseMessage,
@@ -229,7 +229,7 @@ export default class APIService {
   }
 
   // Send method
-  public Send: TSendFunction = (instance, action, endpoint, payload, promiseMessage) => {
+  public Send: TSendFunction = (instance, method, endpoint, payload, promiseMessage) => {
     let _payload: any = payload;
 
     if (typeof _payload === "object" && !(_payload instanceof FormData)) {
@@ -239,21 +239,22 @@ export default class APIService {
     if (!validateSession()) {
       handleAutomaticLogout();
 
-      return Promise.resolve({
-        // return fake AxiosInstance for calls to not break
-        data: [],
-        status: -1,
-        statusText: "Session invalid",
-        config: {},
-        headers: {},
-      });
+      // Commented this code because it makes the Send function error. I have not found a working solution for this code.
+      // return Promise.resolve({
+      //   // return fake AxiosInstance for calls to not break
+      //   data: [],
+      //   status: -1,
+      //   statusText: "Session invalid",
+      //   config: {},
+      //   headers: {},
+      // });
     }
 
     if (shouldRenewToken()) {
       this.renewAuthentication();
     }
 
-    switch (action) {
+    switch (method) {
       case "GET":
         const response = instance.get(endpoint);
         response.catch((err) => toast.error(promiseMessage?.error ?? err.message));

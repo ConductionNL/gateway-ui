@@ -60,6 +60,7 @@ export const CollectionFormTemplate: React.FC<CollectionFormTemplateProps> = ({ 
                 name="name"
                 validation={enrichValidation({ required: true })}
                 disabled={isLoading.collectionForm}
+                ariaLabel={t("Enter name")}
               />
             </FormFieldInput>
           </FormField>

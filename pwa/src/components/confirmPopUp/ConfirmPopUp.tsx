@@ -16,6 +16,9 @@ interface ConfirmPopUpProps {
     label: string;
     icon: IconDefinition;
   };
+  cancelButton: {
+    href: string;
+  };
   handleConfirm: () => any;
 }
 
@@ -25,6 +28,7 @@ export const ConfirmPopUp: React.FC<ConfirmPopUpProps> = ({
   hide,
   isVisible,
   confirmButton,
+  cancelButton,
   handleConfirm,
 }) => {
   const NotificationPopUp = _NotificationPopUp.NotificationPopUp;
@@ -44,6 +48,7 @@ export const ConfirmPopUp: React.FC<ConfirmPopUpProps> = ({
           label: "Cancel",
           icon: <FontAwesomeIcon icon={faClose} />,
           handleClick: () => {},
+          href: cancelButton.href,
         }}
         layoutClassName={styles.popup}
         {...{ title, description, isVisible, hide }}

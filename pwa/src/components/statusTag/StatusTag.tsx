@@ -2,7 +2,7 @@ import * as React from "react";
 import * as styles from "./StatusTag.module.css";
 
 import clsx from "clsx";
-import { Tag, ToolTip } from "@conduction/components";
+import { Tag } from "@conduction/components";
 
 export type TStatusTagType =
   | "success"

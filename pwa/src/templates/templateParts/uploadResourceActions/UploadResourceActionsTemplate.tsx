@@ -13,7 +13,7 @@ import { BulkActionButton } from "../../../components/bulkActionButton/BulkActio
 import { Alert } from "@gemeente-denhaag/components-react";
 import { toast } from "react-hot-toast";
 import { StatusTag } from "../../../components/statusTag/StatusTag";
-import { ToolTip } from "@conduction/components";
+import { TOOLTIP_ID } from "../../../layout/Layout";
 
 export const UploadResourceActionsTemplate: React.FC = () => {
   const [acceptedFiles, setAcceptedFiles] = React.useState<any[]>([]);
@@ -86,9 +86,9 @@ export const UploadResourceActionsTemplate: React.FC = () => {
                   <TableCell>{file.name}</TableCell>
 
                   <TableCell>
-                    <ToolTip tooltip="Ready to be executed">
+                    <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content="Ready to be executed">
                       <StatusTag label="Ready" type="success" />
-                    </ToolTip>
+                    </span>
                   </TableCell>
                 </TableRow>
               ))}
@@ -100,9 +100,9 @@ export const UploadResourceActionsTemplate: React.FC = () => {
                   </TableCell>
                   <TableCell>{file.name}</TableCell>
                   <TableCell>
-                    <ToolTip tooltip={errors[0].message}>
+                    <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content={errors[0].message}>
                       <StatusTag label="Critical error" type="critical" />
-                    </ToolTip>
+                    </span>
                   </TableCell>
                 </TableRow>
               ))}

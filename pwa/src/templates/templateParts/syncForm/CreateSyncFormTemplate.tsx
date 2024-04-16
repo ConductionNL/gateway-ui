@@ -77,13 +77,14 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
                     name="source"
                     validation={enrichValidation({ required: true })}
                     {...{ register, errors, control }}
+                    ariaLabel={t("Select a source")}
                   />
                 )}
               </FormFieldInput>
             </FormField>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Select a Action")}</FormFieldLabel>
+                <FormFieldLabel>{t("Select an Action")}</FormFieldLabel>
 
                 {getActions.isLoading && <Skeleton height="50px" />}
                 {getActions.isSuccess && syncActions && (
@@ -91,6 +92,7 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
                     options={syncActions.map((action: any) => ({ label: action.name, value: action.id }))}
                     name="action"
                     {...{ register, errors, control }}
+                    ariaLabel={t("Select an action")}
                   />
                 )}
               </FormFieldInput>
@@ -103,6 +105,7 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
                   name="externalId"
                   validation={enrichValidation({ maxLength: 225 })}
                   disabled={loading}
+                  ariaLabel={t("Enter externalId")}
                 />
               </FormFieldInput>
             </FormField>
@@ -114,6 +117,7 @@ export const CreateSyncFormTemplate: React.FC<CreateSyncFormTemplateProps> = ({ 
                   name="endpoint"
                   validation={enrichValidation({ required: true, maxLength: 225 })}
                   disabled={loading}
+                  ariaLabel={t("Enter endpoint")}
                 />
               </FormFieldInput>
             </FormField>

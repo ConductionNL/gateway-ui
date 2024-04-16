@@ -4,7 +4,7 @@ import { Link, Paragraph } from "@gemeente-denhaag/components-react";
 import { navigate } from "gatsby";
 import _ from "lodash";
 import { useTranslation } from "react-i18next";
-import { Tag, ToolTip } from "@conduction/components";
+import { Tag } from "@conduction/components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { GitHubLogo } from "../../assets/svgs/GitHub";
 import {
@@ -20,6 +20,7 @@ import {
 import { PackagistLogo } from "../../assets/svgs/Packagist";
 import { usePlugin } from "../../hooks/plugin";
 import { useQueryClient } from "react-query";
+import { TOOLTIP_ID } from "../../layout/Layout";
 
 export interface PluginCardProps {
   title: {
@@ -93,44 +94,44 @@ export const PluginCard: React.FC<PluginCardProps> = ({
 
       <div className={styles.tags}>
         {packagistUrl && (
-          <ToolTip tooltip=" View Packagist">
+          <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content="View Packagist">
             <Tag
               layoutClassName={styles.svgLogo}
               label={t("Packagist")}
               icon={<PackagistLogo />}
               onClick={() => open(packagistUrl)}
             />
-          </ToolTip>
+          </span>
         )}
 
         {repositoryUrl && (
-          <ToolTip tooltip="GitHub">
+          <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content="Github">
             <Tag
               layoutClassName={styles.svgLogo}
               label={t("Repository")}
               icon={<GitHubLogo />}
               onClick={() => open(repositoryUrl)}
             />
-          </ToolTip>
+          </span>
         )}
 
-        <ToolTip tooltip="Aantal downloads">
+        <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content="Aantal downloads">
           <Tag label={downloads ?? 0} icon={<FontAwesomeIcon icon={faDownload} />} />
-        </ToolTip>
+        </span>
 
-        <ToolTip tooltip="Aantal favers">
+        <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content="Aantal favers">
           <Tag label={favers ?? 0} icon={<FontAwesomeIcon icon={faStar} />} />
-        </ToolTip>
+        </span>
 
         {license && (
-          <ToolTip tooltip="Licentie">
+          <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content="Licentie">
             <Tag label={license ?? 0} icon={<FontAwesomeIcon icon={faScroll} />} />
-          </ToolTip>
+          </span>
         )}
         {homepageUrl && (
-          <ToolTip tooltip="Homepage">
+          <span data-tooltip-id={TOOLTIP_ID} data-tooltip-content="Homepage">
             <Tag label={t("Homepage")} icon={<FontAwesomeIcon icon={faHouse} />} onClick={() => open(homepageUrl)} />
-          </ToolTip>
+          </span>
         )}
       </div>
     </div>

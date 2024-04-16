@@ -9,6 +9,17 @@ body {
   --utrecht-textarea-border-color: #7a7a7a;
   --utrecht-textarea-placeholder-color: #d1d1d1;
 
+  --conduction-tooltip-z-index: 9999;
+  --conduction-tooltip-border-radius: 0px;
+  --conduction-tooltip-border-color: unset;
+  --conduction-tooltip-border-style: unset;
+  --conduction-tooltip-border-width: 0px;
+  --conduction-tooltip-padding-inline-end: 14px;
+  --conduction-tooltip-padding-inline-start: 14px;
+  --conduction-tooltip-padding-block-end: 8px;
+  --conduction-tooltip-padding-block-start: 8px;
+  --conduction-tooltip-color: #ffffff;
+  --conduction-tooltip-background-color: #000000;
 }
 
 button:hover {

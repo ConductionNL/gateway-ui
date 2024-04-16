@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as styles from "./MappingDetailsTemplate.module.css";
-import { Container, ToolTip } from "@conduction/components";
+import { Container } from "@conduction/components";
 import { MappingFormTemplate, formId } from "../templateParts/mappingForm/MappingFormTemplate";
 import { useMapping } from "../../hooks/mapping";
 import { useQueryClient } from "react-query";
@@ -15,6 +15,7 @@ import { faArrowsRotate, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
 import { Button } from "../../components/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CodeEditor } from "../../components/codeEditor/CodeEditor";
+import { TOOLTIP_ID } from "../../layout/Layout";
 
 interface MappingDetailsTemplateProps {
   mappingId: string;
@@ -102,9 +103,12 @@ export const MappingDetailTemplate: React.FC<MappingDetailsTemplateProps> = ({ m
                   <div className={styles.inputContent}>
                     <div className={styles.inputTitle}>
                       {t("Input")}
-                      <ToolTip tooltip="The input is the JSON code you want to test the mapping with.">
+                      <span
+                        data-tooltip-id={TOOLTIP_ID}
+                        data-tooltip-content={"The input is the JSON code you want to test the mapping with."}
+                      >
                         <FontAwesomeIcon icon={faInfoCircle} />
-                      </ToolTip>
+                      </span>
                     </div>
 
                     <CodeEditor language="json" code={mappingTestInput} setCode={setMappingTestInput} />

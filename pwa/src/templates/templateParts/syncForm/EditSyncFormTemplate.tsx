@@ -108,13 +108,14 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                     name="source"
                     validation={enrichValidation({ required: true })}
                     {...{ register, errors, control }}
+                    ariaLabel={t("Select a source")}
                   />
                 )}
               </FormFieldInput>
             </FormField>
             <FormField>
               <FormFieldInput>
-                <FormFieldLabel>{t("Select a Action")}</FormFieldLabel>
+                <FormFieldLabel>{t("Select an Action")}</FormFieldLabel>
                 {sync?.action && (
                   <>
                     {getAction.isLoading && <Skeleton height="50px" />}
@@ -123,6 +124,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                         options={syncActions.map((action: any) => ({ label: action.name, value: action.id }))}
                         name="action"
                         {...{ register, errors, control }}
+                        ariaLabel={t("Select an action")}
                       />
                     )}
                   </>
@@ -135,6 +137,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                         options={syncActions.map((action: any) => ({ label: action.name, value: action.id }))}
                         name="action"
                         {...{ register, errors, control }}
+                        ariaLabel={t("Select an action")}
                       />
                     )}
                   </>
@@ -149,6 +152,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                   name="externalId"
                   validation={enrichValidation({ maxLength: 225 })}
                   disabled={loading}
+                  ariaLabel={t("Enter externalId")}
                 />
               </FormFieldInput>
             </FormField>
@@ -160,6 +164,7 @@ export const EditSyncFormTemplate: React.FC<EditSyncFormTemplateProps> = ({ obje
                   name="endpoint"
                   validation={enrichValidation({ required: true, maxLength: 225 })}
                   disabled={loading}
+                  ariaLabel={t("Enter endpoint")}
                 />
               </FormFieldInput>
             </FormField>
