@@ -18,7 +18,6 @@ interface DatabaseFormTemplateProps {
 export const formId: string = "database-form";
 
 export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ database }) => {
-  console.log(database);
   const { t } = useTranslation();
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
