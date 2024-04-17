@@ -136,7 +136,7 @@ module.exports = {
             crumbLabel: "Template",
           },
           {
-            pathname: "/databases/[databaseId]",
+            pathname: "/settings/databases/[databaseId]",
             crumbLabel: "Database",
           },
         ],

@@ -8,6 +8,8 @@ COPY package.json package-lock.json ./
 # install node modules and build assets
 RUN npm install --legacy-peer-deps
 
+RUN npm install @parcel/watcher
+
 COPY . .
 
 RUN npm run build

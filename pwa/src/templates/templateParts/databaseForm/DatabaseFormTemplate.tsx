@@ -2,17 +2,13 @@ import * as React from "react";
 import * as styles from "./DatabaseFormTemplate.module.css";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { useTranslation } from "react-i18next";
-import { InputPassword, InputText, SelectMultiple, SelectSingle, Textarea } from "@conduction/components";
+import { InputText, SelectMultiple, Textarea } from "@conduction/components";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useDatabase } from "../../../hooks/database";
 import Skeleton from "react-loading-skeleton";
-import { validatePassword } from "../../../services/stringValidations";
 import { useOrganization } from "../../../hooks/organization";
 import { useIsLoadingContext } from "../../../context/isLoading";
-import { useApplication } from "../../../hooks/application";
-import { IKeyValue } from "@conduction/components/lib/components/formFields";
-import { useSecurityGroup } from "../../../hooks/securityGroup";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
 
 interface DatabaseFormTemplateProps {
@@ -22,18 +18,12 @@ interface DatabaseFormTemplateProps {
 export const formId: string = "database-form";
 
 export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ database }) => {
+  console.log(database);
   const { t } = useTranslation();
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
   const queryClient = useQueryClient();
   const createOrEditDatabase = useDatabase(queryClient).createOrEdit(database?.id);
-
-  const getOrganization = useOrganization(queryClient).getAll();
-
-  const organizationOptions = getOrganization.data?.map((_organization: any) => ({
-    label: _organization.name,
-    value: _organization.id,
-  }));
 
   const _useOrganizations = useOrganization(queryClient);
   const getOrganizations = _useOrganizations.getAll();
@@ -44,8 +34,6 @@ export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ data
     setValue,
     formState: { errors, isSubmitted },
     control,
-    watch,
-    trigger,
   } = useForm();
 
   const handleSetFormValues = (database: any): void => {
@@ -142,7 +130,10 @@ export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ data
               {getOrganizations.isSuccess && (
                 <SelectMultiple
                   options={getOrganizations.data
-                    .filter((organization: any) => !organization.database || organization.database.id === database.id)
+                    .filter(
+                      (organization: any) =>
+                        !organization.database || (database?.id && organization.database.id === database.id),
+                    )
                     .map((organization: any) => ({
                       label: organization.name,
                       value: organization.id,
@@ -162,6 +153,7 @@ export const DatabaseFormTemplate: React.FC<DatabaseFormTemplateProps> = ({ data
               <InputText
                 {...{ register, errors }}
                 name="uri"
+                validation={enrichValidation({ required: !database })}
                 disabled={isLoading.databaseForm}
                 ariaLabel={t("Enter database uri")}
               />
