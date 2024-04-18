@@ -35,6 +35,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
   const queryClient = useQueryClient();
   const _useOrganizations = useOrganization(queryClient);
   const getOrganization = _useOrganizations.getOne(organizationId);
+  const deleteOrganization = _useOrganizations.remove();
 
   const getLogs = useLog(queryClient).getAllFromChannel("organization", organizationId, currentLogsPage);
 
@@ -54,6 +55,12 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
     );
   };
 
+  const handleDeleteOrganization = () => {
+    const confirmDeletion = confirm("Are you sure you want to delete this organization?");
+
+    confirmDeletion && deleteOrganization.mutate({ id: organizationId });
+  };
+
   return (
     <Container layoutClassName={styles.container}>
       {getOrganization.isSuccess && (
@@ -63,6 +70,8 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
             {...{ formId }}
             disabled={isLoading.organizationForm}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
+            handleDelete={handleDeleteOrganization}
+
           />
 
           <OrganizationForm organization={getOrganization.data} />
