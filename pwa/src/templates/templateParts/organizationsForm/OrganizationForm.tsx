@@ -73,7 +73,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
                 {...{ register, errors }}
                 name="reference"
                 validation={enrichValidation({ required: true })}
-                disabled={isLoading.databaseForm}
+                disabled={isLoading.organizationForm}
                 ariaLabel={t("Enter reference")}
               />
             </FormFieldInput>
