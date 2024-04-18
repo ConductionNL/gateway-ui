@@ -2,11 +2,13 @@ import * as React from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import APIService from "../apiService/apiService";
 import APIContext from "../apiService/apiContext";
-import { addItem, updateItem } from "../services/mutateQueries";
+import { addItem, deleteItem, updateItem } from "../services/mutateQueries";
 import { navigate } from "gatsby";
+import { useDeletedItemsContext } from "../context/deletedItems";
 
 export const useOrganization = (queryClient: QueryClient) => {
   const API: APIService | null = React.useContext(APIContext);
+  const { isDeleted, addDeletedItem, removeDeletedItem } = useDeletedItemsContext();
 
   const getAll = () =>
     useQuery<any[], Error>("organizations", API.Organization.getAll, {
@@ -29,7 +31,20 @@ export const useOrganization = (queryClient: QueryClient) => {
       onError: (error) => {
         console.warn(error.message);
       },
-      enabled: !!organizationId,
+      enabled: !!organizationId && !isDeleted(organizationId),
+    });
+
+  const remove = () =>
+    useMutation<any, Error, any>(API.Organization.delete, {
+      onMutate: ({ id }) => addDeletedItem(id),
+      onSuccess: async (_, variables) => {
+        deleteItem(queryClient, "organizations", variables.id);
+        navigate("/settings/organizations");
+      },
+      onError: (error, { id }) => {
+        removeDeletedItem(id);
+        console.warn(error.message);
+      },
     });
 
   const createOrEdit = (organizationId?: string) =>
@@ -50,5 +65,5 @@ export const useOrganization = (queryClient: QueryClient) => {
       },
     });
 
-  return { getAll, getAllSelectOptions, getOne, createOrEdit };
+  return { getAll, getAllSelectOptions, getOne, createOrEdit, remove };
 };
