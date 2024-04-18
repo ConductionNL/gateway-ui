@@ -55,7 +55,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
     );
   };
 
-  const handleDeleteDatabase = () => {
+  const handleDeleteOrganization = () => {
     const confirmDeletion = confirm("Are you sure you want to delete this organization?");
 
     confirmDeletion && deleteOrganization.mutate({ id: organizationId });
@@ -70,7 +70,7 @@ export const EditOrganizationTemplate: React.FC<CreateOrganizationTemplateProps>
             {...{ formId }}
             disabled={isLoading.organizationForm}
             handleToggleDashboard={{ handleToggle: toggleFromDashboard, isActive: !!dashboardCard }}
-            handleDelete={handleDeleteDatabase}
+            handleDelete={handleDeleteOrganization}
 
           />
 
