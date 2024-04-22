@@ -41,7 +41,7 @@ export const SecurityGroupFormTemplate: React.FC<SecurityGroupFormTemplateProps>
   };
 
   const handleSetFormValues = (): void => {
-    const basicFields: string[] = ["name", "description", "config"];
+    const basicFields: string[] = ["reference", "name", "description", "config"];
     basicFields.forEach((field) => setValue(field, securityGroup[field]));
 
     setValue(
@@ -62,6 +62,19 @@ export const SecurityGroupFormTemplate: React.FC<SecurityGroupFormTemplateProps>
     <form onSubmit={handleSubmit(onSubmit)} id={formId}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="reference"
+                validation={enrichValidation({ required: true})}
+                disabled={isLoading.securityGroupForm}
+                ariaLabel={t("Enter reference")}
+              />
+            </FormFieldInput>
+          </FormField>
+
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>

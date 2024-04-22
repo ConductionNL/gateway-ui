@@ -52,6 +52,7 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
 
   const handleSetFormValues = (application: any): void => {
     const basicFields: string[] = [
+      "reference",
       "name",
       "description",
       "public",
@@ -84,6 +85,19 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
     <form onSubmit={handleSubmit(onSubmit)} id={formId} className={styles.form}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="reference"
+                validation={enrichValidation({ required: true})}
+                disabled={isLoading.applicationForm}
+                ariaLabel={t("Enter reference")}
+              />
+            </FormFieldInput>
+          </FormField>
+
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>
