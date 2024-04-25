@@ -68,7 +68,7 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
   }, [password, validationPassword]);
 
   const handleSetFormValues = (user: any): void => {
-    const basicFields: string[] = ["name", "description", "email", "password", "locale", "person"];
+    const basicFields: string[] = ["reference", "name", "description", "version", "email", "password", "locale", "person"];
     basicFields.forEach((field) => setValue(field, user[field]));
 
     setValue(
@@ -117,6 +117,31 @@ export const UserFormTemplate: React.FC<UserFormTemplateProps> = ({ user }) => {
     <form onSubmit={handleSubmit(onSubmit)} id={formId} className={styles.formContainer}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="reference"
+                disabled={isLoading.userForm}
+                ariaLabel={t("Enter reference")}
+              />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Version")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="version"
+                disabled={isLoading.userForm}
+                defaultValue={user?.version ?? "0.0.0"}
+                ariaLabel={t("Enter version")}
+              />
+            </FormFieldInput>
+          </FormField>
+
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>
