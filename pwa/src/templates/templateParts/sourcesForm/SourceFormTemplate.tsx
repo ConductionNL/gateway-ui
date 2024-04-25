@@ -144,6 +144,7 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
 
     const basicFields: string[] = [
       "reference",
+      "version",
       "name",
       "isEnabled",
       "status",
@@ -318,6 +319,19 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                       name="reference"
                       disabled={isLoading.sourceForm}
                       ariaLabel={t("Enter reference")}
+                    />
+                  </FormFieldInput>
+                </FormField>
+
+                <FormField>
+                  <FormFieldInput>
+                    <FormFieldLabel>{t("Version")}</FormFieldLabel>
+                    <InputText
+                      {...{ register, errors }}
+                      name="version"
+                      disabled={isLoading.sourceForm}
+                      defaultValue={source?.version ?? "0.0.0"}
+                      ariaLabel={t("Enter version")}
                     />
                   </FormFieldInput>
                 </FormField>
@@ -507,7 +521,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     disabled={isLoading.sourceForm}
                     defaultValue={source?.loggingConfig?.maxCharCountBody ?? "500"}
                     ariaLabel={t("Enter max character count body")}
-
                   />
                 </FormField>
                 <FormField>
@@ -520,7 +533,6 @@ export const SourceFormTemplate: React.FC<SourceTemplateProps> = ({ source }) =>
                     disabled={isLoading.sourceForm}
                     defaultValue={source?.loggingConfig?.maxCharCountErrorBody ?? "2000"}
                     ariaLabel={t("Enter max character count error body")}
-
                   />
                 </FormField>
                 <FormField>

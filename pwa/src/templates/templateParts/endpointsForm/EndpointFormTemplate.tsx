@@ -68,7 +68,7 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
   };
 
   const handleSetFormValues = (): void => {
-    const basicFields: string[] = ["name", "description", "pathRegex", "tag"];
+    const basicFields: string[] = ["reference", "version", "name", "description", "pathRegex", "tag"];
     basicFields.forEach((field) => setValue(field, endpoint[field]));
 
     setValue("path", endpoint.path && endpoint.path.join("/"));
@@ -113,6 +113,30 @@ export const EndpointFormTemplate: React.FC<EndpointFormTemplateProps> = ({ endp
     <form onSubmit={handleSubmit(onSubmit)} id={formId}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="reference"
+                disabled={isLoading.endpointForm}
+                ariaLabel={t("Enter reference")}
+              />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Version")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="version"
+                disabled={isLoading.endpointForm}
+                defaultValue={endpoint?.version ?? "0.0.0"}
+                ariaLabel={t("Enter version")}
+              />
+            </FormFieldInput>
+          </FormField>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>

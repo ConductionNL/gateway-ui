@@ -441,6 +441,7 @@ export const EditPropertyFormTemplate: React.FC<EditPropertyFormTemplateProps> =
                         {...{ register, errors, control }}
                         name="format"
                         options={formatSelectOptions}
+                        isClearable={true}
                         disabled={loading || isImmutable}
                         ariaLabel={t("Select format")}
                       />

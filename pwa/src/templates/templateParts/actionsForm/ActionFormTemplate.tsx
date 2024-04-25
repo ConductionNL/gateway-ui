@@ -18,6 +18,7 @@ import { CodeEditor } from "../../../components/codeEditor/CodeEditor";
 import { translateDate } from "../../../services/dateFormat";
 import { StatusTag } from "../../../components/statusTag/StatusTag";
 import { formatDateTime } from "../../../services/dateTime";
+import { useUser } from "../../../hooks/user";
 
 export const formId: string = "action-form";
 
@@ -43,6 +44,9 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
 
   const _useCronjob = useCronjob(queryClient);
   const getCronjobs = _useCronjob.getAll();
+
+  const _useUsers = useUser(queryClient);
+  const getUsers = _useUsers.getAll();
 
   const {
     register,
@@ -81,6 +85,7 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
       listens: data.listens?.map((listener: any) => listener.value),
       throws: data.throws?.map((_throw: any) => _throw.value),
       class: data.class.value,
+      userId: data.userId?.value ?? null,
       conditions: actionConditionsFieldValue ? JSON.parse(actionConditionsFieldValue) : [],
       configuration: {},
     };
@@ -96,12 +101,27 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
   };
 
   const handleSetFormValues = (): void => {
-    const basicFields: string[] = ["reference", "name", "description", "priority", "async", "isLockable", "isEnabled"];
+    const basicFields: string[] = [
+      "reference",
+      "version",
+      "name",
+      "description",
+      "priority",
+      "async",
+      "isLockable",
+      "isEnabled",
+    ];
     basicFields.forEach((field) => setValue(field, action[field]));
 
     setActionConditionsFieldValue(JSON.stringify(action["conditions"], null, 2));
 
     setValue("class", { label: action.class, value: action.class });
+
+    for (const [key, value] of Object.entries(getUsers?.data)) {
+      if (value?.id === action?.userId) {
+        setValue("userId", { label: setUserIdLabel(value), value: value.id });
+      }
+    }
 
     setValue(
       "listens",
@@ -129,6 +149,10 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
         }));
       }
     }
+  };
+
+  const setUserIdLabel = (user: any): string => {
+    return user.name + (" - " + user?.organization?.name);
   };
 
   React.useEffect(() => {
@@ -162,6 +186,19 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                         name="reference"
                         disabled={isLoading.actionForm}
                         ariaLabel={t("Enter reference")}
+                      />
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("Version")}</FormFieldLabel>
+                      <InputText
+                        {...{ register, errors }}
+                        name="version"
+                        disabled={isLoading.actionForm}
+                        defaultValue={action?.version ?? "0.0.0"}
+                        ariaLabel={t("Enter version")}
                       />
                     </FormFieldInput>
                   </FormField>
@@ -258,6 +295,28 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
                         disabled={isLoading.actionForm}
                         ariaLabel={t("Enter priority")}
                       />
+                    </FormFieldInput>
+                  </FormField>
+
+                  <FormField>
+                    <FormFieldInput>
+                      <FormFieldLabel>{t("User ID")}</FormFieldLabel>
+
+                      {getUsers.isLoading && <Skeleton height="50px" />}
+
+                      {getUsers.isSuccess && (
+                        <SelectSingle
+                          options={getUsers.data.map((user: any) => ({
+                            label: setUserIdLabel(user),
+                            value: user.id,
+                          }))}
+                          name="userId"
+                          {...{ register, errors, control }}
+                          disabled={isLoading.actionForm}
+                          ariaLabel={t("Select an user as userId")}
+                          isClearable={true}
+                        />
+                      )}
                     </FormFieldInput>
                   </FormField>
 
