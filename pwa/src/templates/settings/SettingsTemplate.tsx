@@ -9,6 +9,7 @@ import { useCurrentTabContext } from "../../context/tabs";
 import { ApplicationsTemplate } from "../applicationsTemplate/ApplicationsTemplate";
 import { OrganizationsTemplate } from "../organizationsTemplate/OrganizationsTemplate";
 import { UsersTemplate } from "../usersTemplate/UsersTemplate";
+import { DatabasesTemplate } from "../databasesTemplate/DatabasesTemplate";
 import { AuthenticationsTemplate } from "../authenticationsTemplate/AuthenticationsTemplate";
 
 export const SettingsTemplate: React.FC = () => {
@@ -33,7 +34,8 @@ export const SettingsTemplate: React.FC = () => {
             <Tab className={styles.tab} label={t("Applications")} value={2} />
             <Tab className={styles.tab} label={t("Users")} value={3} />
             <Tab className={styles.tab} label={t("Organizations")} value={4} />
-            <Tab className={styles.tab} label={t("Authentication Provider")} value={5} />
+            <Tab className={styles.tab} label={t("Databases")} value={5} />
+            <Tab className={styles.tab} label={t("Authentication Provider")} value={6} />
           </Tabs>
 
           <TabPanel className={styles.tabPanel} value="0">
@@ -52,6 +54,9 @@ export const SettingsTemplate: React.FC = () => {
             <OrganizationsTemplate />
           </TabPanel>
           <TabPanel className={styles.tabPanel} value="5">
+            <DatabasesTemplate />
+          </TabPanel>
+          <TabPanel className={styles.tabPanel} value="6">
             <AuthenticationsTemplate />
           </TabPanel>
         </TabContext>

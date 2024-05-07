@@ -1,0 +1,8 @@
+.container {
+  box-sizing: border-box;
+  background-color: var(--gateway-ui-color-white);
+  padding-inline-start: var(--gateway-ui-size-md);
+  padding-inline-end: var(--gateway-ui-size-md);
+  padding-block-start: var(--gateway-ui-size-md);
+  padding-block-end: var(--gateway-ui-size-md);
+}

@@ -28,6 +28,16 @@ export default class Organization {
     return data;
   };
 
+  public delete = async (variables: { id: string }): Promise<any> => {
+    const { id } = variables;
+
+    const { data } = await this._send(this._instance, "DELETE", `/admin/organizations/${id}`, undefined, {
+      loading: "Removing organization...",
+      success: "Organization successfully removed.",
+    });
+    return data;
+  };
+
   public createOrUpdate = async (variables: { payload: any; id?: string }): Promise<any> => {
     const { payload, id } = variables;
 

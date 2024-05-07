@@ -31,7 +31,7 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
   } = useForm();
 
   const handleSetFormValues = (organization: any): void => {
-    const basicFields: string[] = ["name", "description"];
+    const basicFields: string[] = ["name", "description", "reference"];
     basicFields.forEach((field) => setValue(field, organization[field]));
   };
 
@@ -66,6 +66,21 @@ export const OrganizationForm: React.FC<OrganizationFormProps> = ({ organization
             </FormFieldInput>
           </FormField>
 
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="reference"
+                validation={enrichValidation({ required: true })}
+                disabled={isLoading.organizationForm}
+                ariaLabel={t("Enter reference")}
+              />
+            </FormFieldInput>
+          </FormField>
+        </div>
+
+        <div>
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Description")}</FormFieldLabel>

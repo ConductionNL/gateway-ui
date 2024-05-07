@@ -52,11 +52,14 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
 
   const handleSetFormValues = (application: any): void => {
     const basicFields: string[] = [
+      "reference",
       "name",
       "description",
+      "version",
       "public",
       "secret",
       "publicKey",
+      "privateKey",
       "resource",
       "organization",
       "ednpoints",
@@ -86,6 +89,19 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
         <div className={styles.grid}>
           <FormField>
             <FormFieldInput>
+              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="reference"
+                validation={enrichValidation({ required: true })}
+                disabled={isLoading.applicationForm}
+                ariaLabel={t("Enter reference")}
+              />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>
               <InputText
                 {...{ register, errors }}
@@ -105,6 +121,18 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
                 name="description"
                 disabled={isLoading.applicationForm}
                 ariaLabel={t("Enter description")}
+              />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Version")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="version"
+                disabled={isLoading.applicationForm}
+                defaultValue={application?.version ?? "0.0.0"}
+                ariaLabel={t("Enter version")}
               />
             </FormFieldInput>
           </FormField>
@@ -152,12 +180,24 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
 
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("publicKey")}</FormFieldLabel>
+              <FormFieldLabel>{t("publicKey (write only)")}</FormFieldLabel>
               <Textarea
                 {...{ register, errors }}
                 name="publicKey"
                 disabled={isLoading.applicationForm}
                 ariaLabel={t("Enter publicKey")}
+              />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("privateKey (write only)")}</FormFieldLabel>
+              <Textarea
+                {...{ register, errors }}
+                name="privateKey"
+                disabled={isLoading.applicationForm}
+                ariaLabel={t("Enter privateKey")}
               />
             </FormFieldInput>
           </FormField>
