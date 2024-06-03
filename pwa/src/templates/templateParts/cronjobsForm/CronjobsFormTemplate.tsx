@@ -52,6 +52,7 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
     const payload = {
       ...data,
       throws: data.throws?.map((_throw: any) => _throw.value),
+      userId: data.userId?.value ?? null,
     };
 
     createOrEditCronjob.mutate({ payload, id: cronjob?.id });
@@ -60,12 +61,6 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
   const handleSetFormValues = (): void => {
     const basicFields: string[] = ["reference", "version", "name", "description", "crontab", "isEnabled"];
     basicFields.forEach((field) => setValue(field, cronjob[field]));
-
-    for (const [key, value] of Object.entries(getUsers?.data)) {
-      if (value?.id === cronjob?.userId) {
-        setValue("userId", { label: setUserIdLabel(value), value: value.id });
-      }
-    }
 
     setValue(
       "throws",
@@ -80,6 +75,16 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
   React.useEffect(() => {
     cronjob && handleSetFormValues();
   }, [cronjob]);
+
+  React.useEffect(() => {
+    if (!cronjob) return;
+    if (!getUsers.isSuccess) return;
+    getUsers?.data.map((user) => {
+      if (user?.id === cronjob?.userId) {
+        setValue("userId", { label: setUserIdLabel(user), value: user.id });
+      }
+    });
+  }, [cronjob, getUsers.isSuccess]);
 
   return (
     <div>

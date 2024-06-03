@@ -117,12 +117,6 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
 
     setValue("class", { label: action.class, value: action.class });
 
-    for (const [key, value] of Object.entries(getUsers?.data)) {
-      if (value?.id === action?.userId) {
-        setValue("userId", { label: setUserIdLabel(value), value: value.id });
-      }
-    }
-
     setValue(
       "listens",
       action["listens"].map((listen: any) => ({ label: listen, value: listen })),
@@ -158,6 +152,16 @@ export const ActionFormTemplate: React.FC<ActionFormTemplateProps> = ({ action }
   React.useEffect(() => {
     action && handleSetFormValues();
   }, [action]);
+
+  React.useEffect(() => {
+    if (!action) return;
+    if (!getUsers.isSuccess) return;
+    getUsers?.data.map((user) => {
+      if (user?.id === action?.userId) {
+        setValue("userId", { label: setUserIdLabel(user), value: user.id });
+      }
+    });
+  }, [action, getUsers.isSuccess]);
 
   return (
     <div className={styles.container}>
