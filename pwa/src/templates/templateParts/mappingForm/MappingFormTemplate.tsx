@@ -105,19 +105,6 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
         <div className={styles.grid}>
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("Name")}</FormFieldLabel>
-              <InputText
-                {...{ register, errors }}
-                name="name"
-                validation={enrichValidation({ required: true })}
-                disabled={isLoading.mappingForm}
-                ariaLabel={t("Enter name")}
-              />
-            </FormFieldInput>
-          </FormField>
-
-          <FormField>
-            <FormFieldInput>
               <FormFieldLabel>{t("Reference")}</FormFieldLabel>
               <InputText
                 {...{ register, errors }}
@@ -140,7 +127,19 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
           </FormField>
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("Pass Through")}</FormFieldLabel>
+              <FormFieldLabel>{t("Name")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="name"
+                validation={enrichValidation({ required: true })}
+                disabled={isLoading.mappingForm}
+                ariaLabel={t("Enter name")}
+              />
+            </FormFieldInput>
+          </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Pass through")}</FormFieldLabel>
               <InputCheckbox {...{ register, errors }} label="on" name="passTrough" disabled={isLoading.mappingForm} />
             </FormFieldInput>
           </FormField>
