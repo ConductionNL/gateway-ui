@@ -25,6 +25,7 @@ import { getIdFromObjectId } from "../../../services/getIdFromObjectId";
 export type SchemaInputType =
   | "string"
   | "boolean"
+  | "bool"
   | "array"
   | "integer"
   | "int"
@@ -289,7 +290,7 @@ const FormFieldGroup: React.FC<FormFieldGroupProps & ReactHookFormProps> = ({
           />
         )}
 
-        {type === "boolean" && (
+        {(type === "boolean" || type === "bool") && (
           <InputCheckbox
             label="True"
             validation={enrichValidation({ required })}
