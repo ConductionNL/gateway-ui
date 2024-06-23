@@ -11,10 +11,12 @@ import { CreateKeyValue, InputCheckbox, Textarea } from "@conduction/components/
 import Collapsible from "react-collapsible";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import clsx from "clsx";
-import { faArrowDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown, faChevronRight, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "@gemeente-denhaag/components-react";
 import toast from "react-hot-toast";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
+import { CodeEditor } from "../../../components/codeEditor/CodeEditor";
+import _ from "lodash";
 
 interface MappingFormTemplateProps {
   mapping?: any;
@@ -26,9 +28,18 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
   const { t } = useTranslation();
   const { setIsLoading, isLoading } = useIsLoadingContext();
 
-  const [_mapping, setMapping] = React.useState<any[]>([]);
-  const [unset, setUnset] = React.useState<any[]>([]);
-  const [cast, setCast] = React.useState<any[]>([]);
+  const [mappingKeyValue, setMappingKeyValue] = React.useState<any[]>([]);
+  const [mappingCodeEditor, setMappingCodeEditor] = React.useState<string>("");
+  const [editMappingInEditor, setEditMappingInEditor] = React.useState<boolean>(false);
+
+  const [unsetKeyValue, setUnsetKeyValue] = React.useState<any[]>([]);
+  const [unsetCodeEditor, setUnsetCodeEditor] = React.useState<string>("");
+  const [editUnsetInEditor, setEditUnsetInEditor] = React.useState<boolean>(false);
+
+  const [castKeyValue, setCastKeyValue] = React.useState<any[]>([]);
+  const [castCodeEditor, setCastCodeEditor] = React.useState<string>("");
+  const [editCastInEditor, setEditCastInEditor] = React.useState<boolean>(false);
+
   const [isOpenMapping, setIsOpenMapping] = React.useState<boolean>(!mapping);
   const [isOpenUnset, setIsOpenUnset] = React.useState<boolean>(!mapping);
   const [isOpenCast, setIsOpenCast] = React.useState<boolean>(!mapping);
@@ -49,6 +60,19 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
     e.stopPropagation();
 
     ref.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" });
+  };
+
+  const handleSwitchEditor = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, name: "mapping" | "unset" | "cast") => {
+    e.stopPropagation();
+
+    switch (name) {
+      case "mapping":
+        setEditMappingInEditor(!editMappingInEditor);
+      case "unset":
+        setEditUnsetInEditor(!editUnsetInEditor);
+      case "cast":
+        setEditCastInEditor(!editCastInEditor);
+    }
   };
 
   const {
@@ -80,18 +104,96 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
     basicFields.forEach((field) => setValue(field, mapping[field]));
 
     const newMapping = Object.entries(mapping.mapping).map(([key, value]) => ({ key, value }));
-    setMapping(newMapping);
+    setMappingKeyValue(newMapping);
+    setMappingCodeEditor(JSON.stringify(mapping.mapping.length ? mapping.mapping : {}, null, 2));
 
     const newUnset = Object.entries(mapping.unset).map(([key, value]) => ({ key, value }));
-    setUnset(newUnset);
+    setUnsetKeyValue(newUnset);
+    setUnsetCodeEditor(JSON.stringify(mapping.unset.length ? mapping.unset : {}, null, 2));
 
     const newCast = Object.entries(mapping.cast).map(([key, value]) => ({ key, value }));
-    setCast(newCast);
+    setCastKeyValue(newCast);
+    setCastCodeEditor(JSON.stringify(mapping.cast.length ? mapping.cast : {}, null, 2));
   };
 
   React.useEffect(() => {
     setIsLoading({ ...isLoading, mappingForm: createOrEditMapping.isLoading });
   }, [createOrEditMapping.isLoading]);
+
+  //Mappings
+  React.useEffect(() => {
+    if (mappingCodeEditor === "") return;
+
+    try {
+      JSON.parse(mappingCodeEditor);
+    } catch (e) {
+      return;
+    }
+
+    const jsonMapping = mappingCodeEditor && JSON.parse(mappingCodeEditor);
+
+    const newMapping = Object.entries(jsonMapping).map(([key, value]) => ({ key, value }));
+
+    if (!_.isEqual(mappingKeyValue, newMapping)) setMappingKeyValue(newMapping);
+  }, [mappingCodeEditor]);
+
+  React.useEffect(() => {
+    if (!watchMapping?.length) return;
+
+    const test = Object.assign({}, ...watchMapping.map(({ key, value }: any) => ({ [key]: value })));
+
+    setMappingCodeEditor(JSON.stringify(test, null, 2));
+  }, [watchMapping]);
+
+  //Unset
+  React.useEffect(() => {
+    if (unsetCodeEditor === "") return;
+
+    try {
+      JSON.parse(unsetCodeEditor);
+    } catch (e) {
+      return;
+    }
+
+    const jsonUnset = unsetCodeEditor && JSON.parse(unsetCodeEditor);
+
+    const newUnset = Object.entries(jsonUnset).map(([key, value]) => ({ key, value }));
+
+    if (!_.isEqual(unsetKeyValue, newUnset)) setUnsetKeyValue(newUnset);
+  }, [unsetCodeEditor]);
+
+  React.useEffect(() => {
+    if (!watchUnset?.length) return;
+
+    const test = Object.assign({}, ...watchUnset.map(({ key, value }: any) => ({ [key]: value })));
+
+    setUnsetCodeEditor(JSON.stringify(test, null, 2));
+  }, [watchUnset]);
+
+  //Cast
+  React.useEffect(() => {
+    if (castCodeEditor === "") return;
+
+    try {
+      JSON.parse(castCodeEditor);
+    } catch (e) {
+      return;
+    }
+
+    const jsonCast = castCodeEditor && JSON.parse(castCodeEditor);
+
+    const newCast = Object.entries(jsonCast).map(([key, value]) => ({ key, value }));
+
+    if (!_.isEqual(castKeyValue, newCast)) setCastKeyValue(newCast);
+  }, [castCodeEditor]);
+
+  React.useEffect(() => {
+    if (!watchCast?.length) return;
+
+    const test = Object.assign({}, ...watchCast.map(({ key, value }: any) => ({ [key]: value })));
+
+    setCastCodeEditor(JSON.stringify(test, null, 2));
+  }, [watchCast]);
 
   React.useEffect(() => {
     if (!mapping) return;
@@ -173,11 +275,18 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   </div>
 
                   {isOpenMapping && (
-                    <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, mappingRefBottom)}>
-                      <Link icon={<FontAwesomeIcon icon={faArrowDown} />} iconAlign="start">
-                        {t("Scroll to create")}
-                      </Link>
-                    </div>
+                    <>
+                      <div onClick={(e) => handleSwitchEditor(e, "mapping")}>
+                        <Link icon={<FontAwesomeIcon icon={faEdit} />} iconAlign="start">
+                          {t(!editMappingInEditor ? "Edit as JSON" : "Edit as Key-Value")}
+                        </Link>
+                      </div>
+                      <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, mappingRefBottom)}>
+                        <Link icon={<FontAwesomeIcon icon={faArrowDown} />} iconAlign="start">
+                          {t("Scroll to create")}
+                        </Link>
+                      </div>
+                    </>
                   )}
                 </div>
               }
@@ -187,14 +296,19 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
               onClosing={() => setIsOpenMapping(false)}
             >
               <div className={styles.keyValueContainer}>
-                <CreateKeyValue
-                  name="mapping"
-                  {...{ register, errors, control }}
-                  defaultValue={_mapping}
-                  disabled={isLoading.endpointForm}
-                  validation={enrichValidation({ required: true })}
-                  copyValue={{ canCopy: true, onCopied: () => toast.success("Copied to clipboard!") }}
-                />
+                {!editMappingInEditor && (
+                  <CreateKeyValue
+                    name="mapping"
+                    {...{ register, errors, control }}
+                    defaultValue={mappingKeyValue}
+                    disabled={isLoading.endpointForm}
+                    validation={enrichValidation({ required: true })}
+                    copyValue={{ canCopy: true, onCopied: () => toast.success("Copied to clipboard!") }}
+                  />
+                )}
+                {editMappingInEditor && (
+                  <CodeEditor language="json" code={mappingCodeEditor} setCode={setMappingCodeEditor} />
+                )}
               </div>
             </Collapsible>
             <div ref={mappingRefBottom} />
@@ -218,11 +332,18 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   </div>
 
                   {isOpenUnset && (
-                    <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, unsetRefBottom)}>
-                      <Link icon={<FontAwesomeIcon icon={faArrowDown} />} iconAlign="start">
-                        {t("Scroll to create")}
-                      </Link>
-                    </div>
+                    <>
+                      <div onClick={(e) => handleSwitchEditor(e, "unset")}>
+                        <Link icon={<FontAwesomeIcon icon={faEdit} />} iconAlign="start">
+                          {t(!editUnsetInEditor ? "Edit as JSON" : "Edit as Key-Value")}
+                        </Link>
+                      </div>
+                      <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, unsetRefBottom)}>
+                        <Link icon={<FontAwesomeIcon icon={faArrowDown} />} iconAlign="start">
+                          {t("Scroll to create")}
+                        </Link>
+                      </div>
+                    </>
                   )}
                 </div>
               }
@@ -232,13 +353,18 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
               onClosing={() => setIsOpenUnset(false)}
             >
               <div className={styles.keyValueContainer}>
-                <CreateKeyValue
-                  name="unset"
-                  {...{ register, errors, control }}
-                  defaultValue={unset}
-                  disabled={isLoading.endpointForm}
-                  copyValue={{ canCopy: true, onCopied: () => toast.success("Copied to clipboard!") }}
-                />
+                {!editUnsetInEditor && (
+                  <CreateKeyValue
+                    name="unset"
+                    {...{ register, errors, control }}
+                    defaultValue={unsetKeyValue}
+                    disabled={isLoading.endpointForm}
+                    copyValue={{ canCopy: true, onCopied: () => toast.success("Copied to clipboard!") }}
+                  />
+                )}
+                {editUnsetInEditor && (
+                  <CodeEditor language="json" code={unsetCodeEditor} setCode={setUnsetCodeEditor} />
+                )}
               </div>
             </Collapsible>
 
@@ -263,11 +389,18 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
                   </div>
 
                   {isOpenCast && (
-                    <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, castRefBottom)}>
-                      <Link icon={<FontAwesomeIcon icon={faArrowDown} />} iconAlign="start">
-                        {t("Scroll to create")}
-                      </Link>
-                    </div>
+                    <>
+                      <div onClick={(e) => handleSwitchEditor(e, "cast")}>
+                        <Link icon={<FontAwesomeIcon icon={faEdit} />} iconAlign="start">
+                          {t(!editCastInEditor ? "Edit as JSON" : "Edit as Key-Value")}
+                        </Link>
+                      </div>
+                      <div className={styles.triggerButton} onClick={(e) => handleScrollToCreate(e, castRefBottom)}>
+                        <Link icon={<FontAwesomeIcon icon={faArrowDown} />} iconAlign="start">
+                          {t("Scroll to create")}
+                        </Link>
+                      </div>
+                    </>
                   )}
                 </div>
               }
@@ -277,13 +410,16 @@ export const MappingFormTemplate: React.FC<MappingFormTemplateProps> = ({ mappin
               onClosing={() => setIsOpenCast(false)}
             >
               <div className={styles.keyValueContainer}>
-                <CreateKeyValue
-                  name="cast"
-                  {...{ register, errors, control }}
-                  defaultValue={cast}
-                  disabled={isLoading.endpointForm}
-                  copyValue={{ canCopy: true, onCopied: () => toast.success("Copied to clipboard!") }}
-                />
+                {!editCastInEditor && (
+                  <CreateKeyValue
+                    name="cast"
+                    {...{ register, errors, control }}
+                    defaultValue={castKeyValue}
+                    disabled={isLoading.endpointForm}
+                    copyValue={{ canCopy: true, onCopied: () => toast.success("Copied to clipboard!") }}
+                  />
+                )}
+                {editCastInEditor && <CodeEditor language="json" code={castCodeEditor} setCode={setCastCodeEditor} />}
               </div>
             </Collapsible>
 
