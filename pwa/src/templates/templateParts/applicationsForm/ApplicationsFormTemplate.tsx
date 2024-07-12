@@ -99,6 +99,18 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
               />
             </FormFieldInput>
           </FormField>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Version")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="version"
+                disabled={isLoading.applicationForm}
+                defaultValue={application?.version ?? "0.0.0"}
+                ariaLabel={t("Enter version")}
+              />
+            </FormFieldInput>
+          </FormField>
 
           <FormField>
             <FormFieldInput>
@@ -121,18 +133,6 @@ export const ApplicationsFormTemplate: React.FC<ApplicationFormTemplateProps> = 
                 name="description"
                 disabled={isLoading.applicationForm}
                 ariaLabel={t("Enter description")}
-              />
-            </FormFieldInput>
-          </FormField>
-          <FormField>
-            <FormFieldInput>
-              <FormFieldLabel>{t("Version")}</FormFieldLabel>
-              <InputText
-                {...{ register, errors }}
-                name="version"
-                disabled={isLoading.applicationForm}
-                defaultValue={application?.version ?? "0.0.0"}
-                ariaLabel={t("Enter version")}
               />
             </FormFieldInput>
           </FormField>

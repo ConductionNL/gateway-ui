@@ -9,9 +9,10 @@ import { useCronjob } from "../../../hooks/cronjob";
 import { validateStringAsCronTab } from "../../../services/stringValidations";
 import { predefinedSubscriberEvents } from "../../../data/predefinedSubscriberEvents";
 import Skeleton from "react-loading-skeleton";
-import { SelectCreate } from "@conduction/components/lib/components/formFields/select/select";
+import { SelectCreate, SelectSingle } from "@conduction/components/lib/components/formFields/select/select";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
+import { useUser } from "../../../hooks/user";
 
 interface CronjobFormTemplateProps {
   cronjob?: any;
@@ -27,6 +28,9 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
   const queryClient = useQueryClient();
   const _useCronjobs = useCronjob(queryClient);
   const createOrEditCronjob = _useCronjobs.createOrEdit(cronjob?.id);
+
+  const _useUsers = useUser(queryClient);
+  const getUsers = _useUsers.getAll();
 
   const {
     register,
@@ -48,13 +52,14 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
     const payload = {
       ...data,
       throws: data.throws?.map((_throw: any) => _throw.value),
+      userId: data.userId?.value ?? null,
     };
 
     createOrEditCronjob.mutate({ payload, id: cronjob?.id });
   };
 
   const handleSetFormValues = (): void => {
-    const basicFields: string[] = ["name", "description", "crontab", "isEnabled"];
+    const basicFields: string[] = ["reference", "version", "name", "description", "crontab", "isEnabled"];
     basicFields.forEach((field) => setValue(field, cronjob[field]));
 
     setValue(
@@ -63,15 +68,53 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
     );
   };
 
+  const setUserIdLabel = (user: any): string => {
+    return user.name + (" - " + user?.organization?.name);
+  };
+
   React.useEffect(() => {
     cronjob && handleSetFormValues();
   }, [cronjob]);
+
+  React.useEffect(() => {
+    if (!cronjob) return;
+    if (!getUsers.isSuccess) return;
+    getUsers?.data.map((user) => {
+      if (user?.id === cronjob?.userId) {
+        setValue("userId", { label: setUserIdLabel(user), value: user.id });
+      }
+    });
+  }, [cronjob, getUsers.isSuccess]);
 
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} id={formId}>
         <div className={styles.gridContainer}>
           <div className={styles.grid}>
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+                <InputText
+                  {...{ register, errors }}
+                  name="reference"
+                  disabled={isLoading.cronjobForm}
+                  ariaLabel={t("Enter reference")}
+                />
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("Version")}</FormFieldLabel>
+                <InputText
+                  {...{ register, errors }}
+                  name="version"
+                  disabled={isLoading.cronjobForm}
+                  defaultValue={cronjob?.version ?? "0.0.0"}
+                  ariaLabel={t("Enter version")}
+                />
+              </FormFieldInput>
+            </FormField>
             <FormField>
               <FormFieldInput>
                 <FormFieldLabel>{t("Name")}</FormFieldLabel>
@@ -123,6 +166,28 @@ export const CronjobFormTemplate: React.FC<CronjobFormTemplateProps> = ({ cronjo
                     name="throws"
                     {...{ register, errors, control }}
                     ariaLabel={t("Select or create a throw")}
+                  />
+                )}
+              </FormFieldInput>
+            </FormField>
+
+            <FormField>
+              <FormFieldInput>
+                <FormFieldLabel>{t("User ID")}</FormFieldLabel>
+
+                {getUsers.isLoading && <Skeleton height="50px" />}
+
+                {getUsers.isSuccess && (
+                  <SelectSingle
+                    options={getUsers.data.map((user: any) => ({
+                      label: setUserIdLabel(user),
+                      value: user.id,
+                    }))}
+                    name="userId"
+                    {...{ register, errors, control }}
+                    disabled={isLoading.actionForm}
+                    ariaLabel={t("Select an user as userId")}
+                    isClearable={true}
                   />
                 )}
               </FormFieldInput>

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { useTranslation } from "react-i18next";
 import { useSchema } from "../../../hooks/schema";
-import { InputText, Textarea } from "@conduction/components";
+import { InputCheckbox, InputNumber, InputText, Textarea } from "@conduction/components";
 import FormField, { FormFieldInput, FormFieldLabel } from "@gemeente-denhaag/form-field";
 import { useIsLoadingContext } from "../../../context/isLoading";
 import { enrichValidation } from "../../../services/enrichReactHookFormValidation";
@@ -40,7 +40,19 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }
   React.useEffect(() => {
     if (!schema) return;
 
-    ["name", "description", "reference"].forEach((field) => setValue(field, schema[field]));
+    [
+      "name",
+      "description",
+      "reference",
+      "version",
+      "maxDepth",
+      "extend",
+      "inherited",
+      "exclude",
+      "persist",
+      "createAuditTrails",
+      "softDelete",
+    ].forEach((field) => setValue(field, schema[field]));
   }, [schema]);
 
   React.useEffect(() => {
@@ -51,6 +63,33 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }
     <form onSubmit={handleSubmit(onSubmit)} id={formId}>
       <div className={styles.gridContainer}>
         <div className={styles.grid}>
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+
+              <InputText
+                {...{ register, errors }}
+                name="reference"
+                validation={enrichValidation({ maxLength: 225 })}
+                disabled={isLoading.schemaForm}
+                ariaLabel={t("Enter reference")}
+              />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Version")}</FormFieldLabel>
+              <InputText
+                {...{ register, errors }}
+                name="version"
+                disabled={isLoading.schemaForm}
+                defaultValue={schema?.version ?? "0.0.0"}
+                ariaLabel={t("Enter version")}
+              />
+            </FormFieldInput>
+          </FormField>
+
           <FormField>
             <FormFieldInput>
               <FormFieldLabel>{t("Name")}</FormFieldLabel>
@@ -80,15 +119,60 @@ export const SchemaFormTemplate: React.FC<SchemaFormTemplateProps> = ({ schema }
 
           <FormField>
             <FormFieldInput>
-              <FormFieldLabel>{t("Reference")}</FormFieldLabel>
+              <FormFieldLabel>{t("MaxDepth")}</FormFieldLabel>
 
-              <InputText
+              <InputNumber
                 {...{ register, errors }}
-                name="reference"
-                validation={enrichValidation({ maxLength: 225 })}
+                name="maxDepth"
                 disabled={isLoading.schemaForm}
-                ariaLabel={t("Enter reference")}
+                ariaLabel={t("Enter maxDepth")}
               />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Extend")}</FormFieldLabel>
+
+              <InputCheckbox disabled={isLoading.schemaForm} {...{ register, errors }} label="on" name="extend" />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Inherited")}</FormFieldLabel>
+
+              <InputCheckbox disabled={isLoading.schemaForm} {...{ register, errors }} label="on" name="inherited" />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Exclude")}</FormFieldLabel>
+
+              <InputCheckbox disabled={isLoading.schemaForm} {...{ register, errors }} label="on" name="exclude" />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Persist")}</FormFieldLabel>
+
+              <InputCheckbox
+                disabled={isLoading.schemaForm}
+                defaultChecked={schema?.persist ?? true}
+                {...{ register, errors }}
+                label="on"
+                name="persist"
+              />
+            </FormFieldInput>
+          </FormField>
+
+          <FormField>
+            <FormFieldInput>
+              <FormFieldLabel>{t("Soft delete")}</FormFieldLabel>
+
+              <InputCheckbox disabled={isLoading.schemaForm} {...{ register, errors }} label="on" name="softDelete" />
             </FormFieldInput>
           </FormField>
         </div>
