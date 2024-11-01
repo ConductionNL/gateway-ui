@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { TSendFunction } from "../apiService";
+import { DEFAULT_LIMIT, TSendFunction } from "../apiService";
 
 export default class SecurityGroup {
   private _instance: AxiosInstance;
@@ -11,7 +11,7 @@ export default class SecurityGroup {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/user_groups");
+    const { data } = await this._send(this._instance, "GET", `/admin/user_groups?limit=${DEFAULT_LIMIT}`);
 
     return data;
   };

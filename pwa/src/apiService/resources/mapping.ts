@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { TSendFunction } from "../apiService";
+import { DEFAULT_LIMIT, TSendFunction } from "../apiService";
 
 export default class Mapping {
   private _instance: AxiosInstance;
@@ -11,7 +11,7 @@ export default class Mapping {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/mappings");
+    const { data } = await this._send(this._instance, "GET", `/admin/mappings?limit=${DEFAULT_LIMIT}`);
 
     return data;
   };
@@ -23,11 +23,10 @@ export default class Mapping {
   };
 
   public getAllSelectOptions = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/mappings?limit=200");
+    const { data } = await this._send(this._instance, "GET", "/admin/mappings?limit=${DEFAULT_LIMIT}`);
 
     return data?.map((mapping: any) => ({ label: mapping.name, value: mapping.id }));
   };
-
 
   public delete = async (variables: { id: string }): Promise<any> => {
     const { id } = variables;

@@ -70,7 +70,7 @@ export default class Sources {
   };
 
   public getAllSelectOptions = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/objects?limit=200");
+    const { data } = await this._send(this._instance, "GET", "/admin/objects?limit=${DEFAULT_LIMIT}`);
 
     return data?.results?.map((object: any) => ({ label: object.titel, value: object.id }));
   };

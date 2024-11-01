@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { TSendFunction } from "../apiService";
+import { DEFAULT_LIMIT, TSendFunction } from "../apiService";
 
 export type TEntity =
   | "Action"
@@ -25,7 +25,7 @@ export default class DashboardCards {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/dashboardCards", undefined, {
+    const { data } = await this._send(this._instance, "GET", `/admin/dashboardCards", undefined, {
       error: "Could not fetch Dashboardcards.",
     });
 

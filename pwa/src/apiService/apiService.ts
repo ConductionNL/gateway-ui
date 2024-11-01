@@ -36,6 +36,8 @@ interface PromiseMessage {
   error?: string;
 }
 
+export const DEFAULT_LIMIT = 200;
+
 export type TSendFunction = (
   instance: AxiosInstance,
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "DOWNLOAD",
