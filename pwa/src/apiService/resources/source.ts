@@ -11,7 +11,7 @@ export default class Source {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", `/admin/gateways?order[name]=ASC&limit=200");
+    const { data } = await this._send(this._instance, "GET", `/admin/gateways?order[name]=ASC&limit=${DEFAULT_LIMIT}`);
 
     return data;
   };
