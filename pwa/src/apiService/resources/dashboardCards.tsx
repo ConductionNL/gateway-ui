@@ -25,7 +25,7 @@ export default class DashboardCards {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", `/admin/dashboardCards", undefined, {
+    const { data } = await this._send(this._instance, "GET", "/admin/dashboardCards", undefined, {
       error: "Could not fetch Dashboardcards.",
     });
 
