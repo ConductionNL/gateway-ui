@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 import { paramsToQueryParams } from "../../services/paramsToQueryParams";
-import { TSendFunction } from "../apiService";
+import { DEFAULT_LIMIT, TSendFunction } from "../apiService";
 
 export default class Synchroniation {
   private _instance: AxiosInstance;
@@ -12,7 +12,7 @@ export default class Synchroniation {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/synchronizations");
+    const { data } = await this._send(this._instance, "GET", `/admin/synchronizations?limit=${DEFAULT_LIMIT}`);
 
     return data;
   };

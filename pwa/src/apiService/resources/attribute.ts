@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { TSendFunction } from "../apiService";
+import { DEFAULT_LIMIT, TSendFunction } from "../apiService";
 
 export default class Attribute {
   private _instance: AxiosInstance;
@@ -11,7 +11,7 @@ export default class Attribute {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/attributes");
+    const { data } = await this._send(this._instance, "GET", `/admin/attributes?limit=${DEFAULT_LIMIT}`);
 
     return data;
   };

@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { TSendFunction } from "../apiService";
+import { DEFAULT_LIMIT, TSendFunction } from "../apiService";
 import { TDownloadType, downloadTypes } from "../../data/downloadTypes";
 
 export default class Schema {
@@ -12,13 +12,13 @@ export default class Schema {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/entities?limit=200");
+    const { data } = await this._send(this._instance, "GET", `/admin/entities?limit=${DEFAULT_LIMIT}`);
 
     return data;
   };
 
   public getAllSelectOptions = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/entities?limit=200");
+    const { data } = await this._send(this._instance, "GET", `/admin/entities?limit=${DEFAULT_LIMIT}`);
 
     return data?.map((schema: any) => ({ label: schema.name, value: schema.id }));
   };

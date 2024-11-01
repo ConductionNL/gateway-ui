@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { TSendFunction } from "../apiService";
+import { DEFAULT_LIMIT, TSendFunction } from "../apiService";
 
 export default class Cronjob {
   private _instance: AxiosInstance;
@@ -11,13 +11,13 @@ export default class Cronjob {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/cronjobs");
+    const { data } = await this._send(this._instance, "GET", `/admin/cronjobs?limit=${DEFAULT_LIMIT}`);
 
     return data;
   };
 
   public getAllSelectOptions = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/cronjobs?limit=200");
+    const { data } = await this._send(this._instance, "GET", `/admin/cronjobs?limit=${DEFAULT_LIMIT}`);
 
     return data?.map((cronjob: any) => ({ label: cronjob.name, value: cronjob.id }));
   };
