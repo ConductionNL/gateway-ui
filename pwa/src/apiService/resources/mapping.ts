@@ -23,7 +23,7 @@ export default class Mapping {
   };
 
   public getAllSelectOptions = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/mappings?limit=${DEFAULT_LIMIT}`);
+    const { data } = await this._send(this._instance, "GET", `/admin/mappings?limit=${DEFAULT_LIMIT}`);
 
     return data?.map((mapping: any) => ({ label: mapping.name, value: mapping.id }));
   };
