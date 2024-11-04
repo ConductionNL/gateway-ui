@@ -11,7 +11,7 @@ export default class Template {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", `/admin/templates?limit=200`);
+    const { data } = await this._send(this._instance, "GET", `/admin/templates?limit=${DEFAULT_LIMIT}`);
 
     return data;
   };
