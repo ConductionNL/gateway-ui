@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { TSendFunction } from "../apiService";
+import { DEFAULT_LIMIT, TSendFunction } from "../apiService";
 
 export default class Endpoint {
   private _instance: AxiosInstance;
@@ -11,13 +11,13 @@ export default class Endpoint {
   }
 
   public getAll = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/endpoints");
+    const { data } = await this._send(this._instance, "GET", `/admin/endpoints?limit=${DEFAULT_LIMIT}`);
 
     return data;
   };
 
   public getAllSelectOptions = async (): Promise<any> => {
-    const { data } = await this._send(this._instance, "GET", "/admin/endpoints");
+    const { data } = await this._send(this._instance, "GET", `/admin/endpoints?limit=${DEFAULT_LIMIT}`);
 
     return data?.map((endpoint: any) => ({ label: endpoint.name, value: endpoint.id }));
   };

@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { TSendFunction } from "../apiService";
+import { DEFAULT_LIMIT, TSendFunction } from "../apiService";
 
 export type TEntity =
   | "Action"
